@@ -155,3 +155,8 @@ When working with react-pdf features:
 - Font loading requires internet connection for Google Fonts
 - PDF generation works both client-side (browser) and server-side (Node.js)
 - Generated PDFs output to `tmp/` directory
+
+## Claude Code Guidelines
+
+### Commit Message Policy
+**IMPORTANT**: Never include Claude Code attribution or co-authored-by lines in git commit messages. All commits should be clean and focused on the actual changes without tool attribution.
