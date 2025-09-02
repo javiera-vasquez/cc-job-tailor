@@ -1,6 +1,6 @@
 import React from 'react';
 import { renderToFile } from '@react-pdf/renderer';
-import { DocumentWrapper } from './index.tsx';
+import { DocumentWrapper } from './src';
 import path from 'path';
 
 const generatePdf = async () => {

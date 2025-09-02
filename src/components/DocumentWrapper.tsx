@@ -108,6 +108,7 @@ export const DocumentWrapper = () => (
         su esfuerzo la ganase. Estos pensamientos le hicieron titubear en su
         propósito; mas pudiendo más su locura que otra razón alguna, propuso de
         hacerse armar caballero del primero que topase, a imitación de otros
+
         muchos que así lo hicieron, según él había leído en los libros que tal
         le tenían. En lo de las armas blancas, pensaba limpiarlas de manera, en
         teniendo lugar, que lo fuesen más que un arminio; y con esto se quietó18
@@ -226,4 +227,3 @@ const styles = StyleSheet.create({
     color: 'grey',
   },
 });
-

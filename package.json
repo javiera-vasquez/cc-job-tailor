@@ -5,7 +5,7 @@
     "react-dom": "^19.1.1"
   },
   "name": "cc-resume-manager",
-  "module": "index.tsx",
+  "module": "ui.tsx",
   "type": "module",
   "private": true,
   "scripts": {
