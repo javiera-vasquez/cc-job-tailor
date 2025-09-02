@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "@react-pdf/renderer": "^4.3.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "name": "cc-resume-manager",
+  "module": "index.tsx",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun --hot index.html",
+    "start": "bun index.html",
+    "save-to-pdf": "bun run generate-pdf.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/react": "^19",
+    "@types/react-dom": "^19"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
