@@ -4,7 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a PDF resume generator built with React and `@react-pdf/renderer`. The application creates PDF documents using React components that render directly to PDF format. It supports both browser-based preview (via PDFViewer) and server-side file generation (via renderToFile). Currently demonstrated with Don Quixote text sample as placeholder content.
+This is a dynamic PDF resume generator built with React and `@react-pdf/renderer`. The application creates PDF documents using React components that render directly to PDF format. It supports both browser-based preview (via PDFViewer) and server-side file generation (via renderToFile). 
+
+**Key Features:**
+- **Data-Driven Resume Generation**: Uses structured YAML data (`data/resume.yaml`) containing comprehensive resume information
+- **Multi-Version Support**: Supports different resume versions (AI-focused, QA-focused) from the same data source
+- **Professional Resume Template**: Ready for real-world use with complete professional experience, skills, and contact information
+- **Modular Architecture**: Separated data layer from presentation logic for easy customization
 
 ## Development Commands
 
@@ -32,22 +38,28 @@ bun run save-to-pdf
 
 ### File Structure
 ```
-├── index.html          # HTML entry point, loads ui.tsx
-├── ui.tsx              # React app with PDFViewer component  
-├── index.tsx           # DocumentWrapper component (PDF structure)
-├── generate-pdf.ts     # Server-side PDF generation script
-├── tsconfig.json       # TypeScript configuration (ESNext, strict mode)
-├── docs/               # React-pdf documentation
-│   ├── components.md   # Available PDF components reference
-│   ├── fonts.md        # Font registration and typography guide
-│   └── styling.md      # PDF styling and CSS properties reference
-├── public/images/      # Static assets for PDF
-└── tmp/                # Generated PDF output directory
+├── index.html              # HTML entry point, loads ui.tsx
+├── ui.tsx                  # React app with PDFViewer component  
+├── generate-pdf.ts         # Server-side PDF generation script
+├── src/
+│   ├── index.ts            # Export barrel for components
+│   └── components/
+│       └── DocumentWrapper.tsx  # Main PDF document component
+├── data/
+│   └── resume.yaml         # Structured resume data (228 lines)
+├── tsconfig.json           # TypeScript configuration (ESNext, strict mode)
+├── docs/                   # React-pdf documentation
+│   ├── components.md       # Available PDF components reference
+│   ├── fonts.md            # Font registration and typography guide
+│   └── styling.md          # PDF styling and CSS properties reference
+├── public/images/          # Static assets for PDF
+└── tmp/                    # Generated PDF output directory
 ```
 
 ### Application Flow
-1. **Browser Development**: `index.html` → `ui.tsx` → `PDFViewer` → `DocumentWrapper`
+1. **Browser Development**: `index.html` → `ui.tsx` → `PDFViewer` → `src/components/DocumentWrapper.tsx`
 2. **PDF Generation**: `generate-pdf.ts` → `renderToFile` → `tmp/resume.pdf`
+3. **Data Source**: `data/resume.yaml` contains structured resume data ready for integration
 
 ### PDF Document Architecture
 The application uses react-pdf's component hierarchy:
@@ -61,8 +73,10 @@ The application uses react-pdf's component hierarchy:
 
 ### Component Separation
 - `ui.tsx`: Browser UI with PDFViewer wrapper for development
-- `index.tsx`: Reusable DocumentWrapper component (PDF structure)
+- `src/components/DocumentWrapper.tsx`: Main PDF document component with sample Don Quixote content
+- `src/index.ts`: Export barrel for modular component access
 - `generate-pdf.ts`: Server-side rendering for file output
+- `data/resume.yaml`: Comprehensive structured resume data ready for integration
 
 ### PDF Component Structure
 ```tsx
@@ -94,6 +108,65 @@ Font.register({
 - Fixed positioning for headers/footers and page numbers
 - Text justification and custom font families
 - Page breaks via `break` prop on Text components
+
+## Resume Data Structure
+
+The `data/resume.yaml` file contains comprehensive structured resume data:
+
+### Data Schema
+```yaml
+personal_info:
+  name: string
+  titles:
+    ai_focused: string    # Version-specific titles
+    qa_focused: string
+  summaries:
+    ai_focused: string    # Version-specific summaries
+    qa_focused: string
+  contact: {...}
+
+technical_expertise:
+  frontend: [skills array]
+  backend: [skills array]
+  qa_testing: [skills array]
+  ai_machine_learning: [skills array]
+  systems_design: [skills array]
+  version_control: [skills array]
+
+soft_skills:
+  analytical_strategic: [skills array]
+  product_user_focus: [skills array]
+  collaboration_leadership: [skills array]
+  development_methodology: [skills array]
+
+professional_experience:
+  - company: string
+    position: string
+    location: string
+    duration: string
+    company_description: string
+    linkedin: string
+    achievements:
+      ai_focused: [achievements array]
+      qa_focused: [achievements array]
+      frontend_focused: [achievements array]
+
+independent_projects: [projects array]
+languages: [language proficiency array]
+education: [education array]
+metadata: {last_updated, versions}
+```
+
+### Multi-Version Resume Support
+The data structure supports multiple resume versions:
+- **ai_focused**: Emphasizes AI/ML projects and product engineering
+- **qa_focused**: Highlights QA automation and testing expertise
+- **frontend_focused**: Focuses on frontend development achievements
+
+### Integration Status
+- **Current**: DocumentWrapper uses placeholder Don Quixote content
+- **Ready**: Complete resume data available in `data/resume.yaml` (228 lines)
+- **Next Step**: Integrate YAML data parser and dynamic content rendering
 
 ## React-PDF Documentation Reference
 
@@ -155,6 +228,8 @@ When working with react-pdf features:
 - Font loading requires internet connection for Google Fonts
 - PDF generation works both client-side (browser) and server-side (Node.js)
 - Generated PDFs output to `tmp/` directory
+- Modular component architecture with proper TypeScript exports
+- Ready for YAML parser integration (js-yaml, yaml, or native Bun YAML support)
 
 ## Claude Code Guidelines
 
