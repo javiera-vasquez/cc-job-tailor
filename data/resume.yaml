@@ -100,6 +100,14 @@ soft_skills:
     - "Agile Development"
 
 professional_experience:
+  - company: "German studies"
+    position: "Sabbatical"
+    location: "Berlin, Germany"
+    duration: "May 2024 - May 2025"
+    company_description: "When from A2 to B2, plus the required certification in one year, reaching conversation level of German in less than one year of study an less than 3 years of leaving in Germany."
+    linkedin: null
+    achievements: []
+
   - company: "Inkitt"
     position: "Senior Frontend Engineer"
     location: "Berlin, Germany - United States"
@@ -201,11 +209,11 @@ professional_experience:
         - "Built scalable frontend architecture serving 750K home devices"
         - "Delivered modern streaming experience on legacy hardware infrastructure"
 
-sabbatical:
-  - name: "Sabbatical - German studies"
-    duration: "May 2024 - May 2025"
-    description: "When from A2 to B2, plus the required certification in one year, reaching conversation level of German in less than one year of study an less than 3 years of leaving in Germany."
-    location: "Berlin, Germany"
+# sabbatical:
+#   - name: "Sabbatical - German studies"
+#     duration: "May 2024 - May 2025"
+#     description: "When from A2 to B2, plus the required certification in one year, reaching conversation level of German in less than one year of study an less than 3 years of leaving in Germany."
+#     location: "Berlin, Germany"
 
 independent_projects:
   - name: "Seeker - AI-Powered Conversational Search Platform"

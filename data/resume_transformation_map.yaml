@@ -12,9 +12,12 @@ target_schema:
     title: "string"           # Single selected title
     summary: "string"         # Single selected summary
     contact: "ContactDetails"
-    technical_expertise: "Expertise"  # Categories with resume_title + skills
+    technical_expertise: "array[Expertise]"  # Categories with resume_title + skills
     skills: "array[string]"   # Flattened soft skills
     languages: "array[Language]"
+    professional_experience: "array[ProfessionalExperience]"
+    independent_projects: "array[IndependentProject]"
+    education: "array[Education]"
 
 # Transformation mapping rules
 transformation_rules:
@@ -29,6 +32,9 @@ transformation_rules:
       target: "resume.contact"
     - source: "languages"
       target: "resume.languages"
+    - source: "education"
+      target: "resume.education"
+      description: "Copy education array with institution, degree, location, duration"
 
   # Version-based selection (choose based on job focus)
   version_selection:
@@ -84,6 +90,7 @@ transformation_rules:
       3. Select top 4 most relevant categories
       4. Within each category, prioritize skills mentioned in job posting
       5. Ensure total skills across all categories ≤ 30
+      6. Transform to array format: [{resume_title: "Frontend Development", skills: [...]}, ...]
 
   # Soft skills flattening
   skills_flattening:
@@ -96,6 +103,28 @@ transformation_rules:
       2. Prioritize skills that align with job requirements
       3. Include leadership skills if management role
       4. Include analytical skills for technical roles
+
+  # Professional experience transformation
+  experience_transformation:
+    source: "professional_experience"
+    target: "resume.professional_experience"
+    transformation_type: "version_based_selection"
+    rules:
+      - select_achievements_by_focus: "{{ job_focus }}"
+      - maintain_company_info: true
+      - preserve_chronological_order: true
+    description: "Select version-specific achievements while preserving company details"
+
+  # Independent projects transformation
+  projects_transformation:
+    source: "independent_projects"
+    target: "resume.independent_projects"
+    transformation_type: "prioritize_and_limit"
+    rules:
+      - max_projects: 3
+      - prioritize_by_relevance: "{{ job_focus }}"
+      - include_technologies: true
+    description: "Select most relevant projects based on job requirements"
 
 # Job analysis integration points
 job_analysis_integration:
@@ -131,7 +160,11 @@ validation_rules:
     - "resume.summary"
     - "resume.contact"
     - "resume.technical_expertise"
+    - "resume.skills"
     - "resume.languages"
+    - "resume.professional_experience"
+    - "resume.independent_projects"
+    - "resume.education"
     
   field_constraints:
     - field: "resume.title"
@@ -148,6 +181,18 @@ validation_rules:
     - field: "resume.skills"
       max_items: 12
       min_items: 6
+      
+    - field: "resume.professional_experience"
+      max_items: 5
+      min_items: 2
+      
+    - field: "resume.independent_projects"
+      max_items: 3
+      min_items: 1
+      
+    - field: "resume.education"
+      max_items: 4
+      min_items: 1
 
   data_integrity:
     - rule: "All selected content must exist in source resume.yaml"
@@ -176,8 +221,12 @@ output_template: |
     summary: "{{ personal_info.summaries[job_focus] }}"
     contact: "{{ contact }}"
     technical_expertise:
-      selected_category_1:
-        resume_title: "Category Display Name"
-        skills: ["prioritized", "skills", "array"]
-    skills: ["flattened", "soft", "skills"]
+      - resume_title: "Frontend Development"
+        skills: ["React", "TypeScript", "Next.js"]
+      - resume_title: "AI & Machine Learning"
+        skills: ["LangGraph", "Vector Embeddings", "Semantic Search"]
+    skills: ["Pattern Recognition", "Strategic Thinking", "Cross-functional Collaboration"]
     languages: "{{ languages }}"
+    professional_experience: "{{ professional_experience[job_focus] }}"
+    independent_projects: "{{ independent_projects | prioritize(job_focus) }}"
+    education: "{{ education }}"
