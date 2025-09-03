@@ -1,0 +1,183 @@
+# Resume Transformation Mapping Configuration
+# This file defines how to transform the rich source resume.yaml into the simplified schema expected by React-PDF
+
+schema_version: "1.0"
+description: "Transformation rules for resume-tailor agent to convert rich resume data into React-PDF compatible format"
+
+# Target output schema structure (what React-PDF expects)
+target_schema:
+  resume:
+    name: "string"
+    profile_picture: "string" 
+    title: "string"           # Single selected title
+    summary: "string"         # Single selected summary
+    contact: "ContactDetails"
+    technical_expertise: "Expertise"  # Categories with resume_title + skills
+    skills: "array[string]"   # Flattened soft skills
+    languages: "array[Language]"
+
+# Transformation mapping rules
+transformation_rules:
+
+  # Direct copy fields (no transformation needed)
+  direct_mapping:
+    - source: "personal_info.name"
+      target: "resume.name"
+    - source: "personal_info.profile_picture" 
+      target: "resume.profile_picture"
+    - source: "contact"
+      target: "resume.contact"
+    - source: "languages"
+      target: "resume.languages"
+
+  # Version-based selection (choose based on job focus)
+  version_selection:
+    - source: "personal_info.titles"
+      target: "resume.title"
+      selection_key: "{{ job_focus }}"  # ai_focused | qa_focused | frontend_focused
+      description: "Select title based on job analysis results"
+      
+    - source: "personal_info.summaries"
+      target: "resume.summary" 
+      selection_key: "{{ job_focus }}"
+      description: "Select summary that best matches job requirements"
+
+  # Technical expertise transformation (add resume_title, prioritize based on job)
+  expertise_transformation:
+    source: "technical_expertise"
+    target: "resume.technical_expertise"
+    transformation_type: "categorize_and_prioritize"
+    rules:
+      - category: "frontend"
+        resume_title: "Frontend Development"
+        max_skills: 8
+        priority_keywords: ["React", "TypeScript", "Next.js", "JavaScript"]
+        
+      - category: "backend" 
+        resume_title: "Backend Development"
+        max_skills: 6
+        priority_keywords: ["Node.js", "API", "Database"]
+        
+      - category: "qa_testing"
+        resume_title: "Quality Assurance & Testing"
+        max_skills: 7
+        priority_keywords: ["E2E Testing", "Jest", "CI/CD", "Automation"]
+        
+      - category: "ai_machine_learning"
+        resume_title: "AI & Machine Learning"
+        max_skills: 6
+        priority_keywords: ["LangGraph", "Vector", "Semantic", "AI"]
+        
+      - category: "systems_design"
+        resume_title: "Systems & Architecture"
+        max_skills: 5
+        priority_keywords: ["Architecture", "Scalable", "Design"]
+        
+      - category: "version_control"
+        resume_title: "Version Control"
+        max_skills: 3
+        priority_keywords: ["Git", "GitHub"]
+
+    selection_logic: |
+      1. Analyze job posting for technical requirements
+      2. Score each category by relevance to job (0-10)
+      3. Select top 4 most relevant categories
+      4. Within each category, prioritize skills mentioned in job posting
+      5. Ensure total skills across all categories ≤ 30
+
+  # Soft skills flattening
+  skills_flattening:
+    source: "soft_skills"
+    target: "resume.skills"
+    transformation_type: "flatten_and_select"
+    max_skills: 12
+    selection_logic: |
+      1. Flatten all soft skill categories into single array
+      2. Prioritize skills that align with job requirements
+      3. Include leadership skills if management role
+      4. Include analytical skills for technical roles
+
+# Job analysis integration points
+job_analysis_integration:
+  focus_determination:
+    description: "Determine job focus based on posting analysis"
+    logic: |
+      - If job emphasizes AI/ML → set job_focus = "ai_focused"
+      - If job emphasizes testing/QA → set job_focus = "qa_focused" 
+      - If job is pure frontend → set job_focus = "frontend_focused"
+      - Default to closest match based on keyword analysis
+
+  keyword_extraction:
+    description: "Extract and prioritize keywords from job posting"
+    categories:
+      - technical_skills: "Programming languages, frameworks, tools"
+      - soft_skills: "Leadership, collaboration, communication"
+      - experience_level: "Senior, Lead, Principal, etc."
+      - industry_domain: "FinTech, E-commerce, AI, etc."
+
+  relevance_scoring:
+    description: "Score resume content against job requirements"
+    scoring_factors:
+      - keyword_match: 0.4
+      - experience_alignment: 0.3
+      - skill_relevance: 0.2  
+      - seniority_match: 0.1
+
+# Output validation rules
+validation_rules:
+  required_fields: 
+    - "resume.name"
+    - "resume.title"
+    - "resume.summary"
+    - "resume.contact"
+    - "resume.technical_expertise"
+    - "resume.languages"
+    
+  field_constraints:
+    - field: "resume.title"
+      max_length: 80
+      
+    - field: "resume.summary" 
+      max_length: 500
+      min_length: 100
+      
+    - field: "resume.technical_expertise"
+      max_categories: 4
+      min_categories: 2
+      
+    - field: "resume.skills"
+      max_items: 12
+      min_items: 6
+
+  data_integrity:
+    - rule: "All selected content must exist in source resume.yaml"
+    - rule: "No fabricated or exaggerated content allowed"
+    - rule: "Maintain professional tone and accuracy"
+    - rule: "Keywords must be naturally integrated, not forced"
+
+# Usage example for resume-tailor agent
+example_usage: |
+  1. Analyze job posting to determine focus area and keywords
+  2. Set job_focus variable (ai_focused/qa_focused/frontend_focused)
+  3. Apply transformation rules in order:
+     - Direct mapping for basic fields
+     - Version selection for title/summary
+     - Expertise transformation with job-relevant prioritization
+     - Skills flattening with relevance filtering
+  4. Validate output against rules
+  5. Generate final resume_tailored.yaml
+
+# Output template structure
+output_template: |
+  resume:
+    name: "{{ personal_info.name }}"
+    profile_picture: "{{ personal_info.profile_picture }}"
+    title: "{{ personal_info.titles[job_focus] }}"
+    summary: "{{ personal_info.summaries[job_focus] }}"
+    contact: "{{ contact }}"
+    technical_expertise:
+      selected_category_1:
+        resume_title: "Category Display Name"
+        skills: ["prioritized", "skills", "array"]
+    skills: ["flattened", "soft", "skills"]
+    languages: "{{ languages }}"

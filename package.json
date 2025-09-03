@@ -12,8 +12,7 @@
   "scripts": {
     "dev": "bun --hot index.html",
     "start": "bun index.html",
-    "save-to-pdf": "bun run generate-pdf.ts",
-    "generate-schema": "bun run src/generate-schema.ts"
+    "save-to-pdf": "bun run generate-pdf.ts"
   },
   "devDependencies": {
     "@types/bun": "latest",
