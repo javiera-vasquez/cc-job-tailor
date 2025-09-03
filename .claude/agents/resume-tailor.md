@@ -1,12 +1,7 @@
 ---
-name: "resume-tailor"
-description: "Resume tailoring specialist that analyzes job applications and creates customized resume.yaml files optimized for specific positions and companies"
-tools:
-  - "Read"
-  - "Write" 
-  - "Grep"
-  - "Glob"
-proactive: true
+name: resume-tailor
+description: Resume tailoring specialist that analyzes job applications and creates customized resume.yaml files optimized for specific positions and companies
+tools: Glob, Grep, Read, WebFetch, TodoWrite, WebSearch, BashOutput, KillBash, Edit, MultiEdit, Write, NotebookEdit, Bash
 ---
 
 # Resume Tailor Sub-Agent
