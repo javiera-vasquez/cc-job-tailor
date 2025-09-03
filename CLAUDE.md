@@ -48,7 +48,7 @@ bun run save-to-pdf
 ├── data/
 │   └── resume.yaml         # Structured resume data (228 lines)
 ├── tsconfig.json           # TypeScript configuration (ESNext, strict mode)
-├── docs/                   # React-pdf documentation
+├── rpdf/                   # React-pdf documentation
 │   ├── components.md       # Available PDF components reference
 │   ├── fonts.md            # Font registration and typography guide
 │   └── styling.md          # PDF styling and CSS properties reference
@@ -170,12 +170,12 @@ The data structure supports multiple resume versions:
 
 ## React-PDF Documentation Reference
 
-The `/docs` folder contains comprehensive react-pdf documentation that serves as the primary reference for PDF development in this project. Understanding this taxonomy is crucial for effective PDF document creation.
+The `/rpdf_docs` folder contains comprehensive react-pdf documentation that serves as the primary reference for PDF development in this project. Understanding this taxonomy is crucial for effective PDF document creation.
 
 ### Documentation Structure
 
 ```
-docs/
+rpdf/
 ├── components.md    # Complete component API reference
 ├── fonts.md         # Font registration and typography system
 └── styling.md       # CSS properties and styling techniques
