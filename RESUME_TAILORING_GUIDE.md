@@ -89,7 +89,7 @@ Sub-agent will:
 
 ## Output Structure
 
-The generated `data/resume_tailored.yaml` will maintain the exact schema as `data/resume.yaml` but with:
+The generated `data/resume_tailored.yaml` will follow the target schema defined in `data/resume_transformation_map.yaml` with:
 
 ### Optimized Content Selection
 - **Title**: Most relevant from `personal_info.titles`
@@ -98,16 +98,32 @@ The generated `data/resume_tailored.yaml` will maintain the exact schema as `dat
 - **Achievements**: Top-scoring achievements from each company
 - **Projects**: Emphasized based on job alignment
 
-### Added Metadata
+### Schema Structure (per `data/resume_transformation_map.yaml`)
 ```yaml
-tailoring_metadata:
+resume:
+  name: "Direct copy from personal_info.name"
+  profile_picture: "Direct copy from personal_info.profile_picture"
+  title: "Selected from personal_info.titles based on job focus"
+  summary: "Selected from personal_info.summaries based on job focus"
+  contact: "Direct copy from contact section"
+  technical_expertise:
+    selected_category_1:
+      resume_title: "Frontend Development"
+      skills: ["React", "TypeScript", "Next.js"]
+    selected_category_2:
+      resume_title: "AI & Machine Learning"
+      skills: ["LangChain", "Vector embeddings"]
+    # ... max 4 categories total
+  skills: ["Leadership", "Problem Solving", "Communication"]  # max 12 total
+  languages: "Direct copy from languages section"
+
+# Analysis metadata
+job_analysis:
+  focus_area: "ai_focused"  # ai_focused|qa_focused|frontend_focused
   job_title: "Senior AI Engineer"
   company: "TechCorp"
-  tailored_date: "2025-01-23"
-  focus_areas: ["AI/ML", "Product Engineering", "Frontend"]
-  keywords_targeted: ["LangChain", "React", "vector embeddings"]
-  content_strategy: "Emphasized AI projects and product mindset"
-  source_version: "ai_focused"
+  key_requirements: ["LangChain", "React", "Product Engineering"]
+  transformation_decisions: "Selected AI-focused title and summary, prioritized AI and frontend categories"
 ```
 
 ## Best Practices
@@ -135,6 +151,7 @@ tailoring_metadata:
 **Generated file missing sections?**
 - Check if original `data/resume.yaml` has all required sections
 - Verify YAML syntax in source file
+- Ensure transformation follows rules in `data/resume_transformation_map.yaml`
 
 **Content doesn't match job well?**
 - Provide more specific guidance about which achievements to emphasize
@@ -142,7 +159,9 @@ tailoring_metadata:
 
 **PDF generation fails?**
 - Verify `data/resume_tailored.yaml` maintains proper YAML syntax
-- Check that all required fields are present in tailored version
+- Check that all required fields are present per transformation map validation rules
+- Ensure technical_expertise categories include both `resume_title` and `skills` arrays
+- Verify skills array is flattened (not categorized) and contains max 12 items
 
 ### File Management
 - Tailored files are automatically saved as `data/resume_tailored.yaml`

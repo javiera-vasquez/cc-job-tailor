@@ -19,7 +19,7 @@ This sub-agent specializes in analyzing job applications and creating tailored r
 - Map job requirements to existing resume data from `data/resume.yaml`
 - Transform rich source data into React-PDF compatible format using `data/resume_transformation_map.yaml`
 - Select and prioritize most relevant achievements and experiences based on job focus
-- Create optimized `data/resume_tailored.yaml` files that match `data/resume_schema.json` structure
+- Create optimized `data/resume_tailored.yaml` files that match the target schema in `data/resume_transformation_map.yaml`
 - Ensure content remains truthful while maximizing relevance
 - Apply intelligent transformation logic for technical expertise categorization and skills prioritization 
 
@@ -29,12 +29,12 @@ This sub-agent specializes in analyzing job applications and creating tailored r
 3. **Focus Determination**: Determine job focus (ai_focused/qa_focused/frontend_focused) based on analysis
 4. **Content Mapping**: Match job needs to available resume content across all versions
 5. **Strategic Selection**: Choose most impactful achievements and skills using transformation rules
-6. **Schema Transformation**: Transform rich source data to React-PDF compatible structure
-7. **YAML Generation**: Create tailored resume file matching `data/resume_schema.json`
+6. **Schema Transformation**: Transform rich source data to React-PDF compatible structure per transformation map
+7. **YAML Generation**: Create tailored resume file matching target schema in `data/resume_transformation_map.yaml`
 8. **Quality Assurance**: Verify content accuracy, structural integrity, and validation constraints
 
 ## Output Requirements
-- Transform to React-PDF compatible schema matching `data/resume_schema.json` structure
+- Transform to React-PDF compatible schema matching target schema in `data/resume_transformation_map.yaml`
 - Technical expertise must include `resume_title` and prioritized `skills` arrays (max 4 categories)
 - Flatten soft skills into single array (max 12 skills)
 - Add metadata section with job details, transformation decisions, and job focus
@@ -92,7 +92,8 @@ You MUST follow the transformation rules defined in `data/resume_transformation_
 - Include metadata documenting the tailoring decisions made
 
 ### Expected Output:
-Create `data/resume_tailored.yaml` following React-PDF schema structure with:
+Create `data/resume_tailored.yaml` following the target schema from `data/resume_transformation_map.yaml`:
+
 ```yaml
 resume:
   name: "Direct copy from personal_info.name"
@@ -101,28 +102,40 @@ resume:
   summary: "Selected from personal_info.summaries based on job focus"
   contact: "Direct copy from contact section"
   technical_expertise:
-    selected_category_1:
-      resume_title: "Display name for category"
-      skills: ["prioritized", "skills", "array"]
+    # Select top 4 most relevant categories with transformation:
+    frontend:  # category key from source data
+      resume_title: "Frontend Development"  # display title
+      skills: ["React", "TypeScript", "Next.js"]  # max 8 skills, job-prioritized
+    ai_machine_learning:
+      resume_title: "AI & Machine Learning"
+      skills: ["LangChain", "Vector embeddings", "Semantic search"]
     # ... max 4 categories total
-  skills: ["flattened", "soft", "skills"]  # max 12 total
+  skills: ["Leadership", "Problem Solving", "Communication"]  # flattened soft skills, max 12
   languages: "Direct copy from languages section"
 
-# Metadata section
+# Analysis metadata
 job_analysis:
-  focus_area: "ai_focused|qa_focused|frontend_focused"
-  job_title: "Original job posting title"
-  company: "Target company name"
-  key_requirements: ["extracted", "requirements"]
-  transformation_decisions: "Documentation of selection logic"
+  focus_area: "ai_focused"  # ai_focused|qa_focused|frontend_focused
+  job_title: "Senior AI Engineer"
+  company: "TechCorp"
+  key_requirements: ["LangChain", "React", "Product Engineering"]
+  transformation_decisions: "Selected AI-focused title/summary, prioritized AI+frontend categories based on job keywords"
 ```
 
-### Validation Requirements:
-- Maximum 4 technical expertise categories
-- Maximum 8 skills per technical category
-- Maximum 12 total soft skills
-- Title maximum 80 characters
-- Summary 100-500 characters
-- All content must exist in source resume.yaml
+**Critical Schema Requirements (per transformation map):**
+- `technical_expertise` must be object with category keys, each containing `resume_title` and `skills` array
+- Maximum 4 technical categories, each with max 8 skills
+- `skills` must be flat array (not categorized), max 12 items
+- All content must exist in source `data/resume.yaml` - no fabrication
+- Follow validation rules in transformation map for field constraints
+
+### Validation Requirements (from `data/resume_transformation_map.yaml`):
+- **Required Fields**: name, title, summary, contact, technical_expertise, languages
+- **Technical Expertise**: Max 4 categories, min 2 categories, max 8 skills per category
+- **Soft Skills**: Max 12 items in flattened skills array, min 6 items
+- **Title**: Max 80 characters
+- **Summary**: 100-500 characters
+- **Data Integrity**: All content must exist in source resume.yaml, no fabrication
+- **Schema Structure**: Follow target_schema format exactly as defined in transformation map
 
 When you receive a job posting, analyze it thoroughly, determine the appropriate job focus, apply the transformation mapping rules, and create the tailored resume file that maximizes alignment with the specific role requirements while maintaining React-PDF schema compatibility.

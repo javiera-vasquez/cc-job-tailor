@@ -43,8 +43,18 @@ bun run save-to-pdf
 ├── generate-pdf.ts         # Server-side PDF generation script
 ├── src/
 │   ├── index.ts            # Export barrel for components
-│   └── components/
-│       └── DocumentWrapper.tsx  # Main PDF document component
+│   ├── types.ts            # TypeScript type definitions for React-PDF schema
+│   └── pages/
+│       ├── DocumentWrapper.tsx  # Placeholder PDF document component (Don Quixote content)
+│       ├── index.tsx       # Web layout component
+│       └── resume/         # Complete resume component suite
+│           ├── index.tsx   # Main resume document
+│           ├── Header.tsx  # Resume header component
+│           ├── Skills.tsx  # Skills section component
+│           ├── Experience.tsx # Experience section component
+│           ├── Education.tsx  # Education section component
+│           ├── List.tsx    # List formatting component
+│           └── Title.tsx   # Title formatting component
 ├── data/
 │   └── resume.yaml         # Structured resume data (228 lines)
 ├── tsconfig.json           # TypeScript configuration (ESNext, strict mode)
@@ -57,9 +67,10 @@ bun run save-to-pdf
 ```
 
 ### Application Flow
-1. **Browser Development**: `index.html` → `ui.tsx` → `PDFViewer` → `src/components/DocumentWrapper.tsx`
+1. **Browser Development**: `index.html` → `ui.tsx` → `PDFViewer` → `src/pages/DocumentWrapper.tsx`
 2. **PDF Generation**: `generate-pdf.ts` → `renderToFile` → `tmp/resume.pdf`
-3. **Data Source**: `data/resume.yaml` contains structured resume data ready for integration
+3. **Data Source**: `data/resume.yaml` contains comprehensive structured resume data (228+ lines)
+4. **Resume Tailoring**: `data/resume_transformation_map.yaml` defines schema transformation rules for job-specific versions
 
 ### PDF Document Architecture
 The application uses react-pdf's component hierarchy:
@@ -73,10 +84,12 @@ The application uses react-pdf's component hierarchy:
 
 ### Component Separation
 - `ui.tsx`: Browser UI with PDFViewer wrapper for development
-- `src/components/DocumentWrapper.tsx`: Main PDF document component with sample Don Quixote content
+- `src/pages/DocumentWrapper.tsx`: Placeholder PDF document component with Don Quixote content
+- `src/pages/resume/index.tsx`: Complete professional resume document with real data integration
 - `src/index.ts`: Export barrel for modular component access
 - `generate-pdf.ts`: Server-side rendering for file output
-- `data/resume.yaml`: Comprehensive structured resume data ready for integration
+- `data/resume.yaml`: Comprehensive structured resume data (version-specific content)
+- `data/resume_transformation_map.yaml`: Schema transformation rules for React-PDF compatibility
 
 ### PDF Component Structure
 ```tsx
@@ -109,9 +122,12 @@ Font.register({
 - Text justification and custom font families
 - Page breaks via `break` prop on Text components
 
-## Resume Data Structure
+## Resume Data & Schema Structure
 
-The `data/resume.yaml` file contains comprehensive structured resume data:
+The project uses a dual-schema approach:
+
+### Source Data (`data/resume.yaml`)
+Comprehensive resume data with multi-version support:
 
 ### Data Schema
 ```yaml
@@ -158,15 +174,43 @@ metadata: {last_updated, versions}
 ```
 
 ### Multi-Version Resume Support
-The data structure supports multiple resume versions:
+The source data structure supports multiple resume versions:
 - **ai_focused**: Emphasizes AI/ML projects and product engineering
 - **qa_focused**: Highlights QA automation and testing expertise
 - **frontend_focused**: Focuses on frontend development achievements
 
+### Schema Transformation (`data/resume_transformation_map.yaml`)
+Defines transformation rules to convert rich source data into React-PDF compatible format:
+
+```yaml
+target_schema:
+  resume:
+    name: string
+    profile_picture: string
+    title: string           # Single selected title
+    summary: string         # Single selected summary
+    contact: ContactDetails
+    technical_expertise:    # Categories with resume_title + skills
+      category_name:
+        resume_title: string
+        skills: array[string]
+    skills: array[string]   # Flattened soft skills
+    languages: array[Language]
+```
+
+**Transformation Rules:**
+- **Direct Mapping**: Basic fields copied as-is (name, contact, languages)
+- **Version Selection**: Title/summary chosen based on job focus (ai_focused/qa_focused/frontend_focused)
+- **Expertise Transformation**: Technical skills categorized with display titles, prioritized by job relevance
+- **Skills Flattening**: Soft skills flattened from categorized structure to simple array
+- **Validation Rules**: Field constraints (max lengths, item counts) and data integrity requirements
+
 ### Integration Status
-- **Current**: DocumentWrapper uses placeholder Don Quixote content
-- **Ready**: Complete resume data available in `data/resume.yaml` (228 lines)
-- **Next Step**: Integrate YAML data parser and dynamic content rendering
+- **Placeholder Component**: DocumentWrapper uses Don Quixote content for testing
+- **Production Components**: Complete resume component suite in `src/pages/resume/` (Header, Skills, Experience, Education)
+- **Data Ready**: Comprehensive resume data in `data/resume.yaml` (228+ lines) with multi-version support
+- **Schema Transformation**: `data/resume_transformation_map.yaml` provides React-PDF compatibility rules
+- **Resume Tailoring**: System supports job-specific resume generation via transformation mapping
 
 ## React-PDF Documentation Reference
 
@@ -229,7 +273,8 @@ When working with react-pdf features:
 - PDF generation works both client-side (browser) and server-side (Node.js)
 - Generated PDFs output to `tmp/` directory
 - Modular component architecture with proper TypeScript exports
-- Ready for YAML parser integration (js-yaml, yaml, or native Bun YAML support)
+- YAML parsing available via js-yaml or native Bun YAML support
+- Schema transformation system ready for resume tailoring workflow
 
 ## Claude Code Guidelines
 
