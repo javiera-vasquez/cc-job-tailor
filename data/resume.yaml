@@ -1,12 +1,19 @@
+version: "1.0.0"
+
+roles: [ai_focused, qa_focused, frontend_focused]
+
 personal_info:
   name: "Javiera Vasquez"
+  profile_picture: "/images/avatar.webp"
   titles:
     ai_focused: "AI Product Engineer | Senior Frontend Specialist"
-    qa_focused: "Frontend Developer & QA Engineer"
+    qa_focused: "Senior Frontend Developer & QA Engineer"
+    frontend_focused: "Senior Frontend Engineer"
   summaries:
     ai_focused: "Product-focused Senior Frontend Engineer with a passion for mastering emerging technologies. To understand AI from first principles, I built Seeker—a conversational interface for exploring video content—achieving $0.003/query economics and ~0.7s response times. My goal is to leverage this deep AI understanding to architect the next generation of intelligent frontends. Former Cornershop engineer (acquired by Uber $3.3B)."
     qa_focused: "Experienced Frontend Developer with over a decade of experience, specializing in crafting user-centric applications using modern stacks like React, React Native, Node, and TypeScript. with real world experience developing Web and Mobile experience for multinational markets focusing on delivering software quality through Test Automation, Events Tracking and CI/CD pipelines, ensuring robust and reliable digital solutions. Extensive experience in debugging, optimizing user experiences and fostering collaboration within cross-functional teams and C level executives in fast pacing startups."
-  
+    frontend_focused: "Experienced Frontend Developer with over a decade of experience, specializing in crafting user-centric applications using modern stacks like React, React Native, Node, and TypeScript. with real world experience developing Web and Mobile experience for multinational markets focusing on delivering software quality through Test Automation, Events Tracking and CI/CD pipelines, ensuring robust and reliable digital solutions. Extensive experience in debugging, optimizing user experiences and fostering collaboration within cross-functional teams and C level executives in fast pacing startups."
+
 contact:
   phone: "+49 1590 1070292"
   email: "Javiera.vasg@gmail.com"
@@ -28,15 +35,19 @@ technical_expertise:
     - "Supabase"
     - "Vercel"
     - "Tailwind"
+    - "GraphQL"
+    - "Apollo Client"
+    - "React Query"
   
   backend:
     - "Node.js"
     - "Firebase"
     - "SQL"
     - "NoSQL"
+    - "Bun"
   
   qa_testing:
-    - "E2E Testing (Appium, Selenium, Detox)"
+    - "E2E Testing (Appium, Selenium, Detox, Playwright)"
     - "Jest"
     - "Regression Testing"
     - "Coverage Tracking"
@@ -51,6 +62,7 @@ technical_expertise:
     - "Semantic Search"
     - "Query Optimization"
     - "Token Economics"
+    - "MCP Tool Development"
   
   systems_design:
     - "Scalable Architecture"
@@ -86,7 +98,7 @@ professional_experience:
   - company: "Inkitt"
     position: "Senior Frontend Engineer"
     location: "Berlin, Germany - United States"
-    duration: "March 2021 - May 2024"
+    duration: "March 2021 - April 2024"
     company_description: "Inkitt is revolutionizing publishing through data-driven strategies and AI-powered tools to discover hidden literary talents and bring their stories to millions of users through platforms like Galatea #7 ranking in the Books category on the Apple App Store in Germany."
     linkedin: "https://www.linkedin.com/company/inkitt"
     achievements:
@@ -136,7 +148,7 @@ professional_experience:
         - "Delivered seamless user experiences for both parents and caregivers across platforms"
   
   - company: "Cornershop by Uber"
-    position: "Frontend Engineer"
+    position: "Senior Frontend Engineer"
     location: "Santiago, Chile"
     duration: "May 2016 - January 2019"
     company_description: "Cornershop is a last-mile marketplace offering on-demand grocery delivery services across the Americas, now part of Uber."
@@ -164,7 +176,7 @@ professional_experience:
   - company: "VTR Liberty Global"
     position: "Frontend Engineer"
     location: "Santiago, Chile"
-    duration: "December 2014 - May 2016"
+    duration: "December 2014 - April 2016"
     company_description: "VTR is a leading telecom provider in Chile, offering TV, internet, and phone services to over 2.5 million homes."
     linkedin: "https://www.linkedin.com/company/vtr/"
     achievements:
@@ -184,10 +196,16 @@ professional_experience:
         - "Built scalable frontend architecture serving 750K home devices"
         - "Delivered modern streaming experience on legacy hardware infrastructure"
 
+sabbatical:
+  - name: "Sabbatical - German studies"
+    duration: "May 2024 - May 2025"
+    description: "When from A2 to B2, plus the required certification in one year, reaching conversation level of German in less than one year of study an less than 3 years of leaving in Germany."
+    location: "Berlin, Germany"
+
 independent_projects:
   - name: "Seeker - AI-Powered Conversational Search Platform"
     location: "Berlin, Germany"
-    duration: "2025"
+    duration: "May 2024 - Present"
     description: "A self-directed deep dive to master the new AI paradigm, resulting in a production-ready conversational interface for video discovery."
     url: "https://doug-langgraph-app-production.up.railway.app/search/new"
     achievements:
@@ -202,9 +220,9 @@ languages:
   - language: "Spanish"
     proficiency: "Native"
   - language: "English"
-    proficiency: "C1 - C2"
+    proficiency: "C2"
   - language: "German"
-    proficiency: "B1 certified - B2 actively improving"
+    proficiency: "B2"
 
 education:
   - institution: "Stanford University"
@@ -212,7 +230,7 @@ education:
     location: "Remote learning"
     duration: "2014 - 2014"
   
-  - institution: "HarvardX"
+  - institution: "Harvard"
     program: "CS50's Introduction to Computer Science"
     location: "Remote learning"
     duration: "2012 - 2012"
