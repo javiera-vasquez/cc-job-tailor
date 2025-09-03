@@ -2,7 +2,8 @@
   "dependencies": {
     "@react-pdf/renderer": "^4.3.0",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "ts-json-schema-generator": "^2.4.0"
   },
   "name": "cc-resume-manager",
   "module": "ui.tsx",
@@ -11,7 +12,8 @@
   "scripts": {
     "dev": "bun --hot index.html",
     "start": "bun index.html",
-    "save-to-pdf": "bun run generate-pdf.ts"
+    "save-to-pdf": "bun run generate-pdf.ts",
+    "generate-schema": "bun run src/generate-schema.ts"
   },
   "devDependencies": {
     "@types/bun": "latest",

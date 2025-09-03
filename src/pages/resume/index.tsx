@@ -94,7 +94,7 @@ const Resume = (props) => (
   </Page>
 );
 
-const ResumeDocument = () => (
+const ResumeDocument = () :React.ReactElement => (
   <Document
     author="Luke Skywalker"
     keywords="awesome, resume, start wars"
@@ -102,8 +102,6 @@ const ResumeDocument = () => (
     title="Resume"
   >
     <Resume size="A4" />
-    <Resume orientation="landscape" size="A4" />
-    <Resume size={[380, 1250]} />
   </Document>
 );
 

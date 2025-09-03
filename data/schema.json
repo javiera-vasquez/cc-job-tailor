@@ -1,0 +1,133 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/Schemas",
+  "definitions": {
+    "Schemas": {
+      "type": "object",
+      "properties": {
+        "resume": {
+          "$ref": "#/definitions/ResumeSchema"
+        }
+      },
+      "required": [
+        "resume"
+      ],
+      "additionalProperties": false
+    },
+    "ResumeSchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "profile_picture": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "contact": {
+          "$ref": "#/definitions/ContactDetails"
+        },
+        "technical_expertise": {
+          "$ref": "#/definitions/Expertise"
+        },
+        "skills": {
+          "$ref": "#/definitions/Skills"
+        },
+        "languages": {
+          "$ref": "#/definitions/Language"
+        }
+      },
+      "required": [
+        "name",
+        "profile_picture",
+        "title",
+        "summary",
+        "contact",
+        "technical_expertise",
+        "skills",
+        "languages"
+      ],
+      "additionalProperties": false
+    },
+    "ContactDetails": {
+      "type": "object",
+      "properties": {
+        "phone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "linkedin": {
+          "type": "string"
+        },
+        "github": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "phone",
+        "email",
+        "address",
+        "linkedin",
+        "github"
+      ],
+      "additionalProperties": false
+    },
+    "Expertise": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "resume_title": {
+            "type": "string"
+          },
+          "skills": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "resume_title",
+          "skills"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "Skills": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "Language": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "language": {
+            "type": "string"
+          },
+          "proficiency": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "language",
+          "proficiency"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}
