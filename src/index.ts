@@ -1,1 +1,1 @@
-export * from './components/DocumentWrapper';
+export * from './pages/index';

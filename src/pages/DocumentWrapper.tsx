@@ -1,12 +1,13 @@
 import { Page, Text, View, Image, Document, StyleSheet, PDFViewer, Font } from '@react-pdf/renderer';
 
+const juliete= "hola juliete"
 
 // Document Wrapper
 export const DocumentWrapper = () => (
   <Document>
     <Page style={styles.body} debug={true}>
       <Text style={styles.header} fixed>
-        ~ Created with react-pdf ~
+        {juliete}
       </Text>
       <Text style={styles.title}>Don Quijote de la Mancha</Text>
       <Text style={styles.author}>Miguel de Cervantes</Text>
@@ -15,11 +16,7 @@ export const DocumentWrapper = () => (
         Quijote de la Mancha
       </Text>
       <Text style={styles.text}>
-        En un lugar de la Mancha, de cuyo nombre no quiero acordarme, no ha
-        mucho tiempo que vivía un hidalgo de los de lanza en astillero, adarga
-        antigua, rocín flaco y galgo corredor. Una olla de algo más vaca que
-        carnero, salpicón las más noches, duelos y quebrantos los sábados,
-        lentejas los viernes, algún palomino de añadidura los domingos,
+        hola j
         consumían las tres partes de su hacienda. El resto della concluían sayo
         de velarte, calzas de velludo para las fiestas con sus pantuflos de lo
         mismo, los días de entre semana se honraba con su vellori de lo más
@@ -216,6 +213,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
     color: 'grey',
+    borderBottom: '1px dashed #ccc'
   },
   pageNumber: {
     position: 'absolute',
