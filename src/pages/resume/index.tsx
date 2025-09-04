@@ -14,6 +14,8 @@ import Skills from './Skills';
 import Education from './Education';
 import Experience from './Experience';
 
+import data from "../../data/resume";
+
 const styles = StyleSheet.create({
   page: {
     padding: 30,
@@ -76,29 +78,27 @@ Font.register({
   src: `https://fonts.gstatic.com/s/lato/v16/S6u9w4BMUTPHh6UVSwiPHA.ttf`,
 });
 
-const IMAGE_SRC =
-  'https://i.guim.co.uk/img/media/a23aeb1f7ff20bb80f68852da17743b0e557f8ed/0_224_3504_2102/master/3504.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=9e9a99e479ee60270b69ede4d869b20f';
 
 const Resume = (props) => (
   <Page {...props} style={styles.page}>
     <Header />
     <View style={styles.container}>
       <View style={styles.leftColumn}>
-        <Image src={IMAGE_SRC} style={styles.image} />
+        <Image src={data.resume.profile_picture} style={styles.image} />
         <Education />
         <Skills />
       </View>
       <Experience />
     </View>
-    <Text style={styles.footer}>This IS the candidate you are looking for</Text>
+    <Text style={styles.footer}>Professional Resume - {data.resume.name}</Text>
   </Page>
 );
 
 const ResumeDocument = () :React.ReactElement => (
   <Document
-    author="Luke Skywalker"
-    keywords="awesome, resume, start wars"
-    subject="The resume of Luke Skywalker"
+    author={data.resume.name}
+    keywords="frontend, react, typescript, senior engineer"
+    subject={`The resume of ${data.resume.name}`}
     title="Resume"
   >
     <Resume size="A4" />

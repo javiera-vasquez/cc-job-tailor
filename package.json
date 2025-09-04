@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "@react-pdf/renderer": "^4.3.0",
+    "@types/js-yaml": "^4.0.9",
+    "js-yaml": "^4.1.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
@@ -9,9 +11,10 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun --hot index.html",
-    "start": "bun index.html",
-    "save-to-pdf": "bun run generate-pdf.ts"
+    "dev": "bun run generate-data.ts && bun --hot index.html",
+    "start": "bun run generate-data.ts && bun index.html",
+    "save-to-pdf": "bun run generate-data.ts && bun run generate-pdf.ts",
+    "generate-data": "bun run generate-data.ts"
   },
   "devDependencies": {
     "@types/bun": "latest",
