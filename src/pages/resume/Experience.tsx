@@ -1,138 +1,133 @@
 import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
-
-import Title from './Title';
-import List, { Item } from './List';
+import data from '../../data/resume';
+import { colors } from './constants';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: 30,
-    paddingLeft: 15,
-    '@media max-width: 400': {
-      paddingTop: 10,
-      paddingLeft: 0,
-    },
+    marginBottom: 20,
   },
-  entryContainer: {
-    marginBottom: 10,
+  sectionTitle: {
+    fontFamily: 'Inter',
+    fontWeight: 700,
+    fontSize: 13,
+    letterSpacing: '1.5625%',
+    color: colors.primary,
+    marginBottom: 12,
   },
-  date: {
-    fontSize: 11,
-    fontFamily: 'Lato Italic',
+  experienceEntry: {
+    marginBottom: 16,
   },
-  detailLeftColumn: {
-    flexDirection: 'column',
-    marginLeft: 10,
-    marginRight: 10,
+  companyHeader: {
+    marginBottom: 2,
   },
-  detailRightColumn: {
-    flexDirection: 'column',
-    flexGrow: 9,
+  companyName: {
+    fontFamily: 'Inter',
+    fontWeight: 700,
+    fontSize: 10.6,
+    color: colors.primary,
+    marginBottom: 2,
   },
-  bulletPoint: {
-    fontSize: 10,
+  companyUnderline: {
+    borderBottomWidth: 0.75,
+    borderBottomColor: colors.primary,
+    marginBottom: 4,
   },
-  details: {
-    fontSize: 10,
-    fontFamily: 'Lato',
+  positionTitle: {
+    fontFamily: 'Inter',
+    fontWeight: 700,
+    fontSize: 8,
+    letterSpacing: '0.78125%',
+    color: colors.primary,
+    marginBottom: 2,
   },
-  headerContainer: {
+  dateLocation: {
+    fontFamily: 'Inter',
+    fontWeight: 400,
+    fontSize: 8.2,
+    color: colors.mediumGray,
+    marginBottom: 4,
+  },
+  companyDescription: {
+    fontFamily: 'Inter',
+    fontWeight: 400,
+    fontSize: 7.8,
+    color: colors.darkGray,
+    marginBottom: 6,
+    lineHeight: 1.3,
+  },
+  achievementsList: {
+    marginTop: 4,
+  },
+  achievementItem: {
     flexDirection: 'row',
-    marginBottom: 10,
+    marginBottom: 3,
+    alignItems: 'flex-start',
   },
-  leftColumn: {
-    flexDirection: 'column',
-    flexGrow: 9,
+  bullet: {
+    width: 6,
+    height: 2.67,
+    backgroundColor: colors.primary,
+    borderRadius: 500,
+    marginRight: 6,
+    marginTop: 4,
+    flexShrink: 0,
   },
-  rightColumn: {
-    flexDirection: 'column',
-    flexGrow: 1,
-    alignItems: 'flex-end',
-    justifySelf: 'flex-end',
-  },
-  title: {
-    fontSize: 11,
-    color: 'black',
-    textDecoration: 'none',
-    fontFamily: 'Lato Bold',
+  achievementText: {
+    fontFamily: 'Inter',
+    fontWeight: 400,
+    fontSize: 7.8,
+    color: colors.primary,
+    lineHeight: 1.28,
+    flex: 1,
   },
 });
 
-const ExperienceEntry = ({ company, details, position, date }) => {
-  const title = `${company} | ${position}`;
+const ExperienceEntry = ({ experience }) => {
+  const { company, position, location, duration, company_description, achievements } = experience;
+
   return (
-    <View style={styles.entryContainer}>
-      <View style={styles.headerContainer}>
-        <View style={styles.leftColumn}>
-          <Text style={styles.title}>{title}</Text>
-        </View>
-        <View style={styles.rightColumn}>
-          <Text style={styles.date}>{date}</Text>
-        </View>
+    <View style={styles.experienceEntry}>
+      <View style={styles.companyHeader}>
+        <Text style={styles.companyName}>{company}</Text>
+        <View style={styles.companyUnderline} />
       </View>
-      <List>
-        {details.map((detail) => (
-          <Item key={detail.company}>{detail}</Item>
-        ))}
-      </List>
+      
+      <Text style={styles.positionTitle}>{position}</Text>
+      
+      <Text style={styles.dateLocation}>
+        {location} | {duration}
+      </Text>
+      
+      {company_description && (
+        <Text style={styles.companyDescription}>
+          {company_description}
+        </Text>
+      )}
+      
+      {achievements && achievements.length > 0 && (
+        <View style={styles.achievementsList}>
+          {achievements.map((achievement, index) => (
+            <View key={index} style={styles.achievementItem}>
+              <View style={styles.bullet} />
+              <Text style={styles.achievementText}>
+                {achievement}
+              </Text>
+            </View>
+          ))}
+        </View>
+      )}
     </View>
   );
 };
 
-const experienceData = [
-  {
-    company: 'Jedi Temple, Coruseant',
-    date: 'A long time ago...',
-    details: [
-      'Started a new Jedi Temple in order to train the next generation of Jedi Masters',
-      'Discovered and trained a new generation of Jedi Knights, which he recruited from within the New Republic',
-      'Communicates with decesased Jedi Masters such as Anakin Skywalker, Yoda, Obi-Wan Kenobi in order to learn the secrets of the Jedi Order',
-    ],
-    position: 'Head Jedi Master',
-  },
-  {
-    company: 'Rebel Alliance',
-    date: 'A long time ago...',
-    details: [
-      'Lead legions of troops into battle while demonstrating bravery, competence and honor',
-      'Created complicated battle plans in conjunction with other Rebel leaders in order to ensure the greatest chance of success',
-      'Defeated Darth Vader in single-combat, and convinced him to betray his mentor, the Emperor',
-    ],
-    position: 'General',
-  },
-  {
-    company: 'Rebel Alliance',
-    date: 'A long time ago...',
-    details: [
-      'Destroyed the Death Star by using the force to find its only weakness and delivering a torpedo into the center of the ship',
-      'Commanded of squadron of X-Wings into battle',
-      'Defeated an enemy AT-AT single handedly after his ship was destroyed',
-      'Awarded a medal for valor and bravery in battle for his successful destruction of the Death Star',
-    ],
-    position: 'Lieutenant Commander',
-  },
-  {
-    company: 'Tatooine Moisture Refinery',
-    date: 'A long time ago...',
-    details: [
-      'Replaced damaged power converters',
-      'Performed menial labor thoughout the farm in order to ensure its continued operation',
-    ],
-    position: 'Moisture Farmer',
-  },
-];
-
 const Experience = () => (
   <View style={styles.container}>
-    <Title>Experience</Title>
-    {experienceData.map(({ company, date, details, position }) => (
+    <Text style={styles.sectionTitle}>Professional Experience</Text>
+    {data.resume.professional_experience.map((experience, index) => (
       <ExperienceEntry
-        company={company}
-        date={date}
-        details={details}
-        key={company + position}
-        position={position}
+        key={`${experience.company}-${experience.position}-${index}`}
+        experience={experience}
       />
     ))}
   </View>

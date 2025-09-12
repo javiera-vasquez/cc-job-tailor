@@ -4,59 +4,19 @@ import {
   Font,
   Page,
   View,
-  Image,
   Document,
   StyleSheet,
 } from '@react-pdf/renderer';
 
 import Header from './Header';
+import Contact from './Contact';
 import Skills from './Skills';
+import Languages from './Languages';
 import Education from './Education';
 import Experience from './Experience';
 
 import data from "../../data/resume";
-
-const styles = StyleSheet.create({
-  page: {
-    padding: 30,
-  },
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    '@media max-width: 400': {
-      flexDirection: 'column',
-    },
-  },
-  image: {
-    marginBottom: 10,
-  },
-  leftColumn: {
-    flexDirection: 'column',
-    width: 170,
-    paddingTop: 30,
-    paddingRight: 15,
-    '@media max-width: 400': {
-      width: '100%',
-      paddingRight: 0,
-    },
-    '@media orientation: landscape': {
-      width: 200,
-    },
-  },
-  footer: {
-    fontSize: 12,
-    fontFamily: 'Lato Bold',
-    textAlign: 'center',
-    marginTop: 15,
-    paddingTop: 5,
-    borderWidth: 3,
-    borderColor: 'gray',
-    borderStyle: 'dashed',
-    '@media orientation: landscape': {
-      marginTop: 10,
-    },
-  },
-});
+import { colors } from './constants';
 
 Font.register({
   family: 'Open Sans',
@@ -78,18 +38,77 @@ Font.register({
   src: `https://fonts.gstatic.com/s/lato/v16/S6u9w4BMUTPHh6UVSwiPHA.ttf`,
 });
 
+const styles = StyleSheet.create({
+  page: {
+    padding: 36,
+    fontFamily: 'Lato',
+    color: colors.darkGray,
+    // Ensure A4 page sizing (595.5 × 842.25 points)
+    size: 'A4',
+  },
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    '@media max-width: 400': {
+      flexDirection: 'column',
+    },
+  },
+  leftColumn: {
+    flexDirection: 'column',
+    width: 200, // Updated to match Figma specs (~200px)
+    paddingTop: 20,
+    paddingRight: 20,
+    borderRight: `0.75px solid ${colors.separatorGray}`, // Vertical separator line
+    '@media max-width: 400': {
+      width: '100%',
+      paddingRight: 0,
+      borderRight: 'none',
+    },
+  },
+  rightColumn: {
+    flexDirection: 'column',
+    flex: 1,
+    paddingLeft: 20,
+    paddingTop: 20,
+    '@media max-width: 400': {
+      paddingLeft: 0,
+    },
+  },
+  sectionSeparator: {
+    borderBottom: `0.75px solid ${colors.separatorGray}`,
+    marginVertical: 16,
+  },
+  footer: {
+    fontSize: 20,
+    fontFamily: 'Lato',
+    fontWeight: 400,
+    color: colors.darkGray,
+    textAlign: 'center',
+    marginTop: 20,
+    paddingTop: 10,
+    borderTop: `0.75px solid ${colors.separatorGray}`,
+  },
+});
+
+//     <View style={styles.container}>
+//       {/* Left Column - Contact, Education, Skills, Languages */}
+//       <View style={styles.leftColumn}>
+//         <Contact />
+//         <Education />
+//         <Skills />
+//         <Languages />
+//       </View>
+      
+//       {/* Right Column - Experience */}
+//       <View style={styles.rightColumn}>
+//         <Experience />
+//       </View>
+//     </View>
 
 const Resume = (props) => (
   <Page {...props} style={styles.page}>
     <Header />
-    <View style={styles.container}>
-      <View style={styles.leftColumn}>
-        <Image src={data.resume.profile_picture} style={styles.image} />
-        <Education />
-        <Skills />
-      </View>
-      <Experience />
-    </View>
+    
     <Text style={styles.footer}>Professional Resume - {data.resume.name}</Text>
   </Page>
 );

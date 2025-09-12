@@ -4,7 +4,7 @@
 export default {
   "resume": {
     "name": "Javiera Vasquez",
-    "profile_picture": "/images/avatar.webp",
+    "profile_picture": "/public/images/avatar.jpg",
     "title": "Senior Frontend Engineer",
     "summary": "Experienced Frontend Developer with over a decade of experience, specializing in crafting user-centric applications using modern stacks like React, React Native, Node, and TypeScript. with real world experience developing Web and Mobile experience for multinational markets focusing on delivering software quality through Test Automation, Events Tracking and CI/CD pipelines, ensuring robust and reliable digital solutions. Extensive experience in debugging, optimizing user experiences and fostering collaboration within cross-functional teams and C level executives in fast pacing startups.",
     "contact": {
