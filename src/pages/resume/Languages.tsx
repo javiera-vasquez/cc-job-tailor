@@ -10,10 +10,8 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   sectionTitle: {
-    fontFamily: 'Inter',
-    fontWeight: 700,
+    fontFamily: 'Lato Bold',
     fontSize: 11.7,
-    letterSpacing: '3.125%',
     color: colors.primary,
     marginBottom: 8,
   },
@@ -28,19 +26,16 @@ const styles = StyleSheet.create({
   bullet: {
     width: 8,
     fontSize: 2.67,
-    fontFamily: 'Inter',
-    fontWeight: 700,
+    fontFamily: 'Lato',
     color: colors.primary,
     paddingTop: 2,
   },
   languageText: {
     flex: 1,
-    fontFamily: 'Inter',
-    fontWeight: 700,
+    fontFamily: 'Lato',
     fontSize: 7.8,
     lineHeight: 1.54,
     color: colors.primary,
-    letterSpacing: '-1.953125%',
   },
 });
 

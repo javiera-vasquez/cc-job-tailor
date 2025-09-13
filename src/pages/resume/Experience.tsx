@@ -8,10 +8,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   sectionTitle: {
-    fontFamily: 'Inter',
-    fontWeight: 700,
+    fontFamily: 'Lato Bold',
     fontSize: 13,
-    letterSpacing: '1.5625%',
     color: colors.primary,
     marginBottom: 12,
   },
@@ -22,35 +20,25 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   companyName: {
-    fontFamily: 'Inter',
-    fontWeight: 700,
+    fontFamily: 'Lato Bold',
     fontSize: 10.6,
     color: colors.primary,
     marginBottom: 2,
   },
-  companyUnderline: {
-    borderBottomWidth: 0.75,
-    borderBottomColor: colors.primary,
-    marginBottom: 4,
-  },
   positionTitle: {
-    fontFamily: 'Inter',
-    fontWeight: 700,
+    fontFamily: 'Lato Bold',
     fontSize: 8,
-    letterSpacing: '0.78125%',
     color: colors.primary,
     marginBottom: 2,
   },
   dateLocation: {
-    fontFamily: 'Inter',
-    fontWeight: 400,
+    fontFamily: 'Lato',
     fontSize: 8.2,
     color: colors.mediumGray,
     marginBottom: 4,
   },
   companyDescription: {
-    fontFamily: 'Inter',
-    fontWeight: 400,
+    fontFamily: 'Lato',
     fontSize: 7.8,
     color: colors.darkGray,
     marginBottom: 6,
@@ -65,8 +53,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   bullet: {
-    width: 6,
-    height: 2.67,
+    width: 2,
+    height: 2,
     backgroundColor: colors.primary,
     borderRadius: 500,
     marginRight: 6,
@@ -74,8 +62,7 @@ const styles = StyleSheet.create({
     flexShrink: 0,
   },
   achievementText: {
-    fontFamily: 'Inter',
-    fontWeight: 400,
+    fontFamily: 'Lato',
     fontSize: 7.8,
     color: colors.primary,
     lineHeight: 1.28,
@@ -84,16 +71,15 @@ const styles = StyleSheet.create({
 });
 
 const ExperienceEntry = ({ experience }) => {
-  const { company, position, location, duration, company_description, achievements } = experience;
+  const { company, position, location, duration, company_description, achievements, name } = experience;
 
   return (
     <View style={styles.experienceEntry}>
       <View style={styles.companyHeader}>
-        <Text style={styles.companyName}>{company}</Text>
-        <View style={styles.companyUnderline} />
+        <Text style={styles.companyName}>{company || name.split(' - ')[0]}</Text>
       </View>
       
-      <Text style={styles.positionTitle}>{position}</Text>
+      <Text style={styles.positionTitle}>{position || name.split(' - ')[1]}</Text>
       
       <Text style={styles.dateLocation}>
         {location} | {duration}
@@ -123,6 +109,13 @@ const ExperienceEntry = ({ experience }) => {
 
 const Experience = () => (
   <View style={styles.container}>
+    <Text style={styles.sectionTitle}>Independent Projects</Text>
+        {data.resume.independent_projects.map((experience, index) => (
+        <ExperienceEntry
+          key={`${experience.name}-${experience.location}-${index}`}
+          experience={experience}
+        />
+    ))}
     <Text style={styles.sectionTitle}>Professional Experience</Text>
     {data.resume.professional_experience.map((experience, index) => (
       <ExperienceEntry

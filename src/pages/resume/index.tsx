@@ -78,38 +78,28 @@ const styles = StyleSheet.create({
     borderBottom: `0.75px solid ${colors.separatorGray}`,
     marginVertical: 16,
   },
-  footer: {
-    fontSize: 20,
-    fontFamily: 'Lato',
-    fontWeight: 400,
-    color: colors.darkGray,
-    textAlign: 'center',
-    marginTop: 20,
-    paddingTop: 10,
-    borderTop: `0.75px solid ${colors.separatorGray}`,
-  },
 });
 
-//     <View style={styles.container}>
-//       {/* Left Column - Contact, Education, Skills, Languages */}
-//       <View style={styles.leftColumn}>
-//         <Contact />
-//         <Education />
-//         <Skills />
-//         <Languages />
-//       </View>
-      
-//       {/* Right Column - Experience */}
-//       <View style={styles.rightColumn}>
-//         <Experience />
-//       </View>
-//     </View>
+
 
 const Resume = (props) => (
   <Page {...props} style={styles.page}>
     <Header />
     
-    <Text style={styles.footer}>Professional Resume - {data.resume.name}</Text>
+    <View style={styles.container}>
+      {/* Left Column - Contact, Education, Skills, Languages */}
+      <View style={styles.leftColumn}>
+        <Contact />
+        <Skills />
+        <Languages />
+      </View>
+      
+      {/* Right Column - Experience */}
+      <View style={styles.rightColumn}>
+        <Experience />
+        <Education />
+      </View>
+    </View>
   </Page>
 );
 
