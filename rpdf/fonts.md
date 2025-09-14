@@ -1,9 +1,3 @@
-import EditButton from '../src/components/Docs/EditButton'
-import GoToExample from '../src/components/Docs/GoToExample'
-import NavigationButtons from '../src/components/Docs/NavigationButtons'
-
-<EditButton to="https://github.com/react-pdf/site/blob/master/docs/fonts.md" />
-
 ## Fonts
 
 React-pdf is shipped with a `Font` module that enables to load fonts from different sources, handle how words are wrapped and defined an emoji source to embed these glyphs on your document.
@@ -90,8 +84,6 @@ Specifies the registered font weight.
 
 When the exact font weight is not registered for a given text, react-pdf will fallback to the nearest registered weight in the same way browsers do. More information [here](https://developer.mozilla.org/en-US/docs/Web/CSS/font-weight#Fallback_weights)
 
-<GoToExample name="font-register" />
-
 #### fonts
 
 In many cases you will end up registering multiple sources for the same font family (each with different font-style and font-weight for instance). As an alternative of calling `Font.register` for each of this, you can use the `fonts` attribute to register them all at once:
@@ -120,8 +112,6 @@ const hyphenationCallback = (word) => {
 Font.registerHyphenationCallback(hyphenationCallback);
 ```
 
-<GoToExample name="hyphenation-callback" />
-
 #### Disabling hyphenation
 
 You can easily disable word hyphenation by just returning the same word as it is passed to the hyphenation callback
@@ -129,8 +119,6 @@ You can easily disable word hyphenation by just returning the same word as it is
 ```
 Font.registerHyphenationCallback(word => [word]);
 ```
-
-<GoToExample name="disable-hyphenation" />
 
 ---
 
@@ -150,12 +138,3 @@ Font.registerEmojiSource({
 ```
 
 > **Protip:** react-pdf will need a internet connection to download emoji's images at render time, so bare that in mind when choosing to use this API
-
-<GoToExample name="emoji" />
-
-<NavigationButtons
-  backSrc="/styling"
-  backText="Styling"
-  nextSrc="/node"
-  nextText="Node API"
-/>

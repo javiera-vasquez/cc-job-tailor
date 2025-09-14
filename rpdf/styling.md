@@ -1,10 +1,3 @@
-import List from '../src/components/UI/List'
-import EditButton from '../src/components/Docs/EditButton'
-import GoToExample from '../src/components/Docs/GoToExample'
-import NavigationButtons from '../src/components/Docs/NavigationButtons'
-
-<EditButton to="https://github.com/react-pdf/site/blob/master/docs/styling.md" />
-
 ## Styling
 
 Because a document without styles would be very boring, react-pdf ships a powerful styling solution using CSS and Flexbox.
@@ -39,8 +32,6 @@ const doc = (
 ReactPDF.render(doc);
 ```
 
-<GoToExample name="styles" />
-
 #### Inline styling
 
 There's no need to call `StyleSheet.create` in order to style components. You can also just pass a plain JS object to the `style` prop and react-pdf will get the job done.
@@ -59,8 +50,6 @@ const MyDocument = () => (
   </Document>
 );
 ```
-
-<GoToExample name="inline-styles" />
 
 #### Mixing both solutions
 
@@ -87,8 +76,6 @@ const MyDocument = () => (
 ```
 
 > **Protip:** This can be useful when you want to apply both predefined styles, and styles based on props
-
-<GoToExample name="mixed-styles" />
 
 ---
 
@@ -122,8 +109,6 @@ const MyDocument = () => (
   </Document>
 );
 ```
-
-<GoToExample name="media-queries" />
 
 ---
 
@@ -270,10 +255,3 @@ const MyDocument = () => (
 - borderTopRightRadius
 - borderBottomRightRadius
 - borderBottomLeftRadius
-
-<NavigationButtons
-  backSrc="/hooks"
-  backText="Hooks"
-  nextSrc="/fonts"
-  nextText="Fonts"
-/>

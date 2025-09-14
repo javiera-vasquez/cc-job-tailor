@@ -1,8 +1,3 @@
-import EditButton from '../src/components/Docs/EditButton'
-import NavigationButtons from '../src/components/Docs/NavigationButtons'
-
-<EditButton to="https://github.com/react-pdf/site/blob/master/docs/components.md" />
-
 ## Components
 
 React-pdf follows the [React primitives](https://github.com/lelandrichardson/react-primitives) specification, making the learning process very straightforward if you come from another React environment (such as react-native). Additionally, it implements custom Component types that allow you to structure your PDF document.
@@ -287,10 +282,3 @@ Refer to [on the fly rendering](/advanced#on-the-fly-rendering) for more informa
 | children  | Render prop with blob, url, error and loading state as arguments | _Function_ | _undefined_ |
 
 ---
-
-<NavigationButtons
-  backSrc="/rendering-process"
-  backText="Rendering process"
-  nextSrc="/svg"
-  nextText="SVG"
-/>
