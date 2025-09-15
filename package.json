@@ -10,6 +10,7 @@
   "module": "ui.tsx",
   "type": "module",
   "private": true,
+  "license": "CC-BY-NC-4.0",
   "scripts": {
     "dev": "bun run generate-data.ts && bun --hot index.html",
     "start": "bun run generate-data.ts && bun index.html",
