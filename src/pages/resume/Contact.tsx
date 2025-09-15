@@ -1,25 +1,24 @@
 import React from 'react';
-import { Text, View, StyleSheet } from '@react-pdf/renderer';
+import { Text, View, StyleSheet, Link } from '@react-pdf/renderer';
 
-import data from '../../data/resume';
-import { colors } from '../design-tokens';
+import { colors, spacing } from '../design-tokens';
 import type { ResumeSchema } from '../../types';
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    marginBottom: 16,
+    marginBottom: spacing.pagePadding / 2,
   },
   sectionTitle: {
     fontFamily: 'Lato Bold',
     fontSize: 12,
     color: colors.primary,
-    marginBottom: 8,
+    marginBottom: spacing.pagePadding / 3,
   },
   contactItem: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: 4,
+    marginBottom: spacing.listItemSpacing,
   },
   bullet: {
     width: 8,
@@ -31,8 +30,8 @@ const styles = StyleSheet.create({
   contactText: {
     flex: 1,
     fontFamily: 'Lato',
-    fontSize: 7.8,
-    lineHeight: 1.28,
+    fontSize: 8,
+    lineHeight: 1.33,
     color: colors.primary,
   },
 });
@@ -60,7 +59,9 @@ const Contact = ({resume}: {resume: ResumeSchema}) => {
       {/* Email */}
       <View style={styles.contactItem}>
         <Text style={styles.bullet}>•</Text>
-        <Text style={styles.contactText}>{contact.email}</Text>
+        <Text style={styles.contactText}>
+          <Link style={styles.contactText} src={`mailto:${contact.email}`}>{contact.email}</Link>
+        </Text>
       </View>
       
       {/* Address */}
@@ -72,13 +73,17 @@ const Contact = ({resume}: {resume: ResumeSchema}) => {
       {/* LinkedIn */}
       <View style={styles.contactItem}>
         <Text style={styles.bullet}>•</Text>
-        <Text style={styles.contactText}>{linkedinDisplay}</Text>
+        <Text style={styles.contactText}>
+          <Link style={styles.contactText} src={contact.linkedin}>{linkedinDisplay}</Link>
+        </Text>
       </View>
       
       {/* GitHub */}
       <View style={styles.contactItem}>
         <Text style={styles.bullet}>•</Text>
-        <Text style={styles.contactText}>{githubDisplay}</Text>
+        <Text style={styles.contactText}>
+          <Link style={styles.contactText} src={contact.github}>{githubDisplay}</Link>
+        </Text>
       </View>
     </View>
   );

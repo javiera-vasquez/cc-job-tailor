@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet } from '@react-pdf/renderer';
+import { Text, View, StyleSheet, Link } from '@react-pdf/renderer';
 import { colors, spacing } from '../design-tokens';
 import type { ProfessionalExperience, ResumeSchema } from '../../types';
 
@@ -65,12 +65,18 @@ const styles = StyleSheet.create({
 
 // TODO: FIX THIS TS ISSUE
 const ExperienceEntry = ({ experience, debug }: { experience: ProfessionalExperience, debug: boolean }) => {
-  const { company, position, location, duration, company_description, achievements, name } = experience as any;
+  const { company, position, location, duration, company_description, achievements, name, linkedin } = experience as any;
 
   return (
     <View style={styles.experienceEntry} debug={debug}>
       <View style={styles.companyHeader}>
-        <Text style={styles.companyName}>{company || name.split(' - ')[0]}</Text>
+        <Text style={styles.companyName}>
+          {linkedin ? (
+            <Link style={styles.companyName} src={linkedin}>{company || name.split(' - ')[0]}</Link>
+          ) : (
+            company || name.split(' - ')[0]
+          )}
+        </Text>
       </View>
       
       <Text style={styles.positionTitle}>{position || name.split(' - ')[1]}</Text>

@@ -50,5 +50,6 @@ export const spacing = {
   documentPadding: 42,
   pagePadding: 18,
   profileImageSize: 46,
+  listItemSpacing: 4,
   // Could add consistent spacing values here
 };
