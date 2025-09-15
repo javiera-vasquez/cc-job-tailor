@@ -1,51 +1,45 @@
 import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
-import { colors } from '../design-tokens';
+import { colors, spacing } from '../design-tokens';
 import type { ResumeSchema } from '../../types';
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 16,
+    marginTop: spacing.pagePadding / 2,
+    paddingTop: spacing.pagePadding,
+    borderTop: `1px solid ${colors.separatorGray}`,
   },
-  separator: {
-    borderBottom: `0.75px solid ${colors.separatorGray}`,
-    marginBottom: 16,
-  },
+  
   sectionTitle: {
+    color: colors.primary,
     fontFamily: 'Lato Bold',
-    fontSize: 12.7,
-    color: colors.darkGray,
-    marginBottom: 12,
-    textTransform: 'uppercase',
+    fontSize: 12,
+    marginBottom: spacing.pagePadding / 2,
   },
   educationEntry: {
-    marginBottom: 10,
+    marginBottom: spacing.pagePadding / 2,
   },
   institution: {
     fontFamily: 'Lato Bold',
-    fontSize: 7.8,
-    color: colors.darkGray,
+    fontSize: 9,
+    color: colors.primary,
     marginBottom: 2,
   },
   program: {
-    fontFamily: 'Lato',
-    fontSize: 7.8,
+    fontSize: 8,
     color: colors.darkGray,
-    marginBottom: 1,
+    marginBottom: 2,
   },
   locationDuration: {
     fontFamily: 'Lato',
-    fontSize: 8.2,
+    fontSize: 8,
     color: colors.mediumGray,
   },
 });
 
 const Education = ({resume, debug}: {resume: ResumeSchema, debug: boolean}) => (
-  <View style={styles.container} debug={debug}>
-    {/* Horizontal separator line above Education section */}
-    <View style={styles.separator} />
-    
+  <View style={styles.container} debug={debug}>    
     {/* Section title */}
     <Text style={styles.sectionTitle}>Education</Text>
     

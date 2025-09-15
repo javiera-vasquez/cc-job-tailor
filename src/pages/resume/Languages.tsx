@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 
 const Languages = ({resume}: {resume: ResumeSchema}) => (
   <View style={styles.container}>
-    <Text style={styles.sectionTitle}>LANGUAGES</Text>
+    <Text style={styles.sectionTitle}>Languages</Text>
     <View style={styles.languagesList}>
       {resume.languages.map((language, index) => (
         <View key={index} style={styles.languageItem}>
