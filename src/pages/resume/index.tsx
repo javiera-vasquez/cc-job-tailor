@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Text,
   Font,
   Page,
   View,
@@ -16,88 +15,49 @@ import Education from './Education';
 import Experience from './Experience';
 
 import data from "../../data/resume";
-import { colors } from './constants';
+import { colors, spacing, typography } from '../design-tokens';
+import type { ResumeSchema, ReactPDFProps } from '../../types';
+import { registerFonts } from '../fonts-register';
 
-Font.register({
-  family: 'Open Sans',
-  src: `https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFVZ0e.ttf`,
-});
+// TODO: FIX THIS
+const resumeData = data.resume as unknown as ResumeSchema;
+// Register available fonts
+registerFonts();
 
-Font.register({
-  family: 'Lato',
-  src: `https://fonts.gstatic.com/s/lato/v16/S6uyw4BMUTPHjx4wWw.ttf`,
-});
-
-Font.register({
-  family: 'Lato Italic',
-  src: `https://fonts.gstatic.com/s/lato/v16/S6u8w4BMUTPHjxsAXC-v.ttf`,
-});
-
-Font.register({
-  family: 'Lato Bold',
-  src: `https://fonts.gstatic.com/s/lato/v16/S6u9w4BMUTPHh6UVSwiPHA.ttf`,
-});
-
-const styles = StyleSheet.create({
-  page: {
-    padding: 36,
-    fontFamily: 'Lato',
-    color: colors.darkGray,
-    // Ensure A4 page sizing (595.5 × 842.25 points)
-    size: 'A4',
-  },
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    '@media max-width: 400': {
-      flexDirection: 'column',
-    },
-  },
-  leftColumn: {
-    flexDirection: 'column',
-    width: 200, // Updated to match Figma specs (~200px)
-    paddingTop: 20,
-    paddingRight: 20,
-    borderRight: `0.75px solid ${colors.separatorGray}`, // Vertical separator line
-    '@media max-width: 400': {
-      width: '100%',
-      paddingRight: 0,
-      borderRight: 'none',
-    },
-  },
-  rightColumn: {
-    flexDirection: 'column',
-    flex: 1,
-    paddingLeft: 20,
-    paddingTop: 20,
-    '@media max-width: 400': {
-      paddingLeft: 0,
-    },
-  },
-  sectionSeparator: {
-    borderBottom: `0.75px solid ${colors.separatorGray}`,
-    marginVertical: 16,
-  },
-});
-
-
-
-const Resume = (props) => (
-  <Page {...props} style={styles.page}>
-    <Header />
+// 72 dpi is the default for PDF
+// Ensure A4 page sizing (595.5 × 842.25 points)
+const Resume = ({
+  size = 'A4', 
+  orientation = 'portrait', 
+  wrap = true, 
+  debug = true,
+  dpi = 72,
+  bookmark,
+  data
+}: ReactPDFProps) => (
+  <Page 
+    size={size} 
+    orientation={orientation} 
+    wrap={wrap} 
+    debug={debug}
+    dpi={dpi}
+    bookmark={bookmark}
+    style={styles.page}
+  >
+    <Header resume={data}/>
     
     <View style={styles.container}>
       {/* Left Column - Contact, Education, Skills, Languages */}
-      <View style={styles.leftColumn}>
-        <Contact />
-        <Skills />
-        <Languages />
+      <View style={styles.leftColumn} debug={debug}>
+        <Contact resume={data}/>
+        <Skills resume={data}/>
+        <Languages resume={data}/>
       </View>
       
       {/* Right Column - Experience */}
       <View style={styles.rightColumn}>
-        <Experience />
-        <Education />
+        <Experience resume={data}/>
+        <Education resume={data}/>
       </View>
     </View>
   </Page>
@@ -105,14 +65,39 @@ const Resume = (props) => (
 
 const ResumeDocument = () :React.ReactElement => (
   <Document
-    author={data.resume.name}
+    author={resumeData.name}
     keywords="frontend, react, typescript, senior engineer"
-    subject={`The resume of ${data.resume.name}`}
+    subject={`The resume of ${resumeData.name}`}
     title="Resume"
   >
-    <Resume size="A4" />
+    <Resume data={resumeData}/>
   </Document>
 );
+
+const styles = StyleSheet.create({
+  page: {
+    fontFamily: typography.text.fontFamily,
+    padding: spacing.documentPadding,
+    color: colors.darkGray,
+  },
+  container: {
+    flex: 1,
+    flexDirection: 'row'
+  },
+  leftColumn: {
+    flexDirection: 'column',
+    width: spacing.columnWidth, 
+    paddingTop: spacing.pagePadding,
+    paddingRight: spacing.pagePadding,
+    borderRight: `1px solid ${colors.separatorGray}`, // Vertical separator line
+  },
+  rightColumn: {
+    flex: 1,
+    flexDirection: 'column',
+    paddingLeft: spacing.pagePadding,
+    paddingTop: spacing.pagePadding,
+  }
+});
 
 export default {
   id: 'resume',

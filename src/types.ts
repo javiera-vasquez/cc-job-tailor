@@ -1,3 +1,21 @@
+import {
+  type PageSize,
+  type Orientation,
+  type Bookmark,
+} from '@react-pdf/types';
+
+// TYPES FOR A REACT-PDF PAGE
+export type ReactPDFProps = {
+  size?: PageSize,
+  orientation?: Orientation,
+  wrap?: boolean,
+  debug?: boolean,
+  dpi?: number,
+  bookmark?: Bookmark,
+  data: ResumeSchema
+}
+
+// TYPES FOR A RESUME PAGE
 export type Expertise = {resume_title: string, skills: string[]};
 export type Skills = string;
 export type Language = {language: string, proficiency: string};
