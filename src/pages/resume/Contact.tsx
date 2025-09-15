@@ -2,7 +2,8 @@ import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
 import data from '../../data/resume';
-import { colors } from './constants';
+import { colors } from '../design-tokens';
+import type { ResumeSchema } from '../../types';
 
 const styles = StyleSheet.create({
   container: {
@@ -36,8 +37,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const Contact = () => {
-  const { contact } = data.resume;
+const Contact = ({resume}: {resume: ResumeSchema}) => {
+  const { contact } = resume;
   
   // Format address for display
   const formattedAddress = contact.address;

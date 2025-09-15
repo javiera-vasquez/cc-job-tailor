@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
-import data from '../../data/resume';
-import { colors } from './constants';
+import { colors } from '../design-tokens';
+import type { ResumeSchema } from '../../types';
 
 const styles = StyleSheet.create({
   container: {
@@ -39,11 +39,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const Languages = () => (
+const Languages = ({resume}: {resume: ResumeSchema}) => (
   <View style={styles.container}>
     <Text style={styles.sectionTitle}>LANGUAGES</Text>
     <View style={styles.languagesList}>
-      {data.resume.languages.map((language, index) => (
+      {resume.languages.map((language, index) => (
         <View key={index} style={styles.languageItem}>
           <Text style={styles.bullet}>•</Text>
           <Text style={styles.languageText}>

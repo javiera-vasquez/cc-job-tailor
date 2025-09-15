@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
-import data from "../../data/resume";
-import { colors } from './constants';
+import { colors } from '../design-tokens';
+import type { ResumeSchema } from '../../types';
 
 const styles = StyleSheet.create({
   container: {
@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const Education = () => (
-  <View style={styles.container}>
+const Education = ({resume}: {resume: ResumeSchema}) => (
+  <View style={styles.container} debug={true}>
     {/* Horizontal separator line above Education section */}
     <View style={styles.separator} />
     
@@ -50,7 +50,7 @@ const Education = () => (
     <Text style={styles.sectionTitle}>Education</Text>
     
     {/* Education entries */}
-    {data.resume.education.map((edu, index) => (
+    {resume.education.map((edu, index) => (
       <View key={index} style={styles.educationEntry}>
         <Text style={styles.institution}>{edu.institution}</Text>
         <Text style={styles.program}>{edu.program}</Text>

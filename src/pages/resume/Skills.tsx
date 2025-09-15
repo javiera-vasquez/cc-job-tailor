@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
-import data from '../../data/resume';
-import { colors } from './constants';
+import { colors } from '../design-tokens';
+import type { ResumeSchema } from '../../types';
 
 const styles = StyleSheet.create({
   container: {
@@ -72,10 +72,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const TechnicalExpertiseSection = () => (
+const TechnicalExpertiseSection = ({resume}: {resume: ResumeSchema}) => (
   <View style={styles.technicalExpertiseSection}>
     <Text style={styles.sectionTitle}>Technical Expertise</Text>
-    {data.resume.technical_expertise.map((category, index) => (
+    {resume.technical_expertise.map((category, index) => (
       <View key={index} style={styles.skillCategory}>
         <Text style={styles.categoryTitle}>{category.resume_title}:</Text>
         <View style={styles.skillsList}>
@@ -86,10 +86,10 @@ const TechnicalExpertiseSection = () => (
   </View>
 );
 
-const SoftSkillsSection = () => (
+const SoftSkillsSection = ({resume}: {resume: ResumeSchema}) => (
   <View style={styles.softSkillsSection}>
     <Text style={styles.softSkillsSectionTitle}>Soft Skills</Text>
-    {data.resume.skills.map((skill, index) => (
+    {resume.skills.map((skill, index) => (
       <View key={index} style={styles.softSkillItem}>
         <Text style={styles.bullet}>•</Text>
         <Text style={styles.softSkillText}>{skill}</Text>
@@ -98,10 +98,10 @@ const SoftSkillsSection = () => (
   </View>
 );
 
-const Skills = () => (
+const Skills = ({resume}: {resume: ResumeSchema}) => (
   <View style={styles.container}>
-    <TechnicalExpertiseSection />
-    <SoftSkillsSection />
+    <TechnicalExpertiseSection resume={resume}/>
+    <SoftSkillsSection resume={resume}/>
   </View>
 );
 

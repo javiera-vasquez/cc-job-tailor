@@ -1,7 +1,8 @@
 import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 import data from '../../data/resume';
-import { colors } from './constants';
+import { colors } from '../design-tokens';
+import type { ResumeSchema } from '../../types';
 
 const styles = StyleSheet.create({
   container: {
@@ -74,7 +75,7 @@ const ExperienceEntry = ({ experience }) => {
   const { company, position, location, duration, company_description, achievements, name } = experience;
 
   return (
-    <View style={styles.experienceEntry}>
+    <View style={styles.experienceEntry} debug={true}>
       <View style={styles.companyHeader}>
         <Text style={styles.companyName}>{company || name.split(' - ')[0]}</Text>
       </View>
@@ -107,7 +108,7 @@ const ExperienceEntry = ({ experience }) => {
   );
 };
 
-const Experience = () => (
+const Experience = ({resume}: {resume: ResumeSchema}) => (
   <View style={styles.container}>
     <Text style={styles.sectionTitle}>Independent Projects</Text>
         {data.resume.independent_projects.map((experience, index) => (

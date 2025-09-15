@@ -1,105 +1,84 @@
 import React from 'react';
 import { Text, View, StyleSheet, Image } from '@react-pdf/renderer';
-import data from "../../data/resume";
-import { colors } from './constants';
+import { colors, spacing, typography } from '../design-tokens';
+import type { ResumeSchema } from '../../types';
+
+const IMAGE_SRC =
+  'https://i.guim.co.uk/img/media/a23aeb1f7ff20bb80f68852da17743b0e557f8ed/0_224_3504_2102/master/3504.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=9e9a99e479ee60270b69ede4d869b20f';
 
 const styles = StyleSheet.create({
-  // Top separator line
-  topSeparator: {
-    borderTopWidth: 1,
-    borderTopStyle: 'solid',
-    borderColor: colors.separatorGray,
-    marginBottom: 20,
-  },
-  
   // Main header container
   headerContainer: {
-    height: 56,
+    // height: 56,
     width: '100%',
     flexDirection: 'row',
     alignItems: 'flex-start',
+    marginBottom: spacing.pagePadding / 1.5,
   },
-  
+
   // Resume summary container
   summaryContainer: {
-    paddingTop: 10,
-    paddingBottom: 10,
     width: '100%',
-    borderTopWidth: 1,
-    borderTopStyle: 'solid',
-    borderColor: colors.separatorGray,
-    borderBottomWidth: 1,
-    borderBottomStyle: 'solid',
-    borderBottomColor: colors.separatorGray,
-    
+    paddingTop: spacing.pagePadding / 2,
+    paddingBottom: spacing.pagePadding / 2,
+    borderBottom: `1px solid ${colors.separatorGray}`,
+    borderTop: `1px solid ${colors.separatorGray}`,
   },
   
   // Profile picture area (top-right corner)
   profileArea: {
-    width: 50,
-    height: 50,
-    position: 'absolute',
     top: 0,
     right: 0,
+    width: spacing.profileImageSize,
+    height: spacing.profileImageSize,
+    position: 'absolute',
   },
   
   profileImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25, // Circular crop
+    width: spacing.profileImageSize,
+    height: spacing.profileImageSize,
+    borderRadius: spacing.profileImageSize / 2, // Circular crop
   },
 
   // Main content area (name, title, summary)
   contentArea: {
     flex: 1,
-    paddingRight: 62,
+    paddingRight: spacing.profileImageSize + spacing.pagePadding,
   },
 
+  // TODO: Add rules to claude.md that never use letterSpacing in the future
   // Typography styles following Figma specifications
   name: {
-    fontSize: 20,
-    fontFamily: 'Lato Bold',
-    // letterSpacing: '0.390625%',
     color: colors.primary,
+    fontSize: 22,
+    fontFamily: 'Lato Bold',
     textTransform: 'uppercase',
-    marginBottom: 4,
+    marginBottom: 2,
   },
   
-  title: {
+  position: {
+    color: colors.mediumGray,
     fontSize: 14,
     fontFamily: 'Lato Bold',
-    // letterSpacing: '2.83203125%',
-    color: colors.mediumGray,
-    marginBottom: 4,
+    textTransform: 'capitalize',
+    marginBottom: 0,
   },
   
   summary: {
-    fontSize: 9,
-    fontFamily: 'Lato',
-    lineHeight: 1.65,
-    // letterSpacing: '-2.63671875%',
     color: colors.darkGray,
-    textAlign: 'left',
-  },
-  
-  // Bottom separator line
-  bottomSeparator: {
-    borderBottom: `0.75px solid ${colors.separatorGray}`,
-    marginTop: 20,
+    fontSize: 10,
+    lineHeight: 1.4,
   },
 });
 
-const IMAGE_SRC =
-  'https://i.guim.co.uk/img/media/a23aeb1f7ff20bb80f68852da17743b0e557f8ed/0_224_3504_2102/master/3504.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=9e9a99e479ee60270b69ede4d869b20f';
-
-const Header = () => (
+const Header = ({resume}: {resume: ResumeSchema}) => (
   <View>    
     {/* Main header content */}
     <View style={styles.headerContainer}>
       {/* Content area with name, title, summary */}
       <View style={styles.contentArea}>
-        <Text style={styles.name}>{data.resume.name}</Text>
-        <Text style={styles.title}>{data.resume.title}</Text>
+        <Text style={styles.name}>{resume.name}</Text>
+        <Text style={styles.position}>{resume.title}</Text>
       </View>
       
       {/* Profile picture in top-right corner */}
@@ -111,7 +90,7 @@ const Header = () => (
     
     {/* Resume summary */}
     <View style={styles.summaryContainer}>
-      <Text style={styles.summary}>{data.resume.summary}</Text>
+      <Text style={styles.summary}>{resume.summary}</Text>
     </View>
   </View>
 );
