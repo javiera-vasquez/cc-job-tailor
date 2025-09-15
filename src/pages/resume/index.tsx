@@ -30,7 +30,7 @@ const Resume = ({
   size = 'A4', 
   orientation = 'portrait', 
   wrap = true, 
-  debug = true,
+  debug = false,
   dpi = 72,
   bookmark,
   data
@@ -56,8 +56,8 @@ const Resume = ({
       
       {/* Right Column - Experience */}
       <View style={styles.rightColumn}>
-        <Experience resume={data}/>
-        <Education resume={data}/>
+        <Experience resume={data} debug={debug}/>
+        <Education resume={data} debug={debug}/>
       </View>
     </View>
   </Page>

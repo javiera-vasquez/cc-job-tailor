@@ -1,81 +1,74 @@
 import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
-import data from '../../data/resume';
-import { colors } from '../design-tokens';
-import type { ResumeSchema } from '../../types';
+import { colors, spacing } from '../design-tokens';
+import type { ProfessionalExperience, ResumeSchema } from '../../types';
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 20,
+    marginBottom: 0,
+    marginRight: spacing.pagePadding / 3,
   },
   sectionTitle: {
-    fontFamily: 'Lato Bold',
-    fontSize: 13,
     color: colors.primary,
-    marginBottom: 12,
+    fontFamily: 'Lato Bold',
+    fontSize: 12,
+    marginBottom: spacing.pagePadding / 2,
   },
   experienceEntry: {
-    marginBottom: 16,
+    marginBottom: spacing.pagePadding / 2,
   },
   companyHeader: {
     marginBottom: 2,
   },
   companyName: {
     fontFamily: 'Lato Bold',
-    fontSize: 10.6,
+    fontSize: 11,
     color: colors.primary,
-    marginBottom: 2,
   },
   positionTitle: {
     fontFamily: 'Lato Bold',
-    fontSize: 8,
-    color: colors.primary,
+    fontSize: 9,
+    color: colors.darkGray,
     marginBottom: 2,
   },
   dateLocation: {
-    fontFamily: 'Lato',
-    fontSize: 8.2,
+    fontSize: 9,
     color: colors.mediumGray,
     marginBottom: 4,
   },
   companyDescription: {
-    fontFamily: 'Lato',
-    fontSize: 7.8,
+    fontSize: 9,
     color: colors.darkGray,
     marginBottom: 6,
-    lineHeight: 1.3,
-  },
-  achievementsList: {
-    marginTop: 4,
+    lineHeight: 1.33,
   },
   achievementItem: {
     flexDirection: 'row',
-    marginBottom: 3,
     alignItems: 'flex-start',
+    marginBottom: 2,
   },
   bullet: {
     width: 2,
     height: 2,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.darkGray,
     borderRadius: 500,
     marginRight: 6,
     marginTop: 4,
     flexShrink: 0,
   },
   achievementText: {
-    fontFamily: 'Lato',
-    fontSize: 7.8,
-    color: colors.primary,
-    lineHeight: 1.28,
-    flex: 1,
+    fontSize: 9,
+    color: colors.darkGray,
+    lineHeight: 1.3,
   },
 });
 
-const ExperienceEntry = ({ experience }) => {
-  const { company, position, location, duration, company_description, achievements, name } = experience;
+// TODO: FIX THIS TS ISSUE
+const ExperienceEntry = ({ experience, debug }: { experience: ProfessionalExperience, debug: boolean }) => {
+  const { company, position, location, duration, company_description, achievements, name } = experience as any;
 
   return (
-    <View style={styles.experienceEntry} debug={true}>
+    <View style={styles.experienceEntry} debug={debug}>
       <View style={styles.companyHeader}>
         <Text style={styles.companyName}>{company || name.split(' - ')[0]}</Text>
       </View>
@@ -93,7 +86,7 @@ const ExperienceEntry = ({ experience }) => {
       )}
       
       {achievements && achievements.length > 0 && (
-        <View style={styles.achievementsList}>
+        <View>
           {achievements.map((achievement, index) => (
             <View key={index} style={styles.achievementItem}>
               <View style={styles.bullet} />
@@ -108,20 +101,22 @@ const ExperienceEntry = ({ experience }) => {
   );
 };
 
-const Experience = ({resume}: {resume: ResumeSchema}) => (
-  <View style={styles.container}>
+const Experience = ({resume, debug}: {resume: ResumeSchema, debug: boolean}) => (
+  <View style={styles.container} debug={debug}>
     <Text style={styles.sectionTitle}>Independent Projects</Text>
-        {data.resume.independent_projects.map((experience, index) => (
+        {resume.independent_projects.map((experience, index) => (
         <ExperienceEntry
           key={`${experience.name}-${experience.location}-${index}`}
           experience={experience}
+          debug={debug}
         />
     ))}
     <Text style={styles.sectionTitle}>Professional Experience</Text>
-    {data.resume.professional_experience.map((experience, index) => (
+    {resume.professional_experience.map((experience, index) => (
       <ExperienceEntry
         key={`${experience.company}-${experience.position}-${index}`}
         experience={experience}
+        debug={debug}
       />
     ))}
   </View>

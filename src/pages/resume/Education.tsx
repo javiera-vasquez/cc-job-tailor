@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const Education = ({resume}: {resume: ResumeSchema}) => (
-  <View style={styles.container} debug={true}>
+const Education = ({resume, debug}: {resume: ResumeSchema, debug: boolean}) => (
+  <View style={styles.container} debug={debug}>
     {/* Horizontal separator line above Education section */}
     <View style={styles.separator} />
     
