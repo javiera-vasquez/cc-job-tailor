@@ -13,7 +13,7 @@
   "scripts": {
     "dev": "bun --hot index.html",
     "start": "bun run generate-data.ts && bun index.html",
-    "save-to-pdf": "echo 'Usage: bun run generate-data.ts -C company-name && bun run generate-pdf.ts'; exit 1",
+    "save-to-pdf": "bun run generate-data.ts \"$@\" && bun run generate-pdf.ts \"$@\"",
     "generate-data": "bun run generate-data.ts"
   },
   "devDependencies": {
