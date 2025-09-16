@@ -214,3 +214,44 @@ example_workflow: |
     5. Select relevant achievement: "Seeker project with $0.003/query economics"
     6. Adjust tone for startup culture (slightly informal)
   Output: Personalized cover_letter.yaml for TechCorp application
+
+# Output template structure
+output_template: |
+  cover_letter:
+    company: "{{ job_analysis.company }}"
+    position: "{{ job_analysis.position }}"
+    job_focus: "{{ job_analysis.job_focus }}"
+    date: "{{ current_date }}"
+
+    content:
+      opening_paragraph: |
+        Dear Hiring Manager,
+
+        As a dedicated {{ role_level }} {{ primary_discipline }} with over {{ years_experience }} years of experience building {{ domain_focus }}, I am excited about the opportunity to contribute to {{ company }}. My expertise in {{ top_matching_skills }}, coupled with my passion for {{ relevant_passion }}, aligns closely with the goals of your {{ team_or_platform }}.
+
+      body_paragraph_1: |
+        In my role as {{ current_or_recent_position }} at {{ recent_company }}, {{ primary_achievement_with_metrics }}. I also {{ secondary_achievement_with_impact }}. Previously, at {{ previous_company }}, {{ relevant_experience_connection }}, {{ technical_achievement_with_metrics }}.
+
+      body_paragraph_2: |
+        Beyond technical expertise, I thrive in {{ collaboration_style }}, often {{ leadership_or_mentoring_example }} and {{ cross_functional_work_example }}. My international experience in {{ countries_or_regions }} has further strengthened my {{ cultural_or_communication_strength }}, enabling me to excel in {{ team_environment_type }}.
+
+      closing_paragraph: |
+        {{ personal_growth_or_recent_focus }}. I am fluent in {{ languages_list }}, and am available to start {{ availability }}. I am eager to bring my skills to {{ company }} and contribute to {{ specific_company_goal_or_value }}.
+
+        Thank you for considering my application. I look forward to the opportunity to discuss how I can contribute to {{ company }}'s success.
+
+      signature: |
+        {{ closing_style }},
+        {{ full_name }}
+
+    personalization:
+      company_research:
+        - "{{ company_insight_1 }}"
+        - "{{ company_insight_2 }}"
+      job_alignment:
+        - "{{ alignment_point_1 }}"
+        - "{{ alignment_point_2 }}"
+      technical_matches:
+        - "{{ technical_match_1 }}"
+        - "{{ technical_match_2 }}"
+        - "{{ technical_match_3 }}"

@@ -39,6 +39,13 @@ target_schema:
       posting_date: "string"                # When job was posted
       deadline: "string"                    # Application deadline if mentioned
 
+    ats_analysis:
+      keywords_for_matching: "array[string]"     # Key terms for ATS scanning
+      title_variations: "array[string]"          # Alternative job title formats
+      critical_phrases: "array[string]"          # Must-include phrases from posting
+      formatting_requirements: "array[string]"  # ATS formatting preferences
+      resume_optimization_tips: "array[string]" # Specific optimization advice
+
 # Analysis transformation rules
 transformation_rules:
 
@@ -155,3 +162,45 @@ usage_instructions: |
   5. Structure output according to target schema
   6. Validate against validation rules
   7. Store as job_analysis.yaml in company-specific folder
+
+# Output template structure
+output_template: |
+  job_analysis:
+    company: "{{ extracted_company_name }}"
+    position: "{{ extracted_position_title }}"
+    job_focus: "{{ determined_focus }}"  # ai_focused | qa_focused | frontend_focused
+    location: "{{ extracted_location }}"
+    employment_type: "{{ extracted_employment_type }}"
+    experience_level: "{{ mapped_experience_level }}"
+
+    requirements:
+      must_have_skills: ["{{ skill1 }}", "{{ skill2 }}", "{{ skill3 }}"]
+      nice_to_have_skills: ["{{ optional_skill1 }}", "{{ optional_skill2 }}"]
+      soft_skills: ["{{ soft_skill1 }}", "{{ soft_skill2 }}"]
+      experience_years: {{ extracted_years_number }}
+      education: "{{ extracted_education_requirement }}"
+
+    responsibilities:
+      primary: ["{{ main_responsibility1 }}", "{{ main_responsibility2 }}"]
+      secondary: ["{{ additional_responsibility1 }}", "{{ additional_responsibility2 }}"]
+
+    company_info:
+      industry: "{{ identified_industry }}"
+      size: "{{ determined_company_size }}"
+      culture: ["{{ culture_keyword1 }}", "{{ culture_keyword2 }}"]
+
+    compensation:
+      salary_range: "{{ extracted_salary_range }}"
+      benefits: ["{{ benefit1 }}", "{{ benefit2 }}"]
+
+    application_info:
+      posting_url: "{{ original_job_posting_url }}"
+      posting_date: "{{ posting_date_if_available }}"
+      deadline: "{{ application_deadline_if_mentioned }}"
+
+    ats_analysis:
+      keywords_for_matching: ["{{ ats_keyword1 }}", "{{ ats_keyword2 }}", "{{ ats_keyword3 }}"]
+      title_variations: ["{{ job_title_variation1 }}", "{{ job_title_variation2 }}"]
+      critical_phrases: ["{{ critical_phrase1 }}", "{{ critical_phrase2 }}"]
+      formatting_requirements: ["{{ formatting_req1 }}", "{{ formatting_req2 }}"]
+      resume_optimization_tips: ["{{ optimization_tip1 }}", "{{ optimization_tip2 }}"]
