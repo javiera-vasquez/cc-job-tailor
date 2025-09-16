@@ -7,14 +7,13 @@
     "react-dom": "^19.1.1"
   },
   "name": "cc-resume-manager",
-  "module": "ui.tsx",
   "type": "module",
-  "private": true,
+  "private": false,
   "license": "CC-BY-NC-4.0",
   "scripts": {
-    "dev": "bun run generate-data.ts && bun --hot index.html",
+    "dev": "bun --hot index.html",
     "start": "bun run generate-data.ts && bun index.html",
-    "save-to-pdf": "bun run generate-data.ts && bun run generate-pdf.ts",
+    "save-to-pdf": "bun run generate-data.ts \"$@\" && bun run generate-pdf.ts \"$@\"",
     "generate-data": "bun run generate-data.ts"
   },
   "devDependencies": {

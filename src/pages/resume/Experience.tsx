@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
 
 // TODO: FIX THIS TS ISSUE
 const ExperienceEntry = ({ experience, debug }: { experience: ProfessionalExperience, debug: boolean }) => {
-  const { company, position, location, duration, company_description, achievements, name, linkedin } = experience as any;
+  const { company, position, location, duration, description, company_description, achievements, name, linkedin } = experience as any;
 
   return (
     <View style={styles.experienceEntry} debug={debug}>
@@ -85,9 +85,15 @@ const ExperienceEntry = ({ experience, debug }: { experience: ProfessionalExperi
         {location} | {duration}
       </Text>
       
-      {company_description && (
+      { company_description && (
         <Text style={styles.companyDescription}>
           {company_description}
+        </Text>
+      )}
+
+      { description && (
+        <Text style={styles.companyDescription}>
+          {description}
         </Text>
       )}
       

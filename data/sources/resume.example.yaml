@@ -1,0 +1,96 @@
+version: "1.0.0"
+roles: [tech_lead, product_manager, data_scientist]
+metadata:
+  last_updated: "San Francisco, Tue 16. September 2025"
+  versions:
+    - "Tech Lead version"
+    - "Product Manager version"
+    - "Data Scientist version"
+
+personal_info:
+  name: "Alex Doe"
+  profile_picture: "/images/avatar_placeholder.webp"
+  titles:
+    tech_lead: "Principal Software Engineer | Tech Lead"
+    product_manager: "Senior Product Manager | Technical PM"
+    data_scientist: "Data Scientist | Machine Learning"
+  summaries:
+    tech_lead: "Seasoned software engineer with over 10 years of experience leading teams to build scalable and robust applications. Passionate about mentorship and driving technical excellence."
+    product_manager: "Strategic product manager with a knack for translating complex user needs into successful products. Experienced in market analysis, roadmap planning, and cross-functional leadership."
+    data_scientist: "Data scientist with a strong background in statistical modeling and machine learning. Proven ability to extract actionable insights from complex datasets to drive business value."
+
+contact:
+  phone: "+1 (555) 123-4567"
+  email: "alex.doe@example.com"
+  address: "123 Main Street, San Francisco, CA 94105"
+  linkedin: "https://www.linkedin.com/in/alexdoe-example"
+  github: "https://github.com/alexdoe-example"
+
+technical_expertise:
+  frontend:
+    - "React"
+    - "Vue.js"
+    - "TypeScript"
+    - "Webpack"
+    - "CSS-in-JS"
+  backend:
+    - "Node.js"
+    - "Python"
+    - "Go"
+    - "PostgreSQL"
+    - "MongoDB"
+    - "Docker"
+    - "Kubernetes"
+  data_science:
+    - "Python (Pandas, NumPy)"
+    - "TensorFlow"
+    - "PyTorch"
+    - "Scikit-learn"
+    - "SQL"
+  project_management:
+    - "Jira"
+    - "Confluence"
+    - "Agile/Scrum"
+    - "Roadmap Planning"
+
+soft_skills:
+  leadership:
+    - "Team Leadership"
+    - "Mentorship"
+    - "Strategic Planning"
+  communication:
+    - "Stakeholder Management"
+    - "Public Speaking"
+    - "Technical Writing"
+  product:
+    - "User Research"
+    - "A/B Testing"
+    - "Product Strategy"
+
+independent_projects:
+  - name: "Insight Engine - Open Source Analytics Tool"
+    location: "Remote"
+    duration: "2023"
+    description: "An open-source project to create a lightweight, self-hostable web analytics platform."
+    url: "https://github.com/alexdoe-example/insight-engine"
+    achievements:
+      - "Designed and built a data ingestion pipeline using Go and PostgreSQL."
+      - "Created a real-time dashboard with React and D3.js."
+      - "Grew the community to 50+ contributors."
+    impact: "Provided a free alternative to commercial analytics tools for small projects and startups."
+
+languages:
+  - language: "English"
+    proficiency: "Native"
+  - language: "French"
+    proficiency: "Conversational"
+
+education:
+  - institution: "State University"
+    program: "M.S. in Computer Science"
+    location: "Anytown, USA"
+    duration: "2012 - 2014"
+  - institution: "Tech College"
+    program: "B.S. in Software Engineering"
+    location: "Anytown, USA"
+    duration: "2008 - 2012"

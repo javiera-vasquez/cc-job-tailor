@@ -7,104 +7,12 @@ metadata:
     - "QA-focused version"
     - "Frontend-focused version"
 
-personal_info:
-  name: "Javiera Vasquez"
-  profile_picture: "/images/avatar.webp"
-  titles:
-    ai_focused: "AI Product Engineer | Senior Frontend Specialist"
-    qa_focused: "Senior Frontend Developer & QA Engineer"
-    frontend_focused: "Senior Frontend Engineer"
-  summaries:
-    ai_focused: "Product-focused Senior Frontend Engineer with a passion for mastering emerging technologies. To understand AI from first principles, I built Seeker—a conversational interface for exploring video content—achieving $0.003/query economics and ~0.7s response times. My goal is to leverage this deep AI understanding to architect the next generation of intelligent frontends. Former Cornershop engineer (acquired by Uber $3.3B)."
-    qa_focused: "Experienced Frontend Developer with over a decade of experience, specializing in crafting user-centric applications using modern stacks like React, React Native, Node, and TypeScript. with real world experience developing Web and Mobile experience for multinational markets focusing on delivering software quality through Test Automation, Events Tracking and CI/CD pipelines, ensuring robust and reliable digital solutions. Extensive experience in debugging, optimizing user experiences and fostering collaboration within cross-functional teams and C level executives in fast pacing startups."
-    frontend_focused: "Experienced Frontend Developer with over a decade of experience, specializing in crafting user-centric applications using modern stacks like React, React Native, Node, and TypeScript. with real world experience developing Web and Mobile experience for multinational markets focusing on delivering software quality through Test Automation, Events Tracking and CI/CD pipelines, ensuring robust and reliable digital solutions. Extensive experience in debugging, optimizing user experiences and fostering collaboration within cross-functional teams and C level executives in fast pacing startups."
-
-contact:
-  phone: "+49 1590 1070292"
-  email: "Javiera.vasg@gmail.com"
-  address: "Elsenstrasse 61, 12059 - Berlin, Germany"
-  linkedin: "https://www.linkedin.com/in/javiera-vasquez-94523960/"
-  github: "https://github.com/javiera-vasquez"
-
-technical_expertise:
-  frontend:
-    - "React"
-    - "React Native"
-    - "Next.js"
-    - "Redux"
-    - "TypeScript"
-    - "CSS"
-    - "HTML"
-    - "Firebase"
-    - "SQL/NoSQL"
-    - "Supabase"
-    - "Vercel"
-    - "Tailwind"
-    - "GraphQL"
-    - "Apollo Client"
-    - "React Query"
-  
-  backend:
-    - "Node.js"
-    - "Firebase"
-    - "SQL"
-    - "NoSQL"
-    - "Bun"
-  
-  qa_testing:
-    - "E2E Testing (Appium, Selenium, Detox, Playwright)"
-    - "Jest"
-    - "Regression Testing"
-    - "Coverage Tracking"
-    - "CI/CD Pipelines"
-    - "Test Coverage"
-    - "Performance Optimization"
-    - "Real-time Systems"
-  
-  ai_machine_learning:
-    - "LangGraph"
-    - "Vector Embeddings"
-    - "Semantic Search"
-    - "Query Optimization"
-    - "Token Economics"
-    - "MCP Tool Development"
-  
-  systems_design:
-    - "Scalable Architecture"
-    - "CI/CD Pipelines"
-    - "Real-Time Synchronization"
-  
-  version_control:
-    - "Git (GitHub, GitLab)"
-
-soft_skills:
-  analytical_strategic:
-    - "Pattern Recognition & System Design"
-    - "Analytical Thinking"
-    - "Problem-Solving"
-    - "Strategic Thinking"
-  
-  product_user_focus:
-    - "Product Vision Development"
-    - "User-Centric Approach"
-    - "Product-Oriented Mindset"
-    - "Data-Driven Decision Making"
-  
-  collaboration_leadership:
-    - "Cross-functional Collaboration"
-    - "Team Collaboration"
-    - "Technical Mentorship"
-    - "Communication with C-Level"
-  
-  development_methodology:
-    - "Agile Development"
-
 professional_experience:
-  - company: "German studies"
-    position: "Sabbatical"
+  - company: "Language Immersion Program"
+    position: "German Language Improvement (Self-Directed)"
     location: "Berlin, Germany"
     duration: "May 2024 - May 2025"
-    company_description: "When from A2 to B2, plus the required certification in one year, reaching conversation level of German in less than one year of study an less than 3 years of leaving in Germany."
+    company_description: "Achieved B2 proficiency and official certification in German within one year of focused study, reaching conversational fluency while living in Germany for less than three years. Demonstrated commitment to cross-cultural communication and international professional development."
     linkedin: null
     achievements: []
 
@@ -133,7 +41,7 @@ professional_experience:
         - "Built scalable React-based components serving millions of daily active users"
         - "Implemented data-driven UI improvements that increased user engagement"
         - "Mentored team members on modern frontend development practices"
-  
+
   - company: "Alba Care"
     position: "Senior Frontend Engineer"
     location: "United States, Remote"
@@ -159,7 +67,7 @@ professional_experience:
         - "Built and maintained B2C App using React Native with user-friendly interface and robust functionality"
         - "Led a pod of 2 Frontend developers and 1 product designer, shipping features bi-weekly"
         - "Delivered seamless user experiences for both parents and caregivers across platforms"
-  
+
   - company: "Cornershop by Uber"
     position: "Senior Frontend Engineer"
     location: "Santiago, Chile"
@@ -185,7 +93,7 @@ professional_experience:
         - "Built real-time shopping cart synchronization system serving 8 countries using Firebase"
         - "Introduced cross-platform integration enabling shopping cart sync between user devices"
         - "Delivered scalable frontend architecture supporting rapid international expansion"
-  
+
   - company: "VTR Liberty Global"
     position: "Frontend Engineer"
     location: "Santiago, Chile"
@@ -208,47 +116,3 @@ professional_experience:
         - "Created comprehensive design system standardizing UI across web platforms for B2C and B2B"
         - "Built scalable frontend architecture serving 750K home devices"
         - "Delivered modern streaming experience on legacy hardware infrastructure"
-
-# sabbatical:
-#   - name: "Sabbatical - German studies"
-#     duration: "May 2024 - May 2025"
-#     description: "When from A2 to B2, plus the required certification in one year, reaching conversation level of German in less than one year of study an less than 3 years of leaving in Germany."
-#     location: "Berlin, Germany"
-
-independent_projects:
-  - name: "Seeker - AI-Powered Conversational Search Platform"
-    location: "Berlin, Germany"
-    duration: "May 2024 - Present"
-    description: "A self-directed deep dive to master the new AI paradigm, resulting in a production-ready conversational interface for video discovery."
-    url: "https://doug-langgraph-app-production.up.railway.app/search/new"
-    achievements:
-      - "Built a conversational AI interface that transforms how users explore video content through natural language chat, visual discovery cards, and intelligent context management across multi-turn conversations"
-      - "Achieved breakthrough economics: $0.003 per AI query cost by optimizing token-per-turn interactions and context management"
-      - "Built production-ready platform with React frontend and vector database backend, achieving ~0.7s first token response time"
-      - "Solved the 'invisible content' problem by processing and indexing 4,9k+ video segments (113+ hours), making them searchable by meaning"
-      - "Designed architecture that demonstrates how to leverage AI intelligently in frontend applications for maximum impact"
-    impact: "This deep understanding now enables me to architect frontends that leverage AI intelligently—knowing exactly when and how to use it to maximize user impact while maintaining cost efficiency"
-
-languages:
-  - language: "Spanish"
-    proficiency: "Native"
-  - language: "English"
-    proficiency: "C2"
-  - language: "German"
-    proficiency: "B2"
-
-education:
-  - institution: "Stanford University"
-    program: "CS161 Design and Analysis of Algorithms"
-    location: "Remote learning"
-    duration: "2014 - 2014"
-  
-  - institution: "Harvard"
-    program: "CS50's Introduction to Computer Science"
-    location: "Remote learning"
-    duration: "2012 - 2012"
-  
-  - institution: "DUOC UC"
-    program: "Bachelor of Design - Advertising and Graphic Design"
-    location: "Santiago, Chile"
-    duration: "2008 - 2010"

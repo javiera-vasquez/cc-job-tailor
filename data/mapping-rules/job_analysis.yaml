@@ -1,0 +1,228 @@
+# Job Analysis Transformation Rules
+# This file defines how to analyze job postings and extract structured information
+
+schema_version: "1.0"
+description: "Rules for analyzing job postings and creating structured job analysis data"
+
+# Target output schema for job analysis
+target_schema:
+  job_analysis:
+    company: "string"           # Company name
+    position: "string"          # Job position title
+    job_focus: "string"         # ai_ml_focused | qa_testing_focused | frontend_ui_focused | backend_systems_focused | fullstack_focused
+    location: "string"          # Job location
+    employment_type: "string"   # Full-time, Part-time, Contract, etc.
+    experience_level: "string"  # Junior, Mid-level, Senior, Lead, Principal
+
+    requirements:
+      must_have_skills: "array[string]"     # Required technical skills
+      nice_to_have_skills: "array[string]"  # Preferred technical skills
+      soft_skills: "array[string]"          # Communication, leadership, etc.
+      experience_years: "number"            # Years of experience required
+      education: "string"                   # Education requirements
+
+    responsibilities:
+      primary: "array[string]"              # Main job responsibilities
+      secondary: "array[string]"            # Additional responsibilities
+
+    company_info:
+      industry: "string"                    # Company industry
+      size: "string"                        # Startup, Mid-size, Large, Enterprise
+      culture: "array[string]"              # Company culture keywords
+
+    compensation:
+      salary_range: "string"                # If mentioned
+      benefits: "array[string]"             # Benefits offered
+
+    application_info:
+      posting_url: "string"                 # Original job posting URL
+      posting_date: "string"                # When job was posted
+      deadline: "string"                    # Application deadline if mentioned
+
+    ats_analysis:
+      keywords_for_matching: "array[string]"     # Key terms for ATS scanning
+      title_variations: "array[string]"          # Alternative job title formats
+      critical_phrases: "array[string]"          # Must-include phrases from posting
+      formatting_requirements: "array[string]"  # ATS formatting preferences
+      resume_optimization_tips: "array[string]" # Specific optimization advice
+
+# Analysis transformation rules
+transformation_rules:
+
+  # Job focus determination logic (worker-agnostic profiles)
+  focus_determination:
+    # Generic focus areas that can apply to any technical worker
+    description: "Determine focus based on job requirements, not worker background"
+
+    profiles:
+      ai_ml_focused:
+        keywords: ["AI", "Machine Learning", "ML", "LLM", "GPT", "Natural Language",
+                  "Computer Vision", "Deep Learning", "Neural Networks", "TensorFlow",
+                  "PyTorch", "Data Science", "Algorithm", "Vector", "Embedding",
+                  "Semantic Search", "LangChain", "LangGraph", "OpenAI", "Artificial Intelligence"]
+        weight: 3
+        description: "Jobs requiring AI/ML expertise regardless of primary role"
+
+      qa_testing_focused:
+        keywords: ["QA", "Quality Assurance", "Testing", "Test Automation", "Selenium",
+                  "Jest", "Cypress", "Playwright", "E2E", "Unit Testing", "Integration Testing",
+                  "CI/CD", "DevOps", "Test Coverage", "Regression", "Bug", "Quality",
+                  "Automation", "Performance Testing"]
+        weight: 2
+        description: "Jobs emphasizing testing and quality assurance practices"
+
+      frontend_ui_focused:
+        keywords: ["React", "Vue", "Angular", "Frontend", "JavaScript", "TypeScript",
+                  "CSS", "HTML", "UI/UX", "React Native", "Next.js", "Svelte",
+                  "Frontend Development", "User Interface", "Responsive Design",
+                  "Web Development", "Mobile App", "User Experience"]
+        weight: 2
+        description: "Jobs centered on frontend/UI development"
+
+      backend_systems_focused:
+        keywords: ["Backend", "API", "Database", "Server", "Microservices", "Cloud",
+                  "AWS", "Docker", "Kubernetes", "Node.js", "Python", "Java",
+                  "System Architecture", "Infrastructure", "DevOps"]
+        weight: 2
+        description: "Jobs focused on backend systems and infrastructure"
+
+      fullstack_focused:
+        keywords: ["Full Stack", "Full-Stack", "End-to-End", "MERN", "MEAN",
+                  "Frontend and Backend", "Web Application", "Complete Solution"]
+        weight: 1
+        description: "Jobs requiring both frontend and backend expertise"
+
+  # Experience level mapping
+  experience_mapping:
+    junior: ["Junior", "Entry Level", "0-2 years", "Graduate", "New Grad"]
+    mid_level: ["Mid-level", "Intermediate", "2-4 years", "3-5 years"]
+    senior: ["Senior", "5+ years", "7+ years", "Lead", "Staff"]
+    principal: ["Principal", "Architect", "10+ years", "Distinguished"]
+
+  # Company size indicators
+  company_size_mapping:
+    startup: ["Startup", "Early Stage", "Series A", "Series B", "< 50 employees"]
+    mid_size: ["Mid-size", "Scale-up", "Series C", "50-500 employees"]
+    large: ["Large", "Enterprise", "Fortune 500", "1000+ employees"]
+
+  # Skill categorization
+  skill_categorization:
+    technical_skills:
+      frontend: ["React", "Vue", "Angular", "JavaScript", "TypeScript", "CSS", "HTML",
+                "Next.js", "Svelte", "React Native", "Redux", "GraphQL"]
+      backend: ["Node.js", "Python", "Java", "Go", "Ruby", "PHP", "C#", ".NET",
+               "Spring", "Django", "Express", "FastAPI"]
+      database: ["SQL", "PostgreSQL", "MySQL", "MongoDB", "Redis", "Elasticsearch"]
+      cloud: ["AWS", "Azure", "GCP", "Docker", "Kubernetes", "Terraform"]
+      ai_ml: ["Machine Learning", "AI", "TensorFlow", "PyTorch", "Scikit-learn",
+             "LangChain", "OpenAI", "Vector Databases"]
+
+    soft_skills:
+      communication: ["Communication", "Presentation", "Documentation", "Writing"]
+      leadership: ["Leadership", "Mentoring", "Team Lead", "Management", "Coaching"]
+      collaboration: ["Collaboration", "Cross-functional", "Agile", "Scrum", "Teamwork"]
+      analytical: ["Problem Solving", "Analytical", "Critical Thinking", "Research"]
+
+# Extraction patterns for common job posting formats
+extraction_patterns:
+
+  # Common section headers
+  section_headers:
+    requirements: ["Requirements", "Qualifications", "Must Have", "Skills Required"]
+    responsibilities: ["Responsibilities", "What You'll Do", "Role Description", "Duties"]
+    benefits: ["Benefits", "What We Offer", "Perks", "Compensation"]
+    company: ["About Us", "Company", "About [Company Name]"]
+
+  # Requirement parsing patterns
+  requirement_patterns:
+    years_experience:
+      - "\\d+ years? (of )?experience"
+      - "\\d+\\+ years?"
+      - "At least \\d+ years?"
+
+    education:
+      - "Bachelor'?s? (degree)?"
+      - "Master'?s? (degree)?"
+      - "PhD|Doctorate"
+      - "Computer Science|CS|Engineering"
+
+    must_have_indicators: ["Required", "Must have", "Essential", "Mandatory"]
+    nice_to_have_indicators: ["Preferred", "Nice to have", "Bonus", "Plus", "Advantage"]
+
+# Output validation rules
+validation_rules:
+  required_fields:
+    - "job_analysis.company"
+    - "job_analysis.position"
+    - "job_analysis.job_focus"
+    - "job_analysis.requirements.must_have_skills"
+
+  field_constraints:
+    - field: "job_analysis.job_focus"
+      allowed_values: ["ai_ml_focused", "qa_testing_focused", "frontend_ui_focused", "backend_systems_focused", "fullstack_focused"]
+
+    - field: "job_analysis.requirements.must_have_skills"
+      min_items: 3
+      max_items: 15
+
+    - field: "job_analysis.requirements.experience_years"
+      min_value: 0
+      max_value: 20
+
+  data_quality:
+    - rule: "Extract specific skills mentioned in posting, not generic categories"
+    - rule: "Distinguish between must-have and nice-to-have requirements"
+    - rule: "Focus on actionable, specific responsibilities"
+    - rule: "Include company culture indicators when available"
+
+# Usage instructions for job-tailor agent
+usage_instructions: |
+  1. Parse job posting text using extraction patterns
+  2. Apply focus determination logic based on keyword analysis
+  3. Extract and categorize requirements using skill categorization rules
+  4. Map experience level using experience mapping patterns
+  5. Structure output according to target schema
+  6. Validate against validation rules
+  7. Store as job_analysis.yaml in company-specific folder
+
+# Output template structure
+output_template: |
+  job_analysis:
+    company: "{{ extracted_company_name }}"
+    position: "{{ extracted_position_title }}"
+    job_focus: "{{ determined_focus }}"  # ai_ml_focused | qa_testing_focused | frontend_ui_focused | backend_systems_focused | fullstack_focused
+    location: "{{ extracted_location }}"
+    employment_type: "{{ extracted_employment_type }}"
+    experience_level: "{{ mapped_experience_level }}"
+
+    requirements:
+      must_have_skills: ["{{ skill1 }}", "{{ skill2 }}", "{{ skill3 }}"]
+      nice_to_have_skills: ["{{ optional_skill1 }}", "{{ optional_skill2 }}"]
+      soft_skills: ["{{ soft_skill1 }}", "{{ soft_skill2 }}"]
+      experience_years: {{ extracted_years_number }}
+      education: "{{ extracted_education_requirement }}"
+
+    responsibilities:
+      primary: ["{{ main_responsibility1 }}", "{{ main_responsibility2 }}"]
+      secondary: ["{{ additional_responsibility1 }}", "{{ additional_responsibility2 }}"]
+
+    company_info:
+      industry: "{{ identified_industry }}"
+      size: "{{ determined_company_size }}"
+      culture: ["{{ culture_keyword1 }}", "{{ culture_keyword2 }}"]
+
+    compensation:
+      salary_range: "{{ extracted_salary_range }}"
+      benefits: ["{{ benefit1 }}", "{{ benefit2 }}"]
+
+    application_info:
+      posting_url: "{{ original_job_posting_url }}"
+      posting_date: "{{ posting_date_if_available }}"
+      deadline: "{{ application_deadline_if_mentioned }}"
+
+    ats_analysis:
+      keywords_for_matching: ["{{ ats_keyword1 }}", "{{ ats_keyword2 }}", "{{ ats_keyword3 }}"]
+      title_variations: ["{{ job_title_variation1 }}", "{{ job_title_variation2 }}"]
+      critical_phrases: ["{{ critical_phrase1 }}", "{{ critical_phrase2 }}"]
+      formatting_requirements: ["{{ formatting_req1 }}", "{{ formatting_req2 }}"]
+      resume_optimization_tips: ["{{ optimization_tip1 }}", "{{ optimization_tip2 }}"]

@@ -1,0 +1,55 @@
+version: "1.0.0"
+roles: [tech_lead, product_manager, data_scientist]
+metadata:
+  last_updated: "San Francisco, Tue 16. September 2025"
+  versions:
+    - "Tech Lead version"
+    - "Product Manager version"
+    - "Data Scientist version"
+
+cover_letter:
+  templates:
+    - tech_lead:
+      opening_paragraph: "I am writing to apply for the [POSITION] position at [COMPANY]. With my experience in leading high-performing engineering teams and driving technical strategy, I am confident I can contribute to your team's success."
+      body_paragraph_1: "Throughout my career, I have focused on building scalable, resilient systems. At Innovate Inc., I led the migration to a microservices architecture, which improved our development velocity and system stability."
+      body_paragraph_2: "I am also passionate about fostering a culture of collaboration and continuous improvement. I enjoy mentoring engineers and helping them achieve their career goals."
+      closing_paragraph: "I am excited by the challenges at [COMPANY] and believe my technical leadership skills are a strong match. I look forward to discussing this opportunity further."
+
+    - product_manager:
+      opening_paragraph: "I am writing to express my interest in the [POSITION] role at [COMPANY]. My background in technical product management and my passion for building user-centric products align perfectly with your company's mission."
+      body_paragraph_1: "I excel at the intersection of technology and business. I have a proven track record of defining product roadmaps, working with engineering to execute on them, and launching successful products."
+      body_paragraph_2: "At Data Corp., I identified a key market need and led the development of a new analytics product from concept to launch, resulting in significant revenue growth."
+      closing_paragraph: "I am eager to learn more about the product vision at [COMPANY] and discuss how I can help you achieve your goals. Thank you for your time and consideration."
+
+    - data_scientist:
+      opening_paragraph: "I am applying for the [POSITION] role at [COMPANY], which I found on [PLATFORM]. My expertise in machine learning and statistical analysis makes me a strong candidate to contribute to your data-driven culture."
+      body_paragraph_1: "I have hands-on experience building and deploying machine learning models that solve real-world business problems. At Innovate Inc., my churn prediction model led to a 15% reduction in customer attrition."
+      body_paragraph_2: "I am proficient in the entire data science lifecycle, from data collection and cleaning to model development and interpretation of results. I enjoy communicating complex findings to non-technical stakeholders."
+      closing_paragraph: "I am enthusiastic about the opportunity to apply my skills at [COMPANY] and contribute to your team. I am available for an interview at your earliest convenience."
+
+  common_elements:
+    personal_info:
+      name: "Alex Doe"
+      address: "123 Main Street, San Francisco, CA 94105"
+      email: "alex.doe@example.com"
+      phone: "+1 (555) 123-4567"
+    signature: |
+      Sincerely,
+      Alex Doe
+    date_format: "[MONTH] [DATE], [YEAR]"
+    greeting_options:
+      formal: "Dear Hiring Manager,"
+      team_specific: "Dear [COMPANY] Team,"
+
+  personalization_variables:
+    - "[POSITION]"
+    - "[COMPANY]"
+    - "[PLATFORM]"
+
+  achievement_library:
+    innovate_inc:
+      tech: "Led a team of 8 engineers in the successful rewrite of a legacy monolith to a microservices architecture."
+      product: "Collaborated with product leadership to define the 2-year technical roadmap for the core platform."
+      data: "Developed a predictive model to identify at-risk customers, reducing churn by 15%."
+
+usage_notes: "This is an example file. Replace the content with your own information to generate a personalized cover letter."

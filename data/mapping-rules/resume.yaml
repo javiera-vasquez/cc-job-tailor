@@ -2,7 +2,7 @@
 # This file defines how to transform the rich source resume.yaml into the simplified schema expected by React-PDF
 
 schema_version: "1.0"
-description: "Transformation rules for resume-tailor agent to convert rich resume data into React-PDF compatible format"
+description: "Transformation rules for job-tailor agent to convert rich resume data into React-PDF compatible format"
 
 # Target output schema structure (what React-PDF expects)
 target_schema:
@@ -56,32 +56,32 @@ transformation_rules:
     rules:
       - category: "frontend"
         resume_title: "Frontend Development"
-        max_skills: 8
+        max_skills: 5
         priority_keywords: ["React", "TypeScript", "Next.js", "JavaScript"]
-        
-      - category: "backend" 
+
+      - category: "backend"
         resume_title: "Backend Development"
-        max_skills: 6
+        max_skills: 5
         priority_keywords: ["Node.js", "API", "Database"]
-        
+
       - category: "qa_testing"
         resume_title: "Quality Assurance & Testing"
-        max_skills: 7
+        max_skills: 5
         priority_keywords: ["E2E Testing", "Jest", "CI/CD", "Automation"]
-        
+
       - category: "ai_machine_learning"
         resume_title: "AI & Machine Learning"
-        max_skills: 6
+        max_skills: 5
         priority_keywords: ["LangGraph", "Vector", "Semantic", "AI"]
-        
+
       - category: "systems_design"
         resume_title: "Systems & Architecture"
         max_skills: 5
         priority_keywords: ["Architecture", "Scalable", "Design"]
-        
+
       - category: "version_control"
         resume_title: "Version Control"
-        max_skills: 3
+        max_skills: 5
         priority_keywords: ["Git", "GitHub"]
 
     selection_logic: |
@@ -89,7 +89,7 @@ transformation_rules:
       2. Score each category by relevance to job (0-10)
       3. Select top 4 most relevant categories
       4. Within each category, prioritize skills mentioned in job posting
-      5. Ensure total skills across all categories ≤ 30
+      5. Ensure total skills across all categories ≤ 20 (4 categories × max 5 skills)
       6. Transform to array format: [{resume_title: "Frontend Development", skills: [...]}, ...]
 
   # Soft skills flattening
@@ -113,7 +113,9 @@ transformation_rules:
       - select_achievements_by_focus: "{{ job_focus }}"
       - maintain_company_info: true
       - preserve_chronological_order: true
-    description: "Select version-specific achievements while preserving company details"
+      - max_achievements_per_role: 4
+      - prioritize_by_relevance: true
+    description: "Select version-specific achievements while preserving company details, max 4 per role"
 
   # Independent projects transformation
   projects_transformation:
@@ -129,12 +131,14 @@ transformation_rules:
 # Job analysis integration points
 job_analysis_integration:
   focus_determination:
-    description: "Determine job focus based on posting analysis"
+    description: "Determine job focus based on posting analysis using worker-agnostic profiles"
     logic: |
-      - If job emphasizes AI/ML → set job_focus = "ai_focused"
-      - If job emphasizes testing/QA → set job_focus = "qa_focused" 
-      - If job is pure frontend → set job_focus = "frontend_focused"
-      - Default to closest match based on keyword analysis
+      - If job emphasizes AI/ML → set job_focus = "ai_ml_focused"
+      - If job emphasizes testing/QA → set job_focus = "qa_testing_focused"
+      - If job is frontend/UI focused → set job_focus = "frontend_ui_focused"
+      - If job is backend/systems focused → set job_focus = "backend_systems_focused"
+      - If job requires full-stack → set job_focus = "fullstack_focused"
+      - Default to closest match based on keyword analysis from job_analysis.yaml
 
   keyword_extraction:
     description: "Extract and prioritize keywords from job posting"
@@ -154,7 +158,7 @@ job_analysis_integration:
 
 # Output validation rules
 validation_rules:
-  required_fields: 
+  required_fields:
     - "resume.name"
     - "resume.title"
     - "resume.summary"
@@ -163,7 +167,6 @@ validation_rules:
     - "resume.skills"
     - "resume.languages"
     - "resume.professional_experience"
-    - "resume.independent_projects"
     - "resume.education"
     
   field_constraints:
@@ -188,7 +191,7 @@ validation_rules:
       
     - field: "resume.independent_projects"
       max_items: 3
-      min_items: 1
+      min_items: 0
       
     - field: "resume.education"
       max_items: 4
@@ -200,10 +203,10 @@ validation_rules:
     - rule: "Maintain professional tone and accuracy"
     - rule: "Keywords must be naturally integrated, not forced"
 
-# Usage example for resume-tailor agent
+# Usage example for job-tailor agent
 example_usage: |
   1. Analyze job posting to determine focus area and keywords
-  2. Set job_focus variable (ai_focused/qa_focused/frontend_focused)
+  2. Set job_focus variable (ai_ml_focused/qa_testing_focused/frontend_ui_focused/backend_systems_focused/fullstack_focused)
   3. Apply transformation rules in order:
      - Direct mapping for basic fields
      - Version selection for title/summary

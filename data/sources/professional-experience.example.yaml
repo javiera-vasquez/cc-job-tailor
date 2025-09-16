@@ -1,0 +1,67 @@
+version: "1.0.0"
+roles: [tech_lead, product_manager, data_scientist]
+metadata:
+  last_updated: "San Francisco, Tue 16. September 2025"
+  versions:
+    - "Tech Lead version"
+    - "Product Manager version"
+    - "Data Scientist version"
+
+professional_experience:
+  - company: "Innovate Inc."
+    position: "Staff Software Engineer"
+    location: "San Francisco, CA"
+    duration: "June 2018 - Present"
+    company_description: "A leading SaaS company providing innovative solutions for enterprise customers."
+    linkedin: "https://www.linkedin.com/company/example-innovate"
+    achievements:
+      tech_lead:
+        - "Led a team of 8 engineers in the successful rewrite of a legacy monolith to a microservices architecture."
+        - "Reduced system latency by 40% through performance optimizations and infrastructure upgrades."
+        - "Mentored 5 junior engineers, helping them grow into senior roles."
+      product_manager:
+        - "Collaborated with product leadership to define the 2-year technical roadmap for the core platform."
+        - "Translated user stories into technical requirements for the engineering team."
+        - "Managed the backlog and sprint planning for a cross-functional team."
+      data_scientist:
+        - "Developed a predictive model to identify at-risk customers, reducing churn by 15%."
+        - "Built data pipelines to collect and process user behavior data for analysis."
+        - "Presented key findings to executive leadership to inform business strategy."
+
+  - company: "Data Corp."
+    position: "Senior Data Analyst"
+    location: "New York, NY"
+    duration: "July 2015 - May 2018"
+    company_description: "A data analytics startup focused on market intelligence."
+    linkedin: "https://www.linkedin.com/company/example-datacorp"
+    achievements:
+      tech_lead:
+        - "Designed and implemented an ETL pipeline to process terabytes of data daily."
+        - "Automated reporting processes, saving 20+ hours of manual work per week."
+        - "Introduced code review and version control best practices to the analytics team."
+      product_manager:
+        - "Conducted user interviews and market research to identify a new product opportunity."
+        - "Wrote the initial product requirements document for a new analytics dashboard."
+        - "Worked with design and engineering to launch the MVP in 6 months."
+      data_scientist:
+        - "Performed exploratory data analysis to uncover trends in market data."
+        - "Created visualizations and dashboards to communicate insights to clients."
+        - "Cleaned and preprocessed large datasets to prepare them for modeling."
+
+  - company: "BuildIt Solutions"
+    position: "Software Engineer"
+    location: "Austin, TX"
+    duration: "August 2012 - June 2015"
+    company_description: "A software consultancy building custom applications for various clients."
+    linkedin: "https://www.linkedin.com/company/example-buildit"
+    achievements:
+      tech_lead:
+        - "Developed full-stack web applications for clients in the finance and healthcare sectors."
+        - "Contributed to the development of an internal component library to standardize UI across projects."
+        - "Gained expertise in multiple programming languages and frameworks."
+      product_manager:
+        - "Worked directly with clients to gather requirements and provide project updates."
+        - "Assisted in project planning and estimation."
+      data_scientist:
+        - "Extracted and analyzed data from client databases to provide business insights."
+        - "Developed simple models for forecasting and trend analysis."
