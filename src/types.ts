@@ -69,6 +69,96 @@ export type ResumeSchema = {
   education: Array<Education>;
 }
 
+// Job Focus type - agnostic string type for flexibility
+export type JobFocus = string;
+
+// Job Analysis Schema types
+export type JobAnalysisRequirements = {
+  must_have_skills: string[];
+  nice_to_have_skills: string[];
+  soft_skills: string[];
+  experience_years: number;
+  education: string;
+};
+
+export type JobAnalysisResponsibilities = {
+  primary: string[];
+  secondary: string[];
+};
+
+export type JobAnalysisCompanyInfo = {
+  industry: string;
+  size: string;
+  culture: string[];
+};
+
+export type JobAnalysisCompensation = {
+  salary_range: string;
+  benefits: string[];
+};
+
+export type JobAnalysisApplicationInfo = {
+  posting_url: string;
+  posting_date: string;
+  deadline: string;
+};
+
+export type ATSAnalysis = {
+  keywords_for_matching: string[];
+  title_variations: string[];
+  critical_phrases: string[];
+  formatting_requirements: string[];
+  resume_optimization_tips: string[];
+};
+
+export type JobAnalysisSchema = {
+  company: string;
+  position: string;
+  job_focus: JobFocus;
+  location: string;
+  employment_type: string;
+  experience_level: string;
+  requirements: JobAnalysisRequirements;
+  responsibilities: JobAnalysisResponsibilities;
+  company_info: JobAnalysisCompanyInfo;
+  compensation: JobAnalysisCompensation;
+  application_info: JobAnalysisApplicationInfo;
+  ats_analysis: ATSAnalysis;
+};
+
+// Cover Letter Schema types
+export type CoverLetterContent = {
+  opening_paragraph: string;
+  body_paragraph_1: string;
+  body_paragraph_2: string;
+  closing_paragraph: string;
+  signature: string;
+};
+
+export type CoverLetterPersonalization = {
+  company_research: string[];
+  job_alignment: string[];
+  technical_matches: string[];
+};
+
+export type CoverLetterSchema = {
+  company: string;
+  position: string;
+  job_focus: JobFocus;
+  date: string;
+  content: CoverLetterContent;
+  personalization: CoverLetterPersonalization;
+};
+
+// Main Application Data type
+export type ApplicationData = {
+  resume: ResumeSchema | null;
+  job_analysis: JobAnalysisSchema | null;
+  cover_letter: CoverLetterSchema | null;
+};
+
 export type Schemas = {
   resume: ResumeSchema
+  job_analysis: JobAnalysisSchema
+  cover_letter: CoverLetterSchema
 }
