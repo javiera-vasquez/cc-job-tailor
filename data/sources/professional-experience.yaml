@@ -1,9 +1,18 @@
+version: "1.0.0"
+roles: [ai_focused, qa_focused, frontend_focused]
+metadata:
+  last_updated: "Berlin, Tue 23. January 2025"
+  versions:
+    - "AI-focused version"
+    - "QA-focused version"
+    - "Frontend-focused version"
+
 professional_experience:
-  - company: "German studies"
-    position: "Sabbatical"
+  - company: "Language Immersion Program"
+    position: "German Language Improvement (Self-Directed)"
     location: "Berlin, Germany"
     duration: "May 2024 - May 2025"
-    company_description: "When from A2 to B2, plus the required certification in one year, reaching conversation level of German in less than one year of study an less than 3 years of leaving in Germany."
+    company_description: "Achieved B2 proficiency and official certification in German within one year of focused study, reaching conversational fluency while living in Germany for less than three years. Demonstrated commitment to cross-cultural communication and international professional development."
     linkedin: null
     achievements: []
 

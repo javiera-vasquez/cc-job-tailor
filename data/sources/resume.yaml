@@ -102,7 +102,7 @@ soft_skills:
 independent_projects:
   - name: "Seeker - AI-Powered Conversational Search Platform"
     location: "Berlin, Germany"
-    duration: "May 2024 - Present"
+    duration: "May 2025 - Sept 2025"
     description: "A self-directed deep dive to master the new AI paradigm, resulting in a production-ready conversational interface for video discovery."
     url: "https://doug-langgraph-app-production.up.railway.app/search/new"
     achievements:
