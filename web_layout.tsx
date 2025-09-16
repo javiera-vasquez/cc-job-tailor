@@ -3,8 +3,6 @@ import { createRoot } from 'react-dom/client';
 import { PDFViewer } from '@react-pdf/renderer';
 
 import { resume } from './src';
-import data from "./src/data/resume";
-console.log('Resume data loaded:', data);
 
 const App = () => {
   return (
