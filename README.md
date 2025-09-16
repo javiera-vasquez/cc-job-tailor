@@ -24,12 +24,12 @@ The process is designed to be simple and powerful, flowing from your data to the
 ```
 1. Your Data     2. AI Analysis      3. PDF Generation
 (YAML files)     (Claude Code)       (@react-pdf/renderer)
-      │                │                     │
-      ▼                ▼                     ▼
+      │                │
+      ▼                ▼
 ┌─────────────┐  ┌──────────────┐  ┌───────────────────┐
 │ resume.yaml │  │ Job Posting  │  │ React Components  │
 │ experience. │  └──────────────┘  └───────────────────┘
-│ yaml        │         │                    ▲
+│ yaml        │         │                    │
 └─────────────┘         ▼                    │
                  ┌────────────────┐  ┌───────────────────┐
                  │ AI Agent       │  │ Tailored Data     │
@@ -70,13 +70,18 @@ You can see the resume generator in action without using any of your own data.
     ```bash
     claude code
     ```
-3.  **Start tailoring your resume:**
-    ```bash
-    @agent-job-tailor Analyze this job posting...
-    /tailor I want to modify the cover letter for 'company-name'...
+
+4.  **Start tailoring your resume:**
+
+    In Claude Code, use the job-tailor agent to analyze job postings:
+    ```
+    @agent-job-tailor Analyze this job posting and create a tailored resume for [Position] at [Company]:
+
+    [Paste job description, URL, or upload PDF here]
     ```
 
-This will open a live preview in your browser showing a resume generated from the included `*.example.yaml` files.
+    
+This will generate a tailor job and cover letter application for the position.
 
 ## Using Your Own Data
 
@@ -92,11 +97,38 @@ This will open a live preview in your browser showing a resume generated from th
 
 3.  **Edit the new `.yaml` files** with your personal information. The system will automatically detect and use your files instead of the examples.
 
+## Complete Workflow Example
+
+Here's a step-by-step example of creating a tailored resume:
+
+1. **Job Analysis**: In Claude Code, analyze a job posting:
+   ```
+   @agent-job-tailor Analyze this job posting and create a tailored resume for Senior AI Engineer at TechCorp:
+
+   We're looking for a Senior AI Engineer with experience in LangChain, React, and vector databases...
+   ```
+
+2. **Files Created**: The agent creates:
+   ```
+   data/tailor/techcorp/
+   ├── resume.yaml          # Tailored resume with AI-focused content
+   ├── job_analysis.yaml    # Structured job requirements analysis
+   └── cover_letter.yaml    # Personalized cover letter
+   ```
+
+3. **PDF Generation**: Generate the tailored PDF:
+   ```bash
+   bun run generate-pdf.ts -C techcorp
+   ```
+
+   Output: `tmp/resume-techcorp.pdf` with content optimized for the AI Engineer role.
+
 ## Commands
 
 -   `bun run dev`: Start the live preview development server.
--   `bun run generate-data.ts -C company-name && bun run generate-pdf.ts`: Generate the final PDF to `tmp/resume.pdf` for a specific company.
+-   `bun run generate-pdf.ts -C company-name`: Generate the final PDF to `tmp/resume-{company-name}.pdf` for a specific company (automatically generates data first).
 -   `bun run generate-data`: Manually convert YAML data to a TypeScript module.
+-   `@agent-job-tailor`: Claude Code agent for analyzing job postings and creating tailored resumes.
 
 ## Troubleshooting
 

@@ -24,14 +24,14 @@ bun run dev
 # Start application (same as dev)
 bun run start
 
-# Generate PDF file to disk (outputs to tmp/resume.pdf) - requires company name
-bun run generate-data.ts -C company-name && bun run generate-pdf.ts
+# Generate PDF file to disk (outputs to tmp/resume-{company-name}.pdf) - requires company name
+bun run generate-pdf.ts -C company-name
 
 # Generate TypeScript data module from YAML (runs automatically in other commands)
 bun run generate-data
 ```
 
-**Note**: All commands automatically run `generate-data.ts` first to convert YAML data to TypeScript modules.
+**Note**: The `generate-pdf.ts` command automatically runs `generate-data.ts` first to convert YAML data to TypeScript modules. The `dev` command uses static data.
 
 ## Architecture
 
@@ -91,12 +91,19 @@ bun run generate-data
 ```
 
 ### Application Flow
-1. **Data Generation**: `generate-data.ts` → merges `data/sources/` files → `src/data/resume.ts` TypeScript module
+1. **Data Generation**: `generate-data.ts` → merges `data/sources/` files → `src/data/application.ts` TypeScript module
 2. **Browser Development**: `index.html` → `web_layout.tsx` → `PDFViewer` → `resume.Document`
-3. **PDF Generation**: `generate-pdf.ts` → `renderToFile` → `tmp/resume.pdf`
+3. **PDF Generation**: `generate-pdf.ts -C company-name` → auto-runs `generate-data.ts` → `renderToFile` → `tmp/resume-{company-name}.pdf`
 4. **Resume Tailoring**: Job posting analysis → `data/tailor/[company]/` files → optimized PDF output
 
 **Data Priority**: Requires company-specific tailored files (no fallback to source files)
+
+### New PDF Generation Workflow
+The `generate-pdf.ts` script now accepts a `-C company-name` flag and automatically:
+1. Runs `generate-data.ts -C company-name` to ensure fresh tailored data
+2. Generates PDF with company-specific content
+3. Outputs to `tmp/resume-{company-name}.pdf` for easy identification
+4. Handles errors if company data doesn't exist or data generation fails
 
 ### PDF Document Architecture
 The application uses react-pdf's component hierarchy:
@@ -236,10 +243,27 @@ target_schema:
 - **Skills Flattening**: Soft skills flattened from categorized structure to simple array
 - **Validation Rules**: Field constraints (max lengths, item counts) and data integrity requirements
 
+### Example Files for Development
+The project includes example data files in `data/sources/` for testing without personal information:
+- `resume.example.yaml`: Complete example resume with realistic professional data
+- `professional-experience.example.yaml`: Sample work history with multi-version achievements
+- `cover-letter.example.yaml`: Example cover letter templates and content
+
+**Usage Pattern:**
+1. **Development/Testing**: The system automatically uses `.example.yaml` files if personal files don't exist
+2. **Personal Setup**: Copy example files to remove `.example` suffix:
+   ```bash
+   cd data/sources
+   cp resume.example.yaml resume.yaml
+   cp professional-experience.example.yaml professional-experience.yaml
+   cp cover-letter.example.yaml cover-letter.yaml
+   ```
+3. **Data Priority**: Personal files (without `.example`) take precedence over example files
+
 ### Integration Status
 - **Placeholder Component**: DocumentWrapper uses Don Quixote content for testing
 - **Production Components**: Complete resume component suite in `src/pages/resume/` (Header, Skills, Experience, Education)
-- **Data Ready**: Comprehensive resume data in `data/resume.yaml` (228+ lines) with multi-version support
+- **Data Ready**: Comprehensive resume data in `data/sources/*.example.yaml` (228+ lines) with multi-version support
 - **Schema Transformation**: `data/mapping-rules/` provides React-PDF compatibility and other transformation rules
 - **Job Tailoring**: Full job-specific resume generation system with AI-powered optimization
 - **Data Generation**: Automated YAML to TypeScript conversion with build-time integration
@@ -253,7 +277,7 @@ The project includes a comprehensive job tailoring system that creates job-speci
 1. **Job Analysis**: Analyze job postings using Claude Code's job-tailor sub-agent
 2. **Content Optimization**: Select most relevant achievements, skills, and experience from master data
 3. **Schema Generation**: Create optimized `data/resume_tailored.yaml` following transformation rules  
-4. **PDF Generation**: Generate tailored resume PDF with `bun run generate-data.ts -C company-name && bun run generate-pdf.ts`
+4. **PDF Generation**: Generate tailored resume PDF with `bun run generate-pdf.ts -C company-name`
 
 ### Key Components
 
@@ -283,7 +307,7 @@ The project includes a comprehensive job tailoring system that creates job-speci
 # 2. Sub-agent generates data/tailor/[company-name]/ files automatically
 
 # 3. Generate PDF with tailored content:
-bun run generate-data.ts -C company-name && bun run generate-pdf.ts
+bun run generate-pdf.ts -C company-name
 ```
 
 ### Documentation
