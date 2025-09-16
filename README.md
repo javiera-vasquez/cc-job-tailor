@@ -6,7 +6,7 @@ Stop manually tailoring your resume for every job application. You're spending h
 
 This project treats your resume as code. You define your full career history once in simple YAML files, then use Claude Code's specialized AI agent to automatically generate a tailored resume PDF that highlights your most relevant skills and experiences for any specific role.
 
-*(Screenshot/video of the solution working will go here)*
+![Gemini Fullstack LangGraph](/public/images/job-tailor.png)
 
 **Example Usage:**
 ```
