@@ -1,0 +1,53 @@
+cover_letter:
+  templates:
+    ai_focused:
+      opening_paragraph: "I am writing to express my strong interest in the [POSITION] role at [COMPANY]. As a Product-focused Senior Frontend Engineer with deep experience in AI integration and emerging technologies, I am excited about the opportunity to contribute to [COMPANY]'s innovative approach to [INDUSTRY/DOMAIN]."
+
+      body_paragraph_1: "My passion for understanding AI from first principles led me to build Seeker—a conversational interface for exploring video content that achieves $0.003/query economics and ~0.7s response times. This hands-on experience with AI systems, combined with my background as a former Cornershop engineer (acquired by Uber for $3.3B), positions me uniquely to architect the next generation of intelligent frontends."
+
+      body_paragraph_2: "At Inkitt, I pioneered conversational AI features that engaged over 100,000 daily active users and increased reader retention by 15% through data analytics-driven redesign. I also implemented AI integration experiments for character analysis and content recommendations while reducing critical application errors by 50% through systematic refactoring and comprehensive E2E testing."
+
+      closing_paragraph: "I am excited about the opportunity to bring my deep AI understanding and product-focused approach to [COMPANY]. I would welcome the chance to discuss how my experience in building intelligent, cost-efficient AI systems can contribute to your team's success."
+
+    qa_focused:
+      opening_paragraph: "I am writing to express my strong interest in the [POSITION] role at [COMPANY]. As an experienced Frontend Developer with over a decade of expertise in quality assurance, test automation, and CI/CD pipelines, I am excited about the opportunity to contribute to [COMPANY]'s commitment to delivering robust and reliable software solutions."
+
+      body_paragraph_1: "My extensive experience spans developing Web and Mobile applications for multinational markets, with a particular focus on software quality through Test Automation, Events Tracking, and CI/CD pipelines. I have consistently delivered reliable digital solutions while fostering collaboration within cross-functional teams and communicating effectively with C-level executives in fast-paced startup environments."
+
+      body_paragraph_2: "At Inkitt, I implemented and led an End-to-End testing framework for the Galatea App across iOS and Android platforms, significantly reducing release errors and enhancing reliability. I also enhanced CI/CD pipelines for faster releases with automatic E2E reporting and achieved 95% test coverage at Cornershop while maintaining a weekly release cycle, supporting 1.2M user migration with zero downtime."
+
+      closing_paragraph: "I am excited about the opportunity to bring my comprehensive QA expertise and systematic approach to quality assurance to [COMPANY]. I would welcome the chance to discuss how my experience in building robust testing frameworks and optimizing development processes can contribute to your team's success."
+
+    frontend_focused:
+      opening_paragraph: "I am writing to express my strong interest in the [POSITION] role at [COMPANY]. As a Senior Frontend Engineer with over a decade of experience crafting user-centric applications using modern stacks like React, React Native, Node, and TypeScript, I am excited about the opportunity to contribute to [COMPANY]'s frontend development initiatives."
+
+      body_paragraph_1: "My extensive experience includes developing Web and Mobile applications for multinational markets, focusing on delivering exceptional user experiences through modern frontend technologies. I have consistently demonstrated my ability to optimize performance, debug complex issues, and collaborate effectively within cross-functional teams while maintaining high-quality code standards."
+
+      body_paragraph_2: "At Cornershop, I led the migration of 1.2M users from AngularJS to React SPA with zero downtime and built real-time shopping cart synchronization serving 8 countries using Firebase. At Alba Care, I architected and implemented a unified GraphQL layer that tripled mobile app performance, while at Inkitt, I led the redesign of core Library Features that improved application performance by 15% and served millions of daily active users."
+
+      closing_paragraph: "I am excited about the opportunity to bring my deep frontend expertise and user-focused approach to [COMPANY]. I would welcome the chance to discuss how my experience in building scalable, high-performance frontend applications can contribute to your team's success."
+
+  common_elements:
+    signature: |
+      Best regards,
+      Javiera Vasquez
+      Senior Frontend Engineer
+      +49 1590 1070292
+      Javiera.vasg@gmail.com
+      LinkedIn: https://www.linkedin.com/in/javiera-vasquez-94523960/
+      GitHub: https://github.com/javiera-vasquez
+
+  personalization_variables:
+    - "[POSITION]"     # Job position title
+    - "[COMPANY]"      # Company name
+    - "[INDUSTRY/DOMAIN]" # Company's industry or domain
+    - "[SPECIFIC_TECH]"   # Specific technologies mentioned in job posting
+    - "[TEAM_SIZE]"       # Team size if mentioned
+    - "[PROJECT_TYPE]"    # Type of projects they're working on
+
+  customization_notes:
+    - "Replace placeholder variables with specific job posting information"
+    - "Adjust technical details to match job requirements"
+    - "Emphasize relevant achievements based on job focus"
+    - "Include specific company research and alignment points"
+    - "Maintain professional tone while showing enthusiasm"
