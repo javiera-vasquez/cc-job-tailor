@@ -152,6 +152,7 @@ export type CoverLetterSchema = {
 
 // Main Application Data type
 export type ApplicationData = {
+  metadata: any | null;
   resume: ResumeSchema | null;
   job_analysis: JobAnalysisSchema | null;
   cover_letter: CoverLetterSchema | null;

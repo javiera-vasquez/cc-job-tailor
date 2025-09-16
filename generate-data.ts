@@ -120,7 +120,7 @@ async function loadTailoredData(companyPath: string): Promise<ApplicationData> {
 
   console.log(`Loading tailored data from: ${companyPath}`);
 
-  const resume = existsSync(resumePath)
+  const resumeFile = existsSync(resumePath)
     ? load(await Bun.file(resumePath).text())
     : null;
 
@@ -134,11 +134,16 @@ async function loadTailoredData(companyPath: string): Promise<ApplicationData> {
 
   // Log what was found
   console.log(`Found files:`);
-  if (resume) console.log(`  - resume.yaml`);
+  if (resumeFile) console.log(`  - resume.yaml`);
   if (jobAnalysis) console.log(`  - job_analysis.yaml`);
   if (coverLetter) console.log(`  - cover_letter.yaml`);
 
+  // Extract metadata and resume data from the tailored resume file
+  const metadata = resumeFile ? (resumeFile as any).metadata : null;
+  const resume = resumeFile ? (resumeFile as any).resume : null;
+
   return {
+    metadata,
     resume: resume as ResumeSchema,
     job_analysis: jobAnalysis as any,
     cover_letter: coverLetter as any
@@ -158,6 +163,7 @@ async function loadApplicationData(): Promise<ApplicationData> {
       console.log('No company specified, using default source files...');
       const resumeData = await mergeSourceFiles();
       return {
+        metadata: null,
         resume: resumeData as ResumeSchema,
         job_analysis: null,
         cover_letter: null
@@ -186,7 +192,7 @@ import type { ApplicationData } from '../types';
 const applicationData: ApplicationData = ${JSON.stringify(applicationData, null, 2)};
 
 export default applicationData;
-export const { resume, job_analysis, cover_letter } = applicationData;
+export const { metadata, resume, job_analysis, cover_letter } = applicationData;
 `;
 
 // Write the generated module

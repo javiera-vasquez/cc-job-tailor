@@ -50,7 +50,7 @@ function transformSourceToResumeSchema(sourceData: any): ResumeSchema {
 const resumeData: ResumeSchema | null = applicationData.resume
   ? (applicationData.resume as any).personal_info
     ? transformSourceToResumeSchema(applicationData.resume) // Source data format - needs transformation
-    : applicationData.resume as ResumeSchema // Already tailored format
+    : applicationData.resume as ResumeSchema // Tailored format
   : null;
   
 // Register available fonts
