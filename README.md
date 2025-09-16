@@ -57,7 +57,7 @@ You can see the resume generator in action without using any of your own data.
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/javier-lopez-montes/cc-resume-manager.git
+    git clone https://github.com/javiera-vasquez/cc-job-tailor.git
     cd cc-resume-manager
     ```
 
@@ -73,7 +73,7 @@ You can see the resume generator in action without using any of your own data.
 3.  **Start tailoring your resume:**
     ```bash
     @agent-job-tailor Analyze this job posting...
-    /tailor I want to modify the cover letter for the 'company-name'...
+    /tailor I want to modify the cover letter for 'company-name'...
     ```
 
 This will open a live preview in your browser showing a resume generated from the included `*.example.yaml` files.
@@ -95,7 +95,7 @@ This will open a live preview in your browser showing a resume generated from th
 ## Commands
 
 -   `bun run dev`: Start the live preview development server.
--   `bun run save-to-pdf`: Generate the final PDF to `tmp/resume.pdf`.
+-   `bun run generate-data.ts -C company-name && bun run generate-pdf.ts`: Generate the final PDF to `tmp/resume.pdf` for a specific company.
 -   `bun run generate-data`: Manually convert YAML data to a TypeScript module.
 
 ## Troubleshooting

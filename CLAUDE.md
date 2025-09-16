@@ -24,8 +24,8 @@ bun run dev
 # Start application (same as dev)
 bun run start
 
-# Generate PDF file to disk (outputs to tmp/resume.pdf)
-bun run save-to-pdf
+# Generate PDF file to disk (outputs to tmp/resume.pdf) - requires company name
+bun run generate-data.ts -C company-name && bun run generate-pdf.ts
 
 # Generate TypeScript data module from YAML (runs automatically in other commands)
 bun run generate-data
@@ -96,7 +96,7 @@ bun run generate-data
 3. **PDF Generation**: `generate-pdf.ts` → `renderToFile` → `tmp/resume.pdf`
 4. **Resume Tailoring**: Job posting analysis → `data/tailor/[company]/` files → optimized PDF output
 
-**Data Priority**: Uses company-specific tailored files when available, falls back to merged source files
+**Data Priority**: Requires company-specific tailored files (no fallback to source files)
 
 ### PDF Document Architecture
 The application uses react-pdf's component hierarchy:
@@ -253,7 +253,7 @@ The project includes a comprehensive job tailoring system that creates job-speci
 1. **Job Analysis**: Analyze job postings using Claude Code's job-tailor sub-agent
 2. **Content Optimization**: Select most relevant achievements, skills, and experience from master data
 3. **Schema Generation**: Create optimized `data/resume_tailored.yaml` following transformation rules  
-4. **PDF Generation**: Generate tailored resume PDF with `bun run save-to-pdf`
+4. **PDF Generation**: Generate tailored resume PDF with `bun run generate-data.ts -C company-name && bun run generate-pdf.ts`
 
 ### Key Components
 
@@ -283,7 +283,7 @@ The project includes a comprehensive job tailoring system that creates job-speci
 # 2. Sub-agent generates data/tailor/[company-name]/ files automatically
 
 # 3. Generate PDF with tailored content:
-bun run save-to-pdf
+bun run generate-data.ts -C company-name && bun run generate-pdf.ts
 ```
 
 ### Documentation
@@ -354,7 +354,7 @@ When working with react-pdf features:
 - Modular component architecture with proper TypeScript exports
 - **YAML Parsing**: Uses js-yaml for robust YAML processing with error handling
 - **Resume Tailoring**: Full integration with Claude Code's resume-tailor sub-agent
-- **Data Priority System**: Uses company-specific tailored files when available, fallback to merged source files
+- **Data Priority System**: Requires company-specific tailored files (no fallback to source files)
 - **Job Storage**: Dedicated `public/jobs/` directory for storing job postings and analysis files
 
 ## Claude Code Guidelines

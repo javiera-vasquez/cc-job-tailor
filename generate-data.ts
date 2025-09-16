@@ -21,58 +21,16 @@ const { values } = parseArgs({
 
 const companyName = values.company;
 
-// Function to merge source files into complete resume data
-async function mergeSourceFiles() {
-  console.log('Merging source files...');
-
-  const sourcePath = "./data/sources";
-  const resumePath = `${sourcePath}/resume.yaml`;
-  const experiencePath = `${sourcePath}/professional-experience.yaml`;
-
-  // Check if source files exist
-  const missingFiles: string[] = [];
-  if (!existsSync(resumePath)) {
-    missingFiles.push(resumePath);
-  }
-  if (!existsSync(experiencePath)) {
-    missingFiles.push(experiencePath);
-  }
-
-  if (missingFiles.length > 0) {
-    throw new Error(
-      `Required source files not found:\n${missingFiles.map(file => `- Missing: ${file}`).join('\n')}\n\n` +
-      `Please ensure source files exist or use -C flag to specify a company folder.`
-    );
-  }
-
-  try {
-    // Load all source files
-    const resumeText = await Bun.file(resumePath).text();
-    const experienceText = await Bun.file(experiencePath).text();
-
-    const resumeData = load(resumeText);
-    const experienceData = load(experienceText);
-
-    // Validate YAML parsing results
-    if (!resumeData || !experienceData) {
-      throw new Error("Source files contain invalid or empty YAML data");
-    }
-
-    // Merge professional experience into resume data
-    (resumeData as any).professional_experience = (experienceData as any).professional_experience;
-
-    return resumeData;
-  } catch (error) {
-    if (error instanceof Error && error.message.includes('Required source files not found')) {
-      // Re-throw our custom error
-      throw error;
-    }
-    // Handle YAML parsing or file reading errors
-    throw new Error(
-      `Error processing source files:\n${(error as Error).message}\n\n` +
-      `Please check that source files contain valid YAML data or use -C flag to specify a company folder.`
-    );
-  }
+// Function to provide error guidance when no company is specified
+function throwNoCompanyError(): never {
+  throw new Error(
+    `No company specified. Resume data must be tailored for specific job applications.\n\n` +
+    `To get started:\n` +
+    `1. Use Claude Code to analyze a job posting\n` +
+    `2. Run: @agent-job-tailor analyze job [file|url]\n` +
+    `3. Then use -C flag with the company name to generate tailored resume\n\n` +
+    `Example: bun run generate-data.ts -C "company-name"`
+  );
 }
 
 // Function to validate and get company folder path
@@ -159,15 +117,8 @@ async function loadApplicationData(): Promise<ApplicationData> {
       // Load tailored data for specific company
       return await loadTailoredData(companyPath);
     } else {
-      // Fall back to source files (resume only)
-      console.log('No company specified, using default source files...');
-      const resumeData = await mergeSourceFiles();
-      return {
-        metadata: null,
-        resume: resumeData as ResumeSchema,
-        job_analysis: null,
-        cover_letter: null
-      };
+      // No fallback - require company-specific tailored data
+      throwNoCompanyError();
     }
   } catch (error) {
     console.error(`Error: ${(error as Error).message}`);
