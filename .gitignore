@@ -6,6 +6,8 @@ out
 dist
 tmp/
 *.tgz
+data/tailor/
+public/jobs/
 
 # code coverage
 coverage
