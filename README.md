@@ -22,8 +22,8 @@ The AI agent will analyze the job requirements, select the best achievements fro
 The process is designed to be simple and powerful, flowing from your data to the final PDF.
 
 ```
-1. Your Data     2. AI Analysis      3. PDF Generation
-(YAML files)     (Claude Code)       (@react-pdf/renderer)
+1. Your Data     2. AI Analysis      3. PDF Generation    4. Final Output
+(YAML files)     (Claude Code)       (@react-pdf/renderer)  (PDF Document)
       │                │
       ▼                ▼
 ┌─────────────┐  ┌──────────────┐  ┌───────────────────┐
@@ -31,11 +31,11 @@ The process is designed to be simple and powerful, flowing from your data to the
 │ experience. │  └──────────────┘  └───────────────────┘
 │ yaml        │         │                    │
 └─────────────┘         ▼                    │
-                 ┌────────────────┐  ┌───────────────────┐
-                 │ AI Agent       │  │ Tailored Data     │
-                 │ (Optimizes &   │──▶│ (resume.yaml in  │
-                 │  Selects Data) │  │  /data/tailor/)   │
-                 └────────────────┘  └───────────────────┘
+                 ┌────────────────┐  ┌───────────────────┐  ┌─────────────────┐
+                 │ AI Agent       │  │ Tailored Data     │  │ resume-company. │
+                 │ (Optimizes &   │──▶│ (resume.yaml in  │──▶│ pdf             │
+                 │  Selects Data) │  │  /data/tailor/)   │  │ (tmp/ folder)   │
+                 └────────────────┘  └───────────────────┘  └─────────────────┘
 ```
 
 ## Features
