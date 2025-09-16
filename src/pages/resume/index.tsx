@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     width: spacing.columnWidth, 
     paddingTop: spacing.pagePadding,
     paddingRight: spacing.pagePadding,
-    borderRight: `1px solid ${colors.separatorGray}`, // Vertical separator line
+    borderRight: `1px solid ${colors.separatorGray}`, 
   },
   rightColumn: {
     flex: 1,
