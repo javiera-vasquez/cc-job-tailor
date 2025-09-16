@@ -132,7 +132,7 @@ Here's a step-by-step example of creating a tailored resume:
 
 ## Troubleshooting
 
-If you encounter any issues or have questions, please report them on our [GitHub Issues page](https://github.com/javier-lopez-montes/cc-resume-manager/issues).
+If you encounter any issues or have questions, please report them on our [GitHub Issues page](https://github.com/javiera-vasquez/cc-job-tailor/issues)).
 
 ## License
 
