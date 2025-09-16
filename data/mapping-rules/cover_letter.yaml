@@ -192,7 +192,7 @@ job_analysis_integration:
     - "job_analysis.company_info.culture"
     - "job_analysis.experience_level"
 
-# Usage instructions for resume-tailor agent
+# Usage instructions for job-tailor agent
 usage_instructions: |
   1. Load appropriate template based on job_focus from job_analysis
   2. Replace all placeholder variables with job-specific information

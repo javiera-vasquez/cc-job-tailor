@@ -9,7 +9,7 @@ target_schema:
   job_analysis:
     company: "string"           # Company name
     position: "string"          # Job position title
-    job_focus: "string"         # ai_focused | qa_focused | frontend_focused
+    job_focus: "string"         # ai_ml_focused | qa_testing_focused | frontend_ui_focused | backend_systems_focused | fullstack_focused
     location: "string"          # Job location
     employment_type: "string"   # Full-time, Part-time, Contract, etc.
     experience_level: "string"  # Junior, Mid-level, Senior, Lead, Principal
@@ -49,26 +49,48 @@ target_schema:
 # Analysis transformation rules
 transformation_rules:
 
-  # Job focus determination logic
+  # Job focus determination logic (worker-agnostic profiles)
   focus_determination:
-    ai_focused:
-      keywords: ["AI", "Machine Learning", "ML", "LLM", "GPT", "Natural Language",
-                "Computer Vision", "Deep Learning", "Neural Networks", "TensorFlow",
-                "PyTorch", "Data Science", "Algorithm", "Vector", "Embedding",
-                "Semantic Search", "LangChain", "LangGraph", "OpenAI"]
-      weight: 3
+    # Generic focus areas that can apply to any technical worker
+    description: "Determine focus based on job requirements, not worker background"
 
-    qa_focused:
-      keywords: ["QA", "Quality Assurance", "Testing", "Test Automation", "Selenium",
-                "Jest", "Cypress", "Playwright", "E2E", "Unit Testing", "Integration Testing",
-                "CI/CD", "DevOps", "Test Coverage", "Regression", "Bug", "Quality"]
-      weight: 2
+    profiles:
+      ai_ml_focused:
+        keywords: ["AI", "Machine Learning", "ML", "LLM", "GPT", "Natural Language",
+                  "Computer Vision", "Deep Learning", "Neural Networks", "TensorFlow",
+                  "PyTorch", "Data Science", "Algorithm", "Vector", "Embedding",
+                  "Semantic Search", "LangChain", "LangGraph", "OpenAI", "Artificial Intelligence"]
+        weight: 3
+        description: "Jobs requiring AI/ML expertise regardless of primary role"
 
-    frontend_focused:
-      keywords: ["React", "Vue", "Angular", "Frontend", "JavaScript", "TypeScript",
-                "CSS", "HTML", "UI/UX", "React Native", "Next.js", "Svelte",
-                "Frontend Development", "User Interface", "Responsive Design"]
-      weight: 2
+      qa_testing_focused:
+        keywords: ["QA", "Quality Assurance", "Testing", "Test Automation", "Selenium",
+                  "Jest", "Cypress", "Playwright", "E2E", "Unit Testing", "Integration Testing",
+                  "CI/CD", "DevOps", "Test Coverage", "Regression", "Bug", "Quality",
+                  "Automation", "Performance Testing"]
+        weight: 2
+        description: "Jobs emphasizing testing and quality assurance practices"
+
+      frontend_ui_focused:
+        keywords: ["React", "Vue", "Angular", "Frontend", "JavaScript", "TypeScript",
+                  "CSS", "HTML", "UI/UX", "React Native", "Next.js", "Svelte",
+                  "Frontend Development", "User Interface", "Responsive Design",
+                  "Web Development", "Mobile App", "User Experience"]
+        weight: 2
+        description: "Jobs centered on frontend/UI development"
+
+      backend_systems_focused:
+        keywords: ["Backend", "API", "Database", "Server", "Microservices", "Cloud",
+                  "AWS", "Docker", "Kubernetes", "Node.js", "Python", "Java",
+                  "System Architecture", "Infrastructure", "DevOps"]
+        weight: 2
+        description: "Jobs focused on backend systems and infrastructure"
+
+      fullstack_focused:
+        keywords: ["Full Stack", "Full-Stack", "End-to-End", "MERN", "MEAN",
+                  "Frontend and Backend", "Web Application", "Complete Solution"]
+        weight: 1
+        description: "Jobs requiring both frontend and backend expertise"
 
   # Experience level mapping
   experience_mapping:
@@ -137,7 +159,7 @@ validation_rules:
 
   field_constraints:
     - field: "job_analysis.job_focus"
-      allowed_values: ["ai_focused", "qa_focused", "frontend_focused"]
+      allowed_values: ["ai_ml_focused", "qa_testing_focused", "frontend_ui_focused", "backend_systems_focused", "fullstack_focused"]
 
     - field: "job_analysis.requirements.must_have_skills"
       min_items: 3
@@ -153,7 +175,7 @@ validation_rules:
     - rule: "Focus on actionable, specific responsibilities"
     - rule: "Include company culture indicators when available"
 
-# Usage instructions for resume-tailor agent
+# Usage instructions for job-tailor agent
 usage_instructions: |
   1. Parse job posting text using extraction patterns
   2. Apply focus determination logic based on keyword analysis
@@ -168,7 +190,7 @@ output_template: |
   job_analysis:
     company: "{{ extracted_company_name }}"
     position: "{{ extracted_position_title }}"
-    job_focus: "{{ determined_focus }}"  # ai_focused | qa_focused | frontend_focused
+    job_focus: "{{ determined_focus }}"  # ai_ml_focused | qa_testing_focused | frontend_ui_focused | backend_systems_focused | fullstack_focused
     location: "{{ extracted_location }}"
     employment_type: "{{ extracted_employment_type }}"
     experience_level: "{{ mapped_experience_level }}"

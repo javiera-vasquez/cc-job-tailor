@@ -8,6 +8,7 @@ tmp/
 *.tgz
 data/tailor/
 public/jobs/
+src/data/
 
 # code coverage
 coverage
