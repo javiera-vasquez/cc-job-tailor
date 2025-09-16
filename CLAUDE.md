@@ -241,16 +241,16 @@ target_schema:
 - **Production Components**: Complete resume component suite in `src/pages/resume/` (Header, Skills, Experience, Education)
 - **Data Ready**: Comprehensive resume data in `data/resume.yaml` (228+ lines) with multi-version support
 - **Schema Transformation**: `data/mapping-rules/` provides React-PDF compatibility and other transformation rules
-- **Resume Tailoring**: Full job-specific resume generation system with AI-powered optimization
+- **Job Tailoring**: Full job-specific resume generation system with AI-powered optimization
 - **Data Generation**: Automated YAML to TypeScript conversion with build-time integration
 
-## Resume Tailoring System
+## Job Tailoring System
 
-The project includes a comprehensive resume tailoring system that creates job-specific resume versions through AI analysis.
+The project includes a comprehensive job tailoring system that creates job-specific resume versions through AI analysis.
 
 ### Workflow Overview
 
-1. **Job Analysis**: Analyze job postings using Claude Code's resume-tailor sub-agent
+1. **Job Analysis**: Analyze job postings using Claude Code's job-tailor sub-agent
 2. **Content Optimization**: Select most relevant achievements, skills, and experience from master data
 3. **Schema Generation**: Create optimized `data/resume_tailored.yaml` following transformation rules  
 4. **PDF Generation**: Generate tailored resume PDF with `bun run save-to-pdf`

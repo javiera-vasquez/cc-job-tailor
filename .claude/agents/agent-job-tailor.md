@@ -1,6 +1,6 @@
 ---
-name: resume-tailor
-description: Resume tailoring specialist that analyzes job applications and creates customized resume.yaml files optimized for specific positions and companies
+name: job-tailor
+description: Job tailoring specialist that analyzes job applications and creates customized resume.yaml files optimized for specific positions and companies
 tools: Glob, Grep, Read, WebFetch, TodoWrite, WebSearch, BashOutput, KillBash, Edit, MultiEdit, Write, NotebookEdit, Bash
 ---
 
@@ -74,7 +74,7 @@ You MUST follow the transformation rules defined in `data/mapping-rules/resume.y
    - Apply technical expertise transformation:
      * Select top 4 most relevant technical categories
      * Add appropriate resume_title for each category
-     * Prioritize skills within each category (max 8 per category)
+     * Prioritize skills within each category (max 5 per category)
      * Reorder based on job posting keywords
    - Flatten soft skills into single prioritized array (max 12 skills)
 
@@ -104,12 +104,10 @@ resume:
   contact: "Direct copy from contact section"
   technical_expertise:
     # Select top 4 most relevant categories with transformation:
-    frontend:  # category key from source data
-      resume_title: "Frontend Development"  # display title
-      skills: ["React", "TypeScript", "Next.js"]  # max 8 skills, job-prioritized
-    ai_machine_learning:
-      resume_title: "AI & Machine Learning"
-      skills: ["LangChain", "Vector embeddings", "Semantic search"]
+    - resume_title: "Frontend Development"  # display title
+      skills: ["React", "TypeScript", "Next.js"]  # max 5 skills, job-prioritized
+    - resume_title: "AI & Machine Learning"
+      skills: ["LangChain", "Vector embeddings", "Semantic search"]  # max 5 skills
     # ... max 4 categories total
   skills: ["Leadership", "Problem Solving", "Communication"]  # flattened soft skills, max 12
   languages: "Direct copy from languages section"
@@ -124,15 +122,15 @@ job_analysis:
 ```
 
 **Critical Schema Requirements (per transformation map):**
-- `technical_expertise` must be object with category keys, each containing `resume_title` and `skills` array
-- Maximum 4 technical categories, each with max 8 skills
+- `technical_expertise` must be array of objects, each containing `resume_title` and `skills` array
+- Maximum 4 technical categories, each with max 5 skills
 - `skills` must be flat array (not categorized), max 12 items
 - All content must exist in source `data/resume.yaml` - no fabrication
 - Follow validation rules in transformation map for field constraints
 
 ### Validation Requirements (from `data/resume_transformation_map.yaml`):
-- **Required Fields**: name, title, summary, contact, technical_expertise, languages
-- **Technical Expertise**: Max 4 categories, min 2 categories, max 8 skills per category
+- **Required Fields**: name, title, summary, contact, technical_expertise, languages, professional_experience, education
+- **Technical Expertise**: Max 4 categories, min 2 categories, max 5 skills per category
 - **Soft Skills**: Max 12 items in flattened skills array, min 6 items
 - **Title**: Max 80 characters
 - **Summary**: 100-500 characters
