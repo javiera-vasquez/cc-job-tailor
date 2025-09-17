@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet } from '@react-pdf/renderer';
+import { Text, View, StyleSheet, Link } from '@react-pdf/renderer';
 import { colors, spacing, typography } from '../design-tokens';
 import type { CoverLetterSchema, ContactDetails } from '../../types';
 
@@ -8,12 +8,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 20, // Reduced spacing to account for separator
+    marginBottom: spacing.pagePadding / 2, // Reduced spacing to account for separator
     width: '100%',
   },
   separatorLine: {
     borderBottom: `1px solid ${colors.separatorGray}`,
-    marginBottom: 24, // Space after separator
+    marginBottom: spacing.pagePadding / 2, // Space after separator
     width: '100%',
   },
   companyArea: {
@@ -21,9 +21,9 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   companyName: {
-    fontSize: 14,
+    fontSize: 9,
     fontFamily: 'Lato Bold',
-    color: colors.primary,
+    color: colors.darkGray,
   },
   contactArea: {
     flexDirection: 'column',
@@ -31,16 +31,16 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   contactName: {
-    fontSize: 12,
-    fontFamily: 'Lato Bold',
-    color: colors.primary,
-    marginBottom: 2,
+    fontSize: 9,
+    fontFamily: 'Lato',
+    lineHeight: 1.44,
+    color: colors.darkGray,
   },
   contactDetails: {
-    fontSize: 10,
     fontFamily: 'Lato',
-    color: colors.darkGray,
-    marginBottom: 1,
+    fontSize: 9,
+    lineHeight: 1.44,
+    color: colors.mediumGray,
   },
 });
 
@@ -57,11 +57,12 @@ const Header = ({ coverLetter, personalInfo }: HeaderProps) => (
       </View>
 
       <View style={styles.contactArea}>
-        <Text style={styles.contactName}>{personalInfo?.name || 'Javiera Vasquez'}</Text>
-        <Text style={styles.contactDetails}>{personalInfo?.address || 'Eisenstraße 61'}</Text>
-        <Text style={styles.contactDetails}>{'12059 Berlin'}</Text>
-        <Text style={styles.contactDetails}>{personalInfo?.email || 'javiera.vasq@gmail.com'}</Text>
-        <Text style={styles.contactDetails}>{personalInfo?.phone || '015901070292'}</Text>
+        <Text style={styles.contactName}>{personalInfo.name}</Text>
+        <Text style={styles.contactDetails}>{personalInfo.address}</Text>
+        <Text style={styles.contactDetails}>
+          <Link style={styles.contactDetails} src={personalInfo.email}>{personalInfo.email}</Link>
+        </Text>
+        <Text style={styles.contactDetails}>{personalInfo.phone }</Text>
       </View>
     </View>
     {/* Separator line to match mockup */}

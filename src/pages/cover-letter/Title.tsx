@@ -1,16 +1,18 @@
 import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
-import { colors, typography } from '../design-tokens';
+import { colors, spacing, typography } from '../design-tokens';
 import type { CoverLetterSchema } from '../../types';
 
 const styles = StyleSheet.create({
   titleContainer: {
-    marginBottom: 16,
+    marginBottom: spacing.pagePadding / 1.5,
   },
   titleText: {
-    fontSize: 16,
-    fontFamily: 'Lato Bold',
+    fontSize: 12,
+    fontFamily: 'Lato',
     color: colors.primary,
+    marginBottom: 6,
+    lineHeight: 1.33,
   },
 });
 

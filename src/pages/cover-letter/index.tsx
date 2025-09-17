@@ -83,10 +83,8 @@ const CoverLetterDocument = (): React.ReactElement => {
 const styles = StyleSheet.create({
   letterPage: {
     fontFamily: typography.text.fontFamily,
-    padding: 50, // Business letter margins
+    padding: spacing.documentPadding,
     color: colors.darkGray,
-    lineHeight: 1.4,
-    fontSize: 11, // Professional business letter font size
   },
 });
 
