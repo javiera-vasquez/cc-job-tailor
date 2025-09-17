@@ -20,6 +20,8 @@ import { colors, spacing, typography } from '../design-tokens';
 import type { ResumeSchema, ReactPDFProps } from '../../types';
 import { registerFonts } from '../fonts-register';
 
+console.log('applicationData', applicationData);
+
 // Transform source data format to ResumeSchema when needed
 function transformSourceToResumeSchema(sourceData: any): ResumeSchema {
   // Convert technical_expertise from object to array format
