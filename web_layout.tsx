@@ -51,7 +51,7 @@ const App = () => {
 
       {/* Fix issue reported on https://github.com/diegomura/react-pdf/issues/3153#issuecomment-2845169485 for react-reconsiler v0.31 */}
       <PDFViewer style={{ width: '100%', height: '100%' }} showToolbar={true} key={Date.now()}>
-        {activeDocument === 'resume' ? <coverLetter.Document /> : <coverLetter.Document />}
+        {activeDocument === 'resume' ? <resume.Document /> : <coverLetter.Document />}
       </PDFViewer>
     </div>
   );
