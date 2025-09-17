@@ -1,12 +1,12 @@
-# AI-Powered Resume Generator
+# Claude Code Job Tailor
 
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
 
-Stop manually tailoring your resume for every job application. You're spending hours tweaking bullet points, reordering skills, and trying to match keywords from job descriptions, leading to dozens of `resume_final_v2_real.docx` files.
+Your personal AI job application assistant. Stop manually tailoring your resume for every job application. You're spending hours tweaking bullet points, reordering skills, and trying to match keywords from job descriptions, leading to dozens of `resume_final_v2_real.docx` files.
 
-This project treats your resume as code. You define your full career history once in simple YAML files, then use Claude Code's specialized AI agent to automatically generate a tailored resume PDF that highlights your most relevant skills and experiences for any specific role.
+CC-Job-Tailor treats your resume as code. You define your full career history once in simple YAML files, then Claude Code intelligently selects your best achievements and generates perfectly matched resume PDFs that highlight exactly what employers want for any specific role.
 
-![Gemini Fullstack LangGraph](/public/images/job-tailor.png)
+![Gemini Fullstack LangGraph](/public/images/job-tailor-flow.png)
 
 **Example Usage:**
 ```
