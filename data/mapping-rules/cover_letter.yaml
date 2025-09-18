@@ -13,16 +13,9 @@ target_schema:
     date: "string"                       # Application date
 
     content:
-      opening_paragraph: "string"        # Personalized opening
-      body_paragraph_1: "string"         # Main qualifications/experience
-      body_paragraph_2: "string"         # Specific achievements/examples
-      closing_paragraph: "string"        # Call to action and next steps
+      opening_line: "string"             # Personalized opening line
+      body: "string"                     # Main content with qualifications, experience, and achievements
       signature: "string"                # Professional signature block
-
-    personalization:
-      company_research: "array[string]"  # Company-specific insights included
-      job_alignment: "array[string]"     # How experience aligns with job
-      technical_matches: "array[string]" # Technical skills that match requirements
 
 # Transformation rules
 transformation_rules:
@@ -72,7 +65,7 @@ transformation_rules:
       logic: |
         1. Compare job requirements with candidate technical expertise
         2. Select top 5 most relevant matches
-        3. Naturally integrate into body paragraphs
+        3. Naturally integrate into the body content
         4. Avoid forced keyword stuffing
 
     # Achievement selection
@@ -121,7 +114,7 @@ quality_rules:
   # Content validation
   content_validation:
     - rule: "No generic statements"
-      description: "Every paragraph should be specific to the company and role"
+      description: "Every section should be specific to the company and role"
 
     - rule: "Quantified achievements"
       description: "Include specific metrics and numbers where possible"
@@ -139,21 +132,10 @@ quality_rules:
       max_words: 400
       target: 300
 
-    paragraph_lengths:
-      opening_paragraph: 50-80
-      body_paragraph_1: 80-120
-      body_paragraph_2: 80-120
-      closing_paragraph: 40-60
-
-  # Personalization requirements
-  personalization_requirements:
-    min_company_mentions: 3
-    min_specific_details: 2
-    required_elements:
-      - "Specific job title mention"
-      - "Company name integration"
-      - "Relevant technical skills"
-      - "Quantified achievements"
+    section_lengths:
+      opening_line: 10-20
+      body: 250-350
+      signature: 10-20
 
 # Output formatting rules
 formatting_rules:
@@ -163,9 +145,8 @@ formatting_rules:
     - "Date line"
     - "Company address (if available)"
     - "Formal greeting (Dear Hiring Manager/Team)"
-    - "Opening paragraph"
-    - "Two body paragraphs"
-    - "Closing paragraph"
+    - "Opening line"
+    - "Body content"
     - "Professional signature block"
 
   # Style guidelines
@@ -224,34 +205,18 @@ output_template: |
     date: "{{ current_date }}"
 
     content:
-      opening_paragraph: |
-        Dear Hiring Manager,
+      opening_line: |
+        Dear {{ company }} Hiring Team,
 
-        As a dedicated {{ role_level }} {{ primary_discipline }} with over {{ years_experience }} years of experience building {{ domain_focus }}, I am excited about the opportunity to contribute to {{ company }}. My expertise in {{ top_matching_skills }}, coupled with my passion for {{ relevant_passion }}, aligns closely with the goals of your {{ team_or_platform }}.
+      body: |
+        I am writing to express my strong interest in the {{ position }} role. As a {{ role_level }} {{ primary_discipline }} with over {{ years_experience }} years of experience building {{ domain_focus }}, I am excited about the opportunity to contribute to {{ company }}'s mission.
 
-      body_paragraph_1: |
-        In my role as {{ current_or_recent_position }} at {{ recent_company }}, {{ primary_achievement_with_metrics }}. I also {{ secondary_achievement_with_impact }}. Previously, at {{ previous_company }}, {{ relevant_experience_connection }}, {{ technical_achievement_with_metrics }}.
+        My extensive experience in {{ relevant_technical_areas }} aligns perfectly with {{ company }}'s {{ business_focus }}. At {{ recent_company }}, {{ primary_achievement_with_metrics }}. I also {{ secondary_achievement_with_impact }}. At {{ previous_company }}, {{ technical_achievement_with_metrics }}—experience that translates directly to {{ relevant_job_responsibilities }}.
 
-      body_paragraph_2: |
-        Beyond technical expertise, I thrive in {{ collaboration_style }}, often {{ leadership_or_mentoring_example }} and {{ cross_functional_work_example }}. My international experience in {{ countries_or_regions }} has further strengthened my {{ cultural_or_communication_strength }}, enabling me to excel in {{ team_environment_type }}.
+        What particularly excites me about this role is {{ specific_role_attraction }}. Beyond technical expertise, I thrive in {{ collaboration_style }}, having {{ cross_functional_experience }}. My international experience {{ geographic_experience }} has strengthened my {{ cultural_strengths }}. I am fluent in {{ languages_list }}, and am available to start {{ availability }}.
 
-      closing_paragraph: |
-        {{ personal_growth_or_recent_focus }}. I am fluent in {{ languages_list }}, and am available to start {{ availability }}. I am eager to bring my skills to {{ company }} and contribute to {{ specific_company_goal_or_value }}.
-
-        Thank you for considering my application. I look forward to the opportunity to discuss how I can contribute to {{ company }}'s success.
+        Thank you for considering my application. I am eager to bring my {{ key_expertise }} to {{ company }} and contribute to {{ specific_company_goals }}.
 
       signature: |
         {{ closing_style }},
         {{ full_name }}
-
-    personalization:
-      company_research:
-        - "{{ company_insight_1 }}"
-        - "{{ company_insight_2 }}"
-      job_alignment:
-        - "{{ alignment_point_1 }}"
-        - "{{ alignment_point_2 }}"
-      technical_matches:
-        - "{{ technical_match_1 }}"
-        - "{{ technical_match_2 }}"
-        - "{{ technical_match_3 }}"

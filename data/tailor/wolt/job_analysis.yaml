@@ -1,0 +1,166 @@
+version: "1.0.0"
+analysis_date: "2025-09-16"
+source: "Wolt Careers PDF"
+
+job_analysis:
+  company: "Wolt"
+  position: "Fullstack Engineer (Go, React), Core Group"
+  job_focus: "fullstack_focused"
+  location: "Berlin, Germany · Stockholm, Sweden · Helsinki, Finland · Tallinn, Estonia"
+  employment_type: "Full-time"
+  experience_level: "Senior"
+
+  requirements:
+    must_have_skills:
+      - "React"
+      - "TypeScript"
+      - "Web-based visualization tools"
+      - "Frontend applications in production"
+      - "CI/CD pipelines"
+      - "Automated testing"
+      - "Performance monitoring"
+      - "Product mindset"
+      - "Developer workflows"
+      - "High-volume datasets"
+    nice_to_have_skills:
+      - "Golang"
+      - "Observability tools"
+      - "OpenTelemetry"
+      - "Grafana"
+      - "Perses"
+      - "HyperDX"
+      - "Internal developer platforms"
+      - "Distributed systems"
+      - "SRE/Infrastructure experience"
+      - "Slack-based developer tooling"
+    soft_skills:
+      - "Cross-functional collaboration"
+      - "Developer empathy"
+      - "UX thinking"
+      - "Product mindset"
+      - "Agile development"
+      - "Iterative product thinking"
+      - "Basic UX sensibility"
+      - "Technical user focus"
+    experience_years: 5
+    education: "Not explicitly specified"
+
+  responsibilities:
+    primary:
+      - "Design and implement fast, data-rich user interfaces for engineering signal exploration"
+      - "Develop frontend workflows for complex telemetry data accessibility"
+      - "Build reusable components and UI patterns with design systems teams"
+      - "Contribute to engineering self-service tools for triage, alerting, visualization"
+      - "Work closely with backend engineers on telemetry pipelines and query layers"
+    secondary:
+      - "Proactively identify UX gaps and propose improvements"
+      - "Experiment with new technologies to improve developer experience"
+      - "Participate in defining long-term direction for observability UIs"
+      - "Support debugging, incident response, performance monitoring workflows"
+
+  company_info:
+    industry: "Food delivery & logistics technology"
+    size: "Large (32+ countries, part of DoorDash ecosystem)"
+    culture:
+      - "High-scale, high-performance platform focus"
+      - "Remote-friendly work environment"
+      - "Flexible culture"
+      - "Strong peer support"
+      - "High-trust engineering team"
+      - "Diversity and inclusion commitment"
+      - "Cross-functional collaboration"
+      - "Innovation and experimentation focus"
+
+  compensation:
+    salary_range: "Not specified"
+    benefits:
+      - "Remote work options"
+      - "Relocation support available"
+      - "Flexible work culture"
+      - "Professional development opportunities"
+      - "Open-source contribution opportunities"
+      - "Conference participation support"
+
+  application_info:
+    posting_url: "https://careers.wolt.com/en/jobs/7120296"
+    posting_date: "Not specified"
+    deadline: "Not specified"
+
+  ats_analysis:
+    keywords_for_matching:
+      - "React"
+      - "TypeScript"
+      - "Golang"
+      - "Go"
+      - "Frontend"
+      - "Fullstack"
+      - "Observability"
+      - "CI/CD"
+      - "Performance monitoring"
+      - "Developer tools"
+      - "Internal tools"
+      - "Telemetry"
+      - "Debugging"
+      - "Incident response"
+      - "System monitoring"
+      - "Data visualization"
+      - "GraphQL"
+      - "APIs"
+      - "Distributed systems"
+    title_variations:
+      - "Fullstack Engineer"
+      - "Full Stack Engineer"
+      - "Frontend Engineer with Backend Experience"
+      - "React Developer"
+      - "Go Developer"
+      - "Senior Frontend Engineer"
+      - "Developer Tools Engineer"
+    critical_phrases:
+      - "Frontend focus"
+      - "Observability Engineering team"
+      - "Core Platform Group"
+      - "Internal products"
+      - "Developer tools"
+      - "High-scale, high-performance"
+      - "Cross-functional collaboration"
+      - "Product mindset"
+      - "Developer empathy"
+      - "Telemetry data"
+    formatting_requirements:
+      - "Experience with React and TypeScript prominently featured"
+      - "Highlight internal tooling and developer platform experience"
+      - "Emphasize observability, monitoring, debugging experience"
+      - "Show cross-functional collaboration skills"
+      - "Demonstrate product thinking and UX sensibility"
+    resume_optimization_tips:
+      - "Lead with React/TypeScript expertise in technical skills"
+      - "Highlight any experience with developer tools, internal platforms, or observability"
+      - "Emphasize experience with high-volume data and performance optimization"
+      - "Show experience with CI/CD, automated testing, monitoring"
+      - "Include examples of cross-functional collaboration with backend/infrastructure teams"
+      - "Mention any Go experience or willingness to learn backend technologies"
+      - "Demonstrate product mindset through user-focused achievements"
+
+  team_context:
+    department: "Engineering - Core Platform Group"
+    team: "Observability Engineering"
+    team_mission: "Ensuring visibility, reliability, and performance across Wolt's entire infrastructure"
+    users: "Hundreds of engineers at Wolt and DoorDash"
+    scale: "Massive scale supporting 32+ countries"
+    work_style: "Cross-functional collaboration with backend, infrastructure, design systems"
+
+  unique_opportunities:
+    - "Shape critical platforms used by engineers at Wolt and DoorDash daily"
+    - "Tackle high-scale, high-impact frontend challenges"
+    - "Influence direction of frontend observability tooling"
+    - "Contribute to open-source projects"
+    - "Engage with broader engineering community through talks, blog posts, conferences"
+    - "Work with globally distributed teams with deep observability expertise"
+    - "Build meaningful engineering workflows and internal tools"
+
+  growth_potential:
+    - "Leadership opportunities in frontend observability space"
+    - "Open-source contribution and community engagement"
+    - "Cross-functional skill development (backend, infrastructure)"
+    - "International experience with distributed teams"
+    - "Platform engineering and developer experience expertise"
