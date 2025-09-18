@@ -29,6 +29,7 @@ export type Education = {
 }
 
 export type ContactDetails = {
+  name: string;
   phone: string;
   email: string;
   address: string;
@@ -130,7 +131,7 @@ export type JobAnalysisSchema = {
 export type CoverLetterContent = {
   letter_title: string;
   opening_line: string;
-  body: string;
+  body: string[];
   signature: string;
 };
 

@@ -16,13 +16,9 @@ const styles = StyleSheet.create({
   },
 });
 
-interface TitleProps {
-  coverLetter: CoverLetterSchema;
-}
-
-const Title = ({ coverLetter }: TitleProps) => (
+const Title = ({ data }: { data: CoverLetterSchema }) => (
   <View style={styles.titleContainer}>
-    <Text style={styles.titleText}>Cover Letter {coverLetter.position}</Text>
+    <Text style={styles.titleText}>Cover Letter {data.position}</Text>
   </View>
 );
 

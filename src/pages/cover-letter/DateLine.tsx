@@ -15,13 +15,9 @@ const styles = StyleSheet.create({
   },
 });
 
-interface DateLineProps {
-  coverLetter: CoverLetterSchema;
-}
-
-const DateLine = ({ coverLetter }: DateLineProps) => (
+const DateLine = ({ data }: { data: CoverLetterSchema }) => (
   <View style={styles.dateContainer}>
-    <Text style={styles.dateText}>{coverLetter.date}</Text>
+    <Text style={styles.dateText}>{data.date}</Text>
   </View>
 );
 

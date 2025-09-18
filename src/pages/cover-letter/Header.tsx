@@ -44,25 +44,21 @@ const styles = StyleSheet.create({
   },
 });
 
-interface HeaderProps {
-  coverLetter: CoverLetterSchema;
-  personalInfo: ContactDetails & { name?: string };
-}
 
-const Header = ({ coverLetter, personalInfo }: HeaderProps) => (
+const Header = ({ data }: { data: CoverLetterSchema }) => (
   <View>
     <View style={styles.headerContainer}>
       <View style={styles.companyArea}>
-        <Text style={styles.companyName}>{coverLetter.company}</Text>
+        <Text style={styles.companyName}>{data.company}</Text>
       </View>
 
       <View style={styles.contactArea}>
-        <Text style={styles.contactName}>{personalInfo.name}</Text>
-        <Text style={styles.contactDetails}>{personalInfo.address}</Text>
+        <Text style={styles.contactName}>{data.personal_info.name}</Text>
+        <Text style={styles.contactDetails}>{data.personal_info.address}</Text>
         <Text style={styles.contactDetails}>
-          <Link style={styles.contactDetails} src={personalInfo.email}>{personalInfo.email}</Link>
+          <Link style={styles.contactDetails} src={data.personal_info.email}>{data.personal_info.email}</Link>
         </Text>
-        <Text style={styles.contactDetails}>{personalInfo.phone }</Text>
+        <Text style={styles.contactDetails}>{data.personal_info.phone }</Text>
       </View>
     </View>
     {/* Separator line to match mockup */}

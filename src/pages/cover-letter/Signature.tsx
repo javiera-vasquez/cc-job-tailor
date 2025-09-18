@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 import { colors, spacing, typography } from '../design-tokens';
-import type { CoverLetterSchema, ContactDetails } from '../../types';
+import type { CoverLetterSchema } from '../../types';
 
 const styles = StyleSheet.create({
   signatureContainer: {
@@ -20,15 +20,9 @@ const styles = StyleSheet.create({
   },
 });
 
-interface SignatureProps {
-  coverLetter: CoverLetterSchema;
-  personalInfo: ContactDetails & { name?: string };
-}
-
-const Signature = ({ coverLetter, personalInfo }: SignatureProps) => (
+const Signature = ({ data }: { data: CoverLetterSchema }) => (
   <View style={styles.signatureContainer}>
-    <Text style={styles.closing}>Sincerely,</Text>
-    <Text style={styles.candidateName}>{personalInfo.name}</Text>
+    <Text style={styles.candidateName}>{data.content.signature}</Text>
   </View>
 );
 

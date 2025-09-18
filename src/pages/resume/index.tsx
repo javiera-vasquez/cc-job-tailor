@@ -22,6 +22,9 @@ import { registerFonts } from '../fonts-register';
 
 console.log('applicationData', applicationData);
 
+// Register available fonts
+registerFonts();
+
 // Transform source data format to ResumeSchema when needed
 function transformSourceToResumeSchema(sourceData: any): ResumeSchema {
   // Convert technical_expertise from object to array format
@@ -55,9 +58,6 @@ const resumeData: ResumeSchema | null = applicationData.resume
     : applicationData.resume as ResumeSchema // Tailored format
   : null;
   
-// Register available fonts
-registerFonts();
-
 // 72 dpi is the default for PDF
 // Ensure A4 page sizing (595.5 × 842.25 points)
 const Resume = ({
@@ -78,20 +78,21 @@ const Resume = ({
     bookmark={bookmark}
     style={styles.page}
   >
-    <Header resume={data}/>
+    {/* fix type error */}
+    <Header resume={data as ResumeSchema}/>
     
     <View style={styles.container}>
       {/* Left Column - Contact, Education, Skills, Languages */}
       <View style={styles.leftColumn} debug={debug}>
-        <Contact resume={data}/>
-        <Skills resume={data}/>
-        <Languages resume={data}/>
+        <Contact resume={data as ResumeSchema}/>
+        <Skills resume={data as ResumeSchema}/>
+        <Languages resume={data as ResumeSchema}/>
       </View>
       
       {/* Right Column - Experience */}
       <View style={styles.rightColumn}>
-        <Experience resume={data} debug={debug}/>
-        <Education resume={data} debug={debug}/>
+        <Experience resume={data as ResumeSchema} debug={debug}/>
+        <Education resume={data as ResumeSchema} debug={debug}/>
       </View>
     </View>
   </Page>

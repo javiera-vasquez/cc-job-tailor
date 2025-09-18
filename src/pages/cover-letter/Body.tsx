@@ -17,18 +17,14 @@ const styles = StyleSheet.create({
   },
 });
 
-interface BodyProps {
-  coverLetter: CoverLetterSchema;
-}
-
-const Body = ({ coverLetter }: BodyProps) => {
+const Body = ({ data }: { data: CoverLetterSchema }) => {
   
   return (
     <View style={styles.bodyContainer}>
-      <Text style={styles.paragraph}>{coverLetter.content.opening_paragraph}</Text>
-      <Text style={styles.paragraph}>{coverLetter.content.body_paragraph_1}</Text>
-      <Text style={styles.paragraph}>{coverLetter.content.body_paragraph_2}</Text>
-      <Text style={styles.paragraph}>{coverLetter.content.closing_paragraph}</Text>
+      <Text style={styles.paragraph}>{data.content.opening_line}</Text>
+      {data.content.body.map((paragraph, index) => (
+        <Text key={index} style={styles.paragraph}>{paragraph}</Text>
+      ))}
     </View>
   );
 };

@@ -15,10 +15,8 @@ import Signature from './Signature';
 
 import applicationData from "../../data/application";
 import { colors, spacing, typography } from '../design-tokens';
-import type { CoverLetterSchema, ContactDetails } from '../../types';
+import type { CoverLetterSchema, ContactDetails, ReactPDFProps } from '../../types';
 import { registerFonts } from '../fonts-register';
-
-console.log('applicationData cover', applicationData);
 
 // Register fonts
 registerFonts();
@@ -30,23 +28,35 @@ const personalInfo: ContactDetails & { name?: string } | null = applicationData.
   ? { ...applicationData.resume.contact, name: applicationData.resume.name }
   : null;
 
-const CoverLetterPage = ({
-  coverLetter,
-  personalInfo,
-  debug = false
-}: {
-  coverLetter: CoverLetterSchema;
-  personalInfo: ContactDetails & { name?: string };
-  debug?: boolean;
-}) => (
-  <Page style={styles.letterPage} debug={debug}>
-    <Header coverLetter={coverLetter} personalInfo={personalInfo} />
-    <DateLine coverLetter={coverLetter} />
-    <Title coverLetter={coverLetter} />
-    <Body coverLetter={coverLetter} />
-    <Signature coverLetter={coverLetter} personalInfo={personalInfo} />
-  </Page>
-);
+const CoverLetter = ({
+  size = 'A4', 
+  orientation = 'portrait', 
+  wrap = true, 
+  debug = false,
+  dpi = 72,
+  bookmark,
+  data
+}: ReactPDFProps) => {
+  const coverLetter = data as CoverLetterSchema;
+
+  console.log('coverLetter', coverLetter);
+  return (
+    <Page 
+      size={size} 
+      orientation={orientation} 
+      wrap={wrap} 
+      debug={debug}
+      dpi={dpi}
+      style={styles.letterPage}
+    >
+      <Header data={coverLetter}/>
+      <DateLine data={coverLetter} />
+      <Title data={coverLetter} />
+      <Body data={coverLetter} />
+      <Signature data={coverLetter}/>
+    </Page>
+  )
+}
 
 const CoverLetterDocument = (): React.ReactElement => {
   if (!coverLetterData || !personalInfo) {
@@ -71,10 +81,7 @@ const CoverLetterDocument = (): React.ReactElement => {
       subject={`Cover Letter for ${coverLetterData.position} at ${coverLetterData.company}`}
       title="Cover Letter"
     >
-      <CoverLetterPage 
-        coverLetter={coverLetterData} 
-        personalInfo={personalInfo}
-      />
+      <CoverLetter data={coverLetterData} />
     </Document>
   );
 };
