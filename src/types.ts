@@ -12,7 +12,7 @@ export type ReactPDFProps = {
   debug?: boolean,
   dpi?: number,
   bookmark?: Bookmark,
-  data: ResumeSchema
+  data: ResumeSchema | CoverLetterSchema
 }
 
 // TYPES FOR A RESUME PAGE
@@ -128,17 +128,10 @@ export type JobAnalysisSchema = {
 
 // Cover Letter Schema types
 export type CoverLetterContent = {
-  opening_paragraph: string;
-  body_paragraph_1: string;
-  body_paragraph_2: string;
-  closing_paragraph: string;
+  letter_title: string;
+  opening_line: string;
+  body: string;
   signature: string;
-};
-
-export type CoverLetterPersonalization = {
-  company_research: string[];
-  job_alignment: string[];
-  technical_matches: string[];
 };
 
 export type CoverLetterSchema = {
@@ -146,19 +139,27 @@ export type CoverLetterSchema = {
   position: string;
   job_focus: JobFocus;
   date: string;
+  personal_info: ContactDetails;
   content: CoverLetterContent;
-  personalization: CoverLetterPersonalization;
+};
+
+export type MetadataSchema = {
+  last_updated: string;
+  company: string;
+  position: string;
+  transformation_decisions: string;
 };
 
 // Main Application Data type
 export type ApplicationData = {
-  metadata: any | null;
+  metadata: MetadataSchema | null;
   resume: ResumeSchema | null;
   job_analysis: JobAnalysisSchema | null;
   cover_letter: CoverLetterSchema | null;
 };
 
 export type Schemas = {
+  metadata: MetadataSchema;
   resume: ResumeSchema
   job_analysis: JobAnalysisSchema
   cover_letter: CoverLetterSchema

@@ -96,15 +96,11 @@ async function loadTailoredData(companyPath: string): Promise<ApplicationData> {
   if (jobAnalysis) console.log(`  - job_analysis.yaml`);
   if (coverLetter) console.log(`  - cover_letter.yaml`);
 
-  // Extract metadata and resume data from the tailored resume file
-  const metadata = resumeFile ? (resumeFile as any).metadata : null;
-  const resume = resumeFile ? (resumeFile as any).resume : null;
-
   return {
-    metadata,
-    resume: resume as ResumeSchema,
-    job_analysis: jobAnalysis as any,
-    cover_letter: coverLetter as any
+    metadata: (resumeFile as any).metadata,
+    resume: (resumeFile as any).resume,
+    job_analysis: (jobAnalysis as any).job_analysis,
+    cover_letter: (coverLetter as any).cover_letter,
   };
 }
 
