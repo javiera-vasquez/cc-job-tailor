@@ -6,7 +6,7 @@ out
 dist
 tmp/
 *.tgz
-# data/tailor/
+# resume-data/tailor/
 public/jobs/
 src/data/
 

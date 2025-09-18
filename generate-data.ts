@@ -39,7 +39,7 @@ function getCompanyFolderPath(company: string | undefined): string | null {
     return null;
   }
 
-  const tailorPath = './data/tailor';
+  const tailorPath = './resume-data/tailor';
   const companyPath = `${tailorPath}/${company}`;
 
   // Check if tailor directory exists
