@@ -1,0 +1,141 @@
+version: "1.0.0"
+job_focus: "fullstack_focused"
+metadata:
+  last_updated: "Berlin, Mon 16. September 2025"
+  company: "Wolt"
+  position: "Fullstack Engineer (Go, React), Core Group"
+  transformation_decisions: "Selected frontend-focused title/summary due to frontend-heavy fullstack role. Prioritized React/TypeScript + observability tools experience. Emphasized internal tooling and developer platform experience from Inkitt/Alba Care achievements."
+
+resume:
+  name: "Javiera Vasquez"
+  profile_picture: "/images/avatar.webp"
+  title: "Senior Frontend Engineer"
+  summary: "Experienced Frontend Developer with over a decade of experience, specializing in crafting user-centric applications using modern stacks like React, React Native, Node, and TypeScript. with real world experience developing Web and Mobile experience for multinational markets focusing on delivering software quality through Test Automation, Events Tracking and CI/CD pipelines, ensuring robust and reliable digital solutions. Extensive experience in debugging, optimizing user experiences and fostering collaboration within cross-functional teams and C level executives in fast pacing startups."
+
+  contact:
+    phone: "+49 1590 1070292"
+    email: "Javiera.vasg@gmail.com"
+    address: "Elsenstrasse 61, 12059 - Berlin, Germany"
+    linkedin: "https://www.linkedin.com/in/javiera-vasquez-94523960/"
+    github: "https://github.com/javiera-vasquez"
+
+  technical_expertise:
+    - resume_title: "Frontend Development"
+      skills: ["React", "TypeScript", "JavaScript", "Next.js", "Redux"]
+
+    - resume_title: "Backend & Full-Stack"
+      skills: ["Node.js", "GraphQL", "API Development", "Bun", "SQL"]
+
+    - resume_title: "Quality Assurance & DevOps"
+      skills: ["CI/CD Pipelines", "E2E Testing", "Jest", "Performance Monitoring", "Automated Testing"]
+
+    - resume_title: "Developer Tools & Observability"
+      skills: ["Performance Optimization", "Real-time Systems", "Debugging", "System Design", "Monitoring"]
+
+  skills:
+    - "Cross-functional Collaboration"
+    - "Problem-Solving"
+    - "Technical Mentorship"
+    - "Agile Development"
+    - "User-Centric Approach"
+    - "Data-Driven Decision Making"
+    - "Pattern Recognition & System Design"
+    - "Analytical Thinking"
+    - "Product-Oriented Mindset"
+    - "Communication with C-Level"
+    - "Team Collaboration"
+    - "Strategic Thinking"
+
+  languages:
+    - language: "Spanish"
+      proficiency: "Native"
+    - language: "English"
+      proficiency: "C2"
+    - language: "German"
+      proficiency: "B2"
+
+  professional_experience:
+    - company: "Language Immersion Program"
+      position: "German Language Improvement (Self-Directed)"
+      location: "Berlin, Germany"
+      duration: "May 2024 - May 2025"
+      company_description: "Achieved B2 proficiency and official certification in German within one year of focused study, reaching conversational fluency while living in Germany for less than three years. Demonstrated commitment to cross-cultural communication and international professional development."
+      linkedin: null
+      achievements: []
+
+    - company: "Inkitt"
+      position: "Senior Frontend Engineer"
+      location: "Berlin, Germany - United States"
+      duration: "March 2021 - April 2024"
+      company_description: "Inkitt is revolutionizing publishing through data-driven strategies and AI-powered tools to discover hidden literary talents and bring their stories to millions of users through platforms like Galatea #7 ranking in the Books category on the Apple App Store in Germany."
+      linkedin: "https://www.linkedin.com/company/inkitt"
+      achievements:
+        - "Led the migration and redesign of core Library Feature, one of Galatea's principal user experiences"
+        - "Implemented and led an End-to-End testing framework for Galatea App for iOS and Android, significantly reducing release errors and enhancing reliability"
+        - "Enhanced CI/CD pipelines for faster releases with automatic E2E reporting delivered via Notion during release cycles"
+        - "Reduced critical application errors by 50% through systematic refactoring and comprehensive testing"
+
+    - company: "Alba Care"
+      position: "Senior Frontend Engineer"
+      location: "United States, Remote"
+      duration: "January 2019 - March 2021"
+      company_description: "Alba Care provides a digital marketplace app for home-based childcare, delivering seamless user experiences for parents and caregivers."
+      linkedin: "https://www.linkedin.com/company/zebrands/"
+      achievements:
+        - "Architected and led implementation of unified GraphQL layer, tripling mobile app performance"
+        - "Led transition to GraphQL architecture, improving system reliability and performance by 3x"
+        - "Built and maintained B2C App using React Native with user-friendly interface and robust functionality"
+        - "Led a pod of 2 Frontend developers and 1 product designer, shipping features bi-weekly"
+
+    - company: "Cornershop by Uber"
+      position: "Senior Frontend Engineer"
+      location: "Santiago, Chile"
+      duration: "May 2016 - January 2019"
+      company_description: "Cornershop is a last-mile marketplace offering on-demand grocery delivery services across the Americas, now part of Uber."
+      linkedin: "https://www.linkedin.com/company/cornershop-by-uber/"
+      achievements:
+        - "Migrated 1.2M users from AngularJS to React SPA with zero downtime"
+        - "Achieved 95% test coverage while maintaining weekly release cycle"
+        - "Led implementation of comprehensive event tracking across 85% of B2C web app"
+        - "Built real-time shopping cart synchronization system serving 8 countries using Firebase"
+
+    - company: "VTR Liberty Global"
+      position: "Frontend Engineer"
+      location: "Santiago, Chile"
+      duration: "December 2014 - April 2016"
+      company_description: "VTR is a leading telecom provider in Chile, offering TV, internet, and phone services to over 2.5 million homes."
+      linkedin: "https://www.linkedin.com/company/vtr/"
+      achievements:
+        - "Developed Video-on-Demand platform bringing Netflix-like capabilities to legacy TV decoders"
+        - "Created comprehensive design system standardizing UI across web platforms for B2C and B2B"
+        - "Built scalable frontend architecture serving 750K home devices"
+        - "Established quality standards for B2C and B2B platform development"
+
+  independent_projects:
+    - name: "Seeker - AI-Powered Conversational Search Platform"
+      location: "Berlin, Germany"
+      duration: "May 2025 - Sept 2025"
+      description: "A self-directed deep dive to master the new AI paradigm, resulting in a production-ready conversational interface for video discovery."
+      url: "https://doug-langgraph-app-production.up.railway.app/search/new"
+      achievements:
+        - "Built a conversational AI interface that transforms how users explore video content through natural language chat, visual discovery cards, and intelligent context management across multi-turn conversations"
+        - "Achieved breakthrough economics: $0.003 per AI query cost by optimizing token-per-turn interactions and context management"
+        - "Built production-ready platform with React frontend and vector database backend, achieving ~0.7s first token response time"
+        - "Designed architecture that demonstrates how to leverage AI intelligently in frontend applications for maximum impact"
+      impact: "This deep understanding now enables me to architect frontends that leverage AI intelligently—knowing exactly when and how to use it to maximize user impact while maintaining cost efficiency"
+
+  education:
+    - institution: "Stanford University"
+      program: "CS161 Design and Analysis of Algorithms"
+      location: "Remote learning"
+      duration: "2014 - 2014"
+
+    - institution: "Harvard"
+      program: "CS50's Introduction to Computer Science"
+      location: "Remote learning"
+      duration: "2012 - 2012"
+
+    - institution: "DUOC UC"
+      program: "Bachelor of Design - Advertising and Graphic Design"
+      location: "Santiago, Chile"
+      duration: "2008 - 2010"
