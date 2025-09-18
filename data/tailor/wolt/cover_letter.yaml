@@ -8,14 +8,23 @@ cover_letter:
   job_focus: "frontend_focused"
   date: "Berlin, Mon 16. September 2025"
 
+  personal_info:
+    name: "Javiera Vasquez"
+    address: "Eisenstraße 61, 12059 Berlin"
+    email: "javiera.vasg@gmail.com"
+    phone: "015901070292"
+    linkedin: "https://www.linkedin.com/in/javiera-vasquez-94523960/"
+    github: "https://github.com/javiera-vasquez"
+
   content:
+    letter_title: "Cover Letter Frontend Engineer"
     opening_line: "Dear Wolt Hiring Team,"
-    body: |
-      I am writing to express my strong interest in the Fullstack Engineer (Go, React) role within the Core Platform Group's Observability Engineering team. As a Senior Frontend Engineer with over a decade of experience crafting user-centric applications using modern stacks like React, TypeScript, and Node.js, I am excited about the opportunity to contribute to Wolt's mission of building high-scale, high-performance platforms that support engineers across 32+ countries.
-      My extensive experience in developing Web and Mobile applications for multinational markets aligns perfectly with Wolt's global scale. At Inkitt, I led the migration and redesign of the Galatea app's Library Feature, improving performance by 15% while serving millions of users. I also implemented and led an End-to-End testing framework across iOS and Android platforms, significantly reducing release errors—exactly the kind of reliability-focused engineering that's crucial for observability tools used daily by hundreds of engineers.
-      What particularly excites me about this role is the opportunity to build internal developer tools that directly impact engineering productivity. At Alba Care, I architected a unified GraphQL layer that tripled mobile app performance, demonstrating my ability to create scalable solutions for complex data workflows. At Cornershop (acquired by Uber for $3.3B), I achieved 95% test coverage while maintaining weekly release cycles and built real-time synchronization systems serving 8 countries—experience that translates directly to building robust observability platforms for debugging, incident response, and performance monitoring.
-      Beyond technical expertise, I thrive in cross-functional collaboration, having worked closely with backend engineers, infrastructure teams, and design systems throughout my career. My international experience across Germany, the United States, and Latin America has strengthened my adaptability and cultural understanding. I am fluent in Spanish, English, and German (B2), and am available to start immediately.
-      Thank you for considering my application. I am eager to bring my frontend expertise and product mindset to Wolt's Observability Engineering team and contribute to building the next generation of internal developer tools.
+    body: 
+      - I am writing to express my strong interest in the Fullstack Engineer (Go, React) role within the Core Platform Group's Observability Engineering team. As a Senior Frontend Engineer with over a decade of experience crafting user-centric applications using modern stacks like React, TypeScript, and Node.js, I am excited about the opportunity to contribute to Wolt's mission of building high-scale, high-performance platforms that support engineers across 32+ countries.
+      - My extensive experience in developing Web and Mobile applications for multinational markets aligns perfectly with Wolt's global scale. At Inkitt, I led the migration and redesign of the Galatea app's Library Feature, improving performance by 15% while serving millions of users. I also implemented and led an End-to-End testing framework across iOS and Android platforms, significantly reducing release errors—exactly the kind of reliability-focused engineering that's crucial for observability tools used daily by hundreds of engineers.
+      - What particularly excites me about this role is the opportunity to build internal developer tools that directly impact engineering productivity. At Alba Care, I architected a unified GraphQL layer that tripled mobile app performance, demonstrating my ability to create scalable solutions for complex data workflows. At Cornershop (acquired by Uber for $3.3B), I achieved 95% test coverage while maintaining weekly release cycles and built real-time synchronization systems serving 8 countries—experience that translates directly to building robust observability platforms for debugging, incident response, and performance monitoring.
+      - Beyond technical expertise, I thrive in cross-functional collaboration, having worked closely with backend engineers, infrastructure teams, and design systems throughout my career. My international experience across Germany, the United States, and Latin America has strengthened my adaptability and cultural understanding. I am fluent in Spanish, English, and German (B2), and am available to start immediately.
+      - Thank you for considering my application. I am eager to bring my frontend expertise and product mindset to Wolt's Observability Engineering team and contribute to building the next generation of internal developer tools.
 
     signature: |
       Sincerely,

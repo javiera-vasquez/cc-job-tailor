@@ -2,19 +2,31 @@
 # This file defines how to transform cover letter templates into job-specific versions
 
 schema_version: "1.0"
-description: "Rules for transforming cover letter templates into tailored, job-specific cover letters"
 
 # Target output schema for tailored cover letters
 target_schema:
+  version: "string"                      # Schema version
+  job_focus: "string"                    # ai_focused | qa_focused | frontend_focused
+  analysis_date: "string"                # Date of job analysis
+
   cover_letter:
     company: "string"                    # Target company name
     position: "string"                   # Target job position
     job_focus: "string"                  # ai_focused | qa_focused | frontend_focused
     date: "string"                       # Application date
 
+    personal_info:
+      name: "string"                     # Full name
+      address: "string"                  # Physical address
+      email: "string"                    # Email address
+      phone: "string"                    # Phone number
+      linkedin: "string"                 # LinkedIn profile URL
+      github: "string"                   # GitHub profile URL
+
     content:
+      letter_title: "string"             # Cover letter title
       opening_line: "string"             # Personalized opening line
-      body: "string"                     # Main content with qualifications, experience, and achievements
+      body: ["array"]                    # Array of paragraph strings
       signature: "string"                # Professional signature block
 
 # Transformation rules
@@ -28,194 +40,69 @@ transformation_rules:
 
   # Variable replacement rules
   variable_replacement:
-    - placeholder: "[POSITION]"
-      source: "job_analysis.position"
-      description: "Replace with exact job title from posting"
-
     - placeholder: "[COMPANY]"
       source: "job_analysis.company"
-      description: "Replace with company name"
 
-    - placeholder: "[INDUSTRY/DOMAIN]"
-      source: "job_analysis.company_info.industry"
-      fallback: "technology sector"
-      description: "Replace with company's industry/domain"
+    - placeholder: "[POSITION]"
+      source: "job_analysis.position"
 
-    - placeholder: "[SPECIFIC_TECH]"
+    - placeholder: "[TECH_SKILLS]"
       source: "job_analysis.requirements.must_have_skills"
       transformation: "select_top_3_matching"
-      description: "Replace with top 3 matching technical skills"
-
-    - placeholder: "[TEAM_SIZE]"
-      source: "job_analysis.responsibilities"
-      extraction_pattern: "team of (\\d+)|manage (\\d+)|lead (\\d+)"
-      description: "Extract team size if mentioned in responsibilities"
-
-    - placeholder: "[PROJECT_TYPE]"
-      source: "job_analysis.responsibilities.primary"
-      transformation: "extract_project_keywords"
-      description: "Extract type of projects from job responsibilities"
 
   # Content enhancement rules
-  content_enhancement:
-
-    # Technical skill integration
-    technical_alignment:
-      rule: "integrate_matching_skills"
-      logic: |
-        1. Compare job requirements with candidate technical expertise
-        2. Select top 5 most relevant matches
-        3. Naturally integrate into the body content
-        4. Avoid forced keyword stuffing
-
-    # Achievement selection
-    achievement_selection:
-      rule: "select_relevant_achievements"
-      logic: |
-        1. Analyze job responsibilities and requirements
-        2. Score candidate achievements by relevance (0-10)
-        3. Select top 2-3 most impactful achievements
-        4. Quantify impact with specific metrics where available
-
-    # Company research integration
-    company_research:
-      rule: "add_company_insights"
-      sources: ["job_analysis.company_info", "external_research"]
-      max_insights: 2
-      logic: |
-        1. Include 1-2 specific company insights
-        2. Connect insights to candidate's experience
-        3. Show genuine interest and research effort
+  content_optimization:
+    - "integrate_matching_skills"
+    - "select_relevant_achievements"
+    - "add_company_insights"
+    - "format_body_as_paragraph_array"
 
   # Tone and style adjustments
-  tone_adjustments:
+  tone_default: "professional"
 
-    # Enthusiasm level based on job focus
-    enthusiasm_mapping:
-      ai_focused: "high"          # Show excitement about AI innovation
-      qa_focused: "professional"  # Emphasize reliability and precision
-      frontend_focused: "balanced" # Balance technical expertise with user focus
+# Quality rules
+length_constraints:
+  total_words: 200-400
 
-    # Formality level based on company size
-    formality_mapping:
-      startup: "slightly_informal"     # More conversational, show cultural fit
-      mid_size: "professional"        # Standard business professional
-      large: "formal"                 # More formal, traditional corporate style
+# Required fields
+required_fields:
+  - "job_analysis.company"
+  - "job_analysis.position"
+  - "job_analysis.job_focus"
 
-    # Technical depth based on role level
-    technical_depth:
-      junior: "foundational"          # Focus on learning and potential
-      mid_level: "balanced"           # Mix of technical and soft skills
-      senior: "advanced"              # Deep technical expertise and leadership
-
-# Quality enhancement rules
-quality_rules:
-
-  # Content validation
-  content_validation:
-    - rule: "No generic statements"
-      description: "Every section should be specific to the company and role"
-
-    - rule: "Quantified achievements"
-      description: "Include specific metrics and numbers where possible"
-
-    - rule: "Natural keyword integration"
-      description: "Technical terms should flow naturally, not feel forced"
-
-    - rule: "Consistent tone"
-      description: "Maintain consistent professional tone throughout"
-
-  # Length constraints
-  length_constraints:
-    total_length:
-      min_words: 200
-      max_words: 400
-      target: 300
-
-    section_lengths:
-      opening_line: 10-20
-      body: 250-350
-      signature: 10-20
-
-# Output formatting rules
-formatting_rules:
-
-  # Professional formatting
-  structure:
-    - "Date line"
-    - "Company address (if available)"
-    - "Formal greeting (Dear Hiring Manager/Team)"
-    - "Opening line"
-    - "Body content"
-    - "Professional signature block"
-
-  # Style guidelines
-  style:
-    greeting: "Dear Hiring Manager" # Default if no specific contact
-    closing: "Best regards"
-    font_style: "professional"
-    tone: "confident but humble"
-
-# Integration with job analysis
-job_analysis_integration:
-
-  # Required job analysis fields
-  required_fields:
-    - "job_analysis.company"
-    - "job_analysis.position"
-    - "job_analysis.job_focus"
-    - "job_analysis.requirements.must_have_skills"
-
-  # Optional enhancement fields
-  enhancement_fields:
-    - "job_analysis.company_info.industry"
-    - "job_analysis.responsibilities.primary"
-    - "job_analysis.company_info.culture"
-    - "job_analysis.experience_level"
-
-# Usage instructions for job-tailor agent
-usage_instructions: |
-  1. Load appropriate template based on job_focus from job_analysis
-  2. Replace all placeholder variables with job-specific information
-  3. Apply content enhancement rules to personalize paragraphs
-  4. Integrate company research and technical alignment
-  5. Adjust tone based on company type and role level
-  6. Validate content against quality rules
-  7. Format according to professional structure
-  8. Save as cover_letter.yaml in company-specific folder
-
-# Example transformation workflow
-example_workflow: |
-  Input: job_analysis.yaml + cover_letter.templates.ai_focused
-  Process:
-    1. Replace [COMPANY] with "TechCorp"
-    2. Replace [POSITION] with "Senior AI Engineer"
-    3. Integrate matching skills: "LangChain, Vector embeddings, React"
-    4. Add company insight: "TechCorp's focus on ethical AI development"
-    5. Select relevant achievement: "Seeker project with $0.003/query economics"
-    6. Adjust tone for startup culture (slightly informal)
-  Output: Personalized cover_letter.yaml for TechCorp application
 
 # Output template structure
 output_template: |
+  version: "{{ schema_version }}"
+  job_focus: "{{ job_analysis.job_focus }}"
+  analysis_date: "{{ analysis_date }}"
+
   cover_letter:
     company: "{{ job_analysis.company }}"
     position: "{{ job_analysis.position }}"
     job_focus: "{{ job_analysis.job_focus }}"
     date: "{{ current_date }}"
 
+    personal_info:
+      name: "{{ personal_info.name }}"
+      address: "{{ personal_info.address }}"
+      email: "{{ personal_info.email }}"
+      phone: "{{ personal_info.phone }}"
+      linkedin: "{{ personal_info.linkedin }}"
+      github: "{{ personal_info.github }}"
+
     content:
+      letter_title: "Cover Letter {{ job_analysis.primary_focus | title }} Engineer"
+
       opening_line: |
         Dear {{ company }} Hiring Team,
 
-      body: |
-        I am writing to express my strong interest in the {{ position }} role. As a {{ role_level }} {{ primary_discipline }} with over {{ years_experience }} years of experience building {{ domain_focus }}, I am excited about the opportunity to contribute to {{ company }}'s mission.
-
-        My extensive experience in {{ relevant_technical_areas }} aligns perfectly with {{ company }}'s {{ business_focus }}. At {{ recent_company }}, {{ primary_achievement_with_metrics }}. I also {{ secondary_achievement_with_impact }}. At {{ previous_company }}, {{ technical_achievement_with_metrics }}—experience that translates directly to {{ relevant_job_responsibilities }}.
-
-        What particularly excites me about this role is {{ specific_role_attraction }}. Beyond technical expertise, I thrive in {{ collaboration_style }}, having {{ cross_functional_experience }}. My international experience {{ geographic_experience }} has strengthened my {{ cultural_strengths }}. I am fluent in {{ languages_list }}, and am available to start {{ availability }}.
-
-        Thank you for considering my application. I am eager to bring my {{ key_expertise }} to {{ company }} and contribute to {{ specific_company_goals }}.
+      body:
+        - "I am writing to express my strong interest in the {{ position }} role. As a {{ role_level }} {{ primary_discipline }} with over {{ years_experience }} years of experience building {{ domain_focus }}, I am excited about the opportunity to contribute to {{ company }}'s mission."
+        - "My extensive experience in {{ relevant_technical_areas }} aligns perfectly with {{ company }}'s {{ business_focus }}. At {{ recent_company }}, {{ primary_achievement_with_metrics }}. I also {{ secondary_achievement_with_impact }}."
+        - "What particularly excites me about this role is {{ specific_role_attraction }}. At {{ previous_company }}, {{ technical_achievement_with_metrics }}—experience that translates directly to {{ relevant_job_responsibilities }}."
+        - "Beyond technical expertise, I thrive in {{ collaboration_style }}, having {{ cross_functional_experience }}. My international experience {{ geographic_experience }} has strengthened my {{ cultural_strengths }}. I am fluent in {{ languages_list }}, and am available to start {{ availability }}."
+        - "Thank you for considering my application. I am eager to bring my {{ key_expertise }} to {{ company }} and contribute to {{ specific_company_goals }}."
 
       signature: |
         {{ closing_style }},
