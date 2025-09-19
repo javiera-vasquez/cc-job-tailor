@@ -6,7 +6,7 @@ Your personal AI job application assistant. Stop manually tailoring your resume 
 
 CC-Job-Tailor treats your resume as code. You define your full career history once in simple YAML files, then Claude Code intelligently selects your best achievements and generates perfectly matched resume PDFs that highlight exactly what employers want for any specific role.
 
-![Gemini Fullstack LangGraph](/public/images/job-tailor-flow.png)
+![App Flow image](/public/images/job-tailor-flow.png)
 
 **Example Usage:**
 ```
