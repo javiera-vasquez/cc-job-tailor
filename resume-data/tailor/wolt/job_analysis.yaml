@@ -1,0 +1,117 @@
+version: "2.0.0"
+analysis_date: "2025-09-16"
+source: "Wolt Careers PDF"
+
+job_analysis:
+  company: "Wolt"
+  position: "Fullstack Engineer (Go, React), Core Group"
+  job_focus: "fullstack_focused"
+  location: "Berlin, Germany · Stockholm, Sweden · Helsinki, Finland · Tallinn, Estonia"
+  employment_type: "Full-time"
+  experience_level: "Senior"
+
+  requirements:
+    must_have_skills:
+      - skill: "React"
+        priority: 10
+      - skill: "TypeScript"
+        priority: 10
+      - skill: "Frontend applications in production"
+        priority: 9
+      - skill: "Web-based visualization tools"
+        priority: 8
+      - skill: "CI/CD pipelines"
+        priority: 7
+      - skill: "Automated testing"
+        priority: 7
+      - skill: "Performance monitoring"
+        priority: 8
+      - skill: "Developer workflows"
+        priority: 6
+    nice_to_have_skills:
+      - skill: "Golang"
+        priority: 8
+      - skill: "Observability tools"
+        priority: 7
+      - skill: "OpenTelemetry"
+        priority: 6
+      - skill: "Internal developer platforms"
+        priority: 7
+      - skill: "Distributed systems"
+        priority: 5
+    soft_skills:
+      - "Cross-functional collaboration"
+      - "Developer empathy"
+      - "UX thinking"
+      - "Product mindset"
+      - "Agile development"
+    experience_years: 5
+    education: "Not explicitly specified"
+
+  responsibilities:
+    primary:
+      - "Design and implement fast, data-rich user interfaces for engineering signal exploration"
+      - "Develop frontend workflows for complex telemetry data accessibility"
+      - "Build reusable components and UI patterns with design systems teams"
+      - "Contribute to engineering self-service tools for triage, alerting, visualization"
+      - "Work closely with backend engineers on telemetry pipelines and query layers"
+    secondary:
+      - "Proactively identify UX gaps and propose improvements"
+      - "Experiment with new technologies to improve developer experience"
+      - "Participate in defining long-term direction for observability UIs"
+
+  role_context:
+    department: "Engineering - Core Platform Group"
+    team_size: "Hundreds of engineers at Wolt and DoorDash"
+    key_points:
+      - "Massive scale supporting 32+ countries with high-performance focus"
+      - "Shape critical platforms used by engineers daily"
+      - "Cross-functional collaboration with backend, infrastructure, design systems"
+      - "Open-source contribution and community engagement opportunities"
+      - "Remote-friendly with professional development support"
+
+  application_info:
+    posting_url: "https://careers.wolt.com/en/jobs/7120296"
+    posting_date: "Not specified"
+    deadline: "Not specified"
+
+  candidate_alignment:
+    strong_matches:
+      - "React expertise"
+      - "TypeScript proficiency"
+      - "Frontend development experience"
+      - "CI/CD pipeline knowledge"
+      - "Performance optimization experience"
+    gaps_to_address:
+      - "Golang experience"
+      - "Observability tools (OpenTelemetry, Grafana)"
+      - "Internal developer platform experience"
+    transferable_skills:
+      - "Python backend experience → Golang learning readiness"
+      - "Performance monitoring → Observability tools"
+      - "Component libraries → Design systems collaboration"
+    emphasis_strategy: "Lead with React/TypeScript expertise while demonstrating backend learning capability and developer empathy"
+
+  section_priorities:
+    technical_expertise: ["frontend", "backend", "systems_design", "qa_testing"]
+    experience_focus: "Select achievements showing developer tools, internal platforms, data visualization, and cross-functional collaboration"
+    project_relevance: "Include: API integrations, component libraries, performance optimization. Skip: Pure consumer-facing apps"
+
+  optimization_actions:
+    LEAD_WITH: ["React", "TypeScript", "Frontend expertise"]
+    EMPHASIZE: ["developer_tools", "internal_platforms", "observability", "cross_functional_collaboration"]
+    QUANTIFY: ["data_volume", "performance_improvements", "team_collaboration_scale"]
+    DOWNPLAY: ["mobile_development", "consumer_facing_features"]
+
+  ats_analysis:
+    title_variations:
+      - "Fullstack Engineer"
+      - "Senior Frontend Engineer"
+      - "Developer Tools Engineer"
+    critical_phrases:
+      - "Frontend focus with Observability Engineering team"
+      - "Core Platform Group developing internal products"
+      - "High-scale, high-performance developer tools"
+      - "Cross-functional collaboration with product mindset"
+      - "Telemetry data visualization and developer empathy"
+

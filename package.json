@@ -14,7 +14,8 @@
     "dev": "bun --hot index.html",
     "start": "bun run generate-data.ts && bun index.html",
     "save-to-pdf": "bun run generate-data.ts \"$@\" && bun run generate-pdf.ts \"$@\"",
-    "generate-data": "bun run generate-data.ts"
+    "generate-data": "bun run generate-data.ts",
+    "typecheck": "bun run tsc --noEmit"
   },
   "devDependencies": {
     "@types/bun": "latest",

@@ -4,9 +4,10 @@
 schema_version: "1.0"
 description: "Rules for analyzing job postings and creating structured job analysis data"
 
-# Target output schema for job analysis
+# Target output schema for job analysis (optimized v2.0)
 target_schema:
   job_analysis:
+    # Core job information
     company: "string"           # Company name
     position: "string"          # Job position title
     job_focus: "string"         # ai_ml_focused | qa_testing_focused | frontend_ui_focused | backend_systems_focused | fullstack_focused
@@ -14,37 +15,58 @@ target_schema:
     employment_type: "string"   # Full-time, Part-time, Contract, etc.
     experience_level: "string"  # Junior, Mid-level, Senior, Lead, Principal
 
+    # Prioritized requirements with weights (1-10 scale)
     requirements:
-      must_have_skills: "array[string]"     # Required technical skills
-      nice_to_have_skills: "array[string]"  # Preferred technical skills
-      soft_skills: "array[string]"          # Communication, leadership, etc.
-      experience_years: "number"            # Years of experience required
-      education: "string"                   # Education requirements
+      must_have_skills:        # Required skills with priority weights
+        - skill: "string"
+          priority: "number"    # 1-10, higher = more critical
+      nice_to_have_skills:      # Preferred skills with weights
+        - skill: "string"
+          priority: "number"    # 1-10
+      soft_skills: "array[string]"  # Soft skills (unweighted)
+      experience_years: "number"    # Years of experience required
+      education: "string"           # Education requirements
 
     responsibilities:
-      primary: "array[string]"              # Main job responsibilities
-      secondary: "array[string]"            # Additional responsibilities
+      primary: "array[string]"      # Main job responsibilities (max 5)
+      secondary: "array[string]"    # Additional responsibilities (max 3)
 
-    company_info:
-      industry: "string"                    # Company industry
-      size: "string"                        # Startup, Mid-size, Large, Enterprise
-      culture: "array[string]"              # Company culture keywords
+    # Merged context section (replaces team_context, unique_opportunities, growth_potential)
+    role_context:
+      department: "string"          # Department/team name
+      team_size: "string"           # Team scale/users served
+      key_points: "array[string]"   # Critical context points (max 5)
 
-    compensation:
-      salary_range: "string"                # If mentioned
-      benefits: "array[string]"             # Benefits offered
+    # Candidate alignment analysis (NEW)
+    candidate_alignment:
+      strong_matches: "array[string]"      # Skills/experience we have that match
+      gaps_to_address: "array[string]"     # Missing skills that are important
+      transferable_skills: "array[string]" # How to bridge gaps (e.g., "Python → Go")
+      emphasis_strategy: "string"          # One-line strategy for resume focus
 
+    # Section priorities for resume tailoring (NEW)
+    section_priorities:
+      technical_expertise: "array[string]"  # Ordered list of expertise categories to emphasize
+      experience_focus: "string"            # Which achievements to highlight
+      project_relevance: "string"           # Which projects to include/exclude
+
+    # Optimization actions (replaces verbose tips)
+    optimization_actions:
+      LEAD_WITH: "array[string]"     # Skills/experiences to put first
+      EMPHASIZE: "array[string]"     # Areas to expand on
+      QUANTIFY: "array[string]"      # Metrics to highlight
+      DOWNPLAY: "array[string]"      # Areas to minimize
+
+    # Simplified ATS analysis
+    ats_analysis:
+      title_variations: "array[string]"     # Alternative job title formats (max 3)
+      critical_phrases: "array[string]"     # Must-include phrases (max 5)
+
+    # Basic metadata
     application_info:
       posting_url: "string"                 # Original job posting URL
       posting_date: "string"                # When job was posted
       deadline: "string"                    # Application deadline if mentioned
-
-    ats_analysis:
-      keywords_for_matching: "array[string]"     # Key terms for ATS scanning
-      title_variations: "array[string]"          # Alternative job title formats
-      critical_phrases: "array[string]"          # Must-include phrases from posting
-      formatting_requirements: "array[string]"  # ATS formatting preferences
-      resume_optimization_tips: "array[string]" # Specific optimization advice
 
 # Analysis transformation rules
 transformation_rules:
@@ -149,13 +171,16 @@ extraction_patterns:
     must_have_indicators: ["Required", "Must have", "Essential", "Mandatory"]
     nice_to_have_indicators: ["Preferred", "Nice to have", "Bonus", "Plus", "Advantage"]
 
-# Output validation rules
+# Output validation rules (v2.0)
 validation_rules:
   required_fields:
     - "job_analysis.company"
     - "job_analysis.position"
     - "job_analysis.job_focus"
     - "job_analysis.requirements.must_have_skills"
+    - "job_analysis.candidate_alignment"
+    - "job_analysis.section_priorities"
+    - "job_analysis.optimization_actions"
 
   field_constraints:
     - field: "job_analysis.job_focus"
@@ -163,66 +188,117 @@ validation_rules:
 
     - field: "job_analysis.requirements.must_have_skills"
       min_items: 3
-      max_items: 15
+      max_items: 10
+      note: "Each item must have skill and priority (1-10)"
 
-    - field: "job_analysis.requirements.experience_years"
-      min_value: 0
-      max_value: 20
+    - field: "job_analysis.requirements.nice_to_have_skills"
+      max_items: 8
+      note: "Each item must have skill and priority (1-10)"
+
+    - field: "job_analysis.responsibilities.primary"
+      max_items: 5
+
+    - field: "job_analysis.responsibilities.secondary"
+      max_items: 3
+
+    - field: "job_analysis.role_context.key_points"
+      max_items: 5
+
+    - field: "job_analysis.ats_analysis.title_variations"
+      max_items: 3
+
+    - field: "job_analysis.ats_analysis.critical_phrases"
+      max_items: 5
 
   data_quality:
-    - rule: "Extract specific skills mentioned in posting, not generic categories"
-    - rule: "Distinguish between must-have and nice-to-have requirements"
-    - rule: "Focus on actionable, specific responsibilities"
-    - rule: "Include company culture indicators when available"
+    - rule: "Prioritize skills with weights for clear guidance"
+    - rule: "Provide explicit candidate alignment analysis"
+    - rule: "Use action codes for optimization instead of verbose tips"
+    - rule: "Keep context points concise and actionable"
 
-# Usage instructions for job-tailor agent
+# Usage instructions for job-tailor agent (v2.0)
 usage_instructions: |
   1. Parse job posting text using extraction patterns
   2. Apply focus determination logic based on keyword analysis
-  3. Extract and categorize requirements using skill categorization rules
-  4. Map experience level using experience mapping patterns
-  5. Structure output according to target schema
-  6. Validate against validation rules
-  7. Store as job_analysis.yaml in company-specific folder
+  3. Extract requirements and assign priority weights (1-10 scale)
+  4. Analyze candidate fit to create alignment section:
+     - Identify strong matches from candidate's background
+     - Note gaps that need addressing
+     - Map transferable skills to bridge gaps
+  5. Define section priorities for resume tailoring
+  6. Create optimization action codes (LEAD_WITH, EMPHASIZE, etc.)
+  7. Merge verbose sections into concise role_context
+  8. Validate against v2.0 constraints
+  9. Store as job_analysis.yaml in company-specific folder
 
-# Output template structure
+# Output template structure (v2.0 - optimized)
 output_template: |
-  job_analysis:
-    company: "{{ extracted_company_name }}"
-    position: "{{ extracted_position_title }}"
-    job_focus: "{{ determined_focus }}"  # ai_ml_focused | qa_testing_focused | frontend_ui_focused | backend_systems_focused | fullstack_focused
-    location: "{{ extracted_location }}"
-    employment_type: "{{ extracted_employment_type }}"
-    experience_level: "{{ mapped_experience_level }}"
+  version: "2.0.0"
+  analysis_date: "{{ current_date }}"
+  source: "{{ job_source }}"
 
+  job_analysis:
+    # Core info
+    company: "{{ company_name }}"
+    position: "{{ position_title }}"
+    job_focus: "{{ determined_focus }}"  # ai_ml_focused | qa_testing_focused | frontend_ui_focused | backend_systems_focused | fullstack_focused
+    location: "{{ location }}"
+    employment_type: "{{ employment_type }}"
+    experience_level: "{{ experience_level }}"
+
+    # Prioritized requirements
     requirements:
-      must_have_skills: ["{{ skill1 }}", "{{ skill2 }}", "{{ skill3 }}"]
-      nice_to_have_skills: ["{{ optional_skill1 }}", "{{ optional_skill2 }}"]
+      must_have_skills:
+        - skill: "{{ skill1 }}"
+          priority: 10  # Most critical
+        - skill: "{{ skill2 }}"
+          priority: 8
+      nice_to_have_skills:
+        - skill: "{{ optional_skill1 }}"
+          priority: 5
       soft_skills: ["{{ soft_skill1 }}", "{{ soft_skill2 }}"]
-      experience_years: {{ extracted_years_number }}
-      education: "{{ extracted_education_requirement }}"
+      experience_years: {{ years }}
+      education: "{{ education }}"
 
     responsibilities:
-      primary: ["{{ main_responsibility1 }}", "{{ main_responsibility2 }}"]
-      secondary: ["{{ additional_responsibility1 }}", "{{ additional_responsibility2 }}"]
+      primary: ["{{ responsibility1 }}", "{{ responsibility2 }}"]  # Max 5
+      secondary: ["{{ secondary1 }}"]  # Max 3
 
-    company_info:
-      industry: "{{ identified_industry }}"
-      size: "{{ determined_company_size }}"
-      culture: ["{{ culture_keyword1 }}", "{{ culture_keyword2 }}"]
+    # Merged context
+    role_context:
+      department: "{{ department }}"
+      team_size: "{{ team_scale }}"
+      key_points:
+        - "{{ key_point1 }}"
+        - "{{ key_point2 }}"
 
-    compensation:
-      salary_range: "{{ extracted_salary_range }}"
-      benefits: ["{{ benefit1 }}", "{{ benefit2 }}"]
+    # Candidate fit analysis
+    candidate_alignment:
+      strong_matches: ["{{ match1 }}", "{{ match2 }}"]
+      gaps_to_address: ["{{ gap1 }}", "{{ gap2 }}"]
+      transferable_skills: ["{{ transfer1 }}"]
+      emphasis_strategy: "{{ strategy_one_liner }}"
 
-    application_info:
-      posting_url: "{{ original_job_posting_url }}"
-      posting_date: "{{ posting_date_if_available }}"
-      deadline: "{{ application_deadline_if_mentioned }}"
+    # Resume guidance
+    section_priorities:
+      technical_expertise: ["{{ category1 }}", "{{ category2 }}"]
+      experience_focus: "{{ experience_guidance }}"
+      project_relevance: "{{ project_guidance }}"
 
+    # Action codes
+    optimization_actions:
+      LEAD_WITH: ["{{ lead1 }}", "{{ lead2 }}"]
+      EMPHASIZE: ["{{ emphasize1 }}"]
+      QUANTIFY: ["{{ metric1 }}"]
+      DOWNPLAY: ["{{ downplay1 }}"]
+
+    # Simplified ATS
     ats_analysis:
-      keywords_for_matching: ["{{ ats_keyword1 }}", "{{ ats_keyword2 }}", "{{ ats_keyword3 }}"]
-      title_variations: ["{{ job_title_variation1 }}", "{{ job_title_variation2 }}"]
-      critical_phrases: ["{{ critical_phrase1 }}", "{{ critical_phrase2 }}"]
-      formatting_requirements: ["{{ formatting_req1 }}", "{{ formatting_req2 }}"]
-      resume_optimization_tips: ["{{ optimization_tip1 }}", "{{ optimization_tip2 }}"]
+      title_variations: ["{{ title1 }}", "{{ title2 }}"]
+      critical_phrases: ["{{ phrase1 }}", "{{ phrase2 }}"]
+
+    # Metadata
+    application_info:
+      posting_url: "{{ url }}"
+      posting_date: "{{ date }}"
+      deadline: "{{ deadline }}"

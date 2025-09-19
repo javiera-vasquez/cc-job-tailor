@@ -6,7 +6,7 @@ Your personal AI job application assistant. Stop manually tailoring your resume 
 
 CC-Job-Tailor treats your resume as code. You define your full career history once in simple YAML files, then Claude Code intelligently selects your best achievements and generates perfectly matched resume PDFs that highlight exactly what employers want for any specific role.
 
-![Gemini Fullstack LangGraph](/public/images/job-tailor-flow.png)
+![App Flow image](/public/images/job-tailor-flow.png)
 
 **Example Usage:**
 ```
@@ -34,7 +34,7 @@ The process is designed to be simple and powerful, flowing from your data to the
                  ┌────────────────┐  ┌───────────────────┐  ┌─────────────────┐
                  │ AI Agent       │  │ Tailored Data     │  │ resume-company. │
                  │ (Optimizes &   │──▶│ (resume.yaml in  │──▶│ pdf             │
-                 │  Selects Data) │  │  /data/tailor/)   │  │ (tmp/ folder)   │
+                 │  Selects Data) │  │  /resume-data/tailor/) │  │ (tmp/ folder)   │
                  └────────────────┘  └───────────────────┘  └─────────────────┘
 ```
 
@@ -87,7 +87,7 @@ This will generate a tailor job and cover letter application for the position.
 
 1.  **Navigate to the data sources:**
     ```bash
-    cd data/sources
+    cd resume-data/sources
     ```
 
 2.  **Copy the example files:**
@@ -110,7 +110,7 @@ Here's a step-by-step example of creating a tailored resume:
 
 2. **Files Created**: The agent creates:
    ```
-   data/tailor/techcorp/
+   resume-data/tailor/techcorp/
    ├── resume.yaml          # Tailored resume with AI-focused content
    ├── job_analysis.yaml    # Structured job requirements analysis
    └── cover_letter.yaml    # Personalized cover letter
