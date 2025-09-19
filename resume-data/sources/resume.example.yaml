@@ -91,9 +91,11 @@ independent_projects:
     impact: "Automates the time-consuming process of resume customization, enabling users to generate optimized applications in minutes instead of hours and improving job application effectiveness."
 
 languages:
-  - language: "English"
-    proficiency: "Native"
   - language: "Spanish"
+    proficiency: "Native"
+  - language: "English"
+    proficiency: "Professional Working Proficiency"
+  - language: "German"
     proficiency: "Professional Working Proficiency"
 
 education:
