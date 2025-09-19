@@ -3,9 +3,6 @@ import { Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 import { colors, spacing, typography } from '../design-tokens';
 import type { ResumeSchema } from '../../types';
 
-const IMAGE_SRC =
-  'https://i.guim.co.uk/img/media/a23aeb1f7ff20bb80f68852da17743b0e557f8ed/0_224_3504_2102/master/3504.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=9e9a99e479ee60270b69ede4d869b20f';
-
 const styles = StyleSheet.create({
   // Main header container
   headerContainer: {
@@ -83,8 +80,7 @@ const Header = ({resume}: {resume: ResumeSchema}) => (
       
       {/* Profile picture in top-right corner */}
       <View style={styles.profileArea}>
-        {/* <Image src={'./public/images/avatar.jpg'} style={styles.profileImage} /> */}
-        <Image src={IMAGE_SRC} style={styles.profileImage}/>
+        <Image src={resume.profile_picture} style={styles.profileImage}/>
       </View>
     </View>
     

@@ -1,20 +1,20 @@
 // Auto-generated application data
 // Company: tech-corp
-// Generated at: 2025-09-19T14:18:45.234Z
+// Generated at: 2025-09-19T14:36:32.934Z
 
 import type { ApplicationData } from '../types';
 
 const applicationData: ApplicationData = {
   "metadata": {
     "company": "Tech-Corp",
-    "position": "Senior Frontend Engineer - Web",
+    "position": "Senior Frontend Engineer - Web, Open Application",
     "last_updated": "2025-09-19",
-    "transformation_decisions": "Prioritized React/TypeScript expertise for senior frontend role, emphasized scalable app development, selected UI-focused achievements",
-    "job_focus_used": "senior_engineer + [react, typescript, frontend]"
+    "transformation_decisions": "Prioritized React/TypeScript expertise for senior frontend role, emphasized scalable web application development, selected UI-focused achievements and performance optimization metrics",
+    "job_focus_used": "senior_engineer + [react, typescript, frontend, mobile]"
   },
   "resume": {
     "name": "John Doe",
-    "profile_picture": "/images/avatar_placeholder.webp",
+    "profile_picture": "https://i.guim.co.uk/img/media/a23aeb1f7ff20bb80f68852da17743b0e557f8ed/0_224_3504_2102/master/3504.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=9e9a99e479ee60270b69ede4d869b20f",
     "title": "Senior Frontend Engineer | UI/UX Advocate",
     "summary": "Passionate Senior Frontend Engineer with a decade of experience creating beautiful, responsive, and accessible user interfaces. Expert in React, TypeScript, and modern CSS frameworks. Dedicated to best practices, component-driven development, and exceptional user experience.",
     "contact": {
@@ -53,23 +53,15 @@ const applicationData: ApplicationData = {
           "GraphQL",
           "Docker"
         ]
-      },
-      {
-        "resume_title": "Version Control",
-        "skills": [
-          "Git",
-          "GitHub",
-          "GitLab"
-        ]
       }
     ],
     "skills": [
-      "Analytical Thinking",
-      "Pattern Recognition",
-      "Strategic Planning",
       "Cross-functional Teamwork",
       "Agile/Scrum Methodologies",
       "Mentorship & Coaching",
+      "Analytical Thinking",
+      "Pattern Recognition",
+      "Strategic Planning",
       "Technical Documentation",
       "Stakeholder Communication",
       "Clear Code Commenting"
@@ -140,9 +132,10 @@ const applicationData: ApplicationData = {
         "description": "An AI-powered job application assistant that treats your resume as code, automatically tailoring it for specific roles by analyzing job descriptions and selecting the most relevant skills and achievements.",
         "url": "https://github.com/javiera-vasquez/cc-job-tailor",
         "achievements": [
+          "Developed a data-driven system to manage resume content in structured YAML files.",
+          "Built an AI agent with Claude Code to analyze job postings and automatically select relevant achievements and skills.",
           "Created a PDF generation service using @react-pdf/renderer to produce professional, ATS-friendly resumes.",
-          "Implemented a live preview server with hot reload using Bun.js to facilitate rapid template development.",
-          "Developed a data-driven system to manage resume content in structured YAML files."
+          "Implemented a live preview server with hot reload using Bun.js to facilitate rapid template development."
         ],
         "impact": "Automates the time-consuming process of resume customization, enabling users to generate optimized applications in minutes instead of hours and improving job application effectiveness."
       }
@@ -165,20 +158,22 @@ const applicationData: ApplicationData = {
         "specialties": [
           "react",
           "typescript",
-          "frontend"
+          "frontend",
+          "mobile"
         ],
         "weight": 0.8
       },
       {
         "primary_area": "senior_engineer",
         "specialties": [
-          "mobile",
-          "react_native"
+          "backend",
+          "python",
+          "architecture"
         ],
         "weight": 0.2
       }
     ],
-    "location": "Berlin, Germany (remote in Sweden, Estonia, Finland)",
+    "location": "Berlin, Germany",
     "employment_type": "Full-time",
     "experience_level": "Senior",
     "requirements": {
@@ -192,38 +187,42 @@ const applicationData: ApplicationData = {
           "priority": 10
         },
         {
-          "skill": "5+ years frontend experience",
+          "skill": "5+ years experience",
           "priority": 9
         },
         {
-          "skill": "Scalable applications",
-          "priority": 8
+          "skill": "Modern frontend development",
+          "priority": 9
         },
         {
-          "skill": "Modern JavaScript",
+          "skill": "Web application architecture",
           "priority": 8
         }
       ],
       "nice_to_have_skills": [
         {
           "skill": "React Native",
-          "priority": 7
+          "priority": 8
         },
         {
-          "skill": "Mobile development (iOS/Android)",
+          "skill": "Python",
           "priority": 6
         },
         {
-          "skill": "Backend tinkering",
+          "skill": "Scala",
           "priority": 5
+        },
+        {
+          "skill": "International team experience",
+          "priority": 6
         }
       ],
       "soft_skills": [
-        "Ownership mindset",
+        "Team player",
+        "Pragmatic attitude",
+        "Curiosity",
         "Continuous learning",
-        "Team collaboration",
-        "Pragmatic problem solving",
-        "Curiosity"
+        "Adaptability"
       ],
       "experience_years": 5,
       "education": "Not specified"
@@ -231,46 +230,47 @@ const applicationData: ApplicationData = {
     "responsibilities": {
       "primary": [
         "Build scalable frontend services and well-structured applications",
-        "Work with TypeScript and React as core technologies",
-        "Tackle scalability challenges for 20+ million users",
-        "Collaborate across teams in 500+ person product organization",
-        "Maintain and improve existing web applications"
+        "Work with modern TypeScript and React across Tech-Corp organization",
+        "Contribute to core tech shared across multiple teams",
+        "Collaborate in cross-functional teams serving 20M+ users globally",
+        "Iterate and ship features for delivery platform expansion"
       ],
       "secondary": [
-        "Potentially work with React Native for mobile applications",
+        "Potentially work with React Native for Partner application",
         "Explore backend technologies when needed",
-        "Contribute to technical excellence and best practices"
+        "Support integration with parent company ecosystem"
       ]
     },
     "role_context": {
-      "department": "Product Engineering",
-      "team_size": "500+ people in product organization, 20+ million users",
+      "department": "Engineering Team",
+      "team_size": "500+ people in product organization",
       "key_points": [
-        "Tech-Corp is a global delivery platform operating in 500+ cities across 30 countries",
-        "Company is scaling and integrating with parent company ecosystem",
-        "Modern tech stack with TypeScript/React as core frontend technologies",
-        "Multiple product teams working on delivery platform and new business ventures",
-        "Strong emphasis on ownership, learning, and building excellent engineering teams"
+        "Global delivery platform serving 20 million users in 30 countries",
+        "Core tech shared across organization with modern TypeScript/React focus",
+        "Fast-paced environment: Build it, Break it, Iterate and Ship it",
+        "International expansion and parent company integration phase",
+        "Remote work flexibility in Sweden, Estonia, Finland, Germany"
       ]
     },
     "candidate_alignment": {
       "strong_matches": [
         "React expertise",
         "TypeScript proficiency",
-        "10+ years frontend experience",
+        "5+ years senior experience",
         "Scalable application development",
-        "Full-stack background"
+        "Modern frontend practices"
       ],
       "gaps_to_address": [
-        "React Native mobile development",
-        "Delivery/logistics domain knowledge"
+        "React Native experience",
+        "Delivery/logistics domain knowledge",
+        "European market experience"
       ],
       "transferable_skills": [
-        "Full-stack experience → Backend tinkering",
-        "Node.js → Understanding of scalable services",
-        "AI/ML projects → Technical versatility"
+        "React → React Native mobile development",
+        "Enterprise scale → Consumer delivery platform",
+        "US tech experience → European expansion"
       ],
-      "emphasis_strategy": "Lead with React/TypeScript expertise while highlighting scalability experience and ability to learn new technologies"
+      "emphasis_strategy": "Lead with React/TypeScript expertise while highlighting scalable application experience and international adaptability"
     },
     "section_priorities": {
       "technical_expertise": [
@@ -278,8 +278,8 @@ const applicationData: ApplicationData = {
         "backend",
         "systems_design"
       ],
-      "experience_focus": "Select achievements demonstrating React/TypeScript mastery and scalable frontend development",
-      "project_relevance": "Include: React projects, scalable applications. Minimize: AI/ML focus unless it shows technical breadth"
+      "experience_focus": "Select achievements showing React/TypeScript expertise, scalable frontend development, and user-facing applications at scale",
+      "project_relevance": "Include: React applications, TypeScript projects, scalable web platforms. Emphasize: user-facing impact, performance optimization"
     },
     "optimization_actions": {
       "LEAD_WITH": [
@@ -289,36 +289,38 @@ const applicationData: ApplicationData = {
       ],
       "EMPHASIZE": [
         "scalable_applications",
-        "modern_javascript",
+        "user_experience",
+        "performance_optimization",
         "team_collaboration"
       ],
       "QUANTIFY": [
-        "user_scale",
+        "user_scale_metrics",
         "performance_improvements",
-        "team_impact"
+        "load_time_reductions"
       ],
       "DOWNPLAY": [
-        "AI_specific_technologies"
+        "ai_ml_experience",
+        "pure_backend_roles"
       ]
     },
     "ats_analysis": {
       "title_variations": [
         "Senior Frontend Engineer",
         "Senior React Developer",
-        "Senior TypeScript Developer"
+        "Senior TypeScript Engineer"
       ],
       "critical_phrases": [
         "TypeScript and React",
         "scalable applications",
-        "5+ years experience",
         "modern frontend",
+        "5+ years experience",
         "team player"
       ]
     },
     "application_info": {
-      "posting_url": "/Users/javi/Develop/cc-resume-manager-worktrees/normalize-resume-data/public/jobs/tech-corp__senior_frontend_engineer_web_open_application.md",
-      "posting_date": "Unknown",
-      "deadline": "Open application"
+      "posting_url": "Tech-Corp careers page",
+      "posting_date": "2025-09-19",
+      "deadline": "Not specified"
     }
   },
   "cover_letter": {
@@ -335,14 +337,14 @@ const applicationData: ApplicationData = {
       "github": "https://github.com/johndoe-example"
     },
     "content": {
-      "letter_title": "Cover Letter Frontend Engineer",
+      "letter_title": "Cover Letter Senior Frontend Engineer",
       "opening_line": "Dear Tech-Corp Hiring Team,",
       "body": [
-        "I am writing to express my keen interest in the Senior Frontend Engineer - Web role at Tech-Corp. With a decade of experience focused on creating high-quality, user-centric frontend applications using React and TypeScript, I am thrilled by the prospect of joining your team and contributing to technology that brings joy and simplicity to neighborhoods worldwide.",
-        "My expertise in React, TypeScript, and modern UI/UX principles aligns perfectly with Tech-Corp's core technology stack. At NextGen Solutions, I led a successful migration from legacy jQuery to a modern React and TypeScript stack, resulting in a 30% performance boost and achieving a Lighthouse score of 95. I also built a reusable component library that was adopted by three different product teams—experience that directly translates to Tech-Corp's multi-team environment.",
-        "What particularly excites me about this role is the opportunity to build scalable frontend solutions for 20+ million users across 500+ cities globally. At Innovate AI, I created complex data visualization dashboards and championed design system adoption, ensuring UI consistency across all products. This experience in building scalable, user-focused applications aligns with Tech-Corp's mission of delivering exceptional experiences at massive scale.",
-        "Beyond technical expertise, I thrive in collaborative, ownership-driven environments like the one described at Tech-Corp. My experience working across cross-functional teams using Agile methodologies, combined with my fluency in Spanish, English, and German, positions me well for Tech-Corp's international presence. I am particularly drawn to the company's emphasis on continuous learning and technical excellence.",
-        "Thank you for considering my application. I am eager to bring my React and TypeScript expertise to Tech-Corp and contribute to building the world-class engineering team that serves millions of users globally. I would welcome the opportunity to discuss how my frontend engineering experience can help Tech-Corp continue innovating in the delivery technology space."
+        "I am writing to express my strong interest in the Senior Frontend Engineer - Web, Open Application role. As a Senior Frontend Engineer with over 10 years of experience building scalable, user-facing applications with React and TypeScript, I am excited about the opportunity to contribute to Tech-Corp's mission of bringing joy, simplicity and earnings to neighborhoods worldwide.",
+        "My extensive experience in React and TypeScript aligns perfectly with Tech-Corp's core technology stack. At NextGen Solutions, I led the migration of a legacy frontend to a modern React and TypeScript architecture, achieving a 30% performance improvement and a Lighthouse score of 95. I also built a reusable component library adopted by three product teams, demonstrating my ability to build scalable, well-structured applications that Tech-Corp values.",
+        "What particularly excites me about this role is Tech-Corp's scale and international reach - serving over 20 million users across 30 countries. At Innovate AI, I designed and implemented a REST API serving over 1M requests per day and created complex data visualization dashboards with React and D3.js—experience that translates directly to building robust frontend services for Tech-Corp's global platform.",
+        "Beyond technical expertise, I thrive in cross-functional, fast-paced environments, having worked in agile teams throughout my career. My international background and fluency in Spanish, English, and German aligns well with Tech-Corp's global operations and European expansion. As someone passionate about continuous learning and stepping outside comfort zones, I'm eager to potentially explore React Native for your Partner application.",
+        "Thank you for considering my application. I am eager to bring my React and TypeScript expertise to Tech-Corp and contribute to building the delivery platform that connects millions of users with the services they need."
       ],
       "signature": "Sincerely,\nJohn Doe\n"
     }
