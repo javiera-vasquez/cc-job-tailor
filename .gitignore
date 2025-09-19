@@ -9,6 +9,7 @@ tmp/
 # public/jobs/
 # src/data/
 # resume-data/tailor/
+resume-data/sources/bk
 
 # code coverage
 coverage
