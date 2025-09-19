@@ -3,6 +3,7 @@ import { renderToFile } from '@react-pdf/renderer';
 import { resume, coverLetter } from './src';
 import path from 'path';
 import { parseArgs } from 'util';
+import { mkdir } from 'fs/promises';
 
 // Parse command line arguments
 const { values } = parseArgs({
@@ -66,13 +67,21 @@ const generatePdf = async () => {
     process.exit(1);
   }
 
+  // Ensure tmp directory exists
+  const tmpDir = path.join(__dirname, 'tmp');
+  try {
+    await mkdir(tmpDir, { recursive: true });
+  } catch (error) {
+    // Directory might already exist, ignore error
+  }
+
   // Generate PDFs based on document type
   const generateDocument = async (docType: 'resume' | 'cover-letter') => {
     const component = docType === 'resume'
       ? React.createElement(resume.Document)
       : React.createElement(coverLetter.Document);
 
-    const filePath = path.join(__dirname, 'tmp', `${docType}-${companyName}.pdf`);
+    const filePath = path.join(tmpDir, `${docType}-${companyName}.pdf`);
 
     console.log(`Generating ${docType} PDF for ${companyName} at ${filePath}`);
 

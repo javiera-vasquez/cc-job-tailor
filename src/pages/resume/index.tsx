@@ -20,7 +20,6 @@ import { colors, spacing, typography } from '../design-tokens';
 import type { ResumeSchema, ReactPDFProps } from '../../types';
 import { registerFonts } from '../fonts-register';
 
-console.log('applicationData', applicationData);
 
 // Register available fonts
 registerFonts();
