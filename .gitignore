@@ -6,9 +6,9 @@ out
 dist
 tmp/
 *.tgz
-# resume-data/tailor/
 public/jobs/
-src/data/
+# src/data/
+# resume-data/tailor/
 
 # code coverage
 coverage
