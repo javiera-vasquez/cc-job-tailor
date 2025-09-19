@@ -3,7 +3,7 @@ import { existsSync, readdirSync } from 'fs';
 import { parseArgs } from 'util';
 import type { ApplicationData, ResumeSchema } from './src/types';
 
-console.log('Generating application data module...');
+console.log('🔧 Generating application data module...');
 
 // Parse command line arguments
 const { values } = parseArgs({
@@ -20,6 +20,10 @@ const { values } = parseArgs({
 });
 
 const companyName = values.company;
+
+if (companyName) {
+  console.log(`🎯 Target company: "${companyName}"`);
+}
 
 // Function to provide error guidance when no company is specified
 function throwNoCompanyError(): never {
@@ -76,7 +80,7 @@ async function loadTailoredData(companyPath: string): Promise<ApplicationData> {
   const jobAnalysisPath = `${companyPath}/job_analysis.yaml`;
   const coverLetterPath = `${companyPath}/cover_letter.yaml`;
 
-  console.log(`Loading tailored data from: ${companyPath}`);
+  console.log(`📂 Loading tailored data from: ${companyPath}`);
 
   const resumeFile = existsSync(resumePath)
     ? load(await Bun.file(resumePath).text())
@@ -91,10 +95,16 @@ async function loadTailoredData(companyPath: string): Promise<ApplicationData> {
     : null;
 
   // Log what was found
-  console.log(`Found files:`);
-  if (resumeFile) console.log(`  - resume.yaml`);
-  if (jobAnalysis) console.log(`  - job_analysis.yaml`);
-  if (coverLetter) console.log(`  - cover_letter.yaml`);
+  const foundFiles = [];
+  if (resumeFile) foundFiles.push('resume.yaml');
+  if (jobAnalysis) foundFiles.push('job_analysis.yaml');
+  if (coverLetter) foundFiles.push('cover_letter.yaml');
+
+  if (foundFiles.length > 0) {
+    console.log(`✅ Found ${foundFiles.length} file(s): ${foundFiles.join(', ')}`);
+  } else {
+    console.log(`⚠️  No data files found in ${companyPath}`);
+  }
 
   return {
     metadata: (resumeFile as any).metadata,
@@ -139,10 +149,10 @@ import type { ApplicationData } from '../types';
 const applicationData: ApplicationData = ${JSON.stringify(applicationData, null, 2)};
 
 export default applicationData;
-export const { metadata, resume, job_analysis, cover_letter } = applicationData;
 `;
 
 // Write the generated module
+console.log(`📝 Writing TypeScript module to src/data/application.ts...`);
 await Bun.write("./src/data/application.ts", tsContent);
 
-console.log(`Application data module generated successfully from ${source}`);
+console.log(`✅ Application data module generated successfully from ${source}`);

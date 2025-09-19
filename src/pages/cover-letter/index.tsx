@@ -39,7 +39,6 @@ const CoverLetter = ({
 }: ReactPDFProps) => {
   const coverLetter = data as CoverLetterSchema;
 
-  console.log('coverLetter', coverLetter);
   return (
     <Page 
       size={size} 

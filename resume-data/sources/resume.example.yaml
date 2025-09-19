@@ -1,96 +1,105 @@
-version: "1.0.0"
-roles: [tech_lead, product_manager, data_scientist]
+version: "2.0.0"
 metadata:
-  last_updated: "San Francisco, Tue 16. September 2025"
-  versions:
-    - "Tech Lead version"
-    - "Product Manager version"
-    - "Data Scientist version"
+  last_updated: "San Francisco, Fri 19. September 2025"
 
 personal_info:
-  name: "Alex Doe"
+  name: "John Doe"
   profile_picture: "/images/avatar_placeholder.webp"
   titles:
-    tech_lead: "Principal Software Engineer | Tech Lead"
-    product_manager: "Senior Product Manager | Technical PM"
-    data_scientist: "Data Scientist | Machine Learning"
+    fullstack_focused: "Senior Full-Stack Engineer | Node.js & React"
+    ai_ml_focused: "AI/ML Engineer | Semantic Search & RAG Specialist"
+    frontend_ui_focused: "Senior Frontend Engineer | UI/UX Advocate"
+    qa_testing_focused: "Software Engineer in Test | QA Automation Lead"
   summaries:
-    tech_lead: "Seasoned software engineer with over 10 years of experience leading teams to build scalable and robust applications. Passionate about mentorship and driving technical excellence."
-    product_manager: "Strategic product manager with a knack for translating complex user needs into successful products. Experienced in market analysis, roadmap planning, and cross-functional leadership."
-    data_scientist: "Data scientist with a strong background in statistical modeling and machine learning. Proven ability to extract actionable insights from complex datasets to drive business value."
+    fullstack_focused: "Versatile Senior Full-Stack Engineer with 10+ years of experience designing, building, and deploying scalable web applications. Expertise in the MERN stack, microservices architecture, and cloud-native development. Proven ability to deliver end-to-end solutions that meet business needs."
+    ai_ml_focused: "Innovative AI/ML Engineer with a strong focus on Natural Language Processing, semantic search, and Retrieval-Augmented Generation (RAG) systems. Experienced in leveraging large language models (LLMs) and vector databases to build intelligent, data-driven applications."
+    frontend_ui_focused: "Passionate Senior Frontend Engineer with a decade of experience creating beautiful, responsive, and accessible user interfaces. Expert in React, TypeScript, and modern CSS frameworks. Dedicated to best practices, component-driven development, and exceptional user experience."
+    qa_testing_focused: "Detail-oriented Software Engineer in Test with a proven track record of designing and implementing robust automated testing frameworks. Expertise in E2E, integration, and unit testing using tools like Cypress, Jest, and Playwright. Committed to ensuring software quality and reliability through continuous integration."
 
 contact:
-  phone: "+1 (555) 123-4567"
-  email: "alex.doe@example.com"
-  address: "123 Main Street, San Francisco, CA 94105"
-  linkedin: "https://www.linkedin.com/in/alexdoe-example"
-  github: "https://github.com/alexdoe-example"
+  phone: "+1 (555) 555-5555"
+  email: "john.doe@example.com"
+  address: "456 Innovation Drive, San Francisco, CA 94105"
+  linkedin: "https://www.linkedin.com/in/johndoe-example"
+  github: "https://github.com/johndoe-example"
 
 technical_expertise:
   frontend:
     - "React"
-    - "Vue.js"
     - "TypeScript"
-    - "Webpack"
-    - "CSS-in-JS"
+    - "Next.js"
+    - "JavaScript (ES6+)"
+    - "HTML5 & CSS3"
+    - "Tailwind CSS"
   backend:
     - "Node.js"
+    - "Express.js"
     - "Python"
-    - "Go"
+    - "FastAPI"
     - "PostgreSQL"
     - "MongoDB"
+  qa_testing:
+    - "Cypress"
+    - "Jest"
+    - "Playwright"
+    - "E2E Testing"
+    - "CI/CD"
+    - "Test Automation"
+  ai_machine_learning:
+    - "LangChain"
+    - "LangGraph"
+    - "Vector Databases (Pinecone, Chroma)"
+    - "Semantic Search"
+    - "RAG"
+    - "OpenAI API"
+  systems_design:
+    - "Microservices Architecture"
+    - "REST APIs"
+    - "GraphQL"
     - "Docker"
     - "Kubernetes"
-  data_science:
-    - "Python (Pandas, NumPy)"
-    - "TensorFlow"
-    - "PyTorch"
-    - "Scikit-learn"
-    - "SQL"
-  project_management:
-    - "Jira"
-    - "Confluence"
-    - "Agile/Scrum"
-    - "Roadmap Planning"
+  version_control:
+    - "Git"
+    - "GitHub"
+    - "GitLab"
 
 soft_skills:
-  leadership:
-    - "Team Leadership"
-    - "Mentorship"
+  problem_solving:
+    - "Analytical Thinking"
+    - "Pattern Recognition"
     - "Strategic Planning"
+  collaboration:
+    - "Cross-functional Teamwork"
+    - "Agile/Scrum Methodologies"
+    - "Mentorship & Coaching"
   communication:
-    - "Stakeholder Management"
-    - "Public Speaking"
-    - "Technical Writing"
-  product:
-    - "User Research"
-    - "A/B Testing"
-    - "Product Strategy"
+    - "Technical Documentation"
+    - "Stakeholder Communication"
+    - "Clear Code Commenting"
 
 independent_projects:
-  - name: "Insight Engine - Open Source Analytics Tool"
-    location: "Remote"
-    duration: "2023"
-    description: "An open-source project to create a lightweight, self-hostable web analytics platform."
-    url: "https://github.com/alexdoe-example/insight-engine"
+  - name: "Claude Code Job Tailor"
+    location: "Open Source"
+    duration: "2025"
+    description: "An AI-powered job application assistant that treats your resume as code, automatically tailoring it for specific roles by analyzing job descriptions and selecting the most relevant skills and achievements."
+    url: "https://github.com/javiera-vasquez/cc-job-tailor"
     achievements:
-      - "Designed and built a data ingestion pipeline using Go and PostgreSQL."
-      - "Created a real-time dashboard with React and D3.js."
-      - "Grew the community to 50+ contributors."
-    impact: "Provided a free alternative to commercial analytics tools for small projects and startups."
+      - "Developed a data-driven system to manage resume content in structured YAML files."
+      - "Built an AI agent with Claude Code to analyze job postings and automatically select relevant achievements and skills."
+      - "Created a PDF generation service using @react-pdf/renderer to produce professional, ATS-friendly resumes."
+      - "Implemented a live preview server with hot reload using Bun.js to facilitate rapid template development."
+    impact: "Automates the time-consuming process of resume customization, enabling users to generate optimized applications in minutes instead of hours and improving job application effectiveness."
 
 languages:
-  - language: "English"
+  - language: "Spanish"
     proficiency: "Native"
-  - language: "French"
-    proficiency: "Conversational"
+  - language: "English"
+    proficiency: "Professional Working Proficiency"
+  - language: "German"
+    proficiency: "Professional Working Proficiency"
 
 education:
-  - institution: "State University"
-    program: "M.S. in Computer Science"
-    location: "Anytown, USA"
-    duration: "2012 - 2014"
-  - institution: "Tech College"
-    program: "B.S. in Software Engineering"
-    location: "Anytown, USA"
+  - institution: "California Institute of Technology"
+    program: "B.S. in Computer Science"
+    location: "Pasadena, CA"
     duration: "2008 - 2012"
