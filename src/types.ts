@@ -22,14 +22,14 @@ export type Language = {language: string, proficiency: string};
 
 export type Education = {
   institution: string;
-  degree: string;
+  program: string;
   location: string;
   duration: string;
-  description?: string;
 }
 
+// FIX: name is optional. reason: we use ContactDetails for resume and cover letter
 export type ContactDetails = {
-  name: string;
+  name?: string;
   phone: string;
   email: string;
   address: string;
@@ -52,9 +52,13 @@ export type IndependentProject = {
   description: string;
   location: string;
   duration: string;
-  technologies: string[];
+  url?: string;
   achievements: string[];
+  impact?: string;
 }
+
+// Union type for Experience component that can handle both types
+export type ExperienceItem = ProfessionalExperience | IndependentProject;
 
 export type ResumeSchema = {
   name: string;
@@ -73,10 +77,16 @@ export type ResumeSchema = {
 // Job Focus type - agnostic string type for flexibility
 export type JobFocus = string;
 
+// Skill with priority for job analysis
+export type SkillWithPriority = {
+  skill: string;
+  priority: number;
+};
+
 // Job Analysis Schema types
 export type JobAnalysisRequirements = {
-  must_have_skills: string[];
-  nice_to_have_skills: string[];
+  must_have_skills: SkillWithPriority[];
+  nice_to_have_skills: SkillWithPriority[];
   soft_skills: string[];
   experience_years: number;
   education: string;
@@ -87,16 +97,32 @@ export type JobAnalysisResponsibilities = {
   secondary: string[];
 };
 
-export type JobAnalysisCompanyInfo = {
-  industry: string;
-  size: string;
-  culture: string[];
+export type JobAnalysisRoleContext = {
+  department: string;
+  team_size: string;
+  key_points: string[];
 };
 
-export type JobAnalysisCompensation = {
-  salary_range: string;
-  benefits: string[];
+export type JobAnalysisCandidateAlignment = {
+  strong_matches: string[];
+  gaps_to_address: string[];
+  transferable_skills: string[];
+  emphasis_strategy: string;
 };
+
+export type JobAnalysisSectionPriorities = {
+  technical_expertise: string[];
+  experience_focus: string;
+  project_relevance: string;
+};
+
+export type JobAnalysisOptimizationActions = {
+  LEAD_WITH: string[];
+  EMPHASIZE: string[];
+  QUANTIFY: string[];
+  DOWNPLAY: string[];
+};
+
 
 export type JobAnalysisApplicationInfo = {
   posting_url: string;
@@ -105,11 +131,8 @@ export type JobAnalysisApplicationInfo = {
 };
 
 export type ATSAnalysis = {
-  keywords_for_matching: string[];
   title_variations: string[];
   critical_phrases: string[];
-  formatting_requirements: string[];
-  resume_optimization_tips: string[];
 };
 
 export type JobAnalysisSchema = {
@@ -121,9 +144,11 @@ export type JobAnalysisSchema = {
   experience_level: string;
   requirements: JobAnalysisRequirements;
   responsibilities: JobAnalysisResponsibilities;
-  company_info: JobAnalysisCompanyInfo;
-  compensation: JobAnalysisCompensation;
+  role_context: JobAnalysisRoleContext;
   application_info: JobAnalysisApplicationInfo;
+  candidate_alignment: JobAnalysisCandidateAlignment;
+  section_priorities: JobAnalysisSectionPriorities;
+  optimization_actions: JobAnalysisOptimizationActions;
   ats_analysis: ATSAnalysis;
 };
 

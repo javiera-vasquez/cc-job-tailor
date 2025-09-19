@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet, Link } from '@react-pdf/renderer';
 import { colors, spacing } from '../design-tokens';
-import type { ProfessionalExperience, ResumeSchema } from '../../types';
+import type { ExperienceItem, ResumeSchema } from '../../types';
 
 const styles = StyleSheet.create({
   container: {
@@ -63,8 +63,7 @@ const styles = StyleSheet.create({
   },
 });
 
-// TODO: FIX THIS TS ISSUE
-const ExperienceEntry = ({ experience, debug }: { experience: ProfessionalExperience, debug: boolean }) => {
+const ExperienceEntry = ({ experience, debug }: { experience: ExperienceItem, debug: boolean }) => {
   const { company, position, location, duration, description, company_description, achievements, name, linkedin } = experience as any;
 
   return (
