@@ -74,8 +74,29 @@ export type ResumeSchema = {
   education: Array<Education>;
 }
 
-// Job Focus type - agnostic string type for flexibility
-export type JobFocus = string;
+// Job Focus types - array-based structure for multi-role analysis
+export type PrimaryArea =
+  | 'junior_engineer'
+  | 'engineer'
+  | 'senior_engineer'
+  | 'staff_engineer'
+  | 'principal_engineer'
+  | 'tech_lead'
+  | 'engineering_manager';
+
+export type Specialty =
+  | 'ai' | 'ml' | 'data'
+  | 'react' | 'typescript' | 'node' | 'python'
+  | 'aws' | 'testing' | 'architecture' | 'devops'
+  | 'frontend' | 'backend' | 'mobile' | 'security';
+
+export type JobFocusItem = {
+  primary_area: PrimaryArea;
+  specialties: Specialty[];
+  weight: number;          // 0.0-1.0 importance score (must sum to 1.0 across array)
+};
+
+export type JobFocus = JobFocusItem[];
 
 // Skill with priority for job analysis
 export type SkillWithPriority = {
@@ -163,7 +184,8 @@ export type CoverLetterContent = {
 export type CoverLetterSchema = {
   company: string;
   position: string;
-  job_focus: JobFocus;
+  job_focus: JobFocus;           // Full array from job analysis
+  primary_focus: string;         // Highest weighted primary_area for template selection
   date: string;
   personal_info: ContactDetails;
   content: CoverLetterContent;
