@@ -6,13 +6,16 @@ schema_version: "1.0"
 # Target output schema for tailored cover letters
 target_schema:
   version: "string"                      # Schema version
-  job_focus: "string"                    # ai_focused | qa_focused | frontend_focused
+  job_focus:                             # Array of job focuses from analysis
+    - primary_area: "string"             # senior_engineer, tech_lead, etc.
+      specialties: ["string"]            # [ai, ml, react, typescript]
+      weight: "number"                   # 0.0-1.0
   analysis_date: "string"                # Date of job analysis
 
   cover_letter:
     company: "string"                    # Target company name
     position: "string"                   # Target job position
-    job_focus: "string"                  # ai_focused | qa_focused | frontend_focused
+    primary_focus: "string"              # highest weighted primary_area from job_focus array
     date: "string"                       # Application date
 
     personal_info:
@@ -32,11 +35,14 @@ target_schema:
 # Transformation rules
 transformation_rules:
 
-  # Template selection based on job focus
+  # Template selection based on highest weighted job focus
   template_selection:
     source: "cover_letter.templates"
-    selection_key: "{{ job_focus }}"    # ai_focused | qa_focused | frontend_focused
-    fallback: "frontend_focused"        # Default template if focus unclear
+    selection_logic: |
+      1. Get highest weighted job_focus item from array
+      2. Use primary_area to determine template category
+      3. Use top 3 specialties to customize template content
+    fallback: "senior_engineer"         # Default template if focus unclear
 
   # Variable replacement rules
   variable_replacement:
@@ -47,8 +53,8 @@ transformation_rules:
       source: "job_analysis.position"
 
     - placeholder: "[TECH_SKILLS]"
-      source: "job_analysis.requirements.must_have_skills"
-      transformation: "select_top_3_matching"
+      source: "job_analysis.job_focus[0].specialties"
+      transformation: "select_top_3_from_highest_weighted_focus"
 
   # Content enhancement rules
   content_optimization:
@@ -69,18 +75,21 @@ required_fields:
   - "job_analysis.company"
   - "job_analysis.position"
   - "job_analysis.job_focus"
+validation_rules:
+  - "job_analysis.job_focus must be non-empty array"
+  - "job_focus weights must sum to 1.0"
 
 
 # Output template structure
 output_template: |
   version: "{{ schema_version }}"
-  job_focus: "{{ job_analysis.job_focus }}"
+  job_focus: "{{ job_analysis.job_focus }}"    # Full array from job analysis
   analysis_date: "{{ analysis_date }}"
 
   cover_letter:
     company: "{{ job_analysis.company }}"
     position: "{{ job_analysis.position }}"
-    job_focus: "{{ job_analysis.job_focus }}"
+    primary_focus: "{{ job_analysis.job_focus[0].primary_area }}"  # Highest weighted focus
     date: "{{ current_date }}"
 
     personal_info:
