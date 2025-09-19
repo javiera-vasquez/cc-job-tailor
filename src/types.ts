@@ -192,10 +192,11 @@ export type CoverLetterSchema = {
 };
 
 export type MetadataSchema = {
-  last_updated: string;
   company: string;
   position: string;
+  last_updated: string;
   transformation_decisions: string;
+  job_focus_used: string;
 };
 
 // Main Application Data type

@@ -149,7 +149,6 @@ import type { ApplicationData } from '../types';
 const applicationData: ApplicationData = ${JSON.stringify(applicationData, null, 2)};
 
 export default applicationData;
-export const { metadata, resume, job_analysis, cover_letter } = applicationData;
 `;
 
 // Write the generated module

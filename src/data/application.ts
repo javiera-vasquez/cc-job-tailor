@@ -1,13 +1,15 @@
 // Auto-generated application data
 // Company: tech-corp
-// Generated at: 2025-09-19T13:33:06.312Z
+// Generated at: 2025-09-19T14:18:45.234Z
 
 import type { ApplicationData } from '../types';
 
 const applicationData: ApplicationData = {
   "metadata": {
-    "tailored_for": "Tech-Corp - Senior Frontend Engineer - Web",
-    "generated_date": "2025-09-19",
+    "company": "Tech-Corp",
+    "position": "Senior Frontend Engineer - Web",
+    "last_updated": "2025-09-19",
+    "transformation_decisions": "Prioritized React/TypeScript expertise for senior frontend role, emphasized scalable app development, selected UI-focused achievements",
     "job_focus_used": "senior_engineer + [react, typescript, frontend]"
   },
   "resume": {
@@ -348,4 +350,3 @@ const applicationData: ApplicationData = {
 };
 
 export default applicationData;
-export const { metadata, resume, job_analysis, cover_letter } = applicationData;
