@@ -12,11 +12,14 @@ Set the active company context for tailored resume operations. This command read
 /tailor company-name
 ```
 
+## IMPORTANT: .claude Directory
+**Do not try to create the .claude folder - it is already created.**
+
 ## What this command does:
 
 1. **Validate Company Folder**: Check that `resume-data/tailor/$1/` exists
 2. **Read Company Materials**: Load available files (resume.yaml, job_analysis.yaml, cover_letter.yaml)
-3. **Create Context State**: Generate `.claude/tailor-context.yaml` with:
+3. **Update Context State**: Update existing `.claude/tailor-context.yaml` with:
    ```yaml
    active_company: "$1"
    folder_path: "resume-data/tailor/$1"
@@ -49,7 +52,7 @@ After running this command, all subsequent interactions will:
 1. **Validate Folder**: Confirm `resume-data/tailor/$1/` exists
 2. **Discover Files**: Find available YAML files in company folder
 3. **Extract Context**: Read job_analysis.yaml for position and job_focus details
-4. **Generate State**: Create/update `.claude/tailor-context.yaml` with:
+4. **Update State**: Update `.claude/tailor-context.yaml` with:
    - active_company: Company name
    - folder_path: Full path to company folder
    - available_files: List of existing files
