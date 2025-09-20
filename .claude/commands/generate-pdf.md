@@ -1,6 +1,6 @@
 ---
 allowed-tools: Bash(bun run generate-pdf.ts:*)
-description:  Create PDF resume/cover letter for specific company | Usage: /generate-pdf company-name [resume|cover-letter|both]
+description:  Create PDF document for specific company | argument-hint: company-name [resume|cover-letter|both]
 ---
 Generate PDF documents for company: $1
 
