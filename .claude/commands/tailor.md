@@ -12,6 +12,9 @@ Set the active company context for tailored resume operations. This command read
 /tailor company-name
 ```
 
+## IMPORTANT: .claude Directory
+**Do not try to create the .claude folder - it is already created.**
+
 ## What this command does:
 
 1. **Validate Company Folder**: Check that `resume-data/tailor/$1/` exists
