@@ -1,0 +1,83 @@
+version: "1.0"
+metadata:
+  roles: [ai_focused, qa_focused, frontend_focused]
+  last_updated: "Berlin, Mon 16. September 2025"
+  versions:
+    - "AI-focused version"
+    - "QA-focused version"
+    - "Frontend-focused version"
+
+personal_info:
+  name: "Javiera Vasquez"
+  address: "Eisenstraße 61, 12059 Berlin"
+  email: "javiera.vasg@gmail.com"
+  phone: "015901070292"
+  linkedin: "https://www.linkedin.com/in/javiera-vasquez-94523960/"
+  github: "https://github.com/javiera-vasquez"
+
+cover_letter:
+  templates:
+    ai_focused:
+      letter_title: "Bewerbung als KI-Ingenieur"
+      opening_line: "Sehr geehrtes [FIRMENNAME]-Team,"
+      body:
+        - "als produktfokussierte Senior Frontend-Entwicklerin mit umfassender Erfahrung in KI-Integration und innovativen Technologien möchte ich meine Expertise gerne in [FIRMENNAME] einbringen. Meine Leidenschaft, KI von Grund auf zu verstehen, führte zum Aufbau von Seeker—einer konversationellen Benutzeroberfläche für die Videoerkundung mit $0.003/Anfrage-Kosten und ~0.7s Antwortzeiten."
+        - "Diese praktische Erfahrung mit KI-Systemen, kombiniert mit meinem Hintergrund als ehemalige Cornershop-Ingenieurin (von Uber für $3.3B übernommen), positioniert mich einzigartig für die Architektur der nächsten Generation intelligenter Frontends. Bei Inkitt entwickelte ich konversationelle KI-Features, die über 100.000 tägliche aktive Nutzer einbanden und die Leserbindung um 15% durch datenanalytisches Redesign steigerten."
+        - "Zusätzlich implementierte ich KI-Integrationsexperimente für Charakteranalyse und Content-Empfehlungen, während ich kritische Anwendungsfehler um 50% durch systematische Refaktorierung und umfassende E2E-Tests reduzierte. Zwischen Mai 2024 und Januar 2025 habe ich intensiv Deutsch gelernt und erreichte B2-Niveau."
+        - "Ich freue mich darauf, mein tiefes KI-Verständnis und meinen produktfokussierten Ansatz zu [FIRMENNAME] zu bringen. Gerne würde ich besprechen, wie meine Erfahrung im Aufbau intelligenter, kosteneffizienter KI-Systeme zum Erfolg Ihres Teams beitragen kann."
+      signature: |
+        Mit freundlichen Grüßen
+        Javiera Vasquez
+
+    qa_focused:
+      letter_title: "Bewerbung als QA Engineer"
+      opening_line: "Sehr geehrtes [FIRMENNAME]-Team,"
+      body:
+        - "als erfahrene Fachinformatikerin für Anwendungsentwicklung mit Schwerpunkt auf Testautomatisierung und Frontend-Entwicklung (Web und Mobile) möchte ich meine Expertise gerne in Ihr Unternehmen einbringen. In meiner bisherigen Laufbahn habe ich in Unternehmen mit internationaler Präsenz (Deutschland, USA, Lateinamerika) skalierbare Lösungen entwickelt und wertvolle Erfahrungen in QA, CI-Pipelines und benutzerfreundlicher Softwarearchitektur gesammelt."
+        - "Ein besonders erfolgreiches Projekt war die Einführung automatisierter End-to-End-Regressionstests für die Galatea-App sowie der Aufbau von CI-Pipelines für iOS und Android. Durch die Integration eines E2E-Coverage-Reports in Notion konnten QA-, Produkt- und Entwicklerteams jederzeit die Testabdeckung einsehen, was den Kommunikationsaufwand deutlich reduzierte und die Zusammenarbeit effizienter gestaltete."
+        - "Meine Begeisterung für QA ergibt sich aus einem produktorientierten Blickwinkel: Ich möchte potenzielle Probleme frühzeitig erkennen und meine Erfahrung in komplexen Projekten nutzen, um Teststrategien eng an Produktziele anzupassen. Zusätzlich verfüge ich über fundierte Kenntnisse in React, React Native, Git, TypeScript, Node, SQL/NoSQL, CI/CD und System Design. Zwischen Mai 2024 und Januar 2025 habe ich intensiv an meinen Deutschkenntnissen gearbeitet und befinde mich nun auf B2-Niveau. Ich spreche außerdem fließend Englisch und Spanisch."
+        - "Ich freue mich darauf, [FIRMENNAME] dabei zu unterstützen, höchste Qualitätsansprüche zu erfüllen und neue Maßstäbe in der Softwareentwicklung zu setzen. Ich bin ab sofort verfügbar und würde mich freuen, Sie bei einem persönlichen Gespräch kennenzulernen."
+      signature: |
+        Mit freundlichen Grüßen
+        Javiera Vasquez
+
+    frontend_focused:
+      letter_title: "Bewerbung als Frontend-Entwicklerin"
+      opening_line: "Sehr geehrtes [FIRMENNAME]-Team,"
+      body:
+        - "als Senior Frontend-Entwicklerin mit über einem Jahrzehnt Erfahrung in der Entwicklung benutzerzentrierter Anwendungen mit modernen Technologien wie React, React Native, Node und TypeScript möchte ich gerne zu [FIRMENNAME]s [FIRMENMISSION] beitragen."
+        - "Meine umfassende Erfahrung umfasst die Entwicklung von Web- und Mobile-Anwendungen für multinationale Märkte mit Fokus auf außergewöhnliche Benutzererfahrungen durch moderne Frontend-Technologien. Ich habe durchgängig meine Fähigkeit demonstriert, Performance zu optimieren, komplexe Probleme zu debuggen und effektiv in funktionsübergreifenden Teams zu kollaborieren."
+        - "Bei Inkitt redesignte ich die Library-Funktion der Galatea-App und erreichte eine 15%ige Verbesserung der Ladezeiten sowie eine 50%ige Reduzierung kritischer Fehler. Zusätzlich leitete ich die Implementierung einer skalierbaren Frontend-Architektur, die hohe Performance und Zuverlässigkeit für Millionen von Nutzern gewährleistet."
+        - "Neben technischer Expertise gedeihe ich in kollaborativen Umgebungen, mentoriere oft Junior-Entwickler und arbeite eng mit Designern und Produktteams zusammen. Meine internationale Erfahrung in Deutschland, den USA und Lateinamerika hat meine Anpassungsfähigkeit und kulturelles Verständnis gestärkt. Ich spreche fließend Spanisch, Englisch und Deutsch (B2) und bin sofort verfügbar."
+      signature: |
+        Mit freundlichen Grüßen
+        Javiera Vasquez
+
+  # Achievement variations that can be used / Erreichbare Variationen
+  achievement_library:
+    inkitt_galatea:
+      technical_focus: "redesignte die Library-Funktion der Galatea-App und erreichte eine 15%ige Verbesserung der Ladezeiten sowie eine 50%ige Reduzierung kritischer Fehler"
+      ai_focus: "entwickelte konversationelle KI-Features, die über 100.000 tägliche aktive Nutzer einbanden und die Leserbindung um 15% steigerten"
+      qa_focus: "implementierte und leitete ein End-to-End-Testing-Framework für die Galatea-App auf iOS- und Android-Plattformen"
+
+    cornershop:
+      migration: "spielte eine zentrale Rolle bei der Migration einer B2C-Webanwendung zu React und ermöglichte eine nahtlose Erfahrung für über 1,2 Millionen Nutzer"
+      scale: "trug zur Skalierung des Unternehmens von 15 auf über 400 Mitarbeiter bei"
+      technical: "erreichte 95% Testabdeckung bei wöchentlichen Release-Zyklen und unterstützte 1,2M Nutzermigration ohne Ausfallzeiten"
+
+    alba_care:
+      performance: "führte die Anwendung von REST zu GraphQL über und steigerte die Performance um das 3-fache"
+      frontend: "konzipierte und implementierte eine einheitliche GraphQL-Schicht, die die Mobile-App-Performance verdreifachte"
+
+  # Personal development stories for different contexts / Persönliche Entwicklungsgeschichten
+  personal_development:
+    language_learning: "Zwischen Mai 2024 und Januar 2025 habe ich eine berufliche Pause eingelegt, um mich intensiv dem Deutschlernen zu widmen und B2-Niveau zu erreichen. Diese Zeit hat meine Fähigkeit verbessert, effektiv in deutschsprachigen Teams zu kommunizieren und spiegelt mein Engagement für persönliches und berufliches Wachstum wider."
+    self_driven: "Was mich auszeichnet, ist mein selbstgesteuerter Ansatz. Ich habe meine Programmierkenntnisse eigenständig weiterentwickelt, fließend Englisch gelernt und B2-Niveau in Deutsch erreicht. Diese Anpassungsfähigkeit und das Engagement für Wachstum haben es mir ermöglicht, in multikulturellen, kollaborativen Umgebungen zu glänzen."
+
+  # Usage instructions / Verwendungshinweise
+  usage_notes: |
+    German templates follow formal German business letter conventions.
+    Use "[FIRMENNAME]" for company placeholder in German templates.
+    Maintain formal "Sie" address throughout German versions.
+    Select appropriate achievements from the achievement_library based on role focus.
+    German language learning story particularly relevant for German companies.

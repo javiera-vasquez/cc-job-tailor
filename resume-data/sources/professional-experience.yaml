@@ -1,4 +1,4 @@
-version: "1.0.0"
+version: "1.0"
 roles: [ai_focused, qa_focused, frontend_focused]
 metadata:
   last_updated: "Berlin, Tue 23. January 2025"
