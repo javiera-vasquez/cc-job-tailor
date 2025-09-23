@@ -1,0 +1,118 @@
+version: "1.0.0"
+roles: [ai_focused, qa_focused, frontend_focused]
+metadata:
+  last_updated: "Berlin, Tue 23. January 2025"
+  versions:
+    - "AI-focused version"
+    - "QA-focused version"
+    - "Frontend-focused version"
+
+professional_experience:
+  - company: "Language Immersion Program"
+    position: "German Language Improvement (Self-Directed)"
+    location: "Berlin, Germany"
+    duration: "May 2024 - May 2025"
+    company_description: "Achieved B2 proficiency and official certification in German within one year of focused study, reaching conversational fluency while living in Germany for less than three years. Demonstrated commitment to cross-cultural communication and international professional development."
+    linkedin: null
+    achievements: []
+
+  - company: "Inkitt"
+    position: "Senior Frontend Engineer"
+    location: "Berlin, Germany - United States"
+    duration: "March 2021 - April 2024"
+    company_description: "Inkitt is revolutionizing publishing through data-driven strategies and AI-powered tools to discover hidden literary talents and bring their stories to millions of users through platforms like Galatea #7 ranking in the Books category on the Apple App Store in Germany."
+    linkedin: "https://www.linkedin.com/company/inkitt"
+    achievements:
+      ai_focused:
+        - "Pioneered conversational AI features that engaged over 100,000 daily active users in story discussions"
+        - "Increased reader retention by 15% through data analytics-driven redesign of core reading experience"
+        - "Implemented AI integration experiments for character analysis and content recommendations"
+        - "Reduced critical application errors by 50% through systematic refactoring and comprehensive E2E testing"
+        - "Mentored 3 engineers in AI integration and product-focused development practices"
+      qa_focused:
+        - "Implemented and led an End-to-End testing framework for Galatea App for iOS and Android, significantly reducing release errors and enhancing reliability"
+        - "Led the migration and redesign of Library Feature, improving load time by ~15% and reducing critical errors by 2x"
+        - "Enhanced CI/CD pipelines for faster releases with automatic E2E reporting delivered via Notion during release cycles"
+        - "Reduced critical application errors by 50% through systematic refactoring and comprehensive testing"
+        - "Provided mentorship to 3 junior developers on the Galatea and Inkitt ecosystem"
+      frontend_focused:
+        - "Led the migration and redesign of core Library Feature, one of Galatea's principal user experiences"
+        - "Improved application performance by 15% through strategic frontend optimization"
+        - "Built scalable React-based components serving millions of daily active users"
+        - "Implemented data-driven UI improvements that increased user engagement"
+        - "Mentored team members on modern frontend development practices"
+
+  - company: "Alba Care"
+    position: "Senior Frontend Engineer"
+    location: "United States, Remote"
+    duration: "January 2019 - March 2021"
+    company_description: "Alba Care provides a digital marketplace app for home-based childcare, delivering seamless user experiences for parents and caregivers."
+    linkedin: "https://www.linkedin.com/company/zebrands/"
+    achievements:
+      ai_focused:
+        - "Implemented predictive matching algorithms to improve caregiver recommendations by 40%"
+        - "Built data-driven product improvements using behavioral analytics and A/B testing"
+        - "Architected intelligent systems for real-time user-provider matching"
+        - "Led product innovation through data analysis and algorithmic optimization"
+        - "Designed scalable architecture supporting machine learning-driven recommendations"
+      qa_focused:
+        - "Led transition to GraphQL architecture, improving system reliability and performance by 3x"
+        - "Established robust testing practices for B2B and B2C platforms"
+        - "Implemented comprehensive monitoring and performance tracking systems"
+        - "Built reliable React Native application with zero-downtime deployment practices"
+        - "Led quality assurance initiatives across mobile and web platforms"
+      frontend_focused:
+        - "Architected and led implementation of unified GraphQL layer, tripling mobile app performance"
+        - "Led the transition from traditional API structures to GraphQL for real-time data flow"
+        - "Built and maintained B2C App using React Native with user-friendly interface and robust functionality"
+        - "Led a pod of 2 Frontend developers and 1 product designer, shipping features bi-weekly"
+        - "Delivered seamless user experiences for both parents and caregivers across platforms"
+
+  - company: "Cornershop by Uber"
+    position: "Senior Frontend Engineer"
+    location: "Santiago, Chile"
+    duration: "May 2016 - January 2019"
+    company_description: "Cornershop is a last-mile marketplace offering on-demand grocery delivery services across the Americas, now part of Uber."
+    linkedin: "https://www.linkedin.com/company/cornershop-by-uber/"
+    achievements:
+      ai_focused:
+        - "Implemented predictive cart features based on user behavior patterns and analytics"
+        - "Increased new user conversion by 18% through behavioral analytics and data-driven UX optimization"
+        - "Built intelligent recommendation systems for enhanced user experience"
+        - "Leveraged data analytics to optimize user acquisition and retention strategies"
+        - "Contributed to product intelligence that supported $3.3B acquisition valuation"
+      qa_focused:
+        - "Achieved 95% test coverage while maintaining weekly release cycle"
+        - "Mentored 5 team members on unit testing (Jest, Enzyme) and integration testing best practices"
+        - "Led implementation of comprehensive event tracking across 85% of B2C web app"
+        - "Established quality assurance processes for 1.2M user migration with zero downtime"
+        - "Built robust testing framework supporting multi-country deployment"
+      frontend_focused:
+        - "Migrated 1.2M users from AngularJS to React SPA with zero downtime"
+        - "Led complete B2C web app migration improving scalability, modularity, and maintainability"
+        - "Built real-time shopping cart synchronization system serving 8 countries using Firebase"
+        - "Introduced cross-platform integration enabling shopping cart sync between user devices"
+        - "Delivered scalable frontend architecture supporting rapid international expansion"
+
+  - company: "VTR Liberty Global"
+    position: "Frontend Engineer"
+    location: "Santiago, Chile"
+    duration: "December 2014 - April 2016"
+    company_description: "VTR is a leading telecom provider in Chile, offering TV, internet, and phone services to over 2.5 million homes."
+    linkedin: "https://www.linkedin.com/company/vtr/"
+    achievements:
+      ai_focused:
+        - "Developed intelligent content discovery features for Video-on-Demand platform"
+        - "Built recommendation systems enhancing user experience for 750K TV decoders"
+        - "Implemented data-driven content personalization for legacy TV systems"
+        - "Created smart UI patterns that improved user engagement across platforms"
+      qa_focused:
+        - "Established quality standards for B2C and B2B platform development"
+        - "Built reliable Video-on-Demand platform serving 750K home devices"
+        - "Implemented comprehensive testing strategies for legacy TV decoder integration"
+        - "Ensured platform stability across diverse hardware and software environments"
+      frontend_focused:
+        - "Developed Video-on-Demand platform bringing Netflix-like capabilities to legacy TV decoders"
+        - "Created comprehensive design system standardizing UI across web platforms for B2C and B2B"
+        - "Built scalable frontend architecture serving 750K home devices"
+        - "Delivered modern streaming experience on legacy hardware infrastructure"
