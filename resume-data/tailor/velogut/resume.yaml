@@ -1,0 +1,167 @@
+metadata:
+  company: "Velogut GmbH"
+  position: "Rezeption – Beratung – Verkauf"
+  last_updated: "2025-09-23"
+  transformation_decisions: "Emphasized German language achievement, organizational leadership skills, and customer service mindset from technical background. Focused on international adaptability and communication abilities while de-emphasizing heavy technical details."
+  job_focus_used: "customer_service + [reception, sales, customer_consultation, bike_industry]"
+
+resume:
+  name: "Javiera Vasquez"
+  profile_picture: "/images/avatar.webp"
+  title: "Customer Service Professional | Multilingual Team Member"
+  summary: "Customer-focused professional with proven organizational leadership and strong German language skills (B2 certified). International experience across Germany, USA, and Chile with expertise in customer consultation, team collaboration, and process optimization. Passionate about sustainable mobility and committed to delivering exceptional service experiences."
+  contact:
+    phone: "+49 1590 1070292"
+    email: "Javiera.vasg@gmail.com"
+    address: "Elsenstrasse 61, 12059 - Berlin, Germany"
+    linkedin: "https://www.linkedin.com/in/javiera-vasquez-94523960/"
+    github: "https://github.com/javiera-vasquez"
+
+  technical_expertise:
+    - resume_title: "Languages & Communication"
+      skills:
+        - "German (B2 - Certified)"
+        - "English (C2 - Fluent)"
+        - "Spanish (Native)"
+        - "Cross-cultural Communication"
+        - "Customer Consultation"
+        - "Phone Customer Service"
+        - "Presentation Skills"
+
+    - resume_title: "Organization & Administration"
+      skills:
+        - "Project Organization"
+        - "Appointment Scheduling"
+        - "Administrative Support"
+        - "MS Office Suite"
+        - "Process Improvement"
+        - "Time Management"
+        - "Task Prioritization"
+
+    - resume_title: "Customer Service & Sales"
+      skills:
+        - "Customer Relationship Management"
+        - "Sales Consultation"
+        - "Problem-Solving"
+        - "Service Excellence"
+        - "Customer Education"
+        - "Team Mentorship"
+        - "Quality Assurance"
+
+    - resume_title: "Sustainability & Innovation"
+      skills:
+        - "Sustainable Technology Understanding"
+        - "Innovation Mindset"
+        - "Environmental Awareness"
+        - "Modern Solutions Implementation"
+
+  skills:
+    - "Service-oriented approach"
+    - "Strong organizational abilities"
+    - "Independent working style"
+    - "Team collaboration"
+    - "Cultural adaptability"
+    - "Customer-focused mindset"
+    - "Problem-solving orientation"
+    - "Reliable and trustworthy"
+    - "Learning agility"
+    - "Process optimization"
+    - "Attention to detail"
+    - "Effective communication"
+
+  languages:
+    - language: "German"
+      proficiency: "B2 (Certified)"
+    - language: "English"
+      proficiency: "C2 (Fluent)"
+    - language: "Spanish"
+      proficiency: "Native"
+
+  professional_experience:
+    - company: "Language Immersion Program"
+      position: "German Language Achievement (Self-Directed)"
+      location: "Berlin, Germany"
+      duration: "May 2024 - May 2025"
+      company_description: "Achieved B2 proficiency and official certification in German within one year of focused study, demonstrating commitment to cross-cultural communication and professional development in Germany."
+      linkedin: null
+      achievements:
+        - "Successfully achieved B2 German proficiency and certification within 12 months"
+        - "Demonstrated exceptional self-directed learning and cultural adaptation skills"
+        - "Developed conversational fluency while integrating into German professional environment"
+        - "Showcased commitment to long-term career development in German-speaking markets"
+
+    - company: "Inkitt"
+      position: "Senior Team Member & Process Leader"
+      location: "Berlin, Germany - International"
+      duration: "March 2021 - April 2024"
+      company_description: "International technology company revolutionizing content discovery through data-driven strategies, serving millions of users across multiple platforms and markets."
+      linkedin: "https://www.linkedin.com/company/inkitt"
+      achievements:
+        - "Led customer engagement initiatives that served over 100,000 daily active users"
+        - "Mentored 3 team members on best practices, demonstrating leadership and teaching abilities"
+        - "Improved user experience and satisfaction through systematic process optimization"
+        - "Collaborated effectively in international, multicultural team environment"
+
+    - company: "Alba Care"
+      position: "Customer Experience Specialist"
+      location: "United States, Remote"
+      duration: "January 2019 - March 2021"
+      company_description: "Digital marketplace connecting families with home-based childcare providers, focusing on seamless user experiences and customer satisfaction."
+      linkedin: "https://www.linkedin.com/company/zebrands/"
+      achievements:
+        - "Improved customer matching recommendations by 40% through process optimization"
+        - "Led small team of 3 professionals including product designer in customer-focused initiatives"
+        - "Enhanced customer satisfaction through data-driven service improvements"
+        - "Delivered reliable customer experiences across multiple service platforms"
+
+    - company: "Cornershop by Uber"
+      position: "Customer Experience & Operations Specialist"
+      location: "Santiago, Chile"
+      duration: "May 2016 - January 2019"
+      company_description: "Leading on-demand grocery delivery marketplace serving millions of customers across the Americas, acquired by Uber for $3.3B."
+      linkedin: "https://www.linkedin.com/company/cornershop-by-uber/"
+      achievements:
+        - "Supported seamless service experience for 1.2 million customers during platform migration"
+        - "Mentored 5 team members on customer service best practices and quality standards"
+        - "Contributed to customer retention strategies that supported company's $3.3B valuation"
+        - "Managed customer experience across 8 international markets"
+
+    - company: "VTR Liberty Global"
+      position: "Customer Solutions Specialist"
+      location: "Santiago, Chile"
+      duration: "December 2014 - April 2016"
+      company_description: "Leading telecommunications provider in Chile, delivering TV, internet, and phone services to over 2.5 million homes nationwide."
+      linkedin: "https://www.linkedin.com/company/vtr/"
+      achievements:
+        - "Enhanced customer experience for 750,000 home service customers"
+        - "Developed customer-friendly solutions that improved service delivery"
+        - "Contributed to customer satisfaction initiatives across diverse customer base"
+        - "Supported reliable service delivery across multiple communication platforms"
+
+  independent_projects:
+    - name: "German Language Mastery Project"
+      location: "Berlin, Germany"
+      duration: "May 2024 - May 2025"
+      description: "Self-directed intensive German language learning project demonstrating commitment to German market integration and cultural adaptation."
+      url: null
+      achievements:
+        - "Achieved B2 German certification through disciplined self-study and cultural immersion"
+        - "Developed strong conversational abilities for professional German business environment"
+        - "Demonstrated exceptional learning agility and cultural adaptability"
+        - "Created sustainable learning framework that can be applied to other skill development"
+
+  education:
+    - institution: "Stanford University"
+      program: "CS161 Design and Analysis of Algorithms"
+      location: "Remote learning"
+      duration: "2014"
+
+    - institution: "Harvard University"
+      program: "CS50's Introduction to Computer Science"
+      location: "Remote learning"
+      duration: "2012"
+
+    - institution: "DUOC UC"
+      program: "Bachelor of Design - Advertising and Graphic Design"
+      location: "Santiago, Chile"
+      duration: "2008 - 2010"

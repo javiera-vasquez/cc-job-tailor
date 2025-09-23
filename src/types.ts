@@ -82,13 +82,15 @@ export type PrimaryArea =
   | 'staff_engineer'
   | 'principal_engineer'
   | 'tech_lead'
-  | 'engineering_manager';
+  | 'engineering_manager'
+  | string
 
 export type Specialty =
   | 'ai' | 'ml' | 'data'
   | 'react' | 'typescript' | 'node' | 'python'
   | 'aws' | 'testing' | 'architecture' | 'devops'
-  | 'frontend' | 'backend' | 'mobile' | 'security';
+  | 'frontend' | 'backend' | 'mobile' | 'security'
+  | string;
 
 export type JobFocusItem = {
   primary_area: PrimaryArea;

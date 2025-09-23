@@ -1,0 +1,102 @@
+version: "2.0.0"
+analysis_date: "2025-09-23"
+source: "Job posting for Rezeption – Beratung – Verkauf at Velogut GmbH"
+
+job_analysis:
+  # Core info
+  company: "Velogut GmbH"
+  position: "Rezeption – Beratung – Verkauf"
+  job_focus:
+    - primary_area: "customer_service"      # Customer service/reception role
+      specialties: ["reception", "sales", "customer_consultation", "bike_industry"]
+      weight: 0.7                          # Primary focus: direct customer interaction
+    - primary_area: "administrative"
+      specialties: ["organization", "scheduling", "accounting_support"]
+      weight: 0.3                          # Secondary focus: admin/organizational tasks
+
+  location: "Berlin, Deutschland"
+  employment_type: "Part-time (30 hours/week)"
+  experience_level: "Mid-level"
+
+  # Prioritized requirements
+  requirements:
+    must_have_skills:
+      - skill: "German language skills (B2/C1/C2)"
+        priority: 10  # Most critical - explicitly mentioned as requirement
+      - skill: "Customer service orientation"
+        priority: 9
+      - skill: "Communication skills"
+        priority: 8
+      - skill: "Organizational skills"
+        priority: 8
+      - skill: "Independent working style"
+        priority: 7
+      - skill: "Teamwork"
+        priority: 7
+      - skill: "MS Office knowledge"
+        priority: 6
+    nice_to_have_skills:
+      - skill: "Enthusiasm for sustainable mobility and bicycles"
+        priority: 8
+      - skill: "English language skills"
+        priority: 6
+      - skill: "Bicycle industry knowledge"
+        priority: 5
+      - skill: "Accounting experience"
+        priority: 4
+    soft_skills: ["Service-oriented", "Open", "Reliable", "Communication strength", "Team collaboration"]
+    experience_years: 2
+    education: "Not specified"
+
+  responsibilities:
+    primary:
+      - "Customer reception and greeting"
+      - "Consultation and sales of cargo bikes and mobility solutions"
+      - "Managing rental and workshop bikes"
+      - "Phone customer service and appointment scheduling"
+      - "Organizing test rides with cargo bikes"
+    secondary:
+      - "Supporting preliminary accounting"
+      - "Organizing purchases and handling mail"
+
+  # Role context
+  role_context:
+    department: "Customer Service & Sales"
+    team_size: "Small cargo bike shop team"
+    key_points:
+      - "First point of contact for customers in cargo bike shop"
+      - "Promote sustainable mobility and eco-friendly transportation"
+      - "Mix of customer interaction, sales, and administrative tasks"
+      - "Family-friendly work environment focused on innovation"
+      - "Opportunity to contribute to sustainable transportation solutions"
+
+  # Candidate alignment analysis
+  candidate_alignment:
+    strong_matches: ["German B2 language skills", "International experience", "Strong organizational abilities", "Communication skills from technical leadership", "Customer-focused approach from product engineering"]
+    gaps_to_address: ["Direct retail/sales experience", "Bicycle industry knowledge", "Accounting experience"]
+    transferable_skills: ["Technical leadership → customer consultation", "Product engineering → understanding customer needs", "International experience → cultural adaptability", "E2E testing mentorship → customer training/education"]
+    emphasis_strategy: "Lead with German language proficiency and international adaptability, emphasize organizational skills and customer-focused mindset from technical background"
+
+  # Section priorities for resume tailoring
+  section_priorities:
+    technical_expertise: ["communication_languages", "organizational_administration", "customer_service"]
+    experience_focus: "Emphasize organizational leadership, mentoring (customer education parallel), and international adaptability"
+    project_relevance: "Focus on language learning achievement and any customer-facing or organizational accomplishments"
+
+  # Optimization actions
+  optimization_actions:
+    LEAD_WITH: ["German language skills", "international_experience"]
+    EMPHASIZE: ["organizational_capabilities", "customer_service_mindset", "adaptability"]
+    QUANTIFY: ["language_proficiency_timeline", "team_mentorship_numbers", "international_market_experience"]
+    DOWNPLAY: ["heavy_technical_details", "coding_specifics"]
+
+  # Simplified ATS analysis
+  ats_analysis:
+    title_variations: ["Customer Service Representative", "Reception & Sales Associate", "Kundenberaterin"]
+    critical_phrases: ["Kundenberatung", "nachhaltige Mobilität", "Organisationsgeschick", "Deutsch B2", "serviceorientiert"]
+
+  # Metadata
+  application_info:
+    posting_url: "/Users/javi/Develop/cc-resume-manager-worktrees/main-job-applications/public/jobs/velogut.md"
+    posting_date: "2025-09-23"
+    deadline: "Not specified"
