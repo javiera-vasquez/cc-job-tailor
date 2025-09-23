@@ -1,4 +1,5 @@
 {
+  "version": "0.5.0",
   "dependencies": {
     "@react-pdf/renderer": "^4.3.0",
     "@types/js-yaml": "^4.0.9",
@@ -11,7 +12,8 @@
   "private": false,
   "license": "CC-BY-NC-4.0",
   "scripts": {
-    "dev": "bun --hot index.html",
+    "dev": "bun dev-with-watch.ts",
+    "dev:basic": "bun --hot index.html",
     "start": "bun run generate-data.ts && bun index.html",
     "save-to-pdf": "bun run generate-data.ts \"$@\" && bun run generate-pdf.ts \"$@\"",
     "generate-data": "bun run generate-data.ts",
