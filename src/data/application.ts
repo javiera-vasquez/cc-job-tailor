@@ -1,6 +1,6 @@
 // Auto-generated application data
 // Company: velogut
-// Generated at: 2025-09-23T14:29:02.904Z
+// Generated at: 2025-09-23T14:47:13.606Z
 
 import type { ApplicationData } from '../types';
 
@@ -26,18 +26,6 @@ const applicationData: ApplicationData = {
     },
     "technical_expertise": [
       {
-        "resume_title": "Languages & Communication",
-        "skills": [
-          "German (B2 - Certified)",
-          "English (C2 - Fluent)",
-          "Spanish (Native)",
-          "Cross-cultural Communication",
-          "Customer Consultation",
-          "Phone Customer Service",
-          "Presentation Skills"
-        ]
-      },
-      {
         "resume_title": "Organization & Administration",
         "skills": [
           "Project Organization",
@@ -50,24 +38,27 @@ const applicationData: ApplicationData = {
         ]
       },
       {
-        "resume_title": "Customer Service & Sales",
+        "resume_title": "Web Technologies",
         "skills": [
-          "Customer Relationship Management",
-          "Sales Consultation",
-          "Problem-Solving",
-          "Service Excellence",
-          "Customer Education",
-          "Team Mentorship",
-          "Quality Assurance"
+          "Web Development",
+          "User Experience Design",
+          "Digital Platform Management",
+          "Online Customer Systems",
+          "E-commerce Solutions",
+          "Web Analytics",
+          "Digital Tools Integration"
         ]
       },
       {
-        "resume_title": "Sustainability & Innovation",
+        "resume_title": "Automation",
         "skills": [
-          "Sustainable Technology Understanding",
-          "Innovation Mindset",
-          "Environmental Awareness",
-          "Modern Solutions Implementation"
+          "Process Automation",
+          "Workflow Optimization",
+          "End-to-End Process Design",
+          "System Integration",
+          "Quality Assurance Automation",
+          "Data Processing",
+          "Efficiency Improvement"
         ]
       }
     ],
@@ -102,7 +93,7 @@ const applicationData: ApplicationData = {
     "professional_experience": [
       {
         "company": "Inkitt",
-        "position": "Senior Team Member & Process Leader",
+        "position": "Senior Frontend Engineer",
         "location": "Berlin, Germany - International",
         "duration": "March 2021 - April 2024",
         "company_description": "International technology company revolutionizing content discovery through data-driven strategies, serving millions of users across multiple platforms and markets.",
@@ -116,7 +107,7 @@ const applicationData: ApplicationData = {
       },
       {
         "company": "Alba Care",
-        "position": "Customer Experience Specialist",
+        "position": "Senior Frontend Engineer",
         "location": "United States, Remote",
         "duration": "January 2019 - March 2021",
         "company_description": "Digital marketplace connecting families with home-based childcare providers, focusing on seamless user experiences and customer satisfaction.",
@@ -130,7 +121,7 @@ const applicationData: ApplicationData = {
       },
       {
         "company": "Cornershop by Uber",
-        "position": "Customer Experience & Operations Specialist",
+        "position": "Senior Frontend Engineer",
         "location": "Santiago, Chile",
         "duration": "May 2016 - January 2019",
         "company_description": "Leading on-demand grocery delivery marketplace serving millions of customers across the Americas, acquired by Uber for $3.3B.",
@@ -144,7 +135,7 @@ const applicationData: ApplicationData = {
       },
       {
         "company": "VTR Liberty Global",
-        "position": "Customer Solutions Specialist",
+        "position": "Frontend Engineer",
         "location": "Santiago, Chile",
         "duration": "December 2014 - April 2016",
         "company_description": "Leading telecommunications provider in Chile, delivering TV, internet, and phone services to over 2.5 million homes nationwide.",
@@ -159,16 +150,16 @@ const applicationData: ApplicationData = {
     ],
     "independent_projects": [
       {
-        "name": "German Language Mastery Project",
+        "name": "German Language Studies",
         "location": "Berlin, Germany",
         "duration": "May 2024 - May 2025",
-        "description": "Self-directed intensive German language learning project demonstrating commitment to German market integration and cultural adaptation.",
+        "description": "Intensive German language learning program at Volkshochschule Schöneberg demonstrating commitment to German market integration and cultural adaptation.",
         "url": null,
         "achievements": [
-          "Achieved B2 German certification through disciplined self-study and cultural immersion",
+          "Achieved B2 German certification through Volkshochschule Schöneberg, advancing from A2 to B2 level in one year",
           "Developed strong conversational abilities for professional German business environment",
           "Demonstrated exceptional learning agility and cultural adaptability",
-          "Created sustainable learning framework that can be applied to other skill development"
+          "Completed structured language program with cultural immersion and practical application"
         ]
       }
     ],
@@ -391,8 +382,7 @@ const applicationData: ApplicationData = {
       "opening_line": "Sehr geehrtes Velogut-Team,\n",
       "body": [
         "als leidenschaftliche Radfahrerin und serviceorientierte Fachkraft mit nachgewiesenen organisatorischen Fähigkeiten möchte ich gerne zu Ihrem Serviceteam für Lastenräder beitragen. Mein ganzes Leben lang bin ich eine begeisterte Radfahrerin und besitze verschiedene Fahrräder – von meinem Klapprad über Rennräder – und habe mehrere Fahrradtypen evaluiert und getestet. Diese authentische Begeisterung für das Radfahren, kombiniert mit meinen starken Deutschkenntnissen und meiner lateinamerikanischen Gastfreundschaft, ermöglicht es mir, Kunden mit echter Wärme und fundiertem Fachwissen zu beraten.",
-        "Was mich besonders auszeichnet, ist mein selbstgesteuerter Ansatz zum Deutschlernen: Innerhalb eines Jahres erreichte ich B2-Niveau. Diese Leistung zeigt nicht nur meine Sprachkompetenz für die Kundenberatung, sondern auch mein Engagement für persönliches Wachstum und meine Bereitschaft, mich neuen Herausforderungen zu stellen. Diese Eigenschaften sind entscheidend für die erfolgreiche Beratung von Kunden zu Lastenrädern und Mobilitätslösungen.",
-        "Meine berufliche Laufbahn umfasst umfangreiche Erfahrungen in der Koordination zwischen multikulturellen Teams und Ländern sowie in der Kundenbetreuung. Bei Inkitt betreute ich Initiativen, die über 100.000 tägliche aktive Nutzer erreichten, und mentorierte 3 Teammitglieder aus verschiedenen kulturellen Hintergründen – Fähigkeiten, die direkt auf die Kundenberatung und das Training von Probefahrten übertragbar sind. Obwohl ich keine formelle Verkaufserfahrung habe, konnte ich durch meine organisatorischen Fähigkeiten und meine warme lateinamerikanische Art immer Kunden begeistern und Kundenserviceprozesse bei Alba Care verbessern.",
+        "Was mich besonders auszeichnet, ist mein selbstgesteuerter Ansatz zum Deutschlernen: Innerhalb eines Jahres erreichte ich B2-Niveau. Diese Leistung zeigt nicht nur meine Sprachkompetenz für die Kundenberatung, sondern auch mein Engagement für persönliches Wachstum und meine Bereitschaft, mich neuen Herausforderungen zu stellen. Meine berufliche Laufbahn umfasst umfangreiche Erfahrungen in der Koordination zwischen multikulturellen Teams und Ländern sowie in der Automatisierung von Prozessen von Ende zu Ende. Diese Erfahrung in der Prozessoptimierung und Kundenbetreuung sind entscheidend für die erfolgreiche Organisation von Terminen, Probefahrten und die effiziente Beratung von Kunden zu Lastenrädern und Mobilitätslösungen.",
         "Besonders begeistert mich die Möglichkeit, Menschen für nachhaltige Mobilität zu begeistern und dabei meine Mehrsprachigkeit (Deutsch B2, Englisch C2, Spanisch Muttersprache) für diverse Kundenbedürfnisse einzusetzen. Meine Erfahrung mit innovativen Technologien und mein Verständnis für moderne Lösungen helfen mir dabei, Kunden die Vorteile von Lastenrädern verständlich zu erklären und sie bei ihrer Entscheidung für umweltfreundliche Transportalternativen zu unterstützen.",
         "Ich freue mich darauf, meine Leidenschaft für Kundenservice, meine organisatorischen Fähigkeiten und mein Engagement für nachhaltige Mobilität zu Velogut zu bringen. Gerne würde ich in einem persönlichen Gespräch besprechen, wie ich zu Ihrem fahrradfreundlichen, zukunftsorientierten Team beitragen kann."
       ],

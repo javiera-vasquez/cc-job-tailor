@@ -9,7 +9,7 @@ globalThis.Buffer = Buffer;
 import { resume, coverLetter } from './src';
 
 const App = () => {
-  const [activeDocument, setActiveDocument] = useState<'resume' | 'cover-letter'>('cover-letter');
+  const [activeDocument, setActiveDocument] = useState<'resume' | 'cover-letter'>('resume');
 
   return (
     <div style={{ width: '100%', height: '100vh', display: 'flex', flexDirection: 'column' }}>
