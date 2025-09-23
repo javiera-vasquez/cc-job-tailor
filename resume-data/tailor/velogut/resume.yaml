@@ -9,7 +9,7 @@ resume:
   name: "Javiera Vasquez"
   profile_picture: "/images/avatar.webp"
   title: "Customer Service Professional | Multilingual Team Member"
-  summary: "Customer-focused professional with proven organizational leadership and strong German language skills (B2 certified). International experience across Germany, USA, and Chile with expertise in customer consultation, team collaboration, and process optimization. Passionate about sustainable mobility and committed to delivering exceptional service experiences."
+  summary: "Lifelong cycling enthusiast and customer-focused professional with proven organizational leadership and strong German language skills (B2 certified). Experienced with multiple bike types including foldable, road, and cargo bikes, bringing authentic passion for sustainable mobility. International experience across Germany, USA, and Chile with expertise in coordinating multicultural teams, customer consultation, and delivering warm, personalized service experiences rooted in Latin American hospitality culture."
   contact:
     phone: "+49 1590 1070292"
     email: "Javiera.vasg@gmail.com"
@@ -78,17 +78,7 @@ resume:
       proficiency: "Native"
 
   professional_experience:
-    - company: "Language Immersion Program"
-      position: "German Language Achievement (Self-Directed)"
-      location: "Berlin, Germany"
-      duration: "May 2024 - May 2025"
-      company_description: "Achieved B2 proficiency and official certification in German within one year of focused study, demonstrating commitment to cross-cultural communication and professional development in Germany."
-      linkedin: null
-      achievements:
-        - "Successfully achieved B2 German proficiency and certification within 12 months"
-        - "Demonstrated exceptional self-directed learning and cultural adaptation skills"
-        - "Developed conversational fluency while integrating into German professional environment"
-        - "Showcased commitment to long-term career development in German-speaking markets"
+
 
     - company: "Inkitt"
       position: "Senior Team Member & Process Leader"

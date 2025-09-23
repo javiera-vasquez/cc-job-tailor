@@ -1,6 +1,6 @@
 // Auto-generated application data
 // Company: velogut
-// Generated at: 2025-09-23T11:36:42.768Z
+// Generated at: 2025-09-23T12:21:03.505Z
 
 import type { ApplicationData } from '../types';
 
@@ -16,7 +16,7 @@ const applicationData: ApplicationData = {
     "name": "Javiera Vasquez",
     "profile_picture": "/images/avatar.webp",
     "title": "Customer Service Professional | Multilingual Team Member",
-    "summary": "Customer-focused professional with proven organizational leadership and strong German language skills (B2 certified). International experience across Germany, USA, and Chile with expertise in customer consultation, team collaboration, and process optimization. Passionate about sustainable mobility and committed to delivering exceptional service experiences.",
+    "summary": "Lifelong cycling enthusiast and customer-focused professional with proven organizational leadership and strong German language skills (B2 certified). Experienced with multiple bike types including foldable, road, and cargo bikes, bringing authentic passion for sustainable mobility. International experience across Germany, USA, and Chile with expertise in coordinating multicultural teams, customer consultation, and delivering warm, personalized service experiences rooted in Latin American hospitality culture.",
     "contact": {
       "phone": "+49 1590 1070292",
       "email": "Javiera.vasg@gmail.com",
@@ -100,20 +100,6 @@ const applicationData: ApplicationData = {
       }
     ],
     "professional_experience": [
-      {
-        "company": "Language Immersion Program",
-        "position": "German Language Achievement (Self-Directed)",
-        "location": "Berlin, Germany",
-        "duration": "May 2024 - May 2025",
-        "company_description": "Achieved B2 proficiency and official certification in German within one year of focused study, demonstrating commitment to cross-cultural communication and professional development in Germany.",
-        "linkedin": null,
-        "achievements": [
-          "Successfully achieved B2 German proficiency and certification within 12 months",
-          "Demonstrated exceptional self-directed learning and cultural adaptation skills",
-          "Developed conversational fluency while integrating into German professional environment",
-          "Showcased commitment to long-term career development in German-speaking markets"
-        ]
-      },
       {
         "company": "Inkitt",
         "position": "Senior Team Member & Process Leader",
@@ -404,9 +390,9 @@ const applicationData: ApplicationData = {
       "letter_title": "Bewerbung als Rezeption – Beratung – Verkauf",
       "opening_line": "Sehr geehrtes Velogut-Team,\n",
       "body": [
-        "als serviceorientierte Fachkraft mit nachgewiesenen organisatorischen Fähigkeiten und starken Deutschkenntnissen (B2-Zertifikat) möchte ich gerne zu Ihrem Serviceteam für Lastenräder und nachhaltige Mobilität beitragen. Meine internationale Erfahrung in Deutschland, den USA und Chile hat meine Anpassungsfähigkeit und mein kulturelles Verständnis gestärkt, während mein Engagement für Nachhaltigkeit perfekt zu Veloguts Mission der umweltfreundlichen Verkehrslösungen passt.",
+        "als leidenschaftliche Radfahrerin und serviceorientierte Fachkraft mit nachgewiesenen organisatorischen Fähigkeiten möchte ich gerne zu Ihrem Serviceteam für Lastenräder beitragen. Mein ganzes Leben lang bin ich eine begeisterte Radfahrerin und besitze verschiedene Fahrräder – von Falträdern über Rennräder bis hin zu Lastenrädern, die ich alle persönlich getestet und evaluiert habe. Diese authentische Begeisterung für das Radfahren, kombiniert mit meinen starken Deutschkenntnissen (B2-Zertifikat) und meiner lateinamerikanischen Gastfreundschaft, ermöglicht es mir, Kunden mit echter Wärme und fundiertem Fachwissen zu beraten.",
         "Was mich besonders auszeichnet, ist mein selbstgesteuerter Ansatz zum Deutschlernen: Innerhalb eines Jahres erreichte ich B2-Niveau und erhielt die offizielle Zertifizierung. Diese Leistung zeigt nicht nur meine Sprachkompetenz für die Kundenberatung, sondern auch mein Engagement für persönliches Wachstum und meine Bereitschaft, mich neuen Herausforderungen zu stellen. Diese Eigenschaften sind entscheidend für die erfolgreiche Beratung von Kunden zu Lastenrädern und Mobilitätslösungen.",
-        "Meine berufliche Laufbahn umfasst umfangreiche Erfahrungen in der Kundenbetreuung und Teamführung in internationalen Umgebungen. Bei Inkitt betreute ich Initiativen, die über 100.000 tägliche aktive Nutzer erreichten, und mentorierte 3 Teammitglieder – Fähigkeiten, die direkt auf die Kundenberatung und das Training von Probefahrten übertragbar sind. Meine organisatorischen Fähigkeiten zeigten sich in der erfolgreichen Leitung kleinerer Teams und der Verbesserung von Kundenserviceprozessen um 40% bei Alba Care.",
+        "Meine berufliche Laufbahn umfasst umfangreiche Erfahrungen in der Koordination zwischen multikulturellen Teams und Ländern sowie in der Kundenbetreuung. Bei Inkitt betreute ich Initiativen, die über 100.000 tägliche aktive Nutzer erreichten, und mentorierte 3 Teammitglieder aus verschiedenen kulturellen Hintergründen – Fähigkeiten, die direkt auf die Kundenberatung und das Training von Probefahrten übertragbar sind. Obwohl ich keine formelle Verkaufserfahrung habe, konnte ich durch meine organisatorischen Fähigkeiten und meine warme lateinamerikanische Art immer Kunden begeistern und Kundenserviceprozesse um 40% bei Alba Care verbessern.",
         "Besonders begeistert mich die Möglichkeit, Menschen für nachhaltige Mobilität zu begeistern und dabei meine Mehrsprachigkeit (Deutsch B2, Englisch C2, Spanisch Muttersprache) für diverse Kundenbedürfnisse einzusetzen. Meine Erfahrung mit innovativen Technologien und mein Verständnis für moderne Lösungen helfen mir dabei, Kunden die Vorteile von Lastenrädern verständlich zu erklären und sie bei ihrer Entscheidung für umweltfreundliche Transportalternativen zu unterstützen.",
         "Ich freue mich darauf, meine Leidenschaft für Kundenservice, meine organisatorischen Fähigkeiten und mein Engagement für nachhaltige Mobilität zu Velogut zu bringen. Gerne würde ich in einem persönlichen Gespräch besprechen, wie ich zu Ihrem fahrradfreundlichen, zukunftsorientierten Team beitragen kann."
       ],
