@@ -1,352 +1,459 @@
 // Auto-generated application data
-// Company: tech-corp
-// Generated at: 2025-09-19T14:36:32.934Z
+// Company: velogut
+// Generated at: 2025-09-23T11:36:42.768Z
 
 import type { ApplicationData } from '../types';
 
 const applicationData: ApplicationData = {
   "metadata": {
-    "company": "Tech-Corp",
-    "position": "Senior Frontend Engineer - Web, Open Application",
-    "last_updated": "2025-09-19",
-    "transformation_decisions": "Prioritized React/TypeScript expertise for senior frontend role, emphasized scalable web application development, selected UI-focused achievements and performance optimization metrics",
-    "job_focus_used": "senior_engineer + [react, typescript, frontend, mobile]"
+    "company": "Velogut GmbH",
+    "position": "Rezeption – Beratung – Verkauf",
+    "last_updated": "2025-09-23",
+    "transformation_decisions": "Emphasized German language achievement, organizational leadership skills, and customer service mindset from technical background. Focused on international adaptability and communication abilities while de-emphasizing heavy technical details.",
+    "job_focus_used": "customer_service + [reception, sales, customer_consultation, bike_industry]"
   },
   "resume": {
-    "name": "John Doe",
-    "profile_picture": "https://i.guim.co.uk/img/media/a23aeb1f7ff20bb80f68852da17743b0e557f8ed/0_224_3504_2102/master/3504.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=9e9a99e479ee60270b69ede4d869b20f",
-    "title": "Senior Frontend Engineer | UI/UX Advocate",
-    "summary": "Passionate Senior Frontend Engineer with a decade of experience creating beautiful, responsive, and accessible user interfaces. Expert in React, TypeScript, and modern CSS frameworks. Dedicated to best practices, component-driven development, and exceptional user experience.",
+    "name": "Javiera Vasquez",
+    "profile_picture": "/images/avatar.webp",
+    "title": "Customer Service Professional | Multilingual Team Member",
+    "summary": "Customer-focused professional with proven organizational leadership and strong German language skills (B2 certified). International experience across Germany, USA, and Chile with expertise in customer consultation, team collaboration, and process optimization. Passionate about sustainable mobility and committed to delivering exceptional service experiences.",
     "contact": {
-      "phone": "+1 (555) 555-5555",
-      "email": "john.doe@example.com",
-      "address": "456 Innovation Drive, San Francisco, CA 94105",
-      "linkedin": "https://www.linkedin.com/in/johndoe-example",
-      "github": "https://github.com/johndoe-example"
+      "phone": "+49 1590 1070292",
+      "email": "Javiera.vasg@gmail.com",
+      "address": "Elsenstrasse 61, 12059 - Berlin, Germany",
+      "linkedin": "https://www.linkedin.com/in/javiera-vasquez-94523960/",
+      "github": "https://github.com/javiera-vasquez"
     },
     "technical_expertise": [
       {
-        "resume_title": "Frontend Development",
+        "resume_title": "Languages & Communication",
         "skills": [
-          "React",
-          "TypeScript",
-          "Next.js",
-          "JavaScript (ES6+)",
-          "HTML5 & CSS3"
+          "German (B2 - Certified)",
+          "English (C2 - Fluent)",
+          "Spanish (Native)",
+          "Cross-cultural Communication",
+          "Customer Consultation",
+          "Phone Customer Service",
+          "Presentation Skills"
         ]
       },
       {
-        "resume_title": "Backend Development",
+        "resume_title": "Organization & Administration",
         "skills": [
-          "Node.js",
-          "Express.js",
-          "Python",
-          "FastAPI",
-          "PostgreSQL"
+          "Project Organization",
+          "Appointment Scheduling",
+          "Administrative Support",
+          "MS Office Suite",
+          "Process Improvement",
+          "Time Management",
+          "Task Prioritization"
         ]
       },
       {
-        "resume_title": "Systems & Architecture",
+        "resume_title": "Customer Service & Sales",
         "skills": [
-          "Microservices Architecture",
-          "REST APIs",
-          "GraphQL",
-          "Docker"
+          "Customer Relationship Management",
+          "Sales Consultation",
+          "Problem-Solving",
+          "Service Excellence",
+          "Customer Education",
+          "Team Mentorship",
+          "Quality Assurance"
+        ]
+      },
+      {
+        "resume_title": "Sustainability & Innovation",
+        "skills": [
+          "Sustainable Technology Understanding",
+          "Innovation Mindset",
+          "Environmental Awareness",
+          "Modern Solutions Implementation"
         ]
       }
     ],
     "skills": [
-      "Cross-functional Teamwork",
-      "Agile/Scrum Methodologies",
-      "Mentorship & Coaching",
-      "Analytical Thinking",
-      "Pattern Recognition",
-      "Strategic Planning",
-      "Technical Documentation",
-      "Stakeholder Communication",
-      "Clear Code Commenting"
+      "Service-oriented approach",
+      "Strong organizational abilities",
+      "Independent working style",
+      "Team collaboration",
+      "Cultural adaptability",
+      "Customer-focused mindset",
+      "Problem-solving orientation",
+      "Reliable and trustworthy",
+      "Learning agility",
+      "Process optimization",
+      "Attention to detail",
+      "Effective communication"
     ],
     "languages": [
       {
-        "language": "Spanish",
-        "proficiency": "Native"
+        "language": "German",
+        "proficiency": "B2 (Certified)"
       },
       {
         "language": "English",
-        "proficiency": "Professional Working Proficiency"
+        "proficiency": "C2 (Fluent)"
       },
       {
-        "language": "German",
-        "proficiency": "Professional Working Proficiency"
+        "language": "Spanish",
+        "proficiency": "Native"
       }
     ],
     "professional_experience": [
       {
-        "company": "Innovate AI",
-        "position": "Senior AI Engineer",
-        "location": "San Francisco, CA",
-        "duration": "July 2021 - Present",
-        "company_description": "A startup building next-generation AI-powered developer tools.",
-        "linkedin": "https://www.linkedin.com/company/example-innovate-ai",
+        "company": "Language Immersion Program",
+        "position": "German Language Achievement (Self-Directed)",
+        "location": "Berlin, Germany",
+        "duration": "May 2024 - May 2025",
+        "company_description": "Achieved B2 proficiency and official certification in German within one year of focused study, demonstrating commitment to cross-cultural communication and professional development in Germany.",
+        "linkedin": null,
         "achievements": [
-          "Created a complex data visualization dashboard with React and D3.js to display model performance metrics.",
-          "Championed the adoption of a design system, ensuring UI consistency across all AI products.",
-          "Designed and implemented a REST API for a new semantic search feature, serving over 1M requests per day.",
-          "Developed a full-stack application for real-time log analysis using Node.js, React, and WebSocket."
+          "Successfully achieved B2 German proficiency and certification within 12 months",
+          "Demonstrated exceptional self-directed learning and cultural adaptation skills",
+          "Developed conversational fluency while integrating into German professional environment",
+          "Showcased commitment to long-term career development in German-speaking markets"
         ]
       },
       {
-        "company": "NextGen Solutions",
-        "position": "Senior Software Engineer",
-        "location": "Palo Alto, CA",
-        "duration": "June 2016 - July 2021",
-        "company_description": "A mid-sized tech company focused on cloud-based enterprise software.",
-        "linkedin": "https://www.linkedin.com/company/example-nextgen",
+        "company": "Inkitt",
+        "position": "Senior Team Member & Process Leader",
+        "location": "Berlin, Germany - International",
+        "duration": "March 2021 - April 2024",
+        "company_description": "International technology company revolutionizing content discovery through data-driven strategies, serving millions of users across multiple platforms and markets.",
+        "linkedin": "https://www.linkedin.com/company/inkitt",
         "achievements": [
-          "Led the migration of a legacy jQuery frontend to a modern React and TypeScript stack.",
-          "Improved web application performance, achieving a 30% faster load time and a Lighthouse score of 95.",
-          "Built a reusable component library that was adopted by three different product teams.",
-          "Architected and led the development of a new microservices-based platform from scratch using Node.js and React."
+          "Led customer engagement initiatives that served over 100,000 daily active users",
+          "Mentored 3 team members on best practices, demonstrating leadership and teaching abilities",
+          "Improved user experience and satisfaction through systematic process optimization",
+          "Collaborated effectively in international, multicultural team environment"
         ]
       },
       {
-        "company": "Web Weavers Inc.",
-        "position": "Software Engineer",
-        "location": "Austin, TX",
-        "duration": "August 2012 - June 2016",
-        "company_description": "A digital agency building websites and web applications for a variety of clients.",
-        "linkedin": "https://www.linkedin.com/company/example-webweavers",
+        "company": "Alba Care",
+        "position": "Customer Experience Specialist",
+        "location": "United States, Remote",
+        "duration": "January 2019 - March 2021",
+        "company_description": "Digital marketplace connecting families with home-based childcare providers, focusing on seamless user experiences and customer satisfaction.",
+        "linkedin": "https://www.linkedin.com/company/zebrands/",
         "achievements": [
-          "Translated complex design mockups into pixel-perfect, responsive web pages using HTML, CSS, and JavaScript.",
-          "Worked closely with designers to improve user experience and accessibility.",
-          "Developed and maintained over 15 full-stack web applications for clients using the MERN stack.",
-          "Performed manual and automated testing to ensure cross-browser compatibility and functionality."
+          "Improved customer matching recommendations by 40% through process optimization",
+          "Led small team of 3 professionals including product designer in customer-focused initiatives",
+          "Enhanced customer satisfaction through data-driven service improvements",
+          "Delivered reliable customer experiences across multiple service platforms"
+        ]
+      },
+      {
+        "company": "Cornershop by Uber",
+        "position": "Customer Experience & Operations Specialist",
+        "location": "Santiago, Chile",
+        "duration": "May 2016 - January 2019",
+        "company_description": "Leading on-demand grocery delivery marketplace serving millions of customers across the Americas, acquired by Uber for $3.3B.",
+        "linkedin": "https://www.linkedin.com/company/cornershop-by-uber/",
+        "achievements": [
+          "Supported seamless service experience for 1.2 million customers during platform migration",
+          "Mentored 5 team members on customer service best practices and quality standards",
+          "Contributed to customer retention strategies that supported company's $3.3B valuation",
+          "Managed customer experience across 8 international markets"
+        ]
+      },
+      {
+        "company": "VTR Liberty Global",
+        "position": "Customer Solutions Specialist",
+        "location": "Santiago, Chile",
+        "duration": "December 2014 - April 2016",
+        "company_description": "Leading telecommunications provider in Chile, delivering TV, internet, and phone services to over 2.5 million homes nationwide.",
+        "linkedin": "https://www.linkedin.com/company/vtr/",
+        "achievements": [
+          "Enhanced customer experience for 750,000 home service customers",
+          "Developed customer-friendly solutions that improved service delivery",
+          "Contributed to customer satisfaction initiatives across diverse customer base",
+          "Supported reliable service delivery across multiple communication platforms"
         ]
       }
     ],
     "independent_projects": [
       {
-        "name": "Claude Code Job Tailor",
-        "location": "Open Source",
-        "duration": "2025",
-        "description": "An AI-powered job application assistant that treats your resume as code, automatically tailoring it for specific roles by analyzing job descriptions and selecting the most relevant skills and achievements.",
-        "url": "https://github.com/javiera-vasquez/cc-job-tailor",
+        "name": "German Language Mastery Project",
+        "location": "Berlin, Germany",
+        "duration": "May 2024 - May 2025",
+        "description": "Self-directed intensive German language learning project demonstrating commitment to German market integration and cultural adaptation.",
+        "url": null,
         "achievements": [
-          "Developed a data-driven system to manage resume content in structured YAML files.",
-          "Built an AI agent with Claude Code to analyze job postings and automatically select relevant achievements and skills.",
-          "Created a PDF generation service using @react-pdf/renderer to produce professional, ATS-friendly resumes.",
-          "Implemented a live preview server with hot reload using Bun.js to facilitate rapid template development."
-        ],
-        "impact": "Automates the time-consuming process of resume customization, enabling users to generate optimized applications in minutes instead of hours and improving job application effectiveness."
+          "Achieved B2 German certification through disciplined self-study and cultural immersion",
+          "Developed strong conversational abilities for professional German business environment",
+          "Demonstrated exceptional learning agility and cultural adaptability",
+          "Created sustainable learning framework that can be applied to other skill development"
+        ]
       }
     ],
     "education": [
       {
-        "institution": "California Institute of Technology",
-        "program": "B.S. in Computer Science",
-        "location": "Pasadena, CA",
-        "duration": "2008 - 2012"
+        "institution": "Stanford University",
+        "program": "CS161 Design and Analysis of Algorithms",
+        "location": "Remote learning",
+        "duration": "2014"
+      },
+      {
+        "institution": "Harvard University",
+        "program": "CS50's Introduction to Computer Science",
+        "location": "Remote learning",
+        "duration": "2012"
+      },
+      {
+        "institution": "DUOC UC",
+        "program": "Bachelor of Design - Advertising and Graphic Design",
+        "location": "Santiago, Chile",
+        "duration": "2008 - 2010"
       }
     ]
   },
   "job_analysis": {
-    "company": "Tech-Corp",
-    "position": "Senior Frontend Engineer - Web, Open Application",
+    "company": "Velogut GmbH",
+    "position": "Rezeption – Beratung – Verkauf",
     "job_focus": [
       {
-        "primary_area": "senior_engineer",
+        "primary_area": "customer_service",
         "specialties": [
-          "react",
-          "typescript",
-          "frontend",
-          "mobile"
+          "reception",
+          "sales",
+          "customer_consultation",
+          "bike_industry"
         ],
-        "weight": 0.8
+        "weight": 0.7
       },
       {
-        "primary_area": "senior_engineer",
+        "primary_area": "administrative",
         "specialties": [
-          "backend",
-          "python",
-          "architecture"
+          "organization",
+          "scheduling",
+          "accounting_support"
         ],
-        "weight": 0.2
+        "weight": 0.3
       }
     ],
-    "location": "Berlin, Germany",
-    "employment_type": "Full-time",
-    "experience_level": "Senior",
+    "location": "Berlin, Deutschland",
+    "employment_type": "Part-time (30 hours/week)",
+    "experience_level": "Mid-level",
     "requirements": {
       "must_have_skills": [
         {
-          "skill": "TypeScript",
+          "skill": "German language skills (B2/C1/C2)",
           "priority": 10
         },
         {
-          "skill": "React",
-          "priority": 10
-        },
-        {
-          "skill": "5+ years experience",
+          "skill": "Customer service orientation",
           "priority": 9
         },
         {
-          "skill": "Modern frontend development",
-          "priority": 9
-        },
-        {
-          "skill": "Web application architecture",
+          "skill": "Communication skills",
           "priority": 8
+        },
+        {
+          "skill": "Organizational skills",
+          "priority": 8
+        },
+        {
+          "skill": "Independent working style",
+          "priority": 7
+        },
+        {
+          "skill": "Teamwork",
+          "priority": 7
+        },
+        {
+          "skill": "MS Office knowledge",
+          "priority": 6
         }
       ],
       "nice_to_have_skills": [
         {
-          "skill": "React Native",
+          "skill": "Enthusiasm for sustainable mobility and bicycles",
           "priority": 8
         },
         {
-          "skill": "Python",
+          "skill": "English language skills",
           "priority": 6
         },
         {
-          "skill": "Scala",
+          "skill": "Bicycle industry knowledge",
           "priority": 5
         },
         {
-          "skill": "International team experience",
-          "priority": 6
+          "skill": "Accounting experience",
+          "priority": 4
         }
       ],
       "soft_skills": [
-        "Team player",
-        "Pragmatic attitude",
-        "Curiosity",
-        "Continuous learning",
-        "Adaptability"
+        "Service-oriented",
+        "Open",
+        "Reliable",
+        "Communication strength",
+        "Team collaboration"
       ],
-      "experience_years": 5,
+      "experience_years": 2,
       "education": "Not specified"
     },
     "responsibilities": {
       "primary": [
-        "Build scalable frontend services and well-structured applications",
-        "Work with modern TypeScript and React across Tech-Corp organization",
-        "Contribute to core tech shared across multiple teams",
-        "Collaborate in cross-functional teams serving 20M+ users globally",
-        "Iterate and ship features for delivery platform expansion"
+        "Customer reception and greeting",
+        "Consultation and sales of cargo bikes and mobility solutions",
+        "Managing rental and workshop bikes",
+        "Phone customer service and appointment scheduling",
+        "Organizing test rides with cargo bikes"
       ],
       "secondary": [
-        "Potentially work with React Native for Partner application",
-        "Explore backend technologies when needed",
-        "Support integration with parent company ecosystem"
+        "Supporting preliminary accounting",
+        "Organizing purchases and handling mail"
       ]
     },
     "role_context": {
-      "department": "Engineering Team",
-      "team_size": "500+ people in product organization",
+      "department": "Customer Service & Sales",
+      "team_size": "Small cargo bike shop team",
       "key_points": [
-        "Global delivery platform serving 20 million users in 30 countries",
-        "Core tech shared across organization with modern TypeScript/React focus",
-        "Fast-paced environment: Build it, Break it, Iterate and Ship it",
-        "International expansion and parent company integration phase",
-        "Remote work flexibility in Sweden, Estonia, Finland, Germany"
+        "First point of contact for customers in cargo bike shop",
+        "Promote sustainable mobility and eco-friendly transportation",
+        "Mix of customer interaction, sales, and administrative tasks",
+        "Family-friendly work environment focused on innovation",
+        "Opportunity to contribute to sustainable transportation solutions"
       ]
     },
     "candidate_alignment": {
       "strong_matches": [
-        "React expertise",
-        "TypeScript proficiency",
-        "5+ years senior experience",
-        "Scalable application development",
-        "Modern frontend practices"
+        "German B2 language skills",
+        "International experience",
+        "Strong organizational abilities",
+        "Communication skills from technical leadership",
+        "Customer-focused approach from product engineering"
       ],
       "gaps_to_address": [
-        "React Native experience",
-        "Delivery/logistics domain knowledge",
-        "European market experience"
+        "Direct retail/sales experience",
+        "Bicycle industry knowledge",
+        "Accounting experience"
       ],
       "transferable_skills": [
-        "React → React Native mobile development",
-        "Enterprise scale → Consumer delivery platform",
-        "US tech experience → European expansion"
+        "Technical leadership → customer consultation",
+        "Product engineering → understanding customer needs",
+        "International experience → cultural adaptability",
+        "E2E testing mentorship → customer training/education"
       ],
-      "emphasis_strategy": "Lead with React/TypeScript expertise while highlighting scalable application experience and international adaptability"
+      "emphasis_strategy": "Lead with German language proficiency and international adaptability, emphasize organizational skills and customer-focused mindset from technical background"
     },
     "section_priorities": {
       "technical_expertise": [
-        "frontend",
-        "backend",
-        "systems_design"
+        "communication_languages",
+        "organizational_administration",
+        "customer_service"
       ],
-      "experience_focus": "Select achievements showing React/TypeScript expertise, scalable frontend development, and user-facing applications at scale",
-      "project_relevance": "Include: React applications, TypeScript projects, scalable web platforms. Emphasize: user-facing impact, performance optimization"
+      "experience_focus": "Emphasize organizational leadership, mentoring (customer education parallel), and international adaptability",
+      "project_relevance": "Focus on language learning achievement and any customer-facing or organizational accomplishments"
     },
     "optimization_actions": {
       "LEAD_WITH": [
-        "React",
-        "TypeScript",
-        "Frontend Development"
+        "German language skills",
+        "international_experience"
       ],
       "EMPHASIZE": [
-        "scalable_applications",
-        "user_experience",
-        "performance_optimization",
-        "team_collaboration"
+        "organizational_capabilities",
+        "customer_service_mindset",
+        "adaptability"
       ],
       "QUANTIFY": [
-        "user_scale_metrics",
-        "performance_improvements",
-        "load_time_reductions"
+        "language_proficiency_timeline",
+        "team_mentorship_numbers",
+        "international_market_experience"
       ],
       "DOWNPLAY": [
-        "ai_ml_experience",
-        "pure_backend_roles"
+        "heavy_technical_details",
+        "coding_specifics"
       ]
     },
     "ats_analysis": {
       "title_variations": [
-        "Senior Frontend Engineer",
-        "Senior React Developer",
-        "Senior TypeScript Engineer"
+        "Customer Service Representative",
+        "Reception & Sales Associate",
+        "Kundenberaterin"
       ],
       "critical_phrases": [
-        "TypeScript and React",
-        "scalable applications",
-        "modern frontend",
-        "5+ years experience",
-        "team player"
+        "Kundenberatung",
+        "nachhaltige Mobilität",
+        "Organisationsgeschick",
+        "Deutsch B2",
+        "serviceorientiert"
       ]
     },
     "application_info": {
-      "posting_url": "Tech-Corp careers page",
-      "posting_date": "2025-09-19",
+      "posting_url": "/Users/javi/Develop/cc-resume-manager-worktrees/main-job-applications/public/jobs/velogut.md",
+      "posting_date": "2025-09-23",
       "deadline": "Not specified"
     }
   },
   "cover_letter": {
-    "company": "Tech-Corp",
-    "position": "Senior Frontend Engineer - Web, Open Application",
-    "primary_focus": "senior_engineer",
-    "date": "2025-09-19",
+    "company": "Velogut GmbH",
+    "position": "Rezeption – Beratung – Verkauf",
+    "primary_focus": "customer_service",
+    "date": "23. September 2025",
     "personal_info": {
-      "name": "John Doe",
-      "address": "456 Innovation Drive, San Francisco, CA 94105",
-      "email": "john.doe@example.com",
-      "phone": "+1 (555) 555-5555",
-      "linkedin": "https://www.linkedin.com/in/johndoe-example",
-      "github": "https://github.com/johndoe-example"
+      "name": "Javiera Vasquez",
+      "address": "Elsenstrasse 61, 12059 Berlin",
+      "email": "Javiera.vasg@gmail.com",
+      "phone": "+49 1590 1070292",
+      "linkedin": "",
+      "github": ""
     },
     "content": {
-      "letter_title": "Cover Letter Senior Frontend Engineer",
-      "opening_line": "Dear Tech-Corp Hiring Team,",
+      "letter_title": "Bewerbung als Rezeption – Beratung – Verkauf",
+      "opening_line": "Sehr geehrtes Velogut-Team,\n",
       "body": [
-        "I am writing to express my strong interest in the Senior Frontend Engineer - Web, Open Application role. As a Senior Frontend Engineer with over 10 years of experience building scalable, user-facing applications with React and TypeScript, I am excited about the opportunity to contribute to Tech-Corp's mission of bringing joy, simplicity and earnings to neighborhoods worldwide.",
-        "My extensive experience in React and TypeScript aligns perfectly with Tech-Corp's core technology stack. At NextGen Solutions, I led the migration of a legacy frontend to a modern React and TypeScript architecture, achieving a 30% performance improvement and a Lighthouse score of 95. I also built a reusable component library adopted by three product teams, demonstrating my ability to build scalable, well-structured applications that Tech-Corp values.",
-        "What particularly excites me about this role is Tech-Corp's scale and international reach - serving over 20 million users across 30 countries. At Innovate AI, I designed and implemented a REST API serving over 1M requests per day and created complex data visualization dashboards with React and D3.js—experience that translates directly to building robust frontend services for Tech-Corp's global platform.",
-        "Beyond technical expertise, I thrive in cross-functional, fast-paced environments, having worked in agile teams throughout my career. My international background and fluency in Spanish, English, and German aligns well with Tech-Corp's global operations and European expansion. As someone passionate about continuous learning and stepping outside comfort zones, I'm eager to potentially explore React Native for your Partner application.",
-        "Thank you for considering my application. I am eager to bring my React and TypeScript expertise to Tech-Corp and contribute to building the delivery platform that connects millions of users with the services they need."
+        "als serviceorientierte Fachkraft mit nachgewiesenen organisatorischen Fähigkeiten und starken Deutschkenntnissen (B2-Zertifikat) möchte ich gerne zu Ihrem Serviceteam für Lastenräder und nachhaltige Mobilität beitragen. Meine internationale Erfahrung in Deutschland, den USA und Chile hat meine Anpassungsfähigkeit und mein kulturelles Verständnis gestärkt, während mein Engagement für Nachhaltigkeit perfekt zu Veloguts Mission der umweltfreundlichen Verkehrslösungen passt.",
+        "Was mich besonders auszeichnet, ist mein selbstgesteuerter Ansatz zum Deutschlernen: Innerhalb eines Jahres erreichte ich B2-Niveau und erhielt die offizielle Zertifizierung. Diese Leistung zeigt nicht nur meine Sprachkompetenz für die Kundenberatung, sondern auch mein Engagement für persönliches Wachstum und meine Bereitschaft, mich neuen Herausforderungen zu stellen. Diese Eigenschaften sind entscheidend für die erfolgreiche Beratung von Kunden zu Lastenrädern und Mobilitätslösungen.",
+        "Meine berufliche Laufbahn umfasst umfangreiche Erfahrungen in der Kundenbetreuung und Teamführung in internationalen Umgebungen. Bei Inkitt betreute ich Initiativen, die über 100.000 tägliche aktive Nutzer erreichten, und mentorierte 3 Teammitglieder – Fähigkeiten, die direkt auf die Kundenberatung und das Training von Probefahrten übertragbar sind. Meine organisatorischen Fähigkeiten zeigten sich in der erfolgreichen Leitung kleinerer Teams und der Verbesserung von Kundenserviceprozessen um 40% bei Alba Care.",
+        "Besonders begeistert mich die Möglichkeit, Menschen für nachhaltige Mobilität zu begeistern und dabei meine Mehrsprachigkeit (Deutsch B2, Englisch C2, Spanisch Muttersprache) für diverse Kundenbedürfnisse einzusetzen. Meine Erfahrung mit innovativen Technologien und mein Verständnis für moderne Lösungen helfen mir dabei, Kunden die Vorteile von Lastenrädern verständlich zu erklären und sie bei ihrer Entscheidung für umweltfreundliche Transportalternativen zu unterstützen.",
+        "Ich freue mich darauf, meine Leidenschaft für Kundenservice, meine organisatorischen Fähigkeiten und mein Engagement für nachhaltige Mobilität zu Velogut zu bringen. Gerne würde ich in einem persönlichen Gespräch besprechen, wie ich zu Ihrem fahrradfreundlichen, zukunftsorientierten Team beitragen kann."
       ],
-      "signature": "Sincerely,\nJohn Doe\n"
+      "closing": "Ich bin ab 1. Oktober 2025 verfügbar und freue mich auf Ihre Antwort.",
+      "signature": "Mit freundlichen Grüßen,\nJaviera Vasquez\n"
+    },
+    "themes_addressed": [
+      "German language proficiency (B2 certified)",
+      "Customer service orientation and experience",
+      "Organizational skills and team leadership",
+      "International experience and cultural adaptability",
+      "Sustainability and environmental awareness",
+      "Multilingual communication abilities",
+      "Self-directed learning and growth mindset",
+      "Customer consultation and training experience",
+      "Team collaboration and mentorship",
+      "Process improvement and optimization"
+    ],
+    "requirements_addressed": {
+      "must_have": [
+        {
+          "Serviceorientiert, offen und zuverlässig": "Emphasized service orientation and reliability throughout"
+        },
+        {
+          "Begeisterung für nachhaltige Mobilität": "Expressed enthusiasm for sustainable mobility mission"
+        },
+        {
+          "Organisationsgeschick und eigenständige Arbeitsweise": "Highlighted organizational skills and self-directed approach"
+        },
+        {
+          "Kommunikationsstärke und Teamfähigkeit": "Demonstrated communication skills and team experience"
+        },
+        {
+          "Gute Deutsch- und Englischkenntnisse (B2/C1/C2)": "Explicitly mentioned B2 German certification and C2 English"
+        }
+      ],
+      "nice_to_have": [
+        {
+          "Grundkenntnisse in MS Office": "Implied through professional experience"
+        },
+        {
+          "Buchhaltungserfahrung": "Not directly addressed but organizational skills emphasized"
+        },
+        {
+          "Branchenkenntnisse im Fahrradbereich": "Expressed willingness to learn and enthusiasm for industry"
+        }
+      ]
     }
   }
 };

@@ -1,42 +1,42 @@
 version: "1.0"
-metadata:
-  company: "Velogut GmbH"
-  position: "Rezeption – Beratung – Verkauf"
-  template_used: "customer_service_focused"
-  language: "German"
-  last_updated: "2025-09-23"
+job_focus:
+  - primary_area: "customer_service"
+    specialties: ["german_language", "customer_consultation", "sustainable_mobility"]
+    weight: 1.0
+analysis_date: "2025-09-23"
 
 cover_letter:
-  letter_title: "Bewerbung als Rezeption – Beratung – Verkauf"
+  company: "Velogut GmbH"
+  position: "Rezeption – Beratung – Verkauf"
+  primary_focus: "customer_service"
   date: "23. September 2025"
-  company_address: |
-    Velogut GmbH
-    Berlin, Deutschland
-
-  opening_line: "Sehr geehrtes Velogut-Team,"
-
-  body:
-    - "als serviceorientierte Fachkraft mit nachgewiesenen organisatorischen Fähigkeiten und starken Deutschkenntnissen (B2-Zertifikat) möchte ich gerne zu Ihrem Serviceteam für Lastenräder und nachhaltige Mobilität beitragen. Meine internationale Erfahrung in Deutschland, den USA und Chile hat meine Anpassungsfähigkeit und mein kulturelles Verständnis gestärkt, während mein Engagement für Nachhaltigkeit perfekt zu Veloguts Mission der umweltfreundlichen Verkehrslösungen passt."
-
-    - "Was mich besonders auszeichnet, ist mein selbstgesteuerter Ansatz zum Deutschlernen: Innerhalb eines Jahres erreichte ich B2-Niveau und erhielt die offizielle Zertifizierung. Diese Leistung zeigt nicht nur meine Sprachkompetenz für die Kundenberatung, sondern auch mein Engagement für persönliches Wachstum und meine Bereitschaft, mich neuen Herausforderungen zu stellen. Diese Eigenschaften sind entscheidend für die erfolgreiche Beratung von Kunden zu Lastenrädern und Mobilitätslösungen."
-
-    - "Meine berufliche Laufbahn umfasst umfangreiche Erfahrungen in der Kundenbetreuung und Teamführung in internationalen Umgebungen. Bei Inkitt betreute ich Initiativen, die über 100.000 tägliche aktive Nutzer erreichten, und mentorierte 3 Teammitglieder – Fähigkeiten, die direkt auf die Kundenberatung und das Training von Probefahrten übertragbar sind. Meine organisatorischen Fähigkeiten zeigten sich in der erfolgreichen Leitung kleinerer Teams und der Verbesserung von Kundenserviceprozessen um 40% bei Alba Care."
-
-    - "Besonders begeistert mich die Möglichkeit, Menschen für nachhaltige Mobilität zu begeistern und dabei meine Mehrsprachigkeit (Deutsch B2, Englisch C2, Spanisch Muttersprache) für diverse Kundenbedürfnisse einzusetzen. Meine Erfahrung mit innovativen Technologien und mein Verständnis für moderne Lösungen helfen mir dabei, Kunden die Vorteile von Lastenrädern verständlich zu erklären und sie bei ihrer Entscheidung für umweltfreundliche Transportalternativen zu unterstützen."
-
-    - "Ich freue mich darauf, meine Leidenschaft für Kundenservice, meine organisatorischen Fähigkeiten und mein Engagement für nachhaltige Mobilität zu Velogut zu bringen. Gerne würde ich in einem persönlichen Gespräch besprechen, wie ich zu Ihrem fahrradfreundlichen, zukunftsorientierten Team beitragen kann."
-
-  closing: "Ich bin ab 1. Oktober 2025 verfügbar und freue mich auf Ihre Antwort."
-
-  signature: |
-    Mit freundlichen Grüßen
-    Javiera Vasquez
 
   personal_info:
     name: "Javiera Vasquez"
     address: "Elsenstrasse 61, 12059 Berlin"
-    phone: "+49 1590 1070292"
     email: "Javiera.vasg@gmail.com"
+    phone: "+49 1590 1070292"
+    linkedin: ""
+    github: ""
+
+  content:
+    letter_title: "Bewerbung als Rezeption – Beratung – Verkauf"
+
+    opening_line: |
+      Sehr geehrtes Velogut-Team,
+
+    body:
+      - "als serviceorientierte Fachkraft mit nachgewiesenen organisatorischen Fähigkeiten und starken Deutschkenntnissen (B2-Zertifikat) möchte ich gerne zu Ihrem Serviceteam für Lastenräder und nachhaltige Mobilität beitragen. Meine internationale Erfahrung in Deutschland, den USA und Chile hat meine Anpassungsfähigkeit und mein kulturelles Verständnis gestärkt, während mein Engagement für Nachhaltigkeit perfekt zu Veloguts Mission der umweltfreundlichen Verkehrslösungen passt."
+      - "Was mich besonders auszeichnet, ist mein selbstgesteuerter Ansatz zum Deutschlernen: Innerhalb eines Jahres erreichte ich B2-Niveau und erhielt die offizielle Zertifizierung. Diese Leistung zeigt nicht nur meine Sprachkompetenz für die Kundenberatung, sondern auch mein Engagement für persönliches Wachstum und meine Bereitschaft, mich neuen Herausforderungen zu stellen. Diese Eigenschaften sind entscheidend für die erfolgreiche Beratung von Kunden zu Lastenrädern und Mobilitätslösungen."
+      - "Meine berufliche Laufbahn umfasst umfangreiche Erfahrungen in der Kundenbetreuung und Teamführung in internationalen Umgebungen. Bei Inkitt betreute ich Initiativen, die über 100.000 tägliche aktive Nutzer erreichten, und mentorierte 3 Teammitglieder – Fähigkeiten, die direkt auf die Kundenberatung und das Training von Probefahrten übertragbar sind. Meine organisatorischen Fähigkeiten zeigten sich in der erfolgreichen Leitung kleinerer Teams und der Verbesserung von Kundenserviceprozessen um 40% bei Alba Care."
+      - "Besonders begeistert mich die Möglichkeit, Menschen für nachhaltige Mobilität zu begeistern und dabei meine Mehrsprachigkeit (Deutsch B2, Englisch C2, Spanisch Muttersprache) für diverse Kundenbedürfnisse einzusetzen. Meine Erfahrung mit innovativen Technologien und mein Verständnis für moderne Lösungen helfen mir dabei, Kunden die Vorteile von Lastenrädern verständlich zu erklären und sie bei ihrer Entscheidung für umweltfreundliche Transportalternativen zu unterstützen."
+      - "Ich freue mich darauf, meine Leidenschaft für Kundenservice, meine organisatorischen Fähigkeiten und mein Engagement für nachhaltige Mobilität zu Velogut zu bringen. Gerne würde ich in einem persönlichen Gespräch besprechen, wie ich zu Ihrem fahrradfreundlichen, zukunftsorientierten Team beitragen kann."
+
+    closing: "Ich bin ab 1. Oktober 2025 verfügbar und freue mich auf Ihre Antwort."
+
+    signature: |
+      Mit freundlichen Grüßen,
+      Javiera Vasquez
 
   # Key themes addressed in this cover letter
   themes_addressed:
