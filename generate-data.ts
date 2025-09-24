@@ -2,7 +2,7 @@ import { load } from 'js-yaml';
 import { existsSync, readdirSync } from 'fs';
 import { parseArgs } from 'util';
 import type { ApplicationData, ResumeSchema } from './src/types';
-import { validateApplicationData } from './src/validation';
+import { validateApplicationData } from './src/zod/validation';
 
 console.log('🔧 Generating application data module...');
 

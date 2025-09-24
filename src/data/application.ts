@@ -1,7 +1,7 @@
 // @ts-nocheck
 // Auto-generated application data - TypeScript validation disabled
 // Company: tech-corp
-// Generated at: 2025-09-24T09:38:59.201Z
+// Generated at: 2025-09-24T10:08:55.177Z
 
 import type { ApplicationData } from '../types';
 
@@ -14,7 +14,7 @@ const applicationData: ApplicationData = {
     "job_focus_used": "senior_engineer + [react, typescript, frontend, mobile]"
   },
   "resume": {
-    "name": "asdf Doe",
+    "name": "John Doe",
     "profile_picture": "https://i.guim.co.uk/img/media/a23aeb1f7ff20bb80f68852da17743b0e557f8ed/0_224_3504_2102/master/3504.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=9e9a99e479ee60270b69ede4d869b20f",
     "title": "Senior Frontend Engineer | UI/UX Advocate",
     "summary": "Passionate Senior Frontend Engineer with a decade of experience creating beautiful, responsive, and accessible user interfaces. Expert in React, TypeScript, and modern CSS frameworks. Dedicated to best practices, component-driven development, and exceptional user experience.",
