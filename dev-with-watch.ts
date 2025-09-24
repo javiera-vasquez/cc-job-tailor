@@ -154,10 +154,18 @@ class EnhancedDevServer {
             console.log('🔥 Hot reload will pick up changes automatically\n');
             resolve();
           } else {
-            console.log('❌ Data regeneration failed:');
-            if (output) console.log('STDOUT:', output);
-            if (errorOutput) console.log('STDERR:', errorOutput);
-            reject(new Error(`Process exited with code ${code}`));
+            console.log('❌ Data regeneration failed (validation or other error):');
+            if (errorOutput) {
+              console.log(errorOutput.trim());
+            } else if (output) {
+              console.log(output.trim());
+            }
+            console.log('💡 Fix the data issues in the tailor files and save again to retry');
+            console.log('🔄 File watcher is still active - auto-regeneration will resume on next save\n');
+
+            // Don't reject - just log the error and continue watching
+            // This keeps the dev server running even with validation failures
+            resolve();
           }
         });
 
@@ -189,7 +197,9 @@ class EnhancedDevServer {
     try {
       await this.regenerateData(companyFromPath!);
     } catch (error) {
-      // Error already logged in regenerateData
+      // Error already logged in regenerateData method
+      // File watcher continues running regardless of validation failures
+      console.log('📁 File watcher remains active for continued development\n');
     }
   }
 

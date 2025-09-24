@@ -2,6 +2,7 @@ import { load } from 'js-yaml';
 import { existsSync, readdirSync } from 'fs';
 import { parseArgs } from 'util';
 import type { ApplicationData, ResumeSchema } from './src/types';
+import { validateApplicationData } from './src/validation';
 
 console.log('🔧 Generating application data module...');
 
@@ -134,6 +135,16 @@ async function loadApplicationData(): Promise<ApplicationData> {
 
 // Generate the data and TypeScript module
 const applicationData = await loadApplicationData();
+
+// Validate the generated data against TypeScript schema
+console.log('🔍 Validating application data...');
+try {
+  validateApplicationData(applicationData);
+  console.log('✅ Application data validation passed');
+} catch (error) {
+  console.error('💡 Fix the data issues in the tailor files and try again.');
+  process.exit(1);
+}
 
 // Generate TypeScript module with proper imports
 const source = companyName
