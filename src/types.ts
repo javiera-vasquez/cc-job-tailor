@@ -209,7 +209,7 @@ export type ApplicationData = {
 
 export type Schemas = {
   metadata: MetadataSchema;
-  resume: ResumeSchema
-  job_analysis: JobAnalysisSchema
-  cover_letter: CoverLetterSchema
+  resume: ResumeSchema;
+  job_analysis: JobAnalysisSchema;
+  cover_letter: CoverLetterSchema;
 }

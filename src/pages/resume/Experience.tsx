@@ -98,7 +98,7 @@ const ExperienceEntry = ({ experience, debug }: { experience: ExperienceItem, de
       
       {achievements && achievements.length > 0 && (
         <View>
-          {achievements.map((achievement, index) => (
+          {achievements.map((achievement: string, index: number) => (
             <View key={index} style={styles.achievementItem}>
               <View style={styles.bullet} />
               <Text style={styles.achievementText}>

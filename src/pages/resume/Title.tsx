@@ -10,6 +10,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const Title = ({ children }) => <Text style={styles.title}>{children}</Text>;
+const Title = ({ children }: { children: React.ReactNode }) => <Text style={styles.title}>{children}</Text>;
 
 export default Title;

@@ -1,10 +1,10 @@
 import { z } from 'zod';
 import type {
   ApplicationData,
-  ResumeSchema,
-  JobAnalysisSchema,
-  CoverLetterSchema,
-  MetadataSchema
+  ResumeSchema as ResumeType,
+  JobAnalysisSchema as JobAnalysisType,
+  CoverLetterSchema as CoverLetterType,
+  MetadataSchema as MetadataType
 } from './types';
 
 // Basic component schemas
@@ -221,7 +221,7 @@ export function validateApplicationData(data: unknown): ApplicationData {
     // Check if it's a ZodError (can be checked by name or by issues property)
     if (error instanceof z.ZodError || (error && typeof error === 'object' && 'issues' in error)) {
       const zodError = error as z.ZodError;
-      const errors = zodError.issues || zodError.errors || [];
+      const errors = zodError.issues;
 
       console.error('❌ Application data validation failed:');
       errors.forEach(err => {
@@ -240,36 +240,36 @@ export function validateApplicationData(data: unknown): ApplicationData {
   }
 }
 
-export function validateResume(data: unknown): ResumeSchema {
+export function validateResume(data: unknown): ResumeType {
   try {
     return ResumeSchema.parse(data);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      console.error('❌ Resume validation failed:', error.errors);
+      console.error('❌ Resume validation failed:', error.issues);
       throw new Error('Resume data validation failed');
     }
     throw error;
   }
 }
 
-export function validateJobAnalysis(data: unknown): JobAnalysisSchema {
+export function validateJobAnalysis(data: unknown): JobAnalysisType {
   try {
     return JobAnalysisSchema.parse(data);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      console.error('❌ Job analysis validation failed:', error.errors);
+      console.error('❌ Job analysis validation failed:', error.issues);
       throw new Error('Job analysis data validation failed');
     }
     throw error;
   }
 }
 
-export function validateCoverLetter(data: unknown): CoverLetterSchema {
+export function validateCoverLetter(data: unknown): CoverLetterType {
   try {
     return CoverLetterSchema.parse(data);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      console.error('❌ Cover letter validation failed:', error.errors);
+      console.error('❌ Cover letter validation failed:', error.issues);
       throw new Error('Cover letter data validation failed');
     }
     throw error;
