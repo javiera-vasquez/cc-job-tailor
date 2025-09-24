@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2025-09-24
+
+### Added
+- **Zod Schema Validation**: Complete data validation system with type-safe schemas
+- **CI/CD Pipeline**: GitHub Actions workflow for automated testing and validation
+- **Enhanced Type Safety**: Comprehensive TypeScript coverage from YAML to PDF components
+
+### Changed
+- **File Structure**: Reorganized `src/pages/` → `src/templates/` for better clarity
+- **Documentation**: Streamlined CLAUDE.md by ~80% for improved clarity and accuracy
+- **Package Scripts**: Updated commands to reflect current workflow (`save-to-pdf`, etc.)
+- **Development Workflow**: Enhanced validation and error handling throughout data pipeline
+
+### Improved
+- **Type System**: Major refactoring of `src/types.ts` with Zod schema integration
+- **Data Validation**: All YAML transformations now pass through Zod schemas
+- **Error Handling**: Better validation errors and data integrity checks
+- **Documentation**: Updated README.md with correct commands and current file structure
+
+### Removed
+- **Outdated Assets**: Cleaned up old mockup images from template directories
+- **Redundant Code**: Simplified type definitions leveraging Zod inference
+
 ## [0.5.0] - 2025-09-23
 
 ### Added

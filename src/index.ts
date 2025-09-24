@@ -1,1 +1,1 @@
-export * from './pages/index';
+export * from './templates/index';

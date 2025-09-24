@@ -3,6 +3,68 @@ import {
   type Orientation,
   type Bookmark,
 } from '@react-pdf/types';
+import { z } from 'zod';
+
+import {
+  ExpertiseSchema,
+  LanguageSchema,
+  EducationSchema,
+  ContactDetailsSchema,
+  ProfessionalExperienceSchema,
+  IndependentProjectSchema,
+  ResumeSchema as ResumeSchemaZod,
+  PrimaryAreaSchema,
+  SpecialtySchema,
+  JobFocusItemSchema,
+  JobFocusSchema,
+  SkillWithPrioritySchema,
+  JobAnalysisRequirementsSchema,
+  JobAnalysisResponsibilitiesSchema,
+  JobAnalysisRoleContextSchema,
+  JobAnalysisCandidateAlignmentSchema,
+  JobAnalysisSectionPrioritiesSchema,
+  JobAnalysisOptimizationActionsSchema,
+  JobAnalysisApplicationInfoSchema,
+  ATSAnalysisSchema,
+  JobAnalysisSchema as JobAnalysisSchemaZod,
+  CoverLetterContentSchema,
+  CoverLetterSchema as CoverLetterSchemaZod,
+  MetadataSchema as MetadataSchemaZod,
+  ApplicationDataSchema
+} from './zod/schemas';
+
+// Inferred types from Zod schemas
+export type Expertise = z.infer<typeof ExpertiseSchema>;
+export type Language = z.infer<typeof LanguageSchema>;
+export type Education = z.infer<typeof EducationSchema>;
+export type ContactDetails = z.infer<typeof ContactDetailsSchema>;
+export type ProfessionalExperience = z.infer<typeof ProfessionalExperienceSchema>;
+export type IndependentProject = z.infer<typeof IndependentProjectSchema>;
+export type ResumeSchema = z.infer<typeof ResumeSchemaZod>;
+export type PrimaryArea = z.infer<typeof PrimaryAreaSchema>;
+export type Specialty = z.infer<typeof SpecialtySchema>;
+export type JobFocusItem = z.infer<typeof JobFocusItemSchema>;
+export type JobFocus = z.infer<typeof JobFocusSchema>;
+export type SkillWithPriority = z.infer<typeof SkillWithPrioritySchema>;
+export type JobAnalysisRequirements = z.infer<typeof JobAnalysisRequirementsSchema>;
+export type JobAnalysisResponsibilities = z.infer<typeof JobAnalysisResponsibilitiesSchema>;
+export type JobAnalysisRoleContext = z.infer<typeof JobAnalysisRoleContextSchema>;
+export type JobAnalysisCandidateAlignment = z.infer<typeof JobAnalysisCandidateAlignmentSchema>;
+export type JobAnalysisSectionPriorities = z.infer<typeof JobAnalysisSectionPrioritiesSchema>;
+export type JobAnalysisOptimizationActions = z.infer<typeof JobAnalysisOptimizationActionsSchema>;
+export type JobAnalysisApplicationInfo = z.infer<typeof JobAnalysisApplicationInfoSchema>;
+export type ATSAnalysis = z.infer<typeof ATSAnalysisSchema>;
+export type JobAnalysisSchema = z.infer<typeof JobAnalysisSchemaZod>;
+export type CoverLetterContent = z.infer<typeof CoverLetterContentSchema>;
+export type CoverLetterSchema = z.infer<typeof CoverLetterSchemaZod>;
+export type MetadataSchema = z.infer<typeof MetadataSchemaZod>;
+export type ApplicationData = z.infer<typeof ApplicationDataSchema>;
+
+// TODO: Investigate why these types are not covered by Zod schemas - root cause
+// Additional types not covered by Zod schemas
+export type Skills = string;
+// Union type for Experience component that can handle both types
+export type ExperienceItem = ProfessionalExperience | IndependentProject;
 
 // TYPES FOR A REACT-PDF PAGE
 export type ReactPDFProps = {
@@ -15,201 +77,9 @@ export type ReactPDFProps = {
   data: ResumeSchema | CoverLetterSchema
 }
 
-// TYPES FOR A RESUME PAGE
-export type Expertise = {resume_title: string, skills: string[]};
-export type Skills = string;
-export type Language = {language: string, proficiency: string};
-
-export type Education = {
-  institution: string;
-  program: string;
-  location: string;
-  duration: string;
-}
-
-// FIX: name is optional. reason: we use ContactDetails for resume and cover letter
-export type ContactDetails = {
-  name?: string;
-  phone: string;
-  email: string;
-  address: string;
-  linkedin: string;
-  github: string;
-}
-
-export type ProfessionalExperience = {
-  company: string;
-  position: string;
-  location: string;
-  duration: string;
-  company_description: string;
-  linkedin: string | null;
-  achievements: string[];
-}
-
-export type IndependentProject = {
-  name: string;
-  description: string;
-  location: string;
-  duration: string;
-  url?: string;
-  achievements: string[];
-  impact?: string;
-}
-
-// Union type for Experience component that can handle both types
-export type ExperienceItem = ProfessionalExperience | IndependentProject;
-
-export type ResumeSchema = {
-  name: string;
-  profile_picture: string;
-  title: string;
-  summary: string;
-  contact: ContactDetails;
-  technical_expertise: Array<Expertise>;
-  skills: Array<Skills>;
-  languages: Array<Language>;
-  professional_experience: Array<ProfessionalExperience>;
-  independent_projects: Array<IndependentProject>;
-  education: Array<Education>;
-}
-
-// Job Focus types - array-based structure for multi-role analysis
-export type PrimaryArea =
-  | 'junior_engineer'
-  | 'engineer'
-  | 'senior_engineer'
-  | 'staff_engineer'
-  | 'principal_engineer'
-  | 'tech_lead'
-  | 'engineering_manager';
-
-export type Specialty =
-  | 'ai' | 'ml' | 'data'
-  | 'react' | 'typescript' | 'node' | 'python'
-  | 'aws' | 'testing' | 'architecture' | 'devops'
-  | 'frontend' | 'backend' | 'mobile' | 'security';
-
-export type JobFocusItem = {
-  primary_area: PrimaryArea;
-  specialties: Specialty[];
-  weight: number;          // 0.0-1.0 importance score (must sum to 1.0 across array)
-};
-
-export type JobFocus = JobFocusItem[];
-
-// Skill with priority for job analysis
-export type SkillWithPriority = {
-  skill: string;
-  priority: number;
-};
-
-// Job Analysis Schema types
-export type JobAnalysisRequirements = {
-  must_have_skills: SkillWithPriority[];
-  nice_to_have_skills: SkillWithPriority[];
-  soft_skills: string[];
-  experience_years: number;
-  education: string;
-};
-
-export type JobAnalysisResponsibilities = {
-  primary: string[];
-  secondary: string[];
-};
-
-export type JobAnalysisRoleContext = {
-  department: string;
-  team_size: string;
-  key_points: string[];
-};
-
-export type JobAnalysisCandidateAlignment = {
-  strong_matches: string[];
-  gaps_to_address: string[];
-  transferable_skills: string[];
-  emphasis_strategy: string;
-};
-
-export type JobAnalysisSectionPriorities = {
-  technical_expertise: string[];
-  experience_focus: string;
-  project_relevance: string;
-};
-
-export type JobAnalysisOptimizationActions = {
-  LEAD_WITH: string[];
-  EMPHASIZE: string[];
-  QUANTIFY: string[];
-  DOWNPLAY: string[];
-};
-
-
-export type JobAnalysisApplicationInfo = {
-  posting_url: string;
-  posting_date: string;
-  deadline: string;
-};
-
-export type ATSAnalysis = {
-  title_variations: string[];
-  critical_phrases: string[];
-};
-
-export type JobAnalysisSchema = {
-  company: string;
-  position: string;
-  job_focus: JobFocus;
-  location: string;
-  employment_type: string;
-  experience_level: string;
-  requirements: JobAnalysisRequirements;
-  responsibilities: JobAnalysisResponsibilities;
-  role_context: JobAnalysisRoleContext;
-  application_info: JobAnalysisApplicationInfo;
-  candidate_alignment: JobAnalysisCandidateAlignment;
-  section_priorities: JobAnalysisSectionPriorities;
-  optimization_actions: JobAnalysisOptimizationActions;
-  ats_analysis: ATSAnalysis;
-};
-
-// Cover Letter Schema types
-export type CoverLetterContent = {
-  letter_title: string;
-  opening_line: string;
-  body: string[];
-  signature: string;
-};
-
-export type CoverLetterSchema = {
-  company: string;
-  position: string;
-  job_focus: JobFocus;           // Full array from job analysis
-  primary_focus: string;         // Highest weighted primary_area for template selection
-  date: string;
-  personal_info: ContactDetails;
-  content: CoverLetterContent;
-};
-
-export type MetadataSchema = {
-  company: string;
-  position: string;
-  last_updated: string;
-  transformation_decisions: string;
-  job_focus_used: string;
-};
-
-// Main Application Data type
-export type ApplicationData = {
-  metadata: MetadataSchema | null;
-  resume: ResumeSchema | null;
-  job_analysis: JobAnalysisSchema | null;
-  cover_letter: CoverLetterSchema | null;
-};
-
 export type Schemas = {
   metadata: MetadataSchema;
-  resume: ResumeSchema
-  job_analysis: JobAnalysisSchema
-  cover_letter: CoverLetterSchema
+  resume: ResumeSchema;
+  job_analysis: JobAnalysisSchema;
+  cover_letter: CoverLetterSchema;
 }

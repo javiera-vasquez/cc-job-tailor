@@ -5,7 +5,8 @@
     "@types/js-yaml": "^4.0.9",
     "js-yaml": "^4.1.0",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "zod": "^3.23.8"
   },
   "name": "cc-resume-manager",
   "type": "module",
@@ -17,7 +18,7 @@
     "start": "bun run generate-data.ts && bun index.html",
     "save-to-pdf": "bun run generate-data.ts \"$@\" && bun run generate-pdf.ts \"$@\"",
     "generate-data": "bun run generate-data.ts",
-    "typecheck": "bun run tsc --noEmit"
+    "tsc": "tsc --noEmit"
   },
   "devDependencies": {
     "@types/bun": "latest",

@@ -1,16 +1,16 @@
 version: "2.0.0"
-job_focus:
-  - primary_area: "senior_engineer"
-    specialties: ["react", "typescript", "frontend", "mobile"]
-    weight: 0.8
-  - primary_area: "senior_engineer"
-    specialties: ["backend", "python", "architecture"]
-    weight: 0.2
 analysis_date: "2025-09-19"
 
 cover_letter:
   company: "Tech-Corp"
   position: "Senior Frontend Engineer - Web, Open Application"
+  job_focus:
+    - primary_area: "senior_engineer"
+      specialties: ["react", "typescript", "frontend", "mobile"]
+      weight: 0.8
+    - primary_area: "senior_engineer"
+      specialties: ["backend", "python", "architecture"]
+      weight: 0.2
   primary_focus: "senior_engineer"
   date: "2025-09-19"
 

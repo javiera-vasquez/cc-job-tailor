@@ -17,9 +17,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const List = ({ children }) => children;
+const List = ({ children }: { children: React.ReactNode }) => children;
 
-export const Item = ({ children }) => (
+export const Item = ({ children }: { children: React.ReactNode }) => (
   <View style={styles.item}>
     <Text style={styles.bulletPoint}>•</Text>
     <Text style={styles.itemContent}>{children}</Text>

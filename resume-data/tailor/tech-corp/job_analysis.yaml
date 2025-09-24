@@ -93,6 +93,6 @@ job_analysis:
 
   # Basic metadata
   application_info:
-    posting_url: "Tech-Corp careers page"
+    posting_url: "https://tech-corp.com/careers"
     posting_date: "2025-09-19"
     deadline: "Not specified"
