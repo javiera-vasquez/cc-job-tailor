@@ -77,8 +77,8 @@ You can see the resume generator in action without using any of your own data.
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/javiera-vasquez/cc-job-tailor.git
-    cd cc-job-tailor
+    git clone https://github.com/javiera-vasquez/claude-code-job-tailor.git
+    cd claude-code-job-tailor
     ```
 
 2.  **Install dependencies:**
