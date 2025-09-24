@@ -147,3 +147,6 @@ spacing: {
 
 ### Commit Message Policy
 **IMPORTANT**: Never include Claude Code attribution or co-authored-by lines in git commit messages or pull requests. All commits should be clean and focused on the actual changes without tool attribution.
+
+### Pull Request Policy
+**CRITICAL**: Never add Claude Code attribution, "Generated with Claude Code", co-authored-by lines, or any tool attribution in pull request descriptions, titles, or comments. All PRs must appear as regular development work without mentioning AI assistance.
