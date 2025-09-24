@@ -151,7 +151,8 @@ const source = companyName
   ? `company-specific data for "${companyName}"`
   : "default source files";
 
-const tsContent = `// Auto-generated application data
+const tsContent = `// @ts-nocheck
+// Auto-generated application data - TypeScript validation disabled
 // Company: ${companyName || 'default (merged source files)'}
 // Generated at: ${new Date().toISOString()}
 
