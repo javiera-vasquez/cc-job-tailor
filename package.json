@@ -18,6 +18,8 @@
     "start": "bun run generate-data.ts && bun index.html",
     "save-to-pdf": "bun run generate-data.ts \"$@\" && bun run generate-pdf.ts \"$@\"",
     "generate-data": "bun run generate-data.ts",
+    "test": "bun test test/",
+    "test:watch": "bun test test/ --watch",
     "tsc": "tsc --noEmit"
   },
   "devDependencies": {

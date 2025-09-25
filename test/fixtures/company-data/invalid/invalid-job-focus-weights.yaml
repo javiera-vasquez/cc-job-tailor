@@ -1,0 +1,70 @@
+metadata:
+  company: "Test Company"
+  position: "Engineer"
+  last_updated: "2024-01-01"
+  transformation_decisions: "Test"
+  job_focus_used: "test"
+
+resume: null
+
+job_analysis:
+  company: "Test Company"
+  position: "Engineer"
+  # Invalid job focus - weights sum to 1.1 (should be 1.0)
+  job_focus:
+    - primary_area: "engineer"
+      specialties: ["react"]
+      weight: 0.7
+    - primary_area: "senior_engineer"
+      specialties: ["python"]
+      weight: 0.4  # 0.7 + 0.4 = 1.1, exceeds tolerance
+
+  location: "Remote"
+  employment_type: "Full-time"
+  experience_level: "Mid"
+
+  requirements:
+    must_have_skills:
+      - skill: "JavaScript"
+        priority: 1
+    nice_to_have_skills: []
+    soft_skills: ["Communication"]
+    experience_years: 3
+    education: "Bachelor's"
+
+  responsibilities:
+    primary: ["Develop software"]
+    secondary: []
+
+  role_context:
+    department: "Engineering"
+    team_size: "5"
+    key_points: ["Agile"]
+
+  application_info:
+    posting_url: "https://example.com/job"
+    posting_date: "2024-01-01"
+    deadline: "2024-02-01"
+
+  candidate_alignment:
+    strong_matches: ["React"]
+    gaps_to_address: []
+    transferable_skills: []
+    emphasis_strategy: "Focus on React"
+
+  section_priorities:
+    technical_expertise: ["React"]
+    experience_focus: "Frontend"
+    project_relevance: "Web apps"
+
+  optimization_actions:
+    LEAD_WITH: ["React"]
+    EMPHASIZE: ["Frontend"]
+    QUANTIFY: ["Projects"]
+    DOWNPLAY: ["Backend"]
+
+  ats_analysis:
+    title_variations: ["Engineer"]
+    critical_phrases: ["React"]
+
+cover_letter: null

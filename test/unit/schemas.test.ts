@@ -1,0 +1,270 @@
+import { test, expect, describe } from 'bun:test';
+import {
+  ApplicationDataSchema,
+  JobFocusSchema,
+  ContactDetailsSchema,
+  ResumeSchema,
+  JobAnalysisSchema,
+  CoverLetterSchema,
+  MetadataSchema
+} from '../../src/zod/schemas';
+import {
+  createValidApplicationData,
+  createValidJobFocus,
+  createInvalidJobFocus,
+  createMinimalValidApplicationData
+} from '../helpers/test-utils';
+
+describe('Zod Schema Validation', () => {
+
+  describe('ApplicationDataSchema', () => {
+    test('validates complete application data successfully', () => {
+      const validData = createValidApplicationData();
+      const result = ApplicationDataSchema.safeParse(validData);
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data).toEqual(validData);
+      }
+    });
+
+    test('validates minimal application data with nulls', () => {
+      const minimalData = createMinimalValidApplicationData();
+      const result = ApplicationDataSchema.safeParse(minimalData);
+
+      expect(result.success).toBe(true);
+    });
+
+    test('accepts null values for all optional sections', () => {
+      const dataWithNulls = {
+        metadata: null,
+        resume: null,
+        job_analysis: null,
+        cover_letter: null
+      };
+
+      const result = ApplicationDataSchema.safeParse(dataWithNulls);
+      expect(result.success).toBe(true);
+    });
+
+    test('rejects when missing required top-level properties', () => {
+      const incompleteData = {
+        metadata: null,
+        resume: null
+        // Missing job_analysis and cover_letter
+      };
+
+      const result = ApplicationDataSchema.safeParse(incompleteData);
+      expect(result.success).toBe(false);
+
+      if (!result.success) {
+        expect(result.error.issues.length).toBeGreaterThan(0);
+      }
+    });
+  });
+
+  describe('JobFocusSchema - Critical Business Rule', () => {
+    test('validates when job focus weights sum to exactly 1.0', () => {
+      const validJobFocus = createValidJobFocus();
+      const result = JobFocusSchema.safeParse(validJobFocus);
+
+      expect(result.success).toBe(true);
+    });
+
+    test('validates when weights sum to 1.0 with floating point precision', () => {
+      const jobFocusWithPrecision = [
+        {
+          primary_area: "engineer" as const,
+          specialties: ["react" as const],
+          weight: 0.333333
+        },
+        {
+          primary_area: "senior_engineer" as const,
+          specialties: ["python" as const],
+          weight: 0.333333
+        },
+        {
+          primary_area: "tech_lead" as const,
+          specialties: ["architecture" as const],
+          weight: 0.333334
+        }
+      ];
+
+      const result = JobFocusSchema.safeParse(jobFocusWithPrecision);
+      expect(result.success).toBe(true);
+    });
+
+    test('rejects when job focus weights do not sum to 1.0', () => {
+      const invalidJobFocus = createInvalidJobFocus();
+      const result = JobFocusSchema.safeParse(invalidJobFocus);
+
+      expect(result.success).toBe(false);
+
+      if (!result.success) {
+        const weightError = result.error.issues.find(issue =>
+          issue.message.includes('Job focus weights must sum to 1.0')
+        );
+        expect(weightError).toBeDefined();
+      }
+    });
+
+    test('rejects when weights sum is significantly off (> 0.001 tolerance)', () => {
+      const badJobFocus = [
+        {
+          primary_area: "engineer" as const,
+          specialties: ["react" as const],
+          weight: 0.5
+        },
+        {
+          primary_area: "senior_engineer" as const,
+          specialties: ["python" as const],
+          weight: 0.4  // Sum = 0.9, difference = 0.1 > 0.001
+        }
+      ];
+
+      const result = JobFocusSchema.safeParse(badJobFocus);
+      expect(result.success).toBe(false);
+    });
+
+    test('requires at least one job focus item', () => {
+      const emptyJobFocus: any[] = [];
+      const result = JobFocusSchema.safeParse(emptyJobFocus);
+
+      expect(result.success).toBe(false);
+    });
+
+    test('validates individual job focus item properties', () => {
+      const invalidJobFocusItem = [
+        {
+          primary_area: "invalid_area",  // Not in enum
+          specialties: ["react"],
+          weight: 1.0
+        }
+      ];
+
+      const result = JobFocusSchema.safeParse(invalidJobFocusItem);
+      expect(result.success).toBe(false);
+    });
+  });
+
+  describe('ContactDetailsSchema', () => {
+    test('validates correct email format', () => {
+      const validContact = {
+        name: "John Doe",
+        phone: "+1-234-567-8900",
+        email: "valid@example.com",
+        address: "123 Main St",
+        linkedin: "https://linkedin.com/in/johndoe",
+        github: "https://github.com/johndoe"
+      };
+
+      const result = ContactDetailsSchema.safeParse(validContact);
+      expect(result.success).toBe(true);
+    });
+
+    test('rejects invalid email format', () => {
+      const invalidContact = {
+        name: "John Doe",
+        phone: "+1-234-567-8900",
+        email: "invalid-email-format",
+        address: "123 Main St",
+        linkedin: "https://linkedin.com/in/johndoe",
+        github: "https://github.com/johndoe"
+      };
+
+      const result = ContactDetailsSchema.safeParse(invalidContact);
+      expect(result.success).toBe(false);
+    });
+
+    test('validates URL format for linkedin and github', () => {
+      const validContact = {
+        phone: "+1-234-567-8900",
+        email: "test@example.com",
+        address: "123 Main St",
+        linkedin: "https://linkedin.com/in/johndoe",
+        github: "https://github.com/johndoe"
+      };
+
+      const result = ContactDetailsSchema.safeParse(validContact);
+      expect(result.success).toBe(true);
+    });
+
+    test('rejects invalid URL format for linkedin', () => {
+      const invalidContact = {
+        phone: "+1-234-567-8900",
+        email: "test@example.com",
+        address: "123 Main St",
+        linkedin: "not-a-valid-url",
+        github: "https://github.com/johndoe"
+      };
+
+      const result = ContactDetailsSchema.safeParse(invalidContact);
+      expect(result.success).toBe(false);
+    });
+  });
+
+  describe('ResumeSchema', () => {
+    test('validates complete resume data', () => {
+      const validData = createValidApplicationData();
+      if (validData.resume) {
+        const result = ResumeSchema.safeParse(validData.resume);
+        expect(result.success).toBe(true);
+      }
+    });
+
+    test('requires minimum array lengths for critical sections', () => {
+      const validData = createValidApplicationData();
+      if (validData.resume) {
+        // Test empty technical_expertise array
+        const resumeWithEmptyExpertise = {
+          ...validData.resume,
+          technical_expertise: []
+        };
+
+        const result = ResumeSchema.safeParse(resumeWithEmptyExpertise);
+        expect(result.success).toBe(false);
+      }
+    });
+
+    test('requires non-empty strings for required fields', () => {
+      const validData = createValidApplicationData();
+      if (validData.resume) {
+        const resumeWithEmptyName = {
+          ...validData.resume,
+          name: ""
+        };
+
+        const result = ResumeSchema.safeParse(resumeWithEmptyName);
+        expect(result.success).toBe(false);
+      }
+    });
+  });
+
+  describe('MetadataSchema', () => {
+    test('validates complete metadata', () => {
+      const validMetadata = {
+        company: "Test Company",
+        position: "Software Engineer",
+        last_updated: "2024-01-01",
+        transformation_decisions: "Test decisions",
+        job_focus_used: "engineering"
+      };
+
+      const result = MetadataSchema.safeParse(validMetadata);
+      expect(result.success).toBe(true);
+    });
+
+    test('requires all metadata fields to be non-empty strings', () => {
+      const incompleteMetadata = {
+        company: "",  // Empty string should fail
+        position: "Software Engineer",
+        last_updated: "2024-01-01",
+        transformation_decisions: "Test decisions",
+        job_focus_used: "engineering"
+      };
+
+      const result = MetadataSchema.safeParse(incompleteMetadata);
+      expect(result.success).toBe(false);
+    });
+  });
+});
