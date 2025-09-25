@@ -9,27 +9,7 @@ export function captureConsoleOutput(fn: () => void): string[] {
     const message = args.map(arg => String(arg)).join(' ');
     capturedOutput.push(message);
     // Show in console with test context indicator
-    originalError(`[TEST VALIDATION ERROR] ${message}`);
-  };
-
-  try {
-    fn();
-  } finally {
-    console.error = originalError;
-  }
-
-  return capturedOutput;
-}
-
-// Silent console capture - suppresses validation error logs during testing
-export function captureConsoleOutputSilent(fn: () => void): string[] {
-  const originalError = console.error;
-  const capturedOutput: string[] = [];
-
-  // Suppress console output during testing
-  console.error = (...args: any[]) => {
-    capturedOutput.push(args.map(arg => String(arg)).join(' '));
-    // Don't actually log to console during tests
+    originalError(`[Expected Validation Error] ${message}`);
   };
 
   try {
@@ -174,6 +154,112 @@ export function createInvalidApplicationData(errorType: string): unknown {
 // File system mocking utilities
 export function mockYAMLContent(content: object): string {
   return JSON.stringify(content, null, 2);
+}
+
+// Mock file system operations for testing
+export function createMockExistsSync() {
+  const mockExistsSync = (path: string): boolean => {
+    // Default implementation - can be overridden by specific tests
+    return false;
+  };
+  return mockExistsSync;
+}
+
+export function createMockReaddirSync() {
+  const mockReaddirSync = (path: string): string[] => {
+    // Default implementation - can be overridden by specific tests
+    return [];
+  };
+  return mockReaddirSync;
+}
+
+export function createMockBunFile() {
+  const mockBunFile = (path: string) => ({
+    text: async (): Promise<string> => {
+      // Default YAML content for testing
+      return 'metadata:\n  company: "Test Company"\nresume:\n  name: "Test User"';
+    }
+  });
+  return mockBunFile;
+}
+
+// Helper to create realistic company folder structure
+export interface MockCompanyStructure {
+  [companyName: string]: {
+    hasResume?: boolean;
+    hasJobAnalysis?: boolean;
+    hasCoverLetter?: boolean;
+    resumeContent?: object;
+    jobAnalysisContent?: object;
+    coverLetterContent?: object;
+  };
+}
+
+export function setupMockCompanyFolders(structure: MockCompanyStructure) {
+  const mockExistsSync = (path: string): boolean => {
+    // Check for tailor directory
+    if (path === './resume-data/tailor') {
+      return true;
+    }
+
+    // Check for company folders and their files
+    for (const [companyName, config] of Object.entries(structure)) {
+      const companyPath = `./resume-data/tailor/${companyName}`;
+
+      if (path === companyPath) {
+        return true;
+      }
+
+      if (path === `${companyPath}/resume.yaml` && config.hasResume) {
+        return true;
+      }
+
+      if (path === `${companyPath}/job_analysis.yaml` && config.hasJobAnalysis) {
+        return true;
+      }
+
+      if (path === `${companyPath}/cover_letter.yaml` && config.hasCoverLetter) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+  const mockReaddirSync = (path: string): string[] => {
+    if (path === './resume-data/tailor') {
+      return Object.keys(structure);
+    }
+    return [];
+  };
+
+  const mockBunFile = (path: string) => ({
+    text: async (): Promise<string> => {
+      for (const [companyName, config] of Object.entries(structure)) {
+        const companyPath = `./resume-data/tailor/${companyName}`;
+
+        if (path === `${companyPath}/resume.yaml` && config.resumeContent) {
+          return mockYAMLContent(config.resumeContent);
+        }
+
+        if (path === `${companyPath}/job_analysis.yaml` && config.jobAnalysisContent) {
+          return mockYAMLContent(config.jobAnalysisContent);
+        }
+
+        if (path === `${companyPath}/cover_letter.yaml` && config.coverLetterContent) {
+          return mockYAMLContent(config.coverLetterContent);
+        }
+      }
+
+      // Default content
+      return mockYAMLContent({
+        metadata: { company: 'Default Company' },
+        resume: { name: 'Default User' }
+      });
+    }
+  });
+
+  return { mockExistsSync, mockReaddirSync, mockBunFile };
 }
 
 // Test assertion helpers

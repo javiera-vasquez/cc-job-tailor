@@ -10,7 +10,6 @@ import {
   createMinimalValidApplicationData,
   createInvalidApplicationData,
   captureConsoleOutput,
-  captureConsoleOutputSilent,
   expectValidationError
 } from '../helpers/test-utils';
 
@@ -38,7 +37,7 @@ describe('Validation Functions', () => {
       expect(result.cover_letter).toBeNull();
     });
 
-    test('throws descriptive error for invalid data with console output (EXPECTED VALIDATION ERROR)', () => {
+    test('throws descriptive error for invalid data with console output', () => {
       const invalidData = createInvalidApplicationData('invalid-email');
 
       const consoleOutput = captureConsoleOutput(() => {
@@ -54,7 +53,7 @@ describe('Validation Functions', () => {
       )).toBe(true);
     });
 
-    test('handles nested validation errors correctly (EXPECTED VALIDATION ERROR)', () => {
+    test('handles nested validation errors correctly ', () => {
       const invalidData = createInvalidApplicationData('missing-required-field');
 
       const consoleOutput = captureConsoleOutput(() => {
@@ -69,7 +68,7 @@ describe('Validation Functions', () => {
       )).toBe(true);
     });
 
-    test('handles null input gracefully (EXPECTED VALIDATION ERROR)', () => {
+    test('handles null input gracefully ', () => {
       captureConsoleOutput(() => {
         expectValidationError(() => {
           validateApplicationData(null);
@@ -77,7 +76,7 @@ describe('Validation Functions', () => {
       });
     });
 
-    test('handles undefined input gracefully (EXPECTED VALIDATION ERROR)', () => {
+    test('handles undefined input gracefully ', () => {
       captureConsoleOutput(() => {
         expectValidationError(() => {
           validateApplicationData(undefined);
@@ -85,7 +84,7 @@ describe('Validation Functions', () => {
       });
     });
 
-    test('handles non-object input (EXPECTED VALIDATION ERROR)', () => {
+    test('handles non-object input ', () => {
       captureConsoleOutput(() => {
         expectValidationError(() => {
           validateApplicationData("not an object");
@@ -93,7 +92,7 @@ describe('Validation Functions', () => {
       });
     });
 
-    test('handles empty object input (EXPECTED VALIDATION ERROR)', () => {
+    test('handles empty object input ', () => {
       captureConsoleOutput(() => {
         expectValidationError(() => {
           validateApplicationData({});
@@ -101,7 +100,7 @@ describe('Validation Functions', () => {
       });
     });
 
-    test('logs detailed error information for multiple validation errors (EXPECTED VALIDATION ERROR)', () => {
+    test('logs detailed error information for multiple validation errors ', () => {
       const badData = {
         metadata: {
           company: "",  // Empty string
@@ -173,7 +172,7 @@ describe('Validation Functions', () => {
       }
     });
 
-    test('throws error for invalid resume data (EXPECTED VALIDATION ERROR)', () => {
+    test('throws error for invalid resume data ', () => {
       const invalidResume = {
         name: "",  // Empty string should fail
         profile_picture: "pic.jpg"
@@ -187,7 +186,7 @@ describe('Validation Functions', () => {
       });
     });
 
-    test('logs resume validation errors to console (EXPECTED VALIDATION ERROR)', () => {
+    test('logs resume validation errors to console ', () => {
       const invalidResume = { name: "" };
 
       const consoleOutput = captureConsoleOutput(() => {
@@ -271,7 +270,7 @@ describe('Validation Functions', () => {
       expect(result).toEqual(validJobAnalysis);
     });
 
-    test('throws error for invalid job analysis data (EXPECTED VALIDATION ERROR)', () => {
+    test('throws error for invalid job analysis data ', () => {
       const invalidJobAnalysis = {
         company: "",  // Empty string
         position: "Engineer"
@@ -317,7 +316,7 @@ describe('Validation Functions', () => {
       expect(result).toEqual(validCoverLetter);
     });
 
-    test('throws error for invalid cover letter data (EXPECTED VALIDATION ERROR)', () => {
+    test('throws error for invalid cover letter data ', () => {
       const invalidCoverLetter = {
         company: "",  // Empty string
         position: "Engineer"
