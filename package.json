@@ -20,6 +20,7 @@
     "generate-data": "bun run generate-data.ts",
     "test": "bun test test/",
     "test:watch": "bun test test/ --watch",
+    "test:coverage": "bun test test/ --coverage",
     "tsc": "tsc --noEmit"
   },
   "devDependencies": {
