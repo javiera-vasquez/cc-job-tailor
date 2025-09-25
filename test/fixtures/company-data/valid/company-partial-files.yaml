@@ -1,0 +1,54 @@
+# Company data with only resume file (job_analysis and cover_letter missing)
+metadata:
+  company: "StartupCo"
+  position: "Full Stack Developer"
+  last_updated: "2024-01-10"
+  transformation_decisions: "Basic resume generation without job analysis"
+  job_focus_used: "general"
+
+resume:
+  name: "John Developer"
+  profile_picture: "john-profile.jpg"
+  title: "Full Stack Developer"
+  summary: "Versatile developer with experience in both frontend and backend technologies"
+  contact:
+    name: "John Developer"
+    phone: "+1-555-987-6543"
+    email: "john.dev@email.com"
+    address: "456 Startup Ave, Austin, TX 78701"
+    linkedin: "https://linkedin.com/in/john-developer"
+    github: "https://github.com/john-developer"
+  technical_expertise:
+    - resume_title: "Full Stack Development"
+      skills: ["React", "Node.js", "PostgreSQL", "Python"]
+  skills:
+    - "JavaScript"
+    - "Python"
+    - "React"
+    - "Node.js"
+    - "PostgreSQL"
+  languages:
+    - language: "English"
+      proficiency: "Native"
+  professional_experience:
+    - company: "Tech Startup"
+      position: "Full Stack Developer"
+      location: "Austin, TX"
+      duration: "2021-2024"
+      company_description: "Fast-growing fintech startup"
+      linkedin: "https://linkedin.com/company/tech-startup"
+      achievements:
+        - "Built end-to-end features serving 50K+ users"
+        - "Implemented CI/CD pipeline reducing deployment time by 60%"
+  independent_projects:
+    - name: "Personal Portfolio API"
+      description: "RESTful API for portfolio management"
+      location: "Remote"
+      duration: "2023"
+      achievements:
+        - "Built with Node.js and PostgreSQL"
+  education:
+    - institution: "State University"
+      program: "Bachelor of Computer Science"
+      location: "Austin, TX"
+      duration: "2017-2021"

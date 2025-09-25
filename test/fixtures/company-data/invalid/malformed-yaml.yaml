@@ -1,0 +1,28 @@
+# Invalid YAML with syntax errors
+metadata:
+  company: "Broken Company"
+  position: "Engineer"
+  last_updated: "2024-01-01"
+  # Missing closing quote
+  transformation_decisions: "This is broken YAML
+  job_focus_used: "general"
+
+resume:
+  name: "Test User"
+  # Indentation error
+    profile_picture: "test.jpg"
+  title: "Engineer"
+  summary: "Test summary"
+  contact:
+    # Missing value
+    name:
+    phone: "+1-555-0000"
+    email: "test@example.com"
+    address: "123 Test St"
+    linkedin: "https://linkedin.com/test"
+    github: "https://github.com/test"
+  technical_expertise:
+    # Array syntax error
+    - resume_title: "Development"
+      skills: ["Skill1" "Skill2"]  # Missing comma
+  # Truncated content...

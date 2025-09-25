@@ -30,6 +30,9 @@ jobs:
     - name: Run type checking
       run: bun run tsc
 
+    - name: Run unit tests
+      run: bun test
+
     - name: Test generate-data command
       run: bun run generate-data -C tech-corp
 

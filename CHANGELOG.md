@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.1] - 2025-09-25
+
+### Added
+- **Comprehensive Testing Layer**: Complete unit test suite with 66 tests covering data pipeline
+- **Test Coverage Reporting**: Coverage analysis with 88.10% function and 80.81% line coverage
+- **Priority-based Test Implementation**:
+  - Zod schema validation tests (19 tests)
+  - Data generation pipeline tests (13 tests)
+  - PDF generation pipeline tests (16 tests)
+  - Application validation tests (18 tests)
+- **Mock Testing Infrastructure**: File system mocking and external dependency simulation
+- **CI Test Integration**: Unit tests added to GitHub Actions workflow
+
+### Changed
+- **Package Scripts**: Added `test:coverage` command for coverage reporting
+- **CI Workflow**: Enhanced with comprehensive test execution before integration tests
+- **Error Handling**: Improved test coverage for edge cases and validation scenarios
+
+### Technical Details
+- **Testing Framework**: Bun's native test runner with TypeScript support
+- **Mock Strategy**: Dependency injection for external processes (Bun.spawn, renderToFile, mkdir)
+- **Test Structure**: Option 2 architecture with centralized test utilities and fixtures
+- **Coverage Tools**: Built-in Bun coverage reporting with detailed file-by-file analysis
+
 ## [0.6.0] - 2025-09-24
 
 ### Added

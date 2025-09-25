@@ -1,0 +1,205 @@
+metadata:
+  company: "TechCorp Solutions"
+  position: "Senior Frontend Engineer"
+  last_updated: "2024-01-15T10:30:00Z"
+  transformation_decisions: "Emphasized React and TypeScript expertise based on job requirements"
+  job_focus_used: "frontend_engineering"
+
+resume:
+  name: "Jane Smith"
+  profile_picture: "profile-jane.jpg"
+  title: "Senior Frontend Engineer"
+  summary: "Experienced frontend engineer with 5+ years building scalable React applications"
+
+  contact:
+    name: "Jane Smith"
+    phone: "+1-555-123-4567"
+    email: "jane.smith@email.com"
+    address: "123 Tech Street, San Francisco, CA 94105"
+    linkedin: "https://linkedin.com/in/janesmith"
+    github: "https://github.com/janesmith"
+
+  technical_expertise:
+    - resume_title: "Frontend Development"
+      skills: ["React", "TypeScript", "JavaScript", "HTML5", "CSS3"]
+    - resume_title: "State Management"
+      skills: ["Redux", "Zustand", "Context API"]
+
+  skills:
+    - "React"
+    - "TypeScript"
+    - "JavaScript"
+    - "Node.js"
+    - "GraphQL"
+    - "Jest"
+    - "Cypress"
+
+  languages:
+    - language: "English"
+      proficiency: "Native"
+    - language: "Spanish"
+      proficiency: "Professional"
+
+  professional_experience:
+    - company: "InnovateWeb Inc"
+      position: "Senior Frontend Developer"
+      location: "San Francisco, CA"
+      duration: "2022-2024"
+      company_description: "Leading web development agency specializing in enterprise solutions"
+      linkedin: "https://linkedin.com/company/innovateweb"
+      achievements:
+        - "Led development of React-based dashboard serving 10K+ daily users"
+        - "Reduced bundle size by 40% through code splitting and optimization"
+        - "Mentored 3 junior developers in modern React patterns"
+
+    - company: "StartupTech LLC"
+      position: "Frontend Developer"
+      location: "Remote"
+      duration: "2020-2022"
+      company_description: "Fast-growing fintech startup building payment solutions"
+      linkedin: null
+      achievements:
+        - "Built responsive web application using React and TypeScript"
+        - "Implemented real-time features using WebSocket connections"
+
+  independent_projects:
+    - name: "Task Management App"
+      description: "Full-stack task management application with real-time collaboration"
+      location: "Personal Project"
+      duration: "2023"
+      url: "https://github.com/janesmith/task-manager"
+      achievements:
+        - "Built with React, Node.js, and PostgreSQL"
+        - "Implemented real-time updates using Socket.io"
+      impact: "Used by 500+ beta users"
+
+  education:
+    - institution: "University of California, Berkeley"
+      program: "Bachelor of Science in Computer Science"
+      location: "Berkeley, CA"
+      duration: "2016-2020"
+
+job_analysis:
+  company: "TechCorp Solutions"
+  position: "Senior Frontend Engineer"
+  job_focus:
+    - primary_area: "senior_engineer"
+      specialties: ["react", "typescript", "frontend"]
+      weight: 1.0
+
+  location: "San Francisco, CA"
+  employment_type: "Full-time"
+  experience_level: "Senior (5+ years)"
+
+  requirements:
+    must_have_skills:
+      - skill: "React"
+        priority: 1
+      - skill: "TypeScript"
+        priority: 1
+      - skill: "JavaScript"
+        priority: 2
+    nice_to_have_skills:
+      - skill: "GraphQL"
+        priority: 1
+      - skill: "Jest"
+        priority: 2
+    soft_skills:
+      - "Leadership"
+      - "Communication"
+      - "Problem Solving"
+    experience_years: 5
+    education: "Bachelor's degree in Computer Science or related field"
+
+  responsibilities:
+    primary:
+      - "Lead frontend development initiatives"
+      - "Architect scalable React applications"
+      - "Mentor junior team members"
+    secondary:
+      - "Code reviews and technical guidance"
+      - "Performance optimization"
+
+  role_context:
+    department: "Engineering"
+    team_size: "8-12 engineers"
+    key_points:
+      - "Agile development environment"
+      - "Focus on user experience"
+      - "Modern tech stack"
+
+  application_info:
+    posting_url: "https://techcorp.com/careers/senior-frontend-engineer"
+    posting_date: "2024-01-10"
+    deadline: "2024-02-15"
+
+  candidate_alignment:
+    strong_matches:
+      - "5+ years React experience"
+      - "TypeScript expertise"
+      - "Leadership experience mentoring developers"
+    gaps_to_address:
+      - "Limited GraphQL experience"
+    transferable_skills:
+      - "Node.js backend experience"
+      - "Full-stack perspective"
+    emphasis_strategy: "Lead with React expertise and mentoring experience"
+
+  section_priorities:
+    technical_expertise:
+      - "React and TypeScript skills"
+      - "Modern frontend tooling"
+    experience_focus: "Leadership and mentoring at InnovateWeb"
+    project_relevance: "Task Management App demonstrates full-stack capabilities"
+
+  optimization_actions:
+    LEAD_WITH:
+      - "React and TypeScript expertise"
+      - "Mentoring experience"
+    EMPHASIZE:
+      - "Scale and impact at InnovateWeb"
+      - "Performance optimization achievements"
+    QUANTIFY:
+      - "10K+ daily users served"
+      - "40% bundle size reduction"
+      - "3 developers mentored"
+    DOWNPLAY:
+      - "Backend-focused achievements"
+
+  ats_analysis:
+    title_variations:
+      - "Frontend Engineer"
+      - "React Developer"
+      - "UI Engineer"
+    critical_phrases:
+      - "React"
+      - "TypeScript"
+      - "Frontend"
+      - "Senior"
+      - "Leadership"
+
+cover_letter:
+  company: "TechCorp Solutions"
+  position: "Senior Frontend Engineer"
+  job_focus:
+    - primary_area: "senior_engineer"
+      specialties: ["react", "typescript", "frontend"]
+      weight: 1.0
+  primary_focus: "React and TypeScript expertise with leadership experience"
+  date: "2024-01-15"
+
+  personal_info:
+    phone: "+1-555-123-4567"
+    email: "jane.smith@email.com"
+    address: "123 Tech Street, San Francisco, CA 94105"
+    linkedin: "https://linkedin.com/in/janesmith"
+    github: "https://github.com/janesmith"
+
+  content:
+    letter_title: "Application for Senior Frontend Engineer Position"
+    opening_line: "I am excited to apply for the Senior Frontend Engineer position at TechCorp Solutions, where I can contribute my 5+ years of React expertise and leadership experience to drive impactful frontend initiatives."
+    body:
+      - "At InnovateWeb Inc, I led the development of a React-based dashboard serving over 10,000 daily users, demonstrating my ability to build scalable applications that meet enterprise demands. My focus on performance optimization resulted in a 40% bundle size reduction, directly improving user experience and application efficiency."
+      - "Beyond technical execution, I have successfully mentored 3 junior developers in modern React patterns and best practices. This leadership experience aligns perfectly with TechCorp's emphasis on team growth and technical excellence. My full-stack perspective, including Node.js experience, enables me to collaborate effectively across the engineering organization."
+      - "I am particularly drawn to TechCorp's commitment to user experience and modern development practices. My personal project, a task management application used by 500+ beta users, showcases my ability to deliver complete solutions using React, TypeScript, and real-time technologies."
+    signature: "Thank you for considering my application. I look forward to discussing how my frontend expertise and leadership experience can contribute to TechCorp Solutions' continued success.\n\nSincerely,\nJane Smith"
