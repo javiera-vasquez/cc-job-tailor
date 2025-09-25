@@ -137,7 +137,7 @@ describe('Validation Functions', () => {
 
       // Temporarily replace parse to throw a non-Zod error
       const mockSchema = {
-        parse: () => {
+        parse: (data: any) => {
           throw new Error('Custom error');
         }
       };

@@ -283,7 +283,7 @@ describe('Generate PDF Pipeline', () => {
 
     test('generates resume PDF with correct parameters', async () => {
       let renderCalled = false;
-      let renderFilePath: string;
+      let renderFilePath: string = '';
       let renderComponent: any;
 
       const mockRenderToFile = async (component: any, filePath: string) => {
@@ -310,7 +310,7 @@ describe('Generate PDF Pipeline', () => {
 
     test('generates cover letter PDF with correct parameters', async () => {
       let renderCalled = false;
-      let renderFilePath: string;
+      let renderFilePath: string = '';
       let renderComponent: any;
 
       const mockRenderToFile = async (component: any, filePath: string) => {
@@ -365,7 +365,7 @@ describe('Generate PDF Pipeline', () => {
 
     test('creates tmp directory with recursive option', async () => {
       let mkdirCalled = false;
-      let mkdirPath: string;
+      let mkdirPath: string = '';
       let mkdirOptions: any;
 
       const mockMkdir = async (path: string, options: any) => {
