@@ -3,6 +3,7 @@
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
 [![Built with Bun](https://img.shields.io/badge/Built%20with-Bun-000000?logo=bun)](https://bun.sh/)
 ![](https://img.shields.io/badge/Node.js-18%2B-brightgreen?style=flat-square)
+![Tests](https://github.com/javiera-vasquez/claude-code-job-tailor/actions/workflows/ci.yml/badge.svg?branch=main)
 
 Claude-powered resume generator that treats your career as structured data. Write your experience once in YAML files, then automatically generate tailored PDF cover letters and resumes optimized for any job posting using Claude Code.
 
