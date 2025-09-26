@@ -20,15 +20,10 @@ Set the active company context for tailored resume operations. This command read
 ## What this command does:
 
 1. **Validate Company Folder**: Check that `resume-data/tailor/$1/` exists
-2. **Read Company Materials**: Load available files (resume.yaml, job_analysis.yaml, cover_letter.yaml)
-3. **Update Context State**: Update existing `.claude/tailor-context.yaml` with:
+2. **Read Company Context**: Load the pre-built `context.yaml` file
+3. **Update Context State**: Copy content from `resume-data/tailor/$1/context.yaml` to `.claude/tailor-context.yaml` and update:
    ```yaml
-   active_company: '$1'
-   folder_path: 'resume-data/tailor/$1'
-   available_files: ['resume.yaml', 'job_analysis.yaml', 'cover_letter.yaml']
-   position: 'Job Title from job_analysis.yaml'
-   primary_focus: 'Main job focus area'
-   last_updated: '2025-09-20T15:30:00Z'
+   last_updated: '2025-09-26T17:00:00Z'  # Only timestamp is updated
    ```
 4. **Provide Summary**: Show brief overview of company materials and job focus
 
@@ -38,7 +33,8 @@ Set the active company context for tailored resume operations. This command read
 resume-data/tailor/$1/
 ├── resume.yaml          # Tailored resume for this company
 ├── job_analysis.yaml    # Job posting analysis and requirements
-└── cover_letter.yaml    # Tailored cover letter
+├── cover_letter.yaml    # Tailored cover letter
+└── context.yaml         # Pre-built company context (REQUIRED)
 ```
 
 ## Context Benefits:
@@ -55,17 +51,11 @@ After running this command, all subsequent interactions will:
 ## Process Flow:
 
 1. **Validate Folder**: Confirm `resume-data/tailor/$1/` exists
-2. **Discover Files**: Find available YAML files in company folder
-3. **Extract Context**: Read job_analysis.yaml for position and job_focus details
-4. **Update State**: Update `.claude/tailor-context.yaml` with:
-   - active_company: Company name
-   - folder_path: Full path to company folder
-   - available_files: List of existing files
-   - position: Job title from job_analysis.yaml
-   - primary_focus: Highest weighted job_focus (primary_area + specialties)
-   - last_updated: Current timestamp
-   - job_summary: Brief description (max 100 chars)
-5. **Provide Summary**: Display company context overview
+2. **Validate Context File**: Check that `context.yaml` exists in company folder
+3. **Read Pre-built Context**: Load complete context from `resume-data/tailor/$1/context.yaml`
+4. **Update State**: Copy entire context to `.claude/tailor-context.yaml` and update:
+   - last_updated: Current timestamp (only field that changes)
+5. **Provide Summary**: Display company context overview from loaded context
 
 ## Example Output:
 
@@ -77,4 +67,4 @@ After running this command, all subsequent interactions will:
 🔧 Focus: senior_engineer + [react, typescript, frontend, mobile]
 ```
 
-Validate that the company folder exists, read all available tailored materials, extract job details from job_analysis.yaml, create/update the `.claude/tailor-context.yaml` state file with complete company context, and provide a concise summary with company name, available files, position, and primary job focus.
+Validate that the company folder exists, read the pre-built `context.yaml` file, copy its contents to `.claude/tailor-context.yaml` (updating only the timestamp), and provide a concise summary with company name, available files, position, and primary job focus.
