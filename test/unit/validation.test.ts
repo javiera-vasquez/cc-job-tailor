@@ -1,4 +1,5 @@
 import { test, expect, describe } from 'bun:test';
+import { ZodError } from 'zod';
 import {
   validateApplicationData,
   validateResume,
@@ -132,12 +133,9 @@ describe('Validation Functions', () => {
     });
 
     test('handles non-ZodError exceptions', () => {
-      // Mock a scenario where a non-Zod error occurs
-      const originalParse = require('../../src/zod/schemas').ApplicationDataSchema.parse;
-
       // Temporarily replace parse to throw a non-Zod error
       const mockSchema = {
-        parse: (data: any) => {
+        parse: (_data: unknown) => {
           throw new Error('Custom error');
         }
       };
@@ -148,7 +146,7 @@ describe('Validation Functions', () => {
           try {
             mockSchema.parse({});
           } catch (error) {
-            if (!(error instanceof require('zod').ZodError)) {
+            if (!(error instanceof ZodError)) {
               const errorMessage = error instanceof Error ? error.message : 'Unknown error';
               console.error('❌ Unexpected validation error:', errorMessage);
               throw new Error(`Validation error: ${errorMessage}`);

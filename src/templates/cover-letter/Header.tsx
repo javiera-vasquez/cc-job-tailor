@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet, Link } from '@react-pdf/renderer';
-import { colors, spacing, typography } from '../design-tokens';
-import type { CoverLetterSchema, ContactDetails } from '../../types';
+import { colors, spacing } from '../design-tokens';
+import type { CoverLetterSchema } from '../../types';
 
 const styles = StyleSheet.create({
   headerContainer: {

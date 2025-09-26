@@ -195,7 +195,7 @@ describe('Generate PDF Pipeline', () => {
     ) {
       const spawn = mockSpawn || (() => ({ exited: Promise.resolve(0) }));
 
-      console.log(`Generating data for ${companyName}...`);
+      console.warn(`Generating data for ${companyName}...`);
 
       const dataGenProcess = spawn({
         cmd: ['bun', 'run', 'generate-data.ts', '-C', companyName],
@@ -209,7 +209,7 @@ describe('Generate PDF Pipeline', () => {
         throw new Error(`Data generation failed with exit code ${exitCode}`);
       }
 
-      console.log(`Data generation completed for ${companyName}`);
+      console.warn(`Data generation completed for ${companyName}`);
       return exitCode;
     }
 
@@ -272,11 +272,11 @@ describe('Generate PDF Pipeline', () => {
       const component = createElement(components[docType].Document);
       const filePath = path.join(tmpDir, `${docType}-${companyName}.pdf`);
 
-      console.log(`Generating ${docType} PDF for ${companyName} at ${filePath}`);
+      console.warn(`Generating ${docType} PDF for ${companyName} at ${filePath}`);
 
       await renderToFile(component, filePath);
 
-      console.log(`${docType} PDF generated successfully for ${companyName}`);
+      console.warn(`${docType} PDF generated successfully for ${companyName}`);
 
       return filePath;
     }
@@ -350,14 +350,14 @@ describe('Generate PDF Pipeline', () => {
     // Mock mkdir functionality
     async function ensureTmpDirectory(
       tmpDir: string,
-      mockMkdir?: (path: string, options: any) => Promise<void>
+      mockMkdir?: (path: string, options: { recursive: boolean }) => Promise<void>
     ) {
       const mkdir = mockMkdir || (() => Promise.resolve());
 
       try {
         await mkdir(tmpDir, { recursive: true });
         return { success: true, created: true };
-      } catch (error) {
+      } catch {
         // Directory might already exist, ignore error
         return { success: true, created: false };
       }

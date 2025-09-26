@@ -4,8 +4,6 @@ import {
   JobFocusSchema,
   ContactDetailsSchema,
   ResumeSchema,
-  JobAnalysisSchema,
-  CoverLetterSchema,
   MetadataSchema
 } from '../../src/zod/schemas';
 import {
@@ -127,7 +125,7 @@ describe('Zod Schema Validation', () => {
     });
 
     test('requires at least one job focus item', () => {
-      const emptyJobFocus: any[] = [];
+      const emptyJobFocus: unknown[] = [];
       const result = JobFocusSchema.safeParse(emptyJobFocus);
 
       expect(result.success).toBe(false);

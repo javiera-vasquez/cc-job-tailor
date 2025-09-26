@@ -1,11 +1,11 @@
-import type { ApplicationData, ResumeSchema, JobAnalysisSchema, CoverLetterSchema } from '../../src/types';
+import type { ApplicationData } from '../../src/types';
 
 // Console output capture for validation error testing
 export function captureConsoleOutput(fn: () => void): string[] {
   const originalError = console.error;
   const capturedOutput: string[] = [];
 
-  console.error = (...args: any[]) => {
+  console.error = (...args: unknown[]) => {
     const message = args.map(arg => String(arg)).join(' ');
     capturedOutput.push(message);
     // Show in console with test context indicator
@@ -128,7 +128,7 @@ export function createInvalidApplicationData(errorType: string): unknown {
     case 'missing-required-field':
       const validData2 = createValidApplicationData();
       if (validData2.resume) {
-        delete (validData2.resume as any).name;
+        delete (validData2.resume as Record<string, unknown>).name;
       }
       return validData2;
 
@@ -158,7 +158,7 @@ export function mockYAMLContent(content: object): string {
 
 // Mock file system operations for testing
 export function createMockExistsSync() {
-  const mockExistsSync = (path: string): boolean => {
+  const mockExistsSync = (_path: string): boolean => {
     // Default implementation - can be overridden by specific tests
     return false;
   };
@@ -166,7 +166,7 @@ export function createMockExistsSync() {
 }
 
 export function createMockReaddirSync() {
-  const mockReaddirSync = (path: string): string[] => {
+  const mockReaddirSync = (_path: string): string[] => {
     // Default implementation - can be overridden by specific tests
     return [];
   };
@@ -174,7 +174,7 @@ export function createMockReaddirSync() {
 }
 
 export function createMockBunFile() {
-  const mockBunFile = (path: string) => ({
+  const mockBunFile = (_path: string) => ({
     text: async (): Promise<string> => {
       // Default YAML content for testing
       return 'metadata:\n  company: "Test Company"\nresume:\n  name: "Test User"';

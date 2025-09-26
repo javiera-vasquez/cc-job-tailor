@@ -1,10 +1,10 @@
 import { load } from 'js-yaml';
 import { existsSync, readdirSync } from 'fs';
 import { parseArgs } from 'util';
-import type { ApplicationData, ResumeSchema } from './src/types';
+import type { ApplicationData } from './src/types';
 import { validateApplicationData } from './src/zod/validation';
 
-console.log('🔧 Generating application data module...');
+console.warn('🔧 Generating application data module...');
 
 // Parse command line arguments
 const { values } = parseArgs({
@@ -23,7 +23,7 @@ const { values } = parseArgs({
 const companyName = values.company;
 
 if (companyName) {
-  console.log(`🎯 Target company: "${companyName}"`);
+  console.warn(`🎯 Target company: "${companyName}"`);
 }
 
 // Function to provide error guidance when no company is specified
@@ -81,7 +81,7 @@ async function loadTailoredData(companyPath: string): Promise<ApplicationData> {
   const jobAnalysisPath = `${companyPath}/job_analysis.yaml`;
   const coverLetterPath = `${companyPath}/cover_letter.yaml`;
 
-  console.log(`📂 Loading tailored data from: ${companyPath}`);
+  console.warn(`📂 Loading tailored data from: ${companyPath}`);
 
   const resumeFile = existsSync(resumePath)
     ? load(await Bun.file(resumePath).text())
@@ -102,16 +102,16 @@ async function loadTailoredData(companyPath: string): Promise<ApplicationData> {
   if (coverLetter) foundFiles.push('cover_letter.yaml');
 
   if (foundFiles.length > 0) {
-    console.log(`✅ Found ${foundFiles.length} file(s): ${foundFiles.join(', ')}`);
+    console.warn(`✅ Found ${foundFiles.length} file(s): ${foundFiles.join(', ')}`);
   } else {
-    console.log(`⚠️  No data files found in ${companyPath}`);
+    console.warn(`⚠️  No data files found in ${companyPath}`);
   }
 
   return {
-    metadata: (resumeFile as any).metadata,
-    resume: (resumeFile as any).resume,
-    job_analysis: (jobAnalysis as any).job_analysis,
-    cover_letter: (coverLetter as any).cover_letter,
+    metadata: (resumeFile as Record<string, unknown>)?.metadata,
+    resume: (resumeFile as Record<string, unknown>)?.resume,
+    job_analysis: (jobAnalysis as Record<string, unknown>)?.job_analysis,
+    cover_letter: (coverLetter as Record<string, unknown>)?.cover_letter,
   };
 }
 
@@ -137,11 +137,11 @@ async function loadApplicationData(): Promise<ApplicationData> {
 const applicationData = await loadApplicationData();
 
 // Validate the generated data against TypeScript schema
-console.log('🔍 Validating application data...');
+console.warn('🔍 Validating application data...');
 try {
   validateApplicationData(applicationData);
-  console.log('✅ Application data validation passed');
-} catch (error) {
+  console.warn('✅ Application data validation passed');
+} catch {
   console.error('💡 Fix the data issues in the tailor files and try again.');
   process.exit(1);
 }
@@ -164,7 +164,7 @@ export default applicationData;
 `;
 
 // Write the generated module
-console.log(`📝 Writing TypeScript module to src/data/application.ts...`);
+console.warn(`📝 Writing TypeScript module to src/data/application.ts...`);
 await Bun.write("./src/data/application.ts", tsContent);
 
-console.log(`✅ Application data module generated successfully from ${source}`);
+console.warn(`✅ Application data module generated successfully from ${source}`);

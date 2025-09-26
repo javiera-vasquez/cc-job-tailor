@@ -34,7 +34,7 @@ const CoverLetter = ({
   wrap = true, 
   debug = false,
   dpi = 72,
-  bookmark,
+  bookmark: _bookmark,
   data
 }: ReactPDFProps) => {
   const coverLetter = data as CoverLetterSchema;

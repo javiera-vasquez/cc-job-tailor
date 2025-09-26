@@ -1,5 +1,7 @@
-import { test, expect, describe, beforeEach, afterEach, mock, spyOn } from 'bun:test';
+import { test, expect, describe } from 'bun:test';
 import { parseArgs } from 'util';
+import { existsSync, readdirSync } from 'fs';
+import { load } from 'js-yaml';
 
 // We need to import the functions we want to test
 // Since generate-data.ts is a script, we'll need to extract testable functions
@@ -81,21 +83,21 @@ describe('Generate Data Pipeline', () => {
       const companyPath = `${tailorPath}/${company}`;
 
       // Use mock functions if provided, otherwise import the real ones
-      const existsSync = mockExistsSync || require('fs').existsSync;
-      const readdirSync = mockReaddirSync || require('fs').readdirSync;
+      const actualExistsSync = mockExistsSync || existsSync;
+      const actualReaddirSync = mockReaddirSync || readdirSync;
 
       // Check if tailor directory exists
-      if (!existsSync(tailorPath)) {
+      if (!actualExistsSync(tailorPath)) {
         throw new Error(`Tailor directory does not exist at: ${tailorPath}`);
       }
 
       // Check if company folder exists
-      if (!existsSync(companyPath)) {
+      if (!actualExistsSync(companyPath)) {
         // List available companies
-        const availableCompanies = readdirSync(tailorPath)
-          .filter((name: string) => existsSync(`${tailorPath}/${name}/resume.yaml`) ||
-                          existsSync(`${tailorPath}/${name}/job_analysis.yaml`) ||
-                          existsSync(`${tailorPath}/${name}/cover_letter.yaml`));
+        const availableCompanies = actualReaddirSync(tailorPath)
+          .filter((name: string) => actualExistsSync(`${tailorPath}/${name}/resume.yaml`) ||
+                          actualExistsSync(`${tailorPath}/${name}/job_analysis.yaml`) ||
+                          actualExistsSync(`${tailorPath}/${name}/cover_letter.yaml`));
 
         if (availableCompanies.length > 0) {
           throw new Error(
@@ -183,20 +185,20 @@ describe('Generate Data Pipeline', () => {
       const jobAnalysisPath = `${companyPath}/job_analysis.yaml`;
       const coverLetterPath = `${companyPath}/cover_letter.yaml`;
 
-      const existsSync = mockExistsSync || require('fs').existsSync;
-      const load = mockLoad || require('js-yaml').load;
+      const actualExistsSync = mockExistsSync || existsSync;
+      const actualLoad = mockLoad || load;
       const fileReader = mockFileReader || (async (path: string) => await Bun.file(path).text());
 
-      const resumeFile = existsSync(resumePath)
-        ? load(await fileReader(resumePath))
+      const resumeFile = actualExistsSync(resumePath)
+        ? actualLoad(await fileReader(resumePath))
         : null;
 
-      const jobAnalysis = existsSync(jobAnalysisPath)
-        ? load(await fileReader(jobAnalysisPath))
+      const jobAnalysis = actualExistsSync(jobAnalysisPath)
+        ? actualLoad(await fileReader(jobAnalysisPath))
         : null;
 
-      const coverLetter = existsSync(coverLetterPath)
-        ? load(await fileReader(coverLetterPath))
+      const coverLetter = actualExistsSync(coverLetterPath)
+        ? actualLoad(await fileReader(coverLetterPath))
         : null;
 
       return {
