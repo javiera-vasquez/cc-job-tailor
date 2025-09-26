@@ -48,7 +48,7 @@ class EnhancedDevServer {
   constructor() {
     this.state = {
       devServer: this.createDevServer(),
-      activeCompany: null
+      activeCompany: null,
     };
   }
 
@@ -85,7 +85,7 @@ class EnhancedDevServer {
   private createDevServer(): ChildProcess {
     const devServer = spawn('bun', ['--hot', 'index.html'], {
       stdio: 'inherit',
-      cwd: process.cwd()
+      cwd: process.cwd(),
     });
 
     devServer.on('exit', (code) => {
@@ -101,7 +101,7 @@ class EnhancedDevServer {
    */
   private extractCompanyFromPath(filename: string): string | null {
     const parts = filename.split(sep);
-    return parts.length >= 2 ? (parts[0] || null) : null;
+    return parts.length >= 2 ? parts[0] || null : null;
   }
 
   /**
@@ -134,7 +134,7 @@ class EnhancedDevServer {
       try {
         const generateData = spawn('bun', ['run', 'generate-data', '-C', companyName], {
           stdio: 'pipe',
-          cwd: process.cwd()
+          cwd: process.cwd(),
         });
 
         let output = '';
@@ -161,7 +161,9 @@ class EnhancedDevServer {
               console.error(output.trim());
             }
             console.error('💡 Fix the data issues in the tailor files and save again to retry');
-            console.error('🔄 File watcher is still active - auto-regeneration will resume on next save\n');
+            console.error(
+              '🔄 File watcher is still active - auto-regeneration will resume on next save\n',
+            );
 
             // Don't reject - just log the error and continue watching
             // This keeps the dev server running even with validation failures
@@ -173,7 +175,6 @@ class EnhancedDevServer {
           console.error('❌ Error spawning regeneration process:', error.message);
           reject(error);
         });
-
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
         console.error('❌ Error regenerating data:', errorMessage);
@@ -221,12 +222,11 @@ class EnhancedDevServer {
       this.state.fileWatcher = watch(
         this.tailorDir,
         { recursive: true },
-        this.handleFileChange.bind(this)
+        this.handleFileChange.bind(this),
       );
 
       console.warn('📁 File watcher active for resume-data/tailor/');
       console.warn('✨ Edit any YAML file in tailor folders to trigger auto-regeneration\n');
-
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       console.warn('⚠️  Could not set up file watcher:', errorMessage);

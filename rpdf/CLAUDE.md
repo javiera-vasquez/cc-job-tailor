@@ -7,6 +7,7 @@ This comprehensive guide provides everything Claude Code instances need to creat
 This is a React-PDF based resume generator that creates professional PDF documents from structured YAML data. The architecture emphasizes modularity, type safety, and professional document standards.
 
 ### Key Technologies
+
 - **Runtime**: Bun (JavaScript runtime and bundler)
 - **PDF Generation**: @react-pdf/renderer for React-to-PDF rendering
 - **Type Safety**: TypeScript with strict mode
@@ -16,6 +17,7 @@ This is a React-PDF based resume generator that creates professional PDF documen
 ## Project Architecture
 
 ### Directory Structure
+
 ```
 ├── src/pages/                          # React-PDF components
 │   ├── design-tokens.ts                # Centralized design system
@@ -47,24 +49,26 @@ This is a React-PDF based resume generator that creates professional PDF documen
 ```
 
 ### Data Flow Architecture
+
 ```
 data/resume.yaml → generate-data.ts → src/data/resume.ts → React components → PDF output
 ```
 
 ### Component Hierarchy
+
 ```tsx
 <Document>
   <Page style={styles.page}>
-    <Header resume={data}/>
+    <Header resume={data} />
     <View style={styles.container}>
       <View style={styles.leftColumn}>
-        <Contact resume={data}/>
-        <Skills resume={data}/>
-        <Languages resume={data}/>
+        <Contact resume={data} />
+        <Skills resume={data} />
+        <Languages resume={data} />
       </View>
       <View style={styles.rightColumn}>
-        <Experience resume={data}/>
-        <Education resume={data}/>
+        <Experience resume={data} />
+        <Education resume={data} />
       </View>
     </View>
   </Page>
@@ -81,24 +85,24 @@ The project uses a centralized design token system to ensure consistency:
 import { colors, spacing, typography } from '../design-tokens';
 
 // Colors - based on Tailwind palette with semantic mapping
-colors.primary        // Main text and elements (zinc-900)
-colors.accent         // Highlights and links (rose-600)
-colors.darkGray       // Content text (zinc-800)
-colors.mediumGray     // Secondary text (zinc-600)
-colors.separatorGray  // Separator lines (zinc-400)
+colors.primary; // Main text and elements (zinc-900)
+colors.accent; // Highlights and links (rose-600)
+colors.darkGray; // Content text (zinc-800)
+colors.mediumGray; // Secondary text (zinc-600)
+colors.separatorGray; // Separator lines (zinc-400)
 
 // Typography scales
-typography.text       // Body text: 9px, Lato, lineHeight 1.33
-typography.title      // Main titles: 22px, Lato Bold, uppercase
-typography.subtitle   // Section headers: 14px, Lato Bold, capitalize
-typography.small      // Small text: 9px, lineHeight 1.33
+typography.text; // Body text: 9px, Lato, lineHeight 1.33
+typography.title; // Main titles: 22px, Lato Bold, uppercase
+typography.subtitle; // Section headers: 14px, Lato Bold, capitalize
+typography.small; // Small text: 9px, lineHeight 1.33
 
 // Spacing system
-spacing.columnWidth       // Left column width: 180
-spacing.documentPadding   // Document padding: 42
-spacing.pagePadding       // Section padding: 18
-spacing.profileImageSize  // Profile image: 46
-spacing.listItemSpacing   // List item spacing: 4
+spacing.columnWidth; // Left column width: 180
+spacing.documentPadding; // Document padding: 42
+spacing.pagePadding; // Section padding: 18
+spacing.profileImageSize; // Profile image: 46
+spacing.listItemSpacing; // List item spacing: 4
 ```
 
 ### Font System (`src/pages/fonts-register.ts`)
@@ -107,16 +111,16 @@ Two font families are registered with multiple weights:
 
 ```tsx
 // Font families available:
-'Open Sans'         // Regular weight
-'Open Sans Light'   // Light weight
-'Open Sans Bold'    // Bold weight
-'Open Sans Italic'  // Italic style
+'Open Sans'; // Regular weight
+'Open Sans Light'; // Light weight
+'Open Sans Bold'; // Bold weight
+'Open Sans Italic'; // Italic style
 
-'Lato'              // Regular weight (primary)
-'Lato Italic'       // Italic style
-'Lato Light'        // Light weight
-'Lato semibold'     // Semibold weight
-'Lato Bold'         // Bold weight (primary for headers)
+'Lato'; // Regular weight (primary)
+'Lato Italic'; // Italic style
+'Lato Light'; // Light weight
+'Lato semibold'; // Semibold weight
+'Lato Bold'; // Bold weight (primary for headers)
 ```
 
 ## Component Development Patterns
@@ -144,7 +148,7 @@ const styles = StyleSheet.create({
   // Additional styles...
 });
 
-const ComponentName = ({resume}: {resume: ResumeSchema}) => (
+const ComponentName = ({ resume }: { resume: ResumeSchema }) => (
   <View style={styles.container}>
     <Text style={styles.sectionTitle}>Section Title</Text>
     {/* Component content */}
@@ -157,6 +161,7 @@ export default ComponentName;
 ### Real Component Examples
 
 #### Header Component Pattern (`src/pages/resume/Header.tsx`)
+
 ```tsx
 // Key patterns demonstrated:
 // - Profile image positioning with absolute layout
@@ -191,13 +196,14 @@ const styles = StyleSheet.create({
 ```
 
 #### Skills Component Pattern (`src/pages/resume/Skills.tsx`)
+
 ```tsx
 // Key patterns demonstrated:
 // - Data iteration with proper mapping
 // - Conditional rendering for technical vs soft skills
 // - List formatting with bullets
 
-const TechnicalExpertiseSection = ({resume}: {resume: ResumeSchema}) => (
+const TechnicalExpertiseSection = ({ resume }: { resume: ResumeSchema }) => (
   <View>
     <Text style={styles.sectionTitle}>Technical Expertise</Text>
     {resume.technical_expertise.map((category, index) => (
@@ -211,6 +217,7 @@ const TechnicalExpertiseSection = ({resume}: {resume: ResumeSchema}) => (
 ```
 
 #### Contact Component Pattern (`src/pages/resume/Contact.tsx`)
+
 ```tsx
 // Key patterns demonstrated:
 // - Link components for interactive elements
@@ -220,7 +227,9 @@ const TechnicalExpertiseSection = ({resume}: {resume: ResumeSchema}) => (
 <View style={styles.contactItem}>
   <Text style={styles.bullet}>•</Text>
   <Text style={styles.contactText}>
-    <Link style={styles.contactText} src={contact.linkedin}>LinkedIn Profile</Link>
+    <Link style={styles.contactText} src={contact.linkedin}>
+      LinkedIn Profile
+    </Link>
   </Text>
 </View>
 ```
@@ -233,21 +242,18 @@ All components receive typed data through the `ResumeSchema` interface:
 
 ```tsx
 // Component props pattern
-const ComponentName = ({resume}: {resume: ResumeSchema}) => {
+const ComponentName = ({ resume }: { resume: ResumeSchema }) => {
   // Access data with full type safety
   const { contact, professional_experience, skills } = resume;
 
-  return (
-    <View>
-      {/* Use data with confidence */}
-    </View>
-  );
+  return <View>{/* Use data with confidence */}</View>;
 };
 ```
 
 ### Data Structure Integration
 
 The resume data follows this structure:
+
 ```tsx
 interface ResumeSchema {
   name: string;
@@ -267,21 +273,21 @@ interface ResumeSchema {
 
 ```tsx
 // Safe data access patterns
-{company_description && (
-  <Text style={styles.companyDescription}>
-    {company_description}
-  </Text>
-)}
+{
+  company_description && <Text style={styles.companyDescription}>{company_description}</Text>;
+}
 
-{achievements && achievements.length > 0 && (
-  <View>
-    {achievements.map((achievement, index) => (
-      <View key={index} style={styles.achievementItem}>
-        <Text>{achievement}</Text>
-      </View>
-    ))}
-  </View>
-)}
+{
+  achievements && achievements.length > 0 && (
+    <View>
+      {achievements.map((achievement, index) => (
+        <View key={index} style={styles.achievementItem}>
+          <Text>{achievement}</Text>
+        </View>
+      ))}
+    </View>
+  );
+}
 ```
 
 ## Development Workflow
@@ -313,7 +319,9 @@ bun run generate-data
 // Enable visual debugging
 <Page style={styles.page} debug={true}>
   <View style={styles.section} debug={true}>
-    <Text style={styles.text} debug={true}>Content</Text>
+    <Text style={styles.text} debug={true}>
+      Content
+    </Text>
   </View>
 </Page>
 ```
@@ -342,7 +350,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const ComponentName = ({resume}: {resume: ResumeSchema}) => (
+const ComponentName = ({ resume }: { resume: ResumeSchema }) => (
   <View style={styles.container}>
     <Text style={styles.sectionTitle}>Section Title</Text>
     {/* Component implementation */}
@@ -361,8 +369,8 @@ import ComponentName from './ComponentName';
 
 // Add to appropriate column in the Resume component
 <View style={styles.leftColumn}>
-  <ComponentName resume={data}/>
-</View>
+  <ComponentName resume={data} />
+</View>;
 ```
 
 ### Step 3: Update Export Barrel
@@ -479,9 +487,11 @@ emphasis: {
 ### Common Issues and Solutions
 
 #### 1. Component Not Rendering
+
 **Problem**: Component appears empty or not rendering
 
 **Solutions**:
+
 ```tsx
 // Check data availability
 console.log('Resume data:', resume);
@@ -489,18 +499,20 @@ console.log('Resume data:', resume);
 // Verify component structure
 <View style={styles.container} debug={true}>
   <Text>Test content</Text>
-</View>
+</View>;
 
 // Check for data iteration issues
-{resume.skills && resume.skills.map((skill, index) => (
-  <Text key={index}>{skill}</Text>
-))}
+{
+  resume.skills && resume.skills.map((skill, index) => <Text key={index}>{skill}</Text>);
+}
 ```
 
 #### 2. Layout Issues
+
 **Problem**: Components overlapping or incorrect positioning
 
 **Solutions**:
+
 ```tsx
 // Enable debug mode to visualize boundaries
 <View style={styles.container} debug={true}>
@@ -516,9 +528,11 @@ flex: 1, // Flexible width
 ```
 
 #### 3. Font Loading Issues
+
 **Problem**: Custom fonts not appearing
 
 **Solutions**:
+
 ```tsx
 // Verify font registration in fonts-register.ts
 Font.register({
@@ -534,9 +548,11 @@ fontFamily: 'Helvetica', // Built-in fallback
 ```
 
 #### 4. Styling Not Applied
+
 **Problem**: StyleSheet styles not rendering
 
 **Solutions**:
+
 ```tsx
 // Prefer StyleSheet.create() over inline styles
 const styles = StyleSheet.create({
@@ -552,9 +568,11 @@ style={[styles.base, styles.modifier]} // Array of styles
 ```
 
 #### 5. Performance Issues
+
 **Problem**: Slow PDF generation
 
 **Solutions**:
+
 ```tsx
 // Use StyleSheet.create() instead of inline styles
 // Avoid complex component nesting
@@ -615,14 +633,14 @@ When working with React-PDF features, always reference these documentation files
       <Text style={styles.text}>Content</Text>
     </View>
   </Page>
-</Document>
+</Document>;
 
 // Font registration (from fonts.md)
 Font.register({
   family: 'FontName',
   src: 'https://fonts.gstatic.com/path/to/font.ttf',
   fontWeight: 'normal',
-  fontStyle: 'normal'
+  fontStyle: 'normal',
 });
 
 // Styling patterns (from styling.md)
@@ -630,8 +648,8 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     padding: 20,
-    backgroundColor: '#FFFFFF'
-  }
+    backgroundColor: '#FFFFFF',
+  },
 });
 ```
 
@@ -689,17 +707,20 @@ const styles = StyleSheet.create({
 ## File Organization Conventions
 
 ### Component Placement
+
 - **Resume components**: `src/pages/resume/ComponentName.tsx`
 - **Utility components**: `src/pages/resume/` (List.tsx, Title.tsx)
 - **Design tokens**: `src/pages/design-tokens.ts`
 - **Font registration**: `src/pages/fonts-register.ts`
 
 ### Naming Conventions
+
 - **Components**: PascalCase (e.g., `Header.tsx`, `ContactInfo.tsx`)
 - **Styles**: camelCase object keys (e.g., `sectionTitle`, `contactItem`)
 - **Files**: PascalCase for components, kebab-case for utilities
 
 ### Export Patterns
+
 ```tsx
 // Component files: default export
 export default ComponentName;
@@ -722,16 +743,16 @@ The main document (`src/pages/resume/index.tsx`) orchestrates all components:
 ```tsx
 const Resume = ({ data }: { data: ResumeSchema }) => (
   <Page style={styles.page}>
-    <Header resume={data}/>
+    <Header resume={data} />
     <View style={styles.container}>
       <View style={styles.leftColumn}>
-        <Contact resume={data}/>
-        <Skills resume={data}/>
-        <Languages resume={data}/>
+        <Contact resume={data} />
+        <Skills resume={data} />
+        <Languages resume={data} />
       </View>
       <View style={styles.rightColumn}>
-        <Experience resume={data}/>
-        <Education resume={data}/>
+        <Experience resume={data} />
+        <Education resume={data} />
       </View>
     </View>
   </Page>
@@ -742,11 +763,11 @@ const Resume = ({ data }: { data: ResumeSchema }) => (
 
 ```tsx
 // Data flows from YAML → TypeScript → Components
-import data from "../../data/resume"; // Auto-generated
+import data from '../../data/resume'; // Auto-generated
 const resumeData = data.resume as unknown as ResumeSchema;
 
 // Components receive typed data
-<ComponentName resume={resumeData} />
+<ComponentName resume={resumeData} />;
 ```
 
 ### Design System Integration
@@ -769,6 +790,7 @@ const styles = StyleSheet.create({
 ## Quick Reference Checklists
 
 ### Creating a New Component
+
 - [ ] Create file in `src/pages/resume/ComponentName.tsx`
 - [ ] Import required React-PDF components and design tokens
 - [ ] Define TypeScript interface with `ResumeSchema`
@@ -779,6 +801,7 @@ const styles = StyleSheet.create({
 - [ ] Verify with file generation `bun run save-to-pdf`
 
 ### Modifying Existing Components
+
 - [ ] Understand current component structure and data usage
 - [ ] Use design tokens for any new styling
 - [ ] Follow existing patterns in the component
@@ -787,6 +810,7 @@ const styles = StyleSheet.create({
 - [ ] Check both development PDFViewer and file output
 
 ### Debugging Layout Issues
+
 - [ ] Enable debug mode on problematic components
 - [ ] Check flexbox properties and alignment
 - [ ] Verify width constraints and column behavior
@@ -795,6 +819,7 @@ const styles = StyleSheet.create({
 - [ ] Reference `rpdf/troubleshooting.md` for advanced debugging
 
 ### Performance Optimization
+
 - [ ] Use StyleSheet.create() instead of inline styles
 - [ ] Avoid unnecessary component re-renders
 - [ ] Optimize image sizes and formats

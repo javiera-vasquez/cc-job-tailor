@@ -1,110 +1,109 @@
 # Job Analysis Transformation Rules
 # This file defines how to analyze job postings and extract structured information
 
-schema_version: "1.0"
-description: "Rules for analyzing job postings and creating structured job analysis data"
+schema_version: '1.0'
+description: 'Rules for analyzing job postings and creating structured job analysis data'
 
 # Target output schema for job analysis (optimized v2.0)
 target_schema:
   job_analysis:
     # Core job information
-    company: "string"           # Company name
-    position: "string"          # Job position title
-    job_focus:                  # Array of role focuses with specialties
-      - primary_area: "string"      # senior_engineer, tech_lead, principal_engineer, staff_engineer
-        specialties: ["string"]     # [react, ai, ml, python, aws, testing, architecture]
-        weight: "number"            # 0.0-1.0 importance score (must sum to 1.0)
-    location: "string"          # Job location
-    employment_type: "string"   # Full-time, Part-time, Contract, etc.
-    experience_level: "string"  # Junior, Mid-level, Senior, Lead, Principal
+    company: 'string' # Company name
+    position: 'string' # Job position title
+    job_focus: # Array of role focuses with specialties
+      - primary_area: 'string' # senior_engineer, tech_lead, principal_engineer, staff_engineer
+        specialties: ['string'] # [react, ai, ml, python, aws, testing, architecture]
+        weight: 'number' # 0.0-1.0 importance score (must sum to 1.0)
+    location: 'string' # Job location
+    employment_type: 'string' # Full-time, Part-time, Contract, etc.
+    experience_level: 'string' # Junior, Mid-level, Senior, Lead, Principal
 
     # Prioritized requirements with weights (1-10 scale)
     requirements:
-      must_have_skills:        # Required skills with priority weights
-        - skill: "string"
-          priority: "number"    # 1-10, higher = more critical
-      nice_to_have_skills:      # Preferred skills with weights
-        - skill: "string"
-          priority: "number"    # 1-10
-      soft_skills: "array[string]"  # Soft skills (unweighted)
-      experience_years: "number"    # Years of experience required
-      education: "string"           # Education requirements
+      must_have_skills: # Required skills with priority weights
+        - skill: 'string'
+          priority: 'number' # 1-10, higher = more critical
+      nice_to_have_skills: # Preferred skills with weights
+        - skill: 'string'
+          priority: 'number' # 1-10
+      soft_skills: 'array[string]' # Soft skills (unweighted)
+      experience_years: 'number' # Years of experience required
+      education: 'string' # Education requirements
 
     responsibilities:
-      primary: "array[string]"      # Main job responsibilities (max 5)
-      secondary: "array[string]"    # Additional responsibilities (max 3)
+      primary: 'array[string]' # Main job responsibilities (max 5)
+      secondary: 'array[string]' # Additional responsibilities (max 3)
 
     # Merged context section (replaces team_context, unique_opportunities, growth_potential)
     role_context:
-      department: "string"          # Department/team name
-      team_size: "string"           # Team scale/users served
-      key_points: "array[string]"   # Critical context points (max 5)
+      department: 'string' # Department/team name
+      team_size: 'string' # Team scale/users served
+      key_points: 'array[string]' # Critical context points (max 5)
 
     # Candidate alignment analysis (NEW)
     candidate_alignment:
-      strong_matches: "array[string]"      # Skills/experience we have that match
-      gaps_to_address: "array[string]"     # Missing skills that are important
-      transferable_skills: "array[string]" # How to bridge gaps (e.g., "Python → Go")
-      emphasis_strategy: "string"          # One-line strategy for resume focus
+      strong_matches: 'array[string]' # Skills/experience we have that match
+      gaps_to_address: 'array[string]' # Missing skills that are important
+      transferable_skills: 'array[string]' # How to bridge gaps (e.g., "Python → Go")
+      emphasis_strategy: 'string' # One-line strategy for resume focus
 
     # Section priorities for resume tailoring (NEW)
     section_priorities:
-      technical_expertise: "array[string]"  # Ordered list of expertise categories to emphasize
-      experience_focus: "string"            # Which achievements to highlight
-      project_relevance: "string"           # Which projects to include/exclude
+      technical_expertise: 'array[string]' # Ordered list of expertise categories to emphasize
+      experience_focus: 'string' # Which achievements to highlight
+      project_relevance: 'string' # Which projects to include/exclude
 
     # Optimization actions (replaces verbose tips)
     optimization_actions:
-      LEAD_WITH: "array[string]"     # Skills/experiences to put first
-      EMPHASIZE: "array[string]"     # Areas to expand on
-      QUANTIFY: "array[string]"      # Metrics to highlight
-      DOWNPLAY: "array[string]"      # Areas to minimize
+      LEAD_WITH: 'array[string]' # Skills/experiences to put first
+      EMPHASIZE: 'array[string]' # Areas to expand on
+      QUANTIFY: 'array[string]' # Metrics to highlight
+      DOWNPLAY: 'array[string]' # Areas to minimize
 
     # Simplified ATS analysis
     ats_analysis:
-      title_variations: "array[string]"     # Alternative job title formats (max 3)
-      critical_phrases: "array[string]"     # Must-include phrases (max 5)
+      title_variations: 'array[string]' # Alternative job title formats (max 3)
+      critical_phrases: 'array[string]' # Must-include phrases (max 5)
 
     # Basic metadata
     application_info:
-      posting_url: "string"                 # Original job posting URL
-      posting_date: "string"                # When job was posted
-      deadline: "string"                    # Application deadline if mentioned
+      posting_url: 'string' # Original job posting URL
+      posting_date: 'string' # When job was posted
+      deadline: 'string' # Application deadline if mentioned
 
 # Analysis transformation rules
 transformation_rules:
-
   # Job focus determination logic (array-based extraction)
   focus_determination:
-    description: "Extract multiple role focuses with specialties and weights from job posting"
+    description: 'Extract multiple role focuses with specialties and weights from job posting'
 
     primary_area_mapping:
       # Role level/type keywords
-      junior_engineer: ["Junior", "Associate", "Entry Level", "Graduate", "0-2 years"]
-      engineer: ["Software Engineer", "Developer", "Engineer", "2-4 years"]
-      senior_engineer: ["Senior", "Sr.", "5+ years", "experienced"]
-      staff_engineer: ["Staff", "Senior Staff", "8+ years", "expert"]
-      principal_engineer: ["Principal", "Distinguished", "Architect", "10+ years"]
-      tech_lead: ["Tech Lead", "Team Lead", "Lead Engineer", "Technical Leader"]
-      engineering_manager: ["Engineering Manager", "Team Manager", "Engineering Lead"]
+      junior_engineer: ['Junior', 'Associate', 'Entry Level', 'Graduate', '0-2 years']
+      engineer: ['Software Engineer', 'Developer', 'Engineer', '2-4 years']
+      senior_engineer: ['Senior', 'Sr.', '5+ years', 'experienced']
+      staff_engineer: ['Staff', 'Senior Staff', '8+ years', 'expert']
+      principal_engineer: ['Principal', 'Distinguished', 'Architect', '10+ years']
+      tech_lead: ['Tech Lead', 'Team Lead', 'Lead Engineer', 'Technical Leader']
+      engineering_manager: ['Engineering Manager', 'Team Manager', 'Engineering Lead']
 
     specialty_mapping:
       # Technical specialties
-      ai: ["AI", "Artificial Intelligence", "Machine Learning", "ML", "LLM", "GPT"]
-      ml: ["Machine Learning", "Deep Learning", "Neural Networks", "TensorFlow", "PyTorch"]
-      data: ["Data Science", "Analytics", "Big Data", "Data Engineering"]
-      react: ["React", "React.js", "React Native", "JSX"]
-      typescript: ["TypeScript", "TS", "JavaScript", "ES6+"]
-      node: ["Node.js", "Express", "NestJS", "Backend JavaScript"]
-      python: ["Python", "Django", "FastAPI", "Flask"]
-      aws: ["AWS", "Amazon Web Services", "Cloud", "EC2", "S3", "Lambda"]
-      testing: ["Testing", "QA", "Quality Assurance", "Jest", "Cypress", "E2E"]
-      architecture: ["Architecture", "System Design", "Microservices", "Scalability"]
-      devops: ["DevOps", "CI/CD", "Docker", "Kubernetes", "Infrastructure"]
-      frontend: ["Frontend", "UI", "User Interface", "CSS", "HTML"]
-      backend: ["Backend", "API", "Database", "Server", "Microservices"]
-      mobile: ["Mobile", "iOS", "Android", "React Native", "Flutter"]
-      security: ["Security", "Cybersecurity", "Authentication", "Authorization"]
+      ai: ['AI', 'Artificial Intelligence', 'Machine Learning', 'ML', 'LLM', 'GPT']
+      ml: ['Machine Learning', 'Deep Learning', 'Neural Networks', 'TensorFlow', 'PyTorch']
+      data: ['Data Science', 'Analytics', 'Big Data', 'Data Engineering']
+      react: ['React', 'React.js', 'React Native', 'JSX']
+      typescript: ['TypeScript', 'TS', 'JavaScript', 'ES6+']
+      node: ['Node.js', 'Express', 'NestJS', 'Backend JavaScript']
+      python: ['Python', 'Django', 'FastAPI', 'Flask']
+      aws: ['AWS', 'Amazon Web Services', 'Cloud', 'EC2', 'S3', 'Lambda']
+      testing: ['Testing', 'QA', 'Quality Assurance', 'Jest', 'Cypress', 'E2E']
+      architecture: ['Architecture', 'System Design', 'Microservices', 'Scalability']
+      devops: ['DevOps', 'CI/CD', 'Docker', 'Kubernetes', 'Infrastructure']
+      frontend: ['Frontend', 'UI', 'User Interface', 'CSS', 'HTML']
+      backend: ['Backend', 'API', 'Database', 'Server', 'Microservices']
+      mobile: ['Mobile', 'iOS', 'Android', 'React Native', 'Flutter']
+      security: ['Security', 'Cybersecurity', 'Authentication', 'Authorization']
 
     extraction_algorithm: |
       1. Scan job posting for primary_area keywords
@@ -116,44 +115,78 @@ transformation_rules:
 
   # Experience level mapping
   experience_mapping:
-    junior: ["Junior", "Entry Level", "0-2 years", "Graduate", "New Grad"]
-    mid_level: ["Mid-level", "Intermediate", "2-4 years", "3-5 years"]
-    senior: ["Senior", "5+ years", "7+ years", "Lead", "Staff"]
-    principal: ["Principal", "Architect", "10+ years", "Distinguished"]
+    junior: ['Junior', 'Entry Level', '0-2 years', 'Graduate', 'New Grad']
+    mid_level: ['Mid-level', 'Intermediate', '2-4 years', '3-5 years']
+    senior: ['Senior', '5+ years', '7+ years', 'Lead', 'Staff']
+    principal: ['Principal', 'Architect', '10+ years', 'Distinguished']
 
   # Company size indicators
   company_size_mapping:
-    startup: ["Startup", "Early Stage", "Series A", "Series B", "< 50 employees"]
-    mid_size: ["Mid-size", "Scale-up", "Series C", "50-500 employees"]
-    large: ["Large", "Enterprise", "Fortune 500", "1000+ employees"]
+    startup: ['Startup', 'Early Stage', 'Series A', 'Series B', '< 50 employees']
+    mid_size: ['Mid-size', 'Scale-up', 'Series C', '50-500 employees']
+    large: ['Large', 'Enterprise', 'Fortune 500', '1000+ employees']
 
   # Skill categorization
   skill_categorization:
     technical_skills:
-      frontend: ["React", "Vue", "Angular", "JavaScript", "TypeScript", "CSS", "HTML",
-                "Next.js", "Svelte", "React Native", "Redux", "GraphQL"]
-      backend: ["Node.js", "Python", "Java", "Go", "Ruby", "PHP", "C#", ".NET",
-               "Spring", "Django", "Express", "FastAPI"]
-      database: ["SQL", "PostgreSQL", "MySQL", "MongoDB", "Redis", "Elasticsearch"]
-      cloud: ["AWS", "Azure", "GCP", "Docker", "Kubernetes", "Terraform"]
-      ai_ml: ["Machine Learning", "AI", "TensorFlow", "PyTorch", "Scikit-learn",
-             "LangChain", "OpenAI", "Vector Databases"]
+      frontend:
+        [
+          'React',
+          'Vue',
+          'Angular',
+          'JavaScript',
+          'TypeScript',
+          'CSS',
+          'HTML',
+          'Next.js',
+          'Svelte',
+          'React Native',
+          'Redux',
+          'GraphQL',
+        ]
+      backend:
+        [
+          'Node.js',
+          'Python',
+          'Java',
+          'Go',
+          'Ruby',
+          'PHP',
+          'C#',
+          '.NET',
+          'Spring',
+          'Django',
+          'Express',
+          'FastAPI',
+        ]
+      database: ['SQL', 'PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'Elasticsearch']
+      cloud: ['AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes', 'Terraform']
+      ai_ml:
+        [
+          'Machine Learning',
+          'AI',
+          'TensorFlow',
+          'PyTorch',
+          'Scikit-learn',
+          'LangChain',
+          'OpenAI',
+          'Vector Databases',
+        ]
 
     soft_skills:
-      communication: ["Communication", "Presentation", "Documentation", "Writing"]
-      leadership: ["Leadership", "Mentoring", "Team Lead", "Management", "Coaching"]
-      collaboration: ["Collaboration", "Cross-functional", "Agile", "Scrum", "Teamwork"]
-      analytical: ["Problem Solving", "Analytical", "Critical Thinking", "Research"]
+      communication: ['Communication', 'Presentation', 'Documentation', 'Writing']
+      leadership: ['Leadership', 'Mentoring', 'Team Lead', 'Management', 'Coaching']
+      collaboration: ['Collaboration', 'Cross-functional', 'Agile', 'Scrum', 'Teamwork']
+      analytical: ['Problem Solving', 'Analytical', 'Critical Thinking', 'Research']
 
 # Extraction patterns for common job posting formats
 extraction_patterns:
-
   # Common section headers
   section_headers:
-    requirements: ["Requirements", "Qualifications", "Must Have", "Skills Required"]
-    responsibilities: ["Responsibilities", "What You'll Do", "Role Description", "Duties"]
-    benefits: ["Benefits", "What We Offer", "Perks", "Compensation"]
-    company: ["About Us", "Company", "About [Company Name]"]
+    requirements: ['Requirements', 'Qualifications', 'Must Have', 'Skills Required']
+    responsibilities: ['Responsibilities', "What You'll Do", 'Role Description', 'Duties']
+    benefits: ['Benefits', 'What We Offer', 'Perks', 'Compensation']
+    company: ['About Us', 'Company', 'About [Company Name]']
 
   # Requirement parsing patterns
   requirement_patterns:
@@ -165,71 +198,80 @@ extraction_patterns:
     education:
       - "Bachelor'?s? (degree)?"
       - "Master'?s? (degree)?"
-      - "PhD|Doctorate"
-      - "Computer Science|CS|Engineering"
+      - 'PhD|Doctorate'
+      - 'Computer Science|CS|Engineering'
 
-    must_have_indicators: ["Required", "Must have", "Essential", "Mandatory"]
-    nice_to_have_indicators: ["Preferred", "Nice to have", "Bonus", "Plus", "Advantage"]
+    must_have_indicators: ['Required', 'Must have', 'Essential', 'Mandatory']
+    nice_to_have_indicators: ['Preferred', 'Nice to have', 'Bonus', 'Plus', 'Advantage']
 
 # Output validation rules (v2.0)
 validation_rules:
   required_fields:
-    - "job_analysis.company"
-    - "job_analysis.position"
-    - "job_analysis.job_focus"
-    - "job_analysis.requirements.must_have_skills"
-    - "job_analysis.candidate_alignment"
-    - "job_analysis.section_priorities"
-    - "job_analysis.optimization_actions"
+    - 'job_analysis.company'
+    - 'job_analysis.position'
+    - 'job_analysis.job_focus'
+    - 'job_analysis.requirements.must_have_skills'
+    - 'job_analysis.candidate_alignment'
+    - 'job_analysis.section_priorities'
+    - 'job_analysis.optimization_actions'
 
   field_constraints:
-    - field: "job_analysis.job_focus"
-      type: "array"
+    - field: 'job_analysis.job_focus'
+      type: 'array'
       min_items: 1
       max_items: 3
       item_schema:
         primary_area:
-          allowed_values: ["junior_engineer", "engineer", "senior_engineer", "staff_engineer", "principal_engineer", "tech_lead", "engineering_manager"]
+          allowed_values:
+            [
+              'junior_engineer',
+              'engineer',
+              'senior_engineer',
+              'staff_engineer',
+              'principal_engineer',
+              'tech_lead',
+              'engineering_manager',
+            ]
         specialties:
-          type: "array"
+          type: 'array'
           min_items: 1
           max_items: 8
         weight:
-          type: "number"
+          type: 'number'
           min: 0.0
           max: 1.0
       array_constraints:
         weights_must_sum_to: 1.0
 
-    - field: "job_analysis.requirements.must_have_skills"
+    - field: 'job_analysis.requirements.must_have_skills'
       min_items: 3
       max_items: 10
-      note: "Each item must have skill and priority (1-10)"
+      note: 'Each item must have skill and priority (1-10)'
 
-    - field: "job_analysis.requirements.nice_to_have_skills"
+    - field: 'job_analysis.requirements.nice_to_have_skills'
       max_items: 8
-      note: "Each item must have skill and priority (1-10)"
+      note: 'Each item must have skill and priority (1-10)'
 
-    - field: "job_analysis.responsibilities.primary"
+    - field: 'job_analysis.responsibilities.primary'
       max_items: 5
 
-    - field: "job_analysis.responsibilities.secondary"
+    - field: 'job_analysis.responsibilities.secondary'
       max_items: 3
 
-    - field: "job_analysis.role_context.key_points"
+    - field: 'job_analysis.role_context.key_points'
       max_items: 5
 
-    - field: "job_analysis.ats_analysis.title_variations"
+    - field: 'job_analysis.ats_analysis.title_variations'
       max_items: 3
 
-    - field: "job_analysis.ats_analysis.critical_phrases"
+    - field: 'job_analysis.ats_analysis.critical_phrases'
       max_items: 5
 
   data_quality:
-    - rule: "Prioritize skills with weights for clear guidance"
-    - rule: "Provide explicit candidate alignment analysis"
-    - rule: "Use action codes for optimization instead of verbose tips"
-    - rule: "Keep context points concise and actionable"
+    - rule: 'Prioritize skills with weights for clear guidance'
+    - rule: 'Provide explicit candidate alignment analysis'
+    - rule: 'Use action codes for optimization instead of verbose tips'
+    - rule: 'Keep context points concise and actionable'
 
 # Usage instructions for job-tailor agent (v2.0)
 usage_instructions: |

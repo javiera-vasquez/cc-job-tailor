@@ -2,39 +2,39 @@ name: CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 jobs:
   typecheck:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '23.10.0'
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '23.10.0'
 
-    - name: Setup Bun
-      uses: oven-sh/setup-bun@v1
-      with:
-        bun-version: '1.2.12'
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: '1.2.12'
 
-    - name: Install dependencies
-      run: bun install
+      - name: Install dependencies
+        run: bun install
 
-    - name: Run type checking
-      run: bun run tsc
+      - name: Run type checking
+        run: bun run tsc
 
-    - name: Run unit tests
-      run: bun test
+      - name: Run unit tests
+        run: bun test
 
-    - name: Test generate-data command
-      run: bun run generate-data -C tech-corp
+      - name: Test generate-data command
+        run: bun run generate-data -C tech-corp
 
-    - name: Test generate-pdf command
-      run: bun run generate-pdf -C tech-corp
+      - name: Test generate-pdf command
+        run: bun run generate-pdf -C tech-corp

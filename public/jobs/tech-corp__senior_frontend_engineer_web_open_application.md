@@ -19,13 +19,15 @@ If you are an experienced Web Engineer, a true team player and based in Sweden, 
 📍These roles can be based in one of our tech hubs in Stockholm, Helsinki, Berlin or Tallinn, or you can work remotely anywhere in Sweden, Estonia or Finland.
 
 **OUR HUMBLE EXPECTATIONS**
-*   Minimum of 5 years of solid experience using modern Typescript and React in the frontend and building solid scalable services and well-structured applications using them.
-*   If you have some React Native and app development experience (Android or iOS) on your hands - even better, we consider that a plus!
-*   You’re a dedicated person who is pragmatic with a positive attitude, who doesn't shy away from going outside of their comfort zone, and demonstrates curiosity and willingness to keep continuously learning.
+
+- Minimum of 5 years of solid experience using modern Typescript and React in the frontend and building solid scalable services and well-structured applications using them.
+- If you have some React Native and app development experience (Android or iOS) on your hands - even better, we consider that a plus!
+- You’re a dedicated person who is pragmatic with a positive attitude, who doesn't shy away from going outside of their comfort zone, and demonstrates curiosity and willingness to keep continuously learning.
 
 **TL;DR** we have many teams looking for FE engineers. So if you have several years of experience in dealing with the front end of the house, can’t wait to learn new things (for example, tinkering in the backend if you’re up for it), have an interest in tackling scalability challenges and building some cool stuff, then be sure to drop us a line!
 
 **WHAT WE’RE OFFERING TO YOU**
-*   Overall our product organization consists of a team of over 500 people at Tech-Corp. We aim to build none other than the best-in-the-world engineering team here.
-*   You’ll get to work in a company culture where we take ownership beyond the obvious, do common things uncommonly well, we think big but stay humble, do right by people, we treat others kindly and justly, recognise that if we don’t learn, we won’t stay still but fall behind, and keep in mind that Luke was Yoda’s greatest achievement.
-*   Join us for an exciting journey! The compensation will be a negotiable combination of monthly pay and our parent company equity. The latter makes it exceptionally easy to be excited about our company growing and doing well, as you’ll own a piece of the pie.
+
+- Overall our product organization consists of a team of over 500 people at Tech-Corp. We aim to build none other than the best-in-the-world engineering team here.
+- You’ll get to work in a company culture where we take ownership beyond the obvious, do common things uncommonly well, we think big but stay humble, do right by people, we treat others kindly and justly, recognise that if we don’t learn, we won’t stay still but fall behind, and keep in mind that Luke was Yoda’s greatest achievement.
+- Join us for an exciting journey! The compensation will be a negotiable combination of monthly pay and our parent company equity. The latter makes it exceptionally easy to be excited about our company growing and doing well, as you’ll own a piece of the pie.

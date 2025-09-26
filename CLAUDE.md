@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Dynamic PDF resume generator built with React and `@react-pdf/renderer`. Creates PDF documents using React components with both browser preview and server-side file generation.
 
 **Key Features:**
+
 - Data-driven resume generation from YAML sources
 - Multi-version support (AI-focused, QA-focused, frontend-focused)
 - Company-specific tailoring system
@@ -36,6 +37,7 @@ bun run tsc
 **Core Stack:** Bun runtime, React 19, TypeScript, @react-pdf/renderer, Zod validation
 
 ### File Structure
+
 ```
 ├── dev-server-index.tsx    # Development server entry point
 ├── dev-with-watch.ts      # Development server with file watching
@@ -60,6 +62,7 @@ bun run tsc
 ```
 
 ### Application Flow
+
 1. **Data Generation**: YAML sources → Zod validation → TypeScript module
 2. **Development**: File watching → auto-regeneration → browser preview
 3. **PDF Generation**: Company data → validated transformation → PDF output
@@ -69,18 +72,22 @@ bun run tsc
 **Data Flow**: YAML sources → Zod validation → TypeScript → PDF components
 
 ### Source Structure (`resume-data/sources/`)
+
 - Multi-version support: `ai_focused`, `qa_focused`, `frontend_focused`
 - Modular files: `resume.yaml`, `professional-experience.yaml`, `cover-letter.yaml`
 - Example files for development (`.example.yaml` suffix)
 
 ### Tailoring System (`resume-data/tailor/[company]/`)
+
 Company-specific optimization:
+
 1. Job posting analysis → requirements extraction
 2. Content selection from source data
 3. Schema-validated transformation
 4. PDF generation: `bun run save-to-pdf -C company-name`
 
 ### Validation
+
 - **Zod schemas** in `src/zod/schemas.ts` validate all data transformations
 - **Type safety** from YAML to PDF components
 - **Error handling** for missing or invalid data
@@ -88,6 +95,7 @@ Company-specific optimization:
 ## React-PDF Reference
 
 Local documentation in `rpdf/`:
+
 - `components.md`: Document, Page, View, Text, Image, Link APIs
 - `fonts.md`: Font registration and typography
 - `styling.md`: CSS properties and responsive design
@@ -95,6 +103,7 @@ Local documentation in `rpdf/`:
 ## Design System
 
 ### Design Tokens (`src/templates/design-tokens.ts`)
+
 Centralized styling constants for consistent PDF appearance:
 
 ```typescript
@@ -124,6 +133,7 @@ spacing: {
 ## Quick Reference
 
 ### Key Files
+
 - `src/data/application.ts` - Auto-generated data (don't edit directly)
 - `src/templates/design-tokens.ts` - Styling constants
 - `src/zod/schemas.ts` - Data validation rules
@@ -131,6 +141,7 @@ spacing: {
 - `resume-data/tailor/[company]/` - Company-specific outputs
 
 ### Common Tasks
+
 - **Styling changes**: Edit design tokens, not individual components
 - **Data changes**: Modify YAML sources, regenerate with `bun run generate-data`
 - **New company**: Create `resume-data/tailor/[company]/` directory structure
@@ -146,7 +157,9 @@ spacing: {
 ## Claude Code Guidelines
 
 ### Commit Message Policy
+
 **IMPORTANT**: Never include Claude Code attribution or co-authored-by lines in git commit messages or pull requests. All commits should be clean and focused on the actual changes without tool attribution.
 
 ### Pull Request Policy
+
 **CRITICAL**: Never add Claude Code attribution, "Generated with Claude Code", co-authored-by lines, or any tool attribution in pull request descriptions, titles, or comments. All PRs must appear as regular development work without mentioning AI assistance.

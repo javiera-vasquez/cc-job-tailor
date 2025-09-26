@@ -1,55 +1,55 @@
 metadata:
-  company: "Test Company"
-  position: "Engineer"
-  last_updated: "2024-01-01"
-  transformation_decisions: "Test"
-  job_focus_used: "test"
+  company: 'Test Company'
+  position: 'Engineer'
+  last_updated: '2024-01-01'
+  transformation_decisions: 'Test'
+  job_focus_used: 'test'
 
 resume:
-  name: "John Doe"
-  profile_picture: "profile.jpg"
-  title: "Engineer"
-  summary: "Test summary"
+  name: 'John Doe'
+  profile_picture: 'profile.jpg'
+  title: 'Engineer'
+  summary: 'Test summary'
 
   # Invalid email format
   contact:
-    phone: "+1-234-567-8900"
-    email: "invalid-email-format"  # This should fail email validation
-    address: "123 Main St"
-    linkedin: "https://linkedin.com/in/johndoe"
-    github: "https://github.com/johndoe"
+    phone: '+1-234-567-8900'
+    email: 'invalid-email-format' # This should fail email validation
+    address: '123 Main St'
+    linkedin: 'https://linkedin.com/in/johndoe'
+    github: 'https://github.com/johndoe'
 
   technical_expertise:
-    - resume_title: "Development"
-      skills: ["JavaScript"]
+    - resume_title: 'Development'
+      skills: ['JavaScript']
 
-  skills: ["JavaScript"]
+  skills: ['JavaScript']
 
   languages:
-    - language: "English"
-      proficiency: "Native"
+    - language: 'English'
+      proficiency: 'Native'
 
   professional_experience:
-    - company: "Tech Corp"
-      position: "Developer"
-      location: "Remote"
-      duration: "2023-2024"
-      company_description: "Tech company"
+    - company: 'Tech Corp'
+      position: 'Developer'
+      location: 'Remote'
+      duration: '2023-2024'
+      company_description: 'Tech company'
       linkedin: null
-      achievements: ["Built apps"]
+      achievements: ['Built apps']
 
   independent_projects:
-    - name: "Test Project"
-      description: "A test project"
-      location: "Remote"
-      duration: "2024"
-      achievements: ["Completed project"]
+    - name: 'Test Project'
+      description: 'A test project'
+      location: 'Remote'
+      duration: '2024'
+      achievements: ['Completed project']
 
   education:
-    - institution: "University"
-      program: "Computer Science"
-      location: "City"
-      duration: "2020-2024"
+    - institution: 'University'
+      program: 'Computer Science'
+      location: 'City'
+      duration: '2020-2024'
 
 job_analysis: null
 

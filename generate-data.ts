@@ -30,11 +30,11 @@ if (companyName) {
 function throwNoCompanyError(): never {
   throw new Error(
     `No company specified. Resume data must be tailored for specific job applications.\n\n` +
-    `To get started:\n` +
-    `1. Use Claude Code to analyze a job posting\n` +
-    `2. Run: @agent-job-tailor analyze job [file|url]\n` +
-    `3. Then use -C flag with the company name to generate tailored resume\n\n` +
-    `Example: bun run generate-data.ts -C "company-name"`
+      `To get started:\n` +
+      `1. Use Claude Code to analyze a job posting\n` +
+      `2. Run: @agent-job-tailor analyze job [file|url]\n` +
+      `3. Then use -C flag with the company name to generate tailored resume\n\n` +
+      `Example: bun run generate-data.ts -C "company-name"`,
   );
 }
 
@@ -55,20 +55,20 @@ function getCompanyFolderPath(company: string | undefined): string | null {
   // Check if company folder exists
   if (!existsSync(companyPath)) {
     // List available companies
-    const availableCompanies = readdirSync(tailorPath)
-      .filter(name => existsSync(`${tailorPath}/${name}/resume.yaml`) ||
-                      existsSync(`${tailorPath}/${name}/job_analysis.yaml`) ||
-                      existsSync(`${tailorPath}/${name}/cover_letter.yaml`));
+    const availableCompanies = readdirSync(tailorPath).filter(
+      (name) =>
+        existsSync(`${tailorPath}/${name}/resume.yaml`) ||
+        existsSync(`${tailorPath}/${name}/job_analysis.yaml`) ||
+        existsSync(`${tailorPath}/${name}/cover_letter.yaml`),
+    );
 
     if (availableCompanies.length > 0) {
       throw new Error(
         `Company "${company}" not found in ${tailorPath}.\n` +
-        `Available companies: ${availableCompanies.join(', ')}`
+          `Available companies: ${availableCompanies.join(', ')}`,
       );
     } else {
-      throw new Error(
-        `Company "${company}" not found and no companies available in ${tailorPath}`
-      );
+      throw new Error(`Company "${company}" not found and no companies available in ${tailorPath}`);
     }
   }
 
@@ -83,9 +83,7 @@ async function loadTailoredData(companyPath: string): Promise<ApplicationData> {
 
   console.warn(`📂 Loading tailored data from: ${companyPath}`);
 
-  const resumeFile = existsSync(resumePath)
-    ? load(await Bun.file(resumePath).text())
-    : null;
+  const resumeFile = existsSync(resumePath) ? load(await Bun.file(resumePath).text()) : null;
 
   const jobAnalysis = existsSync(jobAnalysisPath)
     ? load(await Bun.file(jobAnalysisPath).text())
@@ -147,9 +145,7 @@ try {
 }
 
 // Generate TypeScript module with proper imports
-const source = companyName
-  ? `company-specific data for "${companyName}"`
-  : "default source files";
+const source = companyName ? `company-specific data for "${companyName}"` : 'default source files';
 
 const tsContent = `// @ts-nocheck
 // Auto-generated application data - TypeScript validation disabled
@@ -165,6 +161,6 @@ export default applicationData;
 
 // Write the generated module
 console.warn(`📝 Writing TypeScript module to src/data/application.ts...`);
-await Bun.write("./src/data/application.ts", tsContent);
+await Bun.write('./src/data/application.ts', tsContent);
 
 console.warn(`✅ Application data module generated successfully from ${source}`);

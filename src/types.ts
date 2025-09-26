@@ -1,8 +1,4 @@
-import {
-  type PageSize,
-  type Orientation,
-  type Bookmark,
-} from '@react-pdf/types';
+import { type PageSize, type Orientation, type Bookmark } from '@react-pdf/types';
 import { z } from 'zod';
 
 import {
@@ -30,7 +26,7 @@ import {
   CoverLetterContentSchema,
   CoverLetterSchema as CoverLetterSchemaZod,
   MetadataSchema as MetadataSchemaZod,
-  ApplicationDataSchema
+  ApplicationDataSchema,
 } from './zod/schemas';
 
 // Inferred types from Zod schemas
@@ -68,18 +64,18 @@ export type ExperienceItem = ProfessionalExperience | IndependentProject;
 
 // TYPES FOR A REACT-PDF PAGE
 export type ReactPDFProps = {
-  size?: PageSize,
-  orientation?: Orientation,
-  wrap?: boolean,
-  debug?: boolean,
-  dpi?: number,
-  bookmark?: Bookmark,
-  data: ResumeSchema | CoverLetterSchema
-}
+  size?: PageSize;
+  orientation?: Orientation;
+  wrap?: boolean;
+  debug?: boolean;
+  dpi?: number;
+  bookmark?: Bookmark;
+  data: ResumeSchema | CoverLetterSchema;
+};
 
 export type Schemas = {
   metadata: MetadataSchema;
   resume: ResumeSchema;
   job_analysis: JobAnalysisSchema;
   cover_letter: CoverLetterSchema;
-}
+};

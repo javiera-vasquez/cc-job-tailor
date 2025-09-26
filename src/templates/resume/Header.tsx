@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     borderBottom: `1px solid ${colors.separatorGray}`,
     borderTop: `1px solid ${colors.separatorGray}`,
   },
-  
+
   // Profile picture area (top-right corner)
   profileArea: {
     top: 0,
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     height: spacing.profileImageSize,
     position: 'absolute',
   },
-  
+
   profileImage: {
     width: spacing.profileImageSize,
     height: spacing.profileImageSize,
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     marginBottom: 2,
   },
-  
+
   position: {
     color: colors.mediumGray,
     fontSize: 14,
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
     marginBottom: 0,
   },
-  
+
   summary: {
     color: colors.darkGray,
     fontSize: 10,
@@ -68,8 +68,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const Header = ({resume}: {resume: ResumeSchema}) => (
-  <View>    
+const Header = ({ resume }: { resume: ResumeSchema }) => (
+  <View>
     {/* Main header content */}
     <View style={styles.headerContainer}>
       {/* Content area with name, title, summary */}
@@ -77,13 +77,13 @@ const Header = ({resume}: {resume: ResumeSchema}) => (
         <Text style={styles.name}>{resume.name}</Text>
         <Text style={styles.position}>{resume.title}</Text>
       </View>
-      
+
       {/* Profile picture in top-right corner */}
       <View style={styles.profileArea}>
-        <Image src={resume.profile_picture} style={styles.profileImage}/>
+        <Image src={resume.profile_picture} style={styles.profileImage} />
       </View>
     </View>
-    
+
     {/* Resume summary */}
     <View style={styles.summaryContainer}>
       <Text style={styles.summary}>{resume.summary}</Text>

@@ -31,14 +31,14 @@ const documentType = values.document || 'both'; // 'resume', 'cover-letter', or 
 function throwNoCompanyError(): never {
   throw new Error(
     `No company specified. PDF generation requires company-specific data.\n\n` +
-    `To generate a PDF:\n` +
-    `1. Use Claude Code to analyze a job posting\n` +
-    `2. Run: @agent-job-tailor analyze job [file|url]\n` +
-    `3. Then use -C flag with the company name to generate PDF\n\n` +
-    `Examples:\n` +
-    `  bun run generate-pdf.ts -C "company-name"                    # Generate both resume and cover letter\n` +
-    `  bun run generate-pdf.ts -C "company-name" -D resume          # Generate resume only\n` +
-    `  bun run generate-pdf.ts -C "company-name" -D cover-letter    # Generate cover letter only`
+      `To generate a PDF:\n` +
+      `1. Use Claude Code to analyze a job posting\n` +
+      `2. Run: @agent-job-tailor analyze job [file|url]\n` +
+      `3. Then use -C flag with the company name to generate PDF\n\n` +
+      `Examples:\n` +
+      `  bun run generate-pdf.ts -C "company-name"                    # Generate both resume and cover letter\n` +
+      `  bun run generate-pdf.ts -C "company-name" -D resume          # Generate resume only\n` +
+      `  bun run generate-pdf.ts -C "company-name" -D cover-letter    # Generate cover letter only`,
   );
 }
 
@@ -53,7 +53,7 @@ const generatePdf = async () => {
     const dataGenProcess = Bun.spawn({
       cmd: ['bun', 'run', 'generate-data.ts', '-C', companyName],
       cwd: process.cwd(),
-      stdio: ['inherit', 'inherit', 'inherit']
+      stdio: ['inherit', 'inherit', 'inherit'],
     });
 
     const exitCode = await dataGenProcess.exited;
@@ -77,9 +77,10 @@ const generatePdf = async () => {
 
   // Generate PDFs based on document type
   const generateDocument = async (docType: 'resume' | 'cover-letter') => {
-    const component = docType === 'resume'
-      ? React.createElement(resume.Document)
-      : React.createElement(coverLetter.Document);
+    const component =
+      docType === 'resume'
+        ? React.createElement(resume.Document)
+        : React.createElement(coverLetter.Document);
 
     const filePath = path.join(tmpDir, `${docType}-${companyName}.pdf`);
 
@@ -99,7 +100,9 @@ const generatePdf = async () => {
   } else if (documentType === 'cover-letter') {
     await generateDocument('cover-letter');
   } else {
-    throw new Error(`Invalid document type: ${documentType}. Must be 'resume', 'cover-letter', or 'both'`);
+    throw new Error(
+      `Invalid document type: ${documentType}. Must be 'resume', 'cover-letter', or 'both'`,
+    );
   }
 };
 

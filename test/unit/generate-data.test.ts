@@ -8,7 +8,6 @@ import { load } from 'js-yaml';
 // For now, we'll test the core logic by mocking the modules
 
 describe('Generate Data Pipeline', () => {
-
   describe('Command Line Argument Parsing', () => {
     test('parses company name from -C flag correctly', () => {
       const mockArgv = ['node', 'generate-data.ts', '-C', 'test-company'];
@@ -73,7 +72,7 @@ describe('Generate Data Pipeline', () => {
     function getCompanyFolderPath(
       company: string | undefined,
       mockExistsSync?: (path: string) => boolean,
-      mockReaddirSync?: (path: string) => string[]
+      mockReaddirSync?: (path: string) => string[],
     ): string | null {
       if (!company) {
         return null;
@@ -94,19 +93,21 @@ describe('Generate Data Pipeline', () => {
       // Check if company folder exists
       if (!actualExistsSync(companyPath)) {
         // List available companies
-        const availableCompanies = actualReaddirSync(tailorPath)
-          .filter((name: string) => actualExistsSync(`${tailorPath}/${name}/resume.yaml`) ||
-                          actualExistsSync(`${tailorPath}/${name}/job_analysis.yaml`) ||
-                          actualExistsSync(`${tailorPath}/${name}/cover_letter.yaml`));
+        const availableCompanies = actualReaddirSync(tailorPath).filter(
+          (name: string) =>
+            actualExistsSync(`${tailorPath}/${name}/resume.yaml`) ||
+            actualExistsSync(`${tailorPath}/${name}/job_analysis.yaml`) ||
+            actualExistsSync(`${tailorPath}/${name}/cover_letter.yaml`),
+        );
 
         if (availableCompanies.length > 0) {
           throw new Error(
             `Company "${company}" not found in ${tailorPath}.\n` +
-            `Available companies: ${availableCompanies.join(', ')}`
+              `Available companies: ${availableCompanies.join(', ')}`,
           );
         } else {
           throw new Error(
-            `Company "${company}" not found and no companies available in ${tailorPath}`
+            `Company "${company}" not found and no companies available in ${tailorPath}`,
           );
         }
       }
@@ -169,7 +170,9 @@ describe('Generate Data Pipeline', () => {
 
       expect(() => {
         getCompanyFolderPath('test-company', mockExistsSync, mockReaddirSync);
-      }).toThrow('Company "test-company" not found and no companies available in ./resume-data/tailor');
+      }).toThrow(
+        'Company "test-company" not found and no companies available in ./resume-data/tailor',
+      );
     });
   });
 
@@ -179,7 +182,7 @@ describe('Generate Data Pipeline', () => {
       companyPath: string,
       mockExistsSync?: (path: string) => boolean,
       mockLoad?: (content: string) => any,
-      mockFileReader?: (path: string) => Promise<string>
+      mockFileReader?: (path: string) => Promise<string>,
     ) {
       const resumePath = `${companyPath}/resume.yaml`;
       const jobAnalysisPath = `${companyPath}/job_analysis.yaml`;
@@ -216,7 +219,7 @@ describe('Generate Data Pipeline', () => {
 
       const mockYamlContent = {
         metadata: { company: 'Test Company' },
-        resume: { name: 'John Doe' }
+        resume: { name: 'John Doe' },
       };
 
       const mockLoad = () => mockYamlContent;
@@ -251,7 +254,7 @@ describe('Generate Data Pipeline', () => {
 
       const mockResumeData = {
         metadata: { company: 'Test Company' },
-        resume: { name: 'John Doe' }
+        resume: { name: 'John Doe' },
       };
 
       const mockLoad = () => mockResumeData;
@@ -271,11 +274,11 @@ describe('Generate Data Pipeline', () => {
       function throwNoCompanyError(): never {
         throw new Error(
           `No company specified. Resume data must be tailored for specific job applications.\n\n` +
-          `To get started:\n` +
-          `1. Use Claude Code to analyze a job posting\n` +
-          `2. Run: @agent-job-tailor analyze job [file|url]\n` +
-          `3. Then use -C flag with the company name to generate tailored resume\n\n` +
-          `Example: bun run generate-data.ts -C "company-name"`
+            `To get started:\n` +
+            `1. Use Claude Code to analyze a job posting\n` +
+            `2. Run: @agent-job-tailor analyze job [file|url]\n` +
+            `3. Then use -C flag with the company name to generate tailored resume\n\n` +
+            `Example: bun run generate-data.ts -C "company-name"`,
         );
       }
 

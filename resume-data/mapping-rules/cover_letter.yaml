@@ -1,70 +1,69 @@
 # Cover Letter Transformation Rules
 # This file defines how to transform cover letter templates into job-specific versions
 
-schema_version: "1.0"
+schema_version: '1.0'
 
 # Target output schema for tailored cover letters
 target_schema:
-  version: "string"                      # Schema version
-  job_focus:                             # Array of job focuses from analysis
-    - primary_area: "string"             # senior_engineer, tech_lead, etc.
-      specialties: ["string"]            # [ai, ml, react, typescript]
-      weight: "number"                   # 0.0-1.0
-  analysis_date: "string"                # Date of job analysis
+  version: 'string' # Schema version
+  job_focus: # Array of job focuses from analysis
+    - primary_area: 'string' # senior_engineer, tech_lead, etc.
+      specialties: ['string'] # [ai, ml, react, typescript]
+      weight: 'number' # 0.0-1.0
+  analysis_date: 'string' # Date of job analysis
 
   cover_letter:
-    company: "string"                    # Target company name
-    position: "string"                   # Target job position
-    primary_focus: "string"              # highest weighted primary_area from job_focus array
-    date: "string"                       # Application date
+    company: 'string' # Target company name
+    position: 'string' # Target job position
+    primary_focus: 'string' # highest weighted primary_area from job_focus array
+    date: 'string' # Application date
 
     personal_info:
-      name: "string"                     # Full name
-      address: "string"                  # Physical address
-      email: "string"                    # Email address
-      phone: "string"                    # Phone number
-      linkedin: "string"                 # LinkedIn profile URL
-      github: "string"                   # GitHub profile URL
+      name: 'string' # Full name
+      address: 'string' # Physical address
+      email: 'string' # Email address
+      phone: 'string' # Phone number
+      linkedin: 'string' # LinkedIn profile URL
+      github: 'string' # GitHub profile URL
 
     content:
-      letter_title: "string"             # Cover letter title
-      opening_line: "string"             # Personalized opening line
-      body: ["array"]                    # Array of paragraph strings
-      signature: "string"                # Professional signature block
+      letter_title: 'string' # Cover letter title
+      opening_line: 'string' # Personalized opening line
+      body: ['array'] # Array of paragraph strings
+      signature: 'string' # Professional signature block
 
 # Transformation rules
 transformation_rules:
-
   # Template selection based on highest weighted job focus
   template_selection:
-    source: "cover_letter.templates"
+    source: 'cover_letter.templates'
     selection_logic: |
       1. Get highest weighted job_focus item from array
       2. Use primary_area to determine template category
       3. Use top 3 specialties to customize template content
-    fallback: "senior_engineer"         # Default template if focus unclear
+    fallback: 'senior_engineer' # Default template if focus unclear
 
   # Variable replacement rules
   variable_replacement:
-    - placeholder: "[COMPANY]"
-      source: "job_analysis.company"
+    - placeholder: '[COMPANY]'
+      source: 'job_analysis.company'
 
-    - placeholder: "[POSITION]"
-      source: "job_analysis.position"
+    - placeholder: '[POSITION]'
+      source: 'job_analysis.position'
 
-    - placeholder: "[TECH_SKILLS]"
-      source: "job_analysis.job_focus[0].specialties"
-      transformation: "select_top_3_from_highest_weighted_focus"
+    - placeholder: '[TECH_SKILLS]'
+      source: 'job_analysis.job_focus[0].specialties'
+      transformation: 'select_top_3_from_highest_weighted_focus'
 
   # Content enhancement rules
   content_optimization:
-    - "integrate_matching_skills"
-    - "select_relevant_achievements"
-    - "add_company_insights"
-    - "format_body_as_paragraph_array"
+    - 'integrate_matching_skills'
+    - 'select_relevant_achievements'
+    - 'add_company_insights'
+    - 'format_body_as_paragraph_array'
 
   # Tone and style adjustments
-  tone_default: "professional"
+  tone_default: 'professional'
 
 # Quality rules
 length_constraints:
@@ -72,13 +71,12 @@ length_constraints:
 
 # Required fields
 required_fields:
-  - "job_analysis.company"
-  - "job_analysis.position"
-  - "job_analysis.job_focus"
+  - 'job_analysis.company'
+  - 'job_analysis.position'
+  - 'job_analysis.job_focus'
 validation_rules:
-  - "job_analysis.job_focus must be non-empty array"
-  - "job_focus weights must sum to 1.0"
-
+  - 'job_analysis.job_focus must be non-empty array'
+  - 'job_focus weights must sum to 1.0'
 
 # Output template structure
 output_template: |

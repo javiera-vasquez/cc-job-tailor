@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     paddingTop: spacing.pagePadding,
     borderTop: `1px solid ${colors.separatorGray}`,
   },
-  
+
   sectionTitle: {
     color: colors.primary,
     fontFamily: 'Lato Bold',
@@ -38,17 +38,19 @@ const styles = StyleSheet.create({
   },
 });
 
-const Education = ({resume, debug}: {resume: ResumeSchema, debug: boolean}) => (
-  <View style={styles.container} debug={debug}>    
+const Education = ({ resume, debug }: { resume: ResumeSchema; debug: boolean }) => (
+  <View style={styles.container} debug={debug}>
     {/* Section title */}
     <Text style={styles.sectionTitle}>Education</Text>
-    
+
     {/* Education entries */}
     {resume.education.map((edu, index) => (
       <View key={index} style={styles.educationEntry}>
         <Text style={styles.institution}>{edu.institution}</Text>
         <Text style={styles.program}>{edu.program}</Text>
-        <Text style={styles.locationDuration}>{edu.location} | {edu.duration}</Text>
+        <Text style={styles.locationDuration}>
+          {edu.location} | {edu.duration}
+        </Text>
       </View>
     ))}
   </View>

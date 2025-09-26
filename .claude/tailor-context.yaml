@@ -3,36 +3,43 @@
 # Created/updated by the /tailor command
 
 # Active company name (matches folder name in resume-data/tailor/)
-active_company: "tech-corp"
+active_company: 'tech-corp'
 
 # Full path to company's tailor folder
-folder_path: "resume-data/tailor/tech-corp"
+folder_path: 'resume-data/tailor/tech-corp'
 
 # List of files that exist in the company folder
 available_files:
-  - "resume.yaml"
-  - "job_analysis.yaml"
-  - "cover_letter.yaml"
+  - 'resume.yaml'
+  - 'job_analysis.yaml'
+  - 'cover_letter.yaml'
 
 # Job details extracted from job_analysis.yaml
-position: "Senior Frontend Engineer - Web, Open Application"
+position: 'Senior Frontend Engineer - Web, Open Application'
 
 # Primary job focus area from job_analysis.yaml (highest weighted primary_area)
-primary_focus: "senior_engineer + [react, typescript, frontend, mobile]"
+primary_focus: 'senior_engineer + [react, typescript, frontend, mobile]'
 
 # Timestamp when context was last set (ISO format)
-last_updated: "2025-09-20T15:45:00Z"
+last_updated: '2025-09-20T15:45:00Z'
 
 # Brief summary of job requirements (max 100 chars)
-job_summary: "Global delivery platform serving 20M+ users, modern TypeScript/React stack"
+job_summary: 'Global delivery platform serving 20M+ users, modern TypeScript/React stack'
 
 # Extended job details for context
 job_details:
-  company: "Tech-Corp"
-  location: "Berlin, Germany"
-  experience_level: "Senior"
-  employment_type: "Full-time"
-  must_have_skills: ["TypeScript", "React", "5+ years experience", "Modern frontend development", "Web application architecture"]
-  nice_to_have_skills: ["React Native", "Python", "Scala", "International team experience"]
-  team_context: "500+ people in product organization, cross-functional teams"
-  user_scale: "20 million users in 30 countries"
+  company: 'Tech-Corp'
+  location: 'Berlin, Germany'
+  experience_level: 'Senior'
+  employment_type: 'Full-time'
+  must_have_skills:
+    [
+      'TypeScript',
+      'React',
+      '5+ years experience',
+      'Modern frontend development',
+      'Web application architecture',
+    ]
+  nice_to_have_skills: ['React Native', 'Python', 'Scala', 'International team experience']
+  team_context: '500+ people in product organization, cross-functional teams'
+  user_scale: '20 million users in 30 countries'

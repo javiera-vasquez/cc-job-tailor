@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const TechnicalExpertiseSection = ({resume}: {resume: ResumeSchema}) => (
+const TechnicalExpertiseSection = ({ resume }: { resume: ResumeSchema }) => (
   <View>
     <Text style={styles.sectionTitle}>Technical Expertise</Text>
     {resume.technical_expertise.map((category, index) => (
@@ -68,7 +68,7 @@ const TechnicalExpertiseSection = ({resume}: {resume: ResumeSchema}) => (
   </View>
 );
 
-const SoftSkillsSection = ({resume}: {resume: ResumeSchema}) => (
+const SoftSkillsSection = ({ resume }: { resume: ResumeSchema }) => (
   <View>
     <Text style={styles.sectionTitle}>Soft Skills</Text>
     {resume.skills.map((skill, index) => (
@@ -80,13 +80,13 @@ const SoftSkillsSection = ({resume}: {resume: ResumeSchema}) => (
   </View>
 );
 
-const Skills = ({resume}: {resume: ResumeSchema}) => (
+const Skills = ({ resume }: { resume: ResumeSchema }) => (
   <>
     <View style={styles.container}>
-      <TechnicalExpertiseSection resume={resume}/>
+      <TechnicalExpertiseSection resume={resume} />
     </View>
     <View style={styles.container}>
-      <SoftSkillsSection resume={resume}/>
+      <SoftSkillsSection resume={resume} />
     </View>
   </>
 );

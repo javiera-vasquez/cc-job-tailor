@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Languages = ({resume}: {resume: ResumeSchema}) => (
+const Languages = ({ resume }: { resume: ResumeSchema }) => (
   <View style={styles.container}>
     <Text style={styles.sectionTitle}>Languages</Text>
     <View style={styles.languagesList}>

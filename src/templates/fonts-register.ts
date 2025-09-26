@@ -1,4 +1,4 @@
-import { Font } from "@react-pdf/renderer";
+import { Font } from '@react-pdf/renderer';
 
 export const registerFonts = () => {
   // OPEN SANS REGISTRATION
@@ -6,7 +6,7 @@ export const registerFonts = () => {
     family: 'Open Sans',
     src: `https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFVZ0e.ttf`,
   });
-  
+
   Font.register({
     family: 'Open Sans Light',
     fontStyle: 'normal',
@@ -19,7 +19,7 @@ export const registerFonts = () => {
     fontStyle: 'normal',
     fontWeight: 'bold',
     src: `https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFVZ0b.ttf`,
-  }); 
+  });
 
   Font.register({
     family: 'Open Sans Italic',

@@ -8,11 +8,13 @@ description: Set Claude Code context to work on a specifict company | argument-h
 Set the active company context for tailored resume operations. This command reads the company's tailored materials and establishes context for all subsequent interactions.
 
 ## Usage
+
 ```
 /tailor company-name
 ```
 
 ## IMPORTANT: .claude Directory
+
 **Do not try to create the .claude folder - it is already created.**
 
 ## What this command does:
@@ -21,16 +23,17 @@ Set the active company context for tailored resume operations. This command read
 2. **Read Company Materials**: Load available files (resume.yaml, job_analysis.yaml, cover_letter.yaml)
 3. **Update Context State**: Update existing `.claude/tailor-context.yaml` with:
    ```yaml
-   active_company: "$1"
-   folder_path: "resume-data/tailor/$1"
-   available_files: ["resume.yaml", "job_analysis.yaml", "cover_letter.yaml"]
-   position: "Job Title from job_analysis.yaml"
-   primary_focus: "Main job focus area"
-   last_updated: "2025-09-20T15:30:00Z"
+   active_company: '$1'
+   folder_path: 'resume-data/tailor/$1'
+   available_files: ['resume.yaml', 'job_analysis.yaml', 'cover_letter.yaml']
+   position: 'Job Title from job_analysis.yaml'
+   primary_focus: 'Main job focus area'
+   last_updated: '2025-09-20T15:30:00Z'
    ```
 4. **Provide Summary**: Show brief overview of company materials and job focus
 
 ## Expected Company Folder Structure:
+
 ```
 resume-data/tailor/$1/
 ├── resume.yaml          # Tailored resume for this company
@@ -39,7 +42,9 @@ resume-data/tailor/$1/
 ```
 
 ## Context Benefits:
+
 After running this command, all subsequent interactions will:
+
 - Automatically reference the active company's materials via tailor-context.yaml
 - Default file operations to the company's folder
 - Understand the job context for relevant suggestions
@@ -63,6 +68,7 @@ After running this command, all subsequent interactions will:
 5. **Provide Summary**: Display company context overview
 
 ## Example Output:
+
 ```
 ✅ Active company context set: tech-corp
 📁 Folder: resume-data/tailor/tech-corp

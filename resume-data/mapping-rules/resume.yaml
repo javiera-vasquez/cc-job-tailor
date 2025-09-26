@@ -1,48 +1,47 @@
 # Resume Transformation Mapping Configuration
 # This file defines how to transform the rich source resume.yaml into the simplified schema expected by React-PDF
 
-schema_version: "1.0"
-description: "Transformation rules for job-tailor agent to convert rich resume data into React-PDF compatible format"
+schema_version: '1.0'
+description: 'Transformation rules for job-tailor agent to convert rich resume data into React-PDF compatible format'
 
 # Target output schema structure (what React-PDF expects)
 target_schema:
   metadata:
-    company: "string"                    # Target company name
-    position: "string"                   # Job position title
-    last_updated: "string"               # ISO date when data was last updated
-    transformation_decisions: "string"   # Summary of tailoring decisions made
-    job_focus_used: "string"            # Primary job focus applied for tailoring
+    company: 'string' # Target company name
+    position: 'string' # Job position title
+    last_updated: 'string' # ISO date when data was last updated
+    transformation_decisions: 'string' # Summary of tailoring decisions made
+    job_focus_used: 'string' # Primary job focus applied for tailoring
 
   resume:
-    name: "string"
-    profile_picture: "string"
-    title: "string"           # Single selected title
-    summary: "string"         # Single selected summary
-    contact: "ContactDetails"
-    technical_expertise: "array[Expertise]"  # Categories with resume_title + skills
-    skills: "array[string]"   # Flattened soft skills
-    languages: "array[Language]"
-    professional_experience: "array[ProfessionalExperience]"
-    independent_projects: "array[IndependentProject]"
-    education: "array[Education]"
+    name: 'string'
+    profile_picture: 'string'
+    title: 'string' # Single selected title
+    summary: 'string' # Single selected summary
+    contact: 'ContactDetails'
+    technical_expertise: 'array[Expertise]' # Categories with resume_title + skills
+    skills: 'array[string]' # Flattened soft skills
+    languages: 'array[Language]'
+    professional_experience: 'array[ProfessionalExperience]'
+    independent_projects: 'array[IndependentProject]'
+    education: 'array[Education]'
 
 # Transformation mapping rules
 transformation_rules:
-
   # Metadata generation rules
   metadata_generation:
-    - source: "job_analysis.company"
-      target: "metadata.company"
-      description: "Extract company name from job analysis"
-    - source: "job_analysis.position"
-      target: "metadata.position"
-      description: "Extract position title from job analysis"
-    - source: "current_date"
-      target: "metadata.last_updated"
-      description: "Set to current ISO date when tailoring is performed"
-    - source: "generated"
-      target: "metadata.transformation_decisions"
-      description: "Document key decisions made during tailoring process"
+    - source: 'job_analysis.company'
+      target: 'metadata.company'
+      description: 'Extract company name from job analysis'
+    - source: 'job_analysis.position'
+      target: 'metadata.position'
+      description: 'Extract position title from job analysis'
+    - source: 'current_date'
+      target: 'metadata.last_updated'
+      description: 'Set to current ISO date when tailoring is performed'
+    - source: 'generated'
+      target: 'metadata.transformation_decisions'
+      description: 'Document key decisions made during tailoring process'
       generation_logic: |
         Generate concise summary of transformation decisions:
         - Primary job focus selected and rationale
@@ -50,9 +49,9 @@ transformation_rules:
         - Experience achievements selected
         - Skills emphasized or de-emphasized
         Example: "Prioritized React/TypeScript expertise for senior frontend role, emphasized scalable app development, selected UI-focused achievements"
-    - source: "job_analysis.job_focus"
-      target: "metadata.job_focus_used"
-      description: "Format job focus array into readable string"
+    - source: 'job_analysis.job_focus'
+      target: 'metadata.job_focus_used'
+      description: 'Format job focus array into readable string'
       format_logic: |
         Convert job_focus array to descriptive string:
         - Use highest weighted primary_area as main focus
@@ -61,22 +60,22 @@ transformation_rules:
 
   # Direct copy fields (no transformation needed)
   direct_mapping:
-    - source: "personal_info.name"
-      target: "resume.name"
-    - source: "personal_info.profile_picture" 
-      target: "resume.profile_picture"
-    - source: "contact"
-      target: "resume.contact"
-    - source: "languages"
-      target: "resume.languages"
-    - source: "education"
-      target: "resume.education"
-      description: "Copy education array with institution, degree, location, duration"
+    - source: 'personal_info.name'
+      target: 'resume.name'
+    - source: 'personal_info.profile_picture'
+      target: 'resume.profile_picture'
+    - source: 'contact'
+      target: 'resume.contact'
+    - source: 'languages'
+      target: 'resume.languages'
+    - source: 'education'
+      target: 'resume.education'
+      description: 'Copy education array with institution, degree, location, duration'
 
   # Version-based selection (choose based on job focus array)
   version_selection:
-    - source: "personal_info.titles"
-      target: "resume.title"
+    - source: 'personal_info.titles'
+      target: 'resume.title'
       selection_logic: |
         1. Get highest weighted job_focus item from array
         2. Map primary_area to candidate experience level:
@@ -86,8 +85,8 @@ transformation_rules:
         3. Within experience level, match specialties to domain focus
         4. Select title that best combines level + specialties
 
-    - source: "personal_info.summaries"
-      target: "resume.summary"
+    - source: 'personal_info.summaries'
+      target: 'resume.summary'
       selection_logic: |
         1. Use same primary_area mapping as title selection
         2. Incorporate top 3 specialties from highest weighted job_focus
@@ -95,39 +94,39 @@ transformation_rules:
 
   # Technical expertise transformation (add resume_title, prioritize based on job)
   expertise_transformation:
-    source: "technical_expertise"
-    target: "resume.technical_expertise"
-    transformation_type: "categorize_and_prioritize"
+    source: 'technical_expertise'
+    target: 'resume.technical_expertise'
+    transformation_type: 'categorize_and_prioritize'
     rules:
-      - category: "frontend"
-        resume_title: "Frontend Development"
+      - category: 'frontend'
+        resume_title: 'Frontend Development'
         max_skills: 5
-        priority_keywords: ["React", "TypeScript", "Next.js", "JavaScript"]
+        priority_keywords: ['React', 'TypeScript', 'Next.js', 'JavaScript']
 
-      - category: "backend"
-        resume_title: "Backend Development"
+      - category: 'backend'
+        resume_title: 'Backend Development'
         max_skills: 5
-        priority_keywords: ["Node.js", "API", "Database"]
+        priority_keywords: ['Node.js', 'API', 'Database']
 
-      - category: "qa_testing"
-        resume_title: "Quality Assurance & Testing"
+      - category: 'qa_testing'
+        resume_title: 'Quality Assurance & Testing'
         max_skills: 5
-        priority_keywords: ["E2E Testing", "Jest", "CI/CD", "Automation"]
+        priority_keywords: ['E2E Testing', 'Jest', 'CI/CD', 'Automation']
 
-      - category: "ai_machine_learning"
-        resume_title: "AI & Machine Learning"
+      - category: 'ai_machine_learning'
+        resume_title: 'AI & Machine Learning'
         max_skills: 5
-        priority_keywords: ["LangGraph", "Vector", "Semantic", "AI"]
+        priority_keywords: ['LangGraph', 'Vector', 'Semantic', 'AI']
 
-      - category: "systems_design"
-        resume_title: "Systems & Architecture"
+      - category: 'systems_design'
+        resume_title: 'Systems & Architecture'
         max_skills: 5
-        priority_keywords: ["Architecture", "Scalable", "Design"]
+        priority_keywords: ['Architecture', 'Scalable', 'Design']
 
-      - category: "version_control"
-        resume_title: "Version Control"
+      - category: 'version_control'
+        resume_title: 'Version Control'
         max_skills: 5
-        priority_keywords: ["Git", "GitHub"]
+        priority_keywords: ['Git', 'GitHub']
 
     selection_logic: |
       1. Extract all specialties from job_focus array (weighted by focus weight)
@@ -144,9 +143,9 @@ transformation_rules:
 
   # Soft skills flattening
   skills_flattening:
-    source: "soft_skills"
-    target: "resume.skills"
-    transformation_type: "flatten_and_select"
+    source: 'soft_skills'
+    target: 'resume.skills'
+    transformation_type: 'flatten_and_select'
     max_skills: 12
     selection_logic: |
       1. Flatten all soft skill categories into single array
@@ -156,9 +155,9 @@ transformation_rules:
 
   # Professional experience transformation
   experience_transformation:
-    source: "professional_experience"
-    target: "resume.professional_experience"
-    transformation_type: "specialty_based_selection"
+    source: 'professional_experience'
+    target: 'resume.professional_experience'
+    transformation_type: 'specialty_based_selection'
     rules:
       - selection_logic: |
           1. For each role, get available achievement versions
@@ -169,13 +168,13 @@ transformation_rules:
       - maintain_company_info: true
       - preserve_chronological_order: true
       - max_achievements_per_role: 4
-    description: "Select achievements based on specialty matches with job_focus array"
+    description: 'Select achievements based on specialty matches with job_focus array'
 
   # Independent projects transformation
   projects_transformation:
-    source: "independent_projects"
-    target: "resume.independent_projects"
-    transformation_type: "specialty_prioritized"
+    source: 'independent_projects'
+    target: 'resume.independent_projects'
+    transformation_type: 'specialty_prioritized'
     rules:
       - selection_logic: |
           1. Score each project by technology/specialty matches with job_focus
@@ -183,12 +182,12 @@ transformation_rules:
           3. Select top 3 highest scoring projects
       - max_projects: 3
       - include_technologies: true
-    description: "Select most relevant projects based on job_focus specialty matches"
+    description: 'Select most relevant projects based on job_focus specialty matches'
 
 # Job analysis integration points
 job_analysis_integration:
   focus_matching:
-    description: "Match candidate skills to job_focus array using weighted scoring"
+    description: 'Match candidate skills to job_focus array using weighted scoring'
     algorithm: |
       1. For each job_focus item in array:
          - Score primary_area match against candidate experience level
@@ -199,67 +198,67 @@ job_analysis_integration:
       4. Use primary_area from highest weighted job_focus for title/summary selection
 
   keyword_extraction:
-    description: "Extract and prioritize keywords from job posting"
+    description: 'Extract and prioritize keywords from job posting'
     categories:
-      - technical_skills: "Programming languages, frameworks, tools"
-      - soft_skills: "Leadership, collaboration, communication"
-      - experience_level: "Senior, Lead, Principal, etc."
-      - industry_domain: "FinTech, E-commerce, AI, etc."
+      - technical_skills: 'Programming languages, frameworks, tools'
+      - soft_skills: 'Leadership, collaboration, communication'
+      - experience_level: 'Senior, Lead, Principal, etc.'
+      - industry_domain: 'FinTech, E-commerce, AI, etc.'
 
   relevance_scoring:
-    description: "Score resume content against job requirements"
+    description: 'Score resume content against job requirements'
     scoring_factors:
       - keyword_match: 0.4
       - experience_alignment: 0.3
-      - skill_relevance: 0.2  
+      - skill_relevance: 0.2
       - seniority_match: 0.1
 
 # Output validation rules
 validation_rules:
   required_fields:
-    - "resume.name"
-    - "resume.title"
-    - "resume.summary"
-    - "resume.contact"
-    - "resume.technical_expertise"
-    - "resume.skills"
-    - "resume.languages"
-    - "resume.professional_experience"
-    - "resume.education"
-    
+    - 'resume.name'
+    - 'resume.title'
+    - 'resume.summary'
+    - 'resume.contact'
+    - 'resume.technical_expertise'
+    - 'resume.skills'
+    - 'resume.languages'
+    - 'resume.professional_experience'
+    - 'resume.education'
+
   field_constraints:
-    - field: "resume.title"
+    - field: 'resume.title'
       max_length: 80
-      
-    - field: "resume.summary" 
+
+    - field: 'resume.summary'
       max_length: 500
       min_length: 100
-      
-    - field: "resume.technical_expertise"
+
+    - field: 'resume.technical_expertise'
       max_categories: 4
       min_categories: 2
-      
-    - field: "resume.skills"
+
+    - field: 'resume.skills'
       max_items: 12
       min_items: 6
-      
-    - field: "resume.professional_experience"
+
+    - field: 'resume.professional_experience'
       max_items: 5
       min_items: 2
-      
-    - field: "resume.independent_projects"
+
+    - field: 'resume.independent_projects'
       max_items: 3
       min_items: 0
-      
-    - field: "resume.education"
+
+    - field: 'resume.education'
       max_items: 4
       min_items: 1
 
   data_integrity:
-    - rule: "All selected content must exist in source resume.yaml"
-    - rule: "No fabricated or exaggerated content allowed"
-    - rule: "Maintain professional tone and accuracy"
-    - rule: "Keywords must be naturally integrated, not forced"
+    - rule: 'All selected content must exist in source resume.yaml'
+    - rule: 'No fabricated or exaggerated content allowed'
+    - rule: 'Maintain professional tone and accuracy'
+    - rule: 'Keywords must be naturally integrated, not forced'
 
 # Usage example for job-tailor agent
 example_usage: |

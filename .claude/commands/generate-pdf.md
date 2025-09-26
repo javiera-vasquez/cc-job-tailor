@@ -2,6 +2,7 @@
 allowed-tools: Bash(bun run generate-pdf.ts:*)
 description:  Create PDF document for specific company | argument-hint: company-name [resume|cover-letter|both]
 ---
+
 Generate PDF documents for company: $1
 
 Document type: ${2:-both}

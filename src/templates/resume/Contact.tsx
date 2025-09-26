@@ -36,12 +36,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const Contact = ({resume}: {resume: ResumeSchema}) => {
+const Contact = ({ resume }: { resume: ResumeSchema }) => {
   const { contact } = resume;
-  
+
   // Format address for display
   const formattedAddress = contact.address;
-  
+
   // Extract display text for LinkedIn and GitHub
   const linkedinDisplay = 'LinkedIn Profile';
   const githubDisplay = 'Github Profile';
@@ -49,40 +49,46 @@ const Contact = ({resume}: {resume: ResumeSchema}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.sectionTitle}>Contact</Text>
-      
+
       {/* Phone */}
       <View style={styles.contactItem}>
         <Text style={styles.bullet}>•</Text>
         <Text style={styles.contactText}>{contact.phone}</Text>
       </View>
-      
+
       {/* Email */}
       <View style={styles.contactItem}>
         <Text style={styles.bullet}>•</Text>
         <Text style={styles.contactText}>
-          <Link style={styles.contactText} src={`mailto:${contact.email}`}>{contact.email}</Link>
+          <Link style={styles.contactText} src={`mailto:${contact.email}`}>
+            {contact.email}
+          </Link>
         </Text>
       </View>
-      
+
       {/* Address */}
       <View style={styles.contactItem}>
         <Text style={styles.bullet}>•</Text>
         <Text style={styles.contactText}>{formattedAddress}</Text>
       </View>
-      
+
       {/* LinkedIn */}
       <View style={styles.contactItem}>
         <Text style={styles.bullet}>•</Text>
         <Text style={styles.contactText}>
-          <Link style={styles.contactText} src={contact.linkedin}>{linkedinDisplay}</Link>
+          <Link style={styles.contactText} src={contact.linkedin}>
+            {linkedinDisplay}
+          </Link>
         </Text>
       </View>
-      
+
       {/* GitHub */}
       <View style={styles.contactItem}>
         <Text style={styles.bullet}>•</Text>
         <Text style={styles.contactText}>
-          <Link style={styles.contactText} src={contact.github}>{githubDisplay}</Link>
+          <Link style={styles.contactText} src={contact.github}>
+            {githubDisplay}
+          </Link>
         </Text>
       </View>
     </View>
