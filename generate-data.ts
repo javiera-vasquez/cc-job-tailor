@@ -83,15 +83,17 @@ async function loadTailoredData(companyPath: string): Promise<ApplicationData> {
 
   console.warn(`📂 Loading tailored data from: ${companyPath}`);
 
-  const resumeFile = existsSync(resumePath) ? load(await Bun.file(resumePath).text()) : null;
+  const resumeFile = existsSync(resumePath)
+    ? (load(await Bun.file(resumePath).text()) as Record<string, unknown>)
+    : undefined;
 
   const jobAnalysis = existsSync(jobAnalysisPath)
-    ? load(await Bun.file(jobAnalysisPath).text())
-    : null;
+    ? (load(await Bun.file(jobAnalysisPath).text()) as Record<string, unknown>)
+    : undefined;
 
   const coverLetter = existsSync(coverLetterPath)
-    ? load(await Bun.file(coverLetterPath).text())
-    : null;
+    ? (load(await Bun.file(coverLetterPath).text()) as Record<string, unknown>)
+    : undefined;
 
   // Log what was found
   const foundFiles = [];
@@ -106,10 +108,10 @@ async function loadTailoredData(companyPath: string): Promise<ApplicationData> {
   }
 
   return {
-    metadata: (resumeFile as Record<string, unknown>)?.metadata,
-    resume: (resumeFile as Record<string, unknown>)?.resume,
-    job_analysis: (jobAnalysis as Record<string, unknown>)?.job_analysis,
-    cover_letter: (coverLetter as Record<string, unknown>)?.cover_letter,
+    metadata: (resumeFile?.metadata as ApplicationData['metadata']) || null,
+    resume: (resumeFile?.resume as ApplicationData['resume']) || null,
+    job_analysis: (jobAnalysis?.job_analysis as ApplicationData['job_analysis']) || null,
+    cover_letter: (coverLetter?.cover_letter as ApplicationData['cover_letter']) || null,
   };
 }
 
