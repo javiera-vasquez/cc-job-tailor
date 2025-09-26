@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.2] - 2025-09-26
+
+### Added
+
+- **ESLint Configuration**: Migrated from .eslintrc.json to modern eslint.config.js format
+- **Prettier Configuration**: Added code formatting with .prettierrc.json and .prettierignore
+- **Enhanced CI Pipeline**: Integrated linting and formatting checks into GitHub Actions workflow
+
+### Changed
+
+- **Code Quality**: Updated ESLint ignore patterns to exclude auto-generated files
+- **Logging**: Replaced console.log with console.warn for consistent logging practices
+- **File Formatting**: Applied consistent formatting across codebase with Prettier
+- **CI Workflow**: Enhanced with comprehensive linting and formatting validation
+
+### Technical Details
+
+- **Linting**: Modern ESLint configuration with TypeScript and React support
+- **Formatting**: Prettier integration with exclusion rules for YAML test fixtures
+- **CI Integration**: Automated quality checks before testing pipeline
+- **Ignore Patterns**: Comprehensive exclusion of generated files and build artifacts
+
 ## [0.6.1] - 2025-09-25
 
 ### Added
