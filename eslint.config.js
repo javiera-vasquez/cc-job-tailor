@@ -37,6 +37,9 @@ export default [
       'node_modules/',
       'coverage/',
       '*.js',
+      // Auto-generated files
+      'src/data/application.ts',
+      'test/fixtures/expected-outputs/sample-application.ts',
     ],
   },
 ];
