@@ -12,7 +12,7 @@
 import { spawn, type ChildProcess } from 'child_process';
 import { watch, existsSync, type FSWatcher } from 'fs';
 import { load } from 'js-yaml';
-import { join, sep } from 'path';
+import { sep } from 'path';
 
 interface TailorContext {
   active_company: string;
@@ -48,7 +48,7 @@ class EnhancedDevServer {
   constructor() {
     this.state = {
       devServer: this.createDevServer(),
-      activeCompany: null
+      activeCompany: null,
     };
   }
 
@@ -57,7 +57,7 @@ class EnhancedDevServer {
    */
   private async getActiveCompany(): Promise<string | null> {
     if (!existsSync(this.contextPath)) {
-      console.log('⚠️  No tailor context found - watching all companies');
+      console.warn('⚠️  No tailor context found - watching all companies');
       return null;
     }
 
@@ -67,14 +67,14 @@ class EnhancedDevServer {
       const context = load(contextText) as TailorContext;
 
       if (!context?.active_company) {
-        console.log('⚠️  No active company in tailor context');
+        console.warn('⚠️  No active company in tailor context');
         return null;
       }
 
       return context.active_company;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.log('⚠️  Could not read tailor context:', errorMessage);
+      console.warn('⚠️  Could not read tailor context:', errorMessage);
       return null;
     }
   }
@@ -85,11 +85,11 @@ class EnhancedDevServer {
   private createDevServer(): ChildProcess {
     const devServer = spawn('bun', ['--hot', 'index.html'], {
       stdio: 'inherit',
-      cwd: process.cwd()
+      cwd: process.cwd(),
     });
 
     devServer.on('exit', (code) => {
-      console.log(`Dev server exited with code ${code}`);
+      console.warn(`Dev server exited with code ${code}`);
       process.exit(code || 0);
     });
 
@@ -101,7 +101,7 @@ class EnhancedDevServer {
    */
   private extractCompanyFromPath(filename: string): string | null {
     const parts = filename.split(sep);
-    return parts.length >= 2 ? (parts[0] || null) : null;
+    return parts.length >= 2 ? parts[0] || null : null;
   }
 
   /**
@@ -128,13 +128,13 @@ class EnhancedDevServer {
    * Regenerate data for the specified company
    */
   private async regenerateData(companyName: string): Promise<void> {
-    console.log(`🔄 Regenerating data for company: ${companyName}`);
+    console.warn(`🔄 Regenerating data for company: ${companyName}`);
 
     return new Promise((resolve, reject) => {
       try {
         const generateData = spawn('bun', ['run', 'generate-data', '-C', companyName], {
           stdio: 'pipe',
-          cwd: process.cwd()
+          cwd: process.cwd(),
         });
 
         let output = '';
@@ -150,18 +150,20 @@ class EnhancedDevServer {
 
         generateData.on('close', (code) => {
           if (code === 0) {
-            console.log('✅ Data regenerated successfully');
-            console.log('🔥 Hot reload will pick up changes automatically\n');
+            console.warn('✅ Data regenerated successfully');
+            console.warn('🔥 Hot reload will pick up changes automatically\n');
             resolve();
           } else {
-            console.log('❌ Data regeneration failed (validation or other error):');
+            console.error('❌ Data regeneration failed (validation or other error):');
             if (errorOutput) {
-              console.log(errorOutput.trim());
+              console.error(errorOutput.trim());
             } else if (output) {
-              console.log(output.trim());
+              console.error(output.trim());
             }
-            console.log('💡 Fix the data issues in the tailor files and save again to retry');
-            console.log('🔄 File watcher is still active - auto-regeneration will resume on next save\n');
+            console.error('💡 Fix the data issues in the tailor files and save again to retry');
+            console.error(
+              '🔄 File watcher is still active - auto-regeneration will resume on next save\n',
+            );
 
             // Don't reject - just log the error and continue watching
             // This keeps the dev server running even with validation failures
@@ -170,13 +172,12 @@ class EnhancedDevServer {
         });
 
         generateData.on('error', (error) => {
-          console.log('❌ Error spawning regeneration process:', error.message);
+          console.error('❌ Error spawning regeneration process:', error.message);
           reject(error);
         });
-
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-        console.log('❌ Error regenerating data:', errorMessage);
+        console.error('❌ Error regenerating data:', errorMessage);
         reject(error);
       }
     });
@@ -192,14 +193,19 @@ class EnhancedDevServer {
       return;
     }
 
-    console.log(`\n🔥 Tailor data changed: ${filename}`);
+    // At this point, companyFromPath is guaranteed to be non-null because shouldProcessChange checks for it
+    if (!companyFromPath) {
+      return; // This should never happen due to shouldProcessChange logic, but satisfies TypeScript
+    }
+
+    console.warn(`\n🔥 Tailor data changed: ${filename}`);
 
     try {
-      await this.regenerateData(companyFromPath!);
-    } catch (error) {
+      await this.regenerateData(companyFromPath);
+    } catch {
       // Error already logged in regenerateData method
       // File watcher continues running regardless of validation failures
-      console.log('📁 File watcher remains active for continued development\n');
+      console.warn('📁 File watcher remains active for continued development\n');
     }
   }
 
@@ -208,7 +214,7 @@ class EnhancedDevServer {
    */
   private setupFileWatcher(): void {
     if (!existsSync(this.tailorDir)) {
-      console.log('⚠️  Tailor directory not found - only basic hot reload active');
+      console.warn('⚠️  Tailor directory not found - only basic hot reload active');
       return;
     }
 
@@ -216,15 +222,14 @@ class EnhancedDevServer {
       this.state.fileWatcher = watch(
         this.tailorDir,
         { recursive: true },
-        this.handleFileChange.bind(this)
+        this.handleFileChange.bind(this),
       );
 
-      console.log('📁 File watcher active for resume-data/tailor/');
-      console.log('✨ Edit any YAML file in tailor folders to trigger auto-regeneration\n');
-
+      console.warn('📁 File watcher active for resume-data/tailor/');
+      console.warn('✨ Edit any YAML file in tailor folders to trigger auto-regeneration\n');
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.log('⚠️  Could not set up file watcher:', errorMessage);
+      console.warn('⚠️  Could not set up file watcher:', errorMessage);
     }
   }
 
@@ -233,7 +238,7 @@ class EnhancedDevServer {
    */
   private setupShutdownHandlers(): void {
     const shutdown = () => {
-      console.log('\n🛑 Shutting down dev server and file watcher...');
+      console.warn('\n🛑 Shutting down dev server and file watcher...');
 
       if (this.state.fileWatcher) {
         this.state.fileWatcher.close();
@@ -254,15 +259,15 @@ class EnhancedDevServer {
    * Start the enhanced development server
    */
   public async start(): Promise<void> {
-    console.log('🚀 Starting enhanced dev server with tailor data watching...');
+    console.warn('🚀 Starting enhanced dev server with tailor data watching...');
 
     // Get active company context
     this.state.activeCompany = await this.getActiveCompany();
 
     if (this.state.activeCompany) {
-      console.log(`🎯 Watching tailor data for active company: ${this.state.activeCompany}`);
+      console.warn(`🎯 Watching tailor data for active company: ${this.state.activeCompany}`);
     } else {
-      console.log('👀 Watching all tailor data changes');
+      console.warn('👀 Watching all tailor data changes');
     }
 
     // Set up file watcher
@@ -271,10 +276,10 @@ class EnhancedDevServer {
     // Set up shutdown handlers
     this.setupShutdownHandlers();
 
-    console.log('✅ Enhanced dev server is running');
-    console.log('   • Bun hot reload: ✓');
-    console.log('   • Tailor data watching: ✓');
-    console.log('   • Auto data regeneration: ✓\n');
+    console.warn('✅ Enhanced dev server is running');
+    console.warn('   • Bun hot reload: ✓');
+    console.warn('   • Tailor data watching: ✓');
+    console.warn('   • Auto data regeneration: ✓\n');
   }
 }
 

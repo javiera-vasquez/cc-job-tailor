@@ -14,13 +14,15 @@ const App = () => {
   return (
     <div style={{ width: '100%', height: '100vh', display: 'flex', flexDirection: 'column' }}>
       {/* Document selector */}
-      <div style={{
-        padding: '10px',
-        backgroundColor: '#f5f5f5',
-        borderBottom: '1px solid #ddd',
-        display: 'flex',
-        gap: '10px'
-      }}>
+      <div
+        style={{
+          padding: '10px',
+          backgroundColor: '#f5f5f5',
+          borderBottom: '1px solid #ddd',
+          display: 'flex',
+          gap: '10px',
+        }}
+      >
         <button
           onClick={() => setActiveDocument('resume')}
           style={{
@@ -29,7 +31,7 @@ const App = () => {
             color: activeDocument === 'resume' ? 'white' : 'black',
             border: 'none',
             borderRadius: '4px',
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
         >
           Resume
@@ -42,7 +44,7 @@ const App = () => {
             color: activeDocument === 'cover-letter' ? 'white' : 'black',
             border: 'none',
             borderRadius: '4px',
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
         >
           Cover Letter

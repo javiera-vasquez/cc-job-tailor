@@ -4,19 +4,16 @@ import {
   JobFocusSchema,
   ContactDetailsSchema,
   ResumeSchema,
-  JobAnalysisSchema,
-  CoverLetterSchema,
-  MetadataSchema
+  MetadataSchema,
 } from '../../src/zod/schemas';
 import {
   createValidApplicationData,
   createValidJobFocus,
   createInvalidJobFocus,
-  createMinimalValidApplicationData
+  createMinimalValidApplicationData,
 } from '../helpers/test-utils';
 
 describe('Zod Schema Validation', () => {
-
   describe('ApplicationDataSchema', () => {
     test('validates complete application data successfully', () => {
       const validData = createValidApplicationData();
@@ -40,7 +37,7 @@ describe('Zod Schema Validation', () => {
         metadata: null,
         resume: null,
         job_analysis: null,
-        cover_letter: null
+        cover_letter: null,
       };
 
       const result = ApplicationDataSchema.safeParse(dataWithNulls);
@@ -50,7 +47,7 @@ describe('Zod Schema Validation', () => {
     test('rejects when missing required top-level properties', () => {
       const incompleteData = {
         metadata: null,
-        resume: null
+        resume: null,
         // Missing job_analysis and cover_letter
       };
 
@@ -74,20 +71,20 @@ describe('Zod Schema Validation', () => {
     test('validates when weights sum to 1.0 with floating point precision', () => {
       const jobFocusWithPrecision = [
         {
-          primary_area: "engineer" as const,
-          specialties: ["react" as const],
-          weight: 0.333333
+          primary_area: 'engineer' as const,
+          specialties: ['react' as const],
+          weight: 0.333333,
         },
         {
-          primary_area: "senior_engineer" as const,
-          specialties: ["python" as const],
-          weight: 0.333333
+          primary_area: 'senior_engineer' as const,
+          specialties: ['python' as const],
+          weight: 0.333333,
         },
         {
-          primary_area: "tech_lead" as const,
-          specialties: ["architecture" as const],
-          weight: 0.333334
-        }
+          primary_area: 'tech_lead' as const,
+          specialties: ['architecture' as const],
+          weight: 0.333334,
+        },
       ];
 
       const result = JobFocusSchema.safeParse(jobFocusWithPrecision);
@@ -101,8 +98,8 @@ describe('Zod Schema Validation', () => {
       expect(result.success).toBe(false);
 
       if (!result.success) {
-        const weightError = result.error.issues.find(issue =>
-          issue.message.includes('Job focus weights must sum to 1.0')
+        const weightError = result.error.issues.find((issue) =>
+          issue.message.includes('Job focus weights must sum to 1.0'),
         );
         expect(weightError).toBeDefined();
       }
@@ -111,15 +108,15 @@ describe('Zod Schema Validation', () => {
     test('rejects when weights sum is significantly off (> 0.001 tolerance)', () => {
       const badJobFocus = [
         {
-          primary_area: "engineer" as const,
-          specialties: ["react" as const],
-          weight: 0.5
+          primary_area: 'engineer' as const,
+          specialties: ['react' as const],
+          weight: 0.5,
         },
         {
-          primary_area: "senior_engineer" as const,
-          specialties: ["python" as const],
-          weight: 0.4  // Sum = 0.9, difference = 0.1 > 0.001
-        }
+          primary_area: 'senior_engineer' as const,
+          specialties: ['python' as const],
+          weight: 0.4, // Sum = 0.9, difference = 0.1 > 0.001
+        },
       ];
 
       const result = JobFocusSchema.safeParse(badJobFocus);
@@ -127,7 +124,7 @@ describe('Zod Schema Validation', () => {
     });
 
     test('requires at least one job focus item', () => {
-      const emptyJobFocus: any[] = [];
+      const emptyJobFocus: unknown[] = [];
       const result = JobFocusSchema.safeParse(emptyJobFocus);
 
       expect(result.success).toBe(false);
@@ -136,10 +133,10 @@ describe('Zod Schema Validation', () => {
     test('validates individual job focus item properties', () => {
       const invalidJobFocusItem = [
         {
-          primary_area: "invalid_area",  // Not in enum
-          specialties: ["react"],
-          weight: 1.0
-        }
+          primary_area: 'invalid_area', // Not in enum
+          specialties: ['react'],
+          weight: 1.0,
+        },
       ];
 
       const result = JobFocusSchema.safeParse(invalidJobFocusItem);
@@ -150,12 +147,12 @@ describe('Zod Schema Validation', () => {
   describe('ContactDetailsSchema', () => {
     test('validates correct email format', () => {
       const validContact = {
-        name: "John Doe",
-        phone: "+1-234-567-8900",
-        email: "valid@example.com",
-        address: "123 Main St",
-        linkedin: "https://linkedin.com/in/johndoe",
-        github: "https://github.com/johndoe"
+        name: 'John Doe',
+        phone: '+1-234-567-8900',
+        email: 'valid@example.com',
+        address: '123 Main St',
+        linkedin: 'https://linkedin.com/in/johndoe',
+        github: 'https://github.com/johndoe',
       };
 
       const result = ContactDetailsSchema.safeParse(validContact);
@@ -164,12 +161,12 @@ describe('Zod Schema Validation', () => {
 
     test('rejects invalid email format', () => {
       const invalidContact = {
-        name: "John Doe",
-        phone: "+1-234-567-8900",
-        email: "invalid-email-format",
-        address: "123 Main St",
-        linkedin: "https://linkedin.com/in/johndoe",
-        github: "https://github.com/johndoe"
+        name: 'John Doe',
+        phone: '+1-234-567-8900',
+        email: 'invalid-email-format',
+        address: '123 Main St',
+        linkedin: 'https://linkedin.com/in/johndoe',
+        github: 'https://github.com/johndoe',
       };
 
       const result = ContactDetailsSchema.safeParse(invalidContact);
@@ -178,11 +175,11 @@ describe('Zod Schema Validation', () => {
 
     test('validates URL format for linkedin and github', () => {
       const validContact = {
-        phone: "+1-234-567-8900",
-        email: "test@example.com",
-        address: "123 Main St",
-        linkedin: "https://linkedin.com/in/johndoe",
-        github: "https://github.com/johndoe"
+        phone: '+1-234-567-8900',
+        email: 'test@example.com',
+        address: '123 Main St',
+        linkedin: 'https://linkedin.com/in/johndoe',
+        github: 'https://github.com/johndoe',
       };
 
       const result = ContactDetailsSchema.safeParse(validContact);
@@ -191,11 +188,11 @@ describe('Zod Schema Validation', () => {
 
     test('rejects invalid URL format for linkedin', () => {
       const invalidContact = {
-        phone: "+1-234-567-8900",
-        email: "test@example.com",
-        address: "123 Main St",
-        linkedin: "not-a-valid-url",
-        github: "https://github.com/johndoe"
+        phone: '+1-234-567-8900',
+        email: 'test@example.com',
+        address: '123 Main St',
+        linkedin: 'not-a-valid-url',
+        github: 'https://github.com/johndoe',
       };
 
       const result = ContactDetailsSchema.safeParse(invalidContact);
@@ -218,7 +215,7 @@ describe('Zod Schema Validation', () => {
         // Test empty technical_expertise array
         const resumeWithEmptyExpertise = {
           ...validData.resume,
-          technical_expertise: []
+          technical_expertise: [],
         };
 
         const result = ResumeSchema.safeParse(resumeWithEmptyExpertise);
@@ -231,7 +228,7 @@ describe('Zod Schema Validation', () => {
       if (validData.resume) {
         const resumeWithEmptyName = {
           ...validData.resume,
-          name: ""
+          name: '',
         };
 
         const result = ResumeSchema.safeParse(resumeWithEmptyName);
@@ -243,11 +240,11 @@ describe('Zod Schema Validation', () => {
   describe('MetadataSchema', () => {
     test('validates complete metadata', () => {
       const validMetadata = {
-        company: "Test Company",
-        position: "Software Engineer",
-        last_updated: "2024-01-01",
-        transformation_decisions: "Test decisions",
-        job_focus_used: "engineering"
+        company: 'Test Company',
+        position: 'Software Engineer',
+        last_updated: '2024-01-01',
+        transformation_decisions: 'Test decisions',
+        job_focus_used: 'engineering',
       };
 
       const result = MetadataSchema.safeParse(validMetadata);
@@ -256,11 +253,11 @@ describe('Zod Schema Validation', () => {
 
     test('requires all metadata fields to be non-empty strings', () => {
       const incompleteMetadata = {
-        company: "",  // Empty string should fail
-        position: "Software Engineer",
-        last_updated: "2024-01-01",
-        transformation_decisions: "Test decisions",
-        job_focus_used: "engineering"
+        company: '', // Empty string should fail
+        position: 'Software Engineer',
+        last_updated: '2024-01-01',
+        transformation_decisions: 'Test decisions',
+        job_focus_used: 'engineering',
       };
 
       const result = MetadataSchema.safeParse(incompleteMetadata);

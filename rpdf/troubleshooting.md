@@ -3,6 +3,7 @@
 Semantically, the `<Page />` component represents a single page in your document. When content exceeds its limits, React-pdf's built-in wrapping engine automatically creates new pages. This mimics typical PDF behavior for any large content.
 
 To disable wrapping:
+
 ```
 import { Document, Page } from '@react-pdf/renderer';
 
@@ -25,6 +26,7 @@ Convert a component to unbreakable with `wrap={false}`.
 ### Page breaks
 
 Force a page break by adding the `break` prop to a primitive:
+
 ```
 <Text break>Start me on a new page!</Text>
 ```
@@ -32,6 +34,7 @@ Force a page break by adding the `break` prop to a primitive:
 ### Fixed components
 
 Render elements on all pages by using the `fixed` prop:
+
 ```
 <View fixed>
   {/* e.g., header, footer, page numbers */}
@@ -47,6 +50,7 @@ React-pdf supports two main navigation tools: **destinations** and **bookmarks**
 ### Destinations
 
 Create internal links with destinations:
+
 ```
 <Link src="#Footnote">Go to footnote</Link>
 
@@ -56,6 +60,7 @@ Create internal links with destinations:
 ### Bookmarks
 
 Add a navigable tree-structured table of contents (for supporting readers):
+
 ```
 <Page bookmark="Chapter 1">Chapter Content</Page>
 <Page bookmark={{
@@ -63,6 +68,7 @@ Add a navigable tree-structured table of contents (for supporting readers):
   fit: true
 }}>Nested Content</Page>
 ```
+
 Bookmarks have options for title, scroll position (`top`, `left`), zoom, and expansion.
 
 ---
@@ -80,6 +86,7 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
   {({ loading }) => loading ? 'Loading document...' : 'Download now!'}
 </PDFDownloadLink>
 ```
+
 You always have access to the underlying blob data.
 
 ### Access blob data
@@ -95,6 +102,7 @@ import { BlobProvider } from '@react-pdf/renderer';
 ```
 
 Imperatively get blob data:
+
 ```
 import { pdf } from '@react-pdf/renderer';
 const blob = await pdf(<MyDoc />).toBlob();
@@ -103,6 +111,7 @@ const blob = await pdf(<MyDoc />).toBlob();
 ### usePDF hook
 
 Gives granular control of document state.
+
 ```
 import { usePDF } from '@react-pdf/renderer';
 
@@ -116,11 +125,11 @@ const [instance, updateInstance] = usePDF({ document: <MyDoc /> });
 
 React-pdf ships with built-in protection against orphans (single lines at the bottom) and widows (single lines at the top) in text:
 
-| Prop           | Description                                                               | Type    | Default |
-|----------------|---------------------------------------------------------------------------|---------|---------|
+| Prop             | Description                                                                        | Type    | Default |
+| ---------------- | ---------------------------------------------------------------------------------- | ------- | ------- |
 | minPresenceAhead | Prevents page wrapping between sibling elements within N points below this element | Integer | 0       |
-| orphans        | Minimum number of text lines to show at the bottom of a page              | Integer | 2       |
-| widows         | Minimum number of text lines to show at the top of a page                 | Integer | 2       |
+| orphans          | Minimum number of text lines to show at the bottom of a page                       | Integer | 2       |
+| widows           | Minimum number of text lines to show at the top of a page                          | Integer | 2       |
 
 Apply these to any valid primitive.
 
@@ -141,6 +150,7 @@ Render dynamic text depending on context by passing a function to the `render` p
   }
 />
 ```
+
 Available render arguments: `pageNumber`, `totalPages`, `subPageNumber`, `subPageTotalPages`
 
 ---
@@ -168,6 +178,7 @@ Font.registerHyphenationCallback(word => {
   return ["hy", "phen", "ation"];
 });
 ```
+
 To disable hyphenation, return the word as a single element array.
 
 ---

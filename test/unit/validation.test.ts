@@ -1,20 +1,20 @@
 import { test, expect, describe } from 'bun:test';
+import { ZodError } from 'zod';
 import {
   validateApplicationData,
   validateResume,
   validateJobAnalysis,
-  validateCoverLetter
+  validateCoverLetter,
 } from '../../src/zod/validation';
 import {
   createValidApplicationData,
   createMinimalValidApplicationData,
   createInvalidApplicationData,
   captureConsoleOutput,
-  expectValidationError
+  expectValidationError,
 } from '../helpers/test-utils';
 
 describe('Validation Functions', () => {
-
   describe('validateApplicationData()', () => {
     test('validates complete application data successfully', () => {
       const validData = createValidApplicationData();
@@ -48,9 +48,9 @@ describe('Validation Functions', () => {
 
       // Check that validation errors were logged to console
       expect(consoleOutput.length).toBeGreaterThan(0);
-      expect(consoleOutput.some(line =>
-        line.includes('❌ Application data validation failed')
-      )).toBe(true);
+      expect(
+        consoleOutput.some((line) => line.includes('❌ Application data validation failed')),
+      ).toBe(true);
     });
 
     test('handles nested validation errors correctly ', () => {
@@ -63,9 +63,9 @@ describe('Validation Functions', () => {
       });
 
       // Should log specific field path and error
-      expect(consoleOutput.some(line =>
-        line.includes('resume.name') || line.includes('Required')
-      )).toBe(true);
+      expect(
+        consoleOutput.some((line) => line.includes('resume.name') || line.includes('Required')),
+      ).toBe(true);
     });
 
     test('handles null input gracefully ', () => {
@@ -87,7 +87,7 @@ describe('Validation Functions', () => {
     test('handles non-object input ', () => {
       captureConsoleOutput(() => {
         expectValidationError(() => {
-          validateApplicationData("not an object");
+          validateApplicationData('not an object');
         });
       });
     });
@@ -103,21 +103,21 @@ describe('Validation Functions', () => {
     test('logs detailed error information for multiple validation errors ', () => {
       const badData = {
         metadata: {
-          company: "",  // Empty string
-          position: "Engineer",
+          company: '', // Empty string
+          position: 'Engineer',
           // Missing required fields
         },
         resume: {
-          name: "John",
+          name: 'John',
           contact: {
-            email: "invalid-email",  // Invalid format
-            phone: "+1-234-567-8900",
+            email: 'invalid-email', // Invalid format
+            phone: '+1-234-567-8900',
             // Missing other required fields
-          }
+          },
           // Missing other required fields
         },
         job_analysis: null,
-        cover_letter: null
+        cover_letter: null,
       };
 
       const consoleOutput = captureConsoleOutput(() => {
@@ -128,18 +128,19 @@ describe('Validation Functions', () => {
 
       // Should log multiple errors
       expect(consoleOutput.length).toBeGreaterThan(1);
-      expect(consoleOutput.some(line => line.includes('error(s)') || line.includes('validation failed'))).toBe(true);
+      expect(
+        consoleOutput.some(
+          (line) => line.includes('error(s)') || line.includes('validation failed'),
+        ),
+      ).toBe(true);
     });
 
     test('handles non-ZodError exceptions', () => {
-      // Mock a scenario where a non-Zod error occurs
-      const originalParse = require('../../src/zod/schemas').ApplicationDataSchema.parse;
-
       // Temporarily replace parse to throw a non-Zod error
       const mockSchema = {
-        parse: (data: any) => {
+        parse: (_data: unknown) => {
           throw new Error('Custom error');
-        }
+        },
       };
 
       const consoleOutput = captureConsoleOutput(() => {
@@ -148,7 +149,7 @@ describe('Validation Functions', () => {
           try {
             mockSchema.parse({});
           } catch (error) {
-            if (!(error instanceof require('zod').ZodError)) {
+            if (!(error instanceof ZodError)) {
               const errorMessage = error instanceof Error ? error.message : 'Unknown error';
               console.error('❌ Unexpected validation error:', errorMessage);
               throw new Error(`Validation error: ${errorMessage}`);
@@ -157,9 +158,9 @@ describe('Validation Functions', () => {
         }, 'Validation error: Custom error');
       });
 
-      expect(consoleOutput.some(line =>
-        line.includes('❌ Unexpected validation error')
-      )).toBe(true);
+      expect(consoleOutput.some((line) => line.includes('❌ Unexpected validation error'))).toBe(
+        true,
+      );
     });
   });
 
@@ -174,8 +175,8 @@ describe('Validation Functions', () => {
 
     test('throws error for invalid resume data ', () => {
       const invalidResume = {
-        name: "",  // Empty string should fail
-        profile_picture: "pic.jpg"
+        name: '', // Empty string should fail
+        profile_picture: 'pic.jpg',
         // Missing required fields
       };
 
@@ -187,7 +188,7 @@ describe('Validation Functions', () => {
     });
 
     test('logs resume validation errors to console ', () => {
-      const invalidResume = { name: "" };
+      const invalidResume = { name: '' };
 
       const consoleOutput = captureConsoleOutput(() => {
         expectValidationError(() => {
@@ -195,9 +196,7 @@ describe('Validation Functions', () => {
         });
       });
 
-      expect(consoleOutput.some(line =>
-        line.includes('❌ Resume validation failed')
-      )).toBe(true);
+      expect(consoleOutput.some((line) => line.includes('❌ Resume validation failed'))).toBe(true);
     });
 
     test('handles non-ZodError exceptions in resume validation', () => {
@@ -212,58 +211,60 @@ describe('Validation Functions', () => {
   describe('validateJobAnalysis()', () => {
     test('validates job analysis data when valid', () => {
       const validJobAnalysis = {
-        company: "Test Company",
-        position: "Engineer",
-        job_focus: [{
-          primary_area: "engineer" as const,
-          specialties: ["react" as const],
-          weight: 1.0
-        }],
-        location: "Remote",
-        employment_type: "Full-time",
-        experience_level: "Mid-level",
+        company: 'Test Company',
+        position: 'Engineer',
+        job_focus: [
+          {
+            primary_area: 'engineer' as const,
+            specialties: ['react' as const],
+            weight: 1.0,
+          },
+        ],
+        location: 'Remote',
+        employment_type: 'Full-time',
+        experience_level: 'Mid-level',
         requirements: {
-          must_have_skills: [{ skill: "JavaScript", priority: 1 }],
+          must_have_skills: [{ skill: 'JavaScript', priority: 1 }],
           nice_to_have_skills: [],
-          soft_skills: ["Communication"],
+          soft_skills: ['Communication'],
           experience_years: 3,
-          education: "Bachelor's"
+          education: "Bachelor's",
         },
         responsibilities: {
-          primary: ["Develop software"],
-          secondary: []
+          primary: ['Develop software'],
+          secondary: [],
         },
         role_context: {
-          department: "Engineering",
-          team_size: "5-10",
-          key_points: ["Agile environment"]
+          department: 'Engineering',
+          team_size: '5-10',
+          key_points: ['Agile environment'],
         },
         application_info: {
-          posting_url: "https://example.com/job",
-          posting_date: "2024-01-01",
-          deadline: "2024-02-01"
+          posting_url: 'https://example.com/job',
+          posting_date: '2024-01-01',
+          deadline: '2024-02-01',
         },
         candidate_alignment: {
-          strong_matches: ["React experience"],
+          strong_matches: ['React experience'],
           gaps_to_address: [],
           transferable_skills: [],
-          emphasis_strategy: "Focus on frontend skills"
+          emphasis_strategy: 'Focus on frontend skills',
         },
         section_priorities: {
-          technical_expertise: ["React"],
-          experience_focus: "Frontend development",
-          project_relevance: "Web applications"
+          technical_expertise: ['React'],
+          experience_focus: 'Frontend development',
+          project_relevance: 'Web applications',
         },
         optimization_actions: {
-          LEAD_WITH: ["React skills"],
-          EMPHASIZE: ["Frontend experience"],
-          QUANTIFY: ["Projects completed"],
-          DOWNPLAY: ["Backend experience"]
+          LEAD_WITH: ['React skills'],
+          EMPHASIZE: ['Frontend experience'],
+          QUANTIFY: ['Projects completed'],
+          DOWNPLAY: ['Backend experience'],
         },
         ats_analysis: {
-          title_variations: ["Frontend Engineer"],
-          critical_phrases: ["React", "JavaScript"]
-        }
+          title_variations: ['Frontend Engineer'],
+          critical_phrases: ['React', 'JavaScript'],
+        },
       };
 
       const result = validateJobAnalysis(validJobAnalysis);
@@ -272,8 +273,8 @@ describe('Validation Functions', () => {
 
     test('throws error for invalid job analysis data ', () => {
       const invalidJobAnalysis = {
-        company: "",  // Empty string
-        position: "Engineer"
+        company: '', // Empty string
+        position: 'Engineer',
         // Missing required fields
       };
 
@@ -288,28 +289,30 @@ describe('Validation Functions', () => {
   describe('validateCoverLetter()', () => {
     test('validates cover letter data when valid', () => {
       const validCoverLetter = {
-        company: "Test Company",
-        position: "Engineer",
-        job_focus: [{
-          primary_area: "engineer" as const,
-          specialties: ["react" as const],
-          weight: 1.0
-        }],
-        primary_focus: "Frontend development",
-        date: "2024-01-01",
+        company: 'Test Company',
+        position: 'Engineer',
+        job_focus: [
+          {
+            primary_area: 'engineer' as const,
+            specialties: ['react' as const],
+            weight: 1.0,
+          },
+        ],
+        primary_focus: 'Frontend development',
+        date: '2024-01-01',
         personal_info: {
-          phone: "+1-234-567-8900",
-          email: "test@example.com",
-          address: "123 Main St",
-          linkedin: "https://linkedin.com/in/test",
-          github: "https://github.com/test"
+          phone: '+1-234-567-8900',
+          email: 'test@example.com',
+          address: '123 Main St',
+          linkedin: 'https://linkedin.com/in/test',
+          github: 'https://github.com/test',
         },
         content: {
-          letter_title: "Application for Engineer Position",
-          opening_line: "I am excited to apply",
-          body: ["Paragraph 1", "Paragraph 2"],
-          signature: "Sincerely, John Doe"
-        }
+          letter_title: 'Application for Engineer Position',
+          opening_line: 'I am excited to apply',
+          body: ['Paragraph 1', 'Paragraph 2'],
+          signature: 'Sincerely, John Doe',
+        },
       };
 
       const result = validateCoverLetter(validCoverLetter);
@@ -318,8 +321,8 @@ describe('Validation Functions', () => {
 
     test('throws error for invalid cover letter data ', () => {
       const invalidCoverLetter = {
-        company: "",  // Empty string
-        position: "Engineer"
+        company: '', // Empty string
+        position: 'Engineer',
         // Missing required fields
       };
 

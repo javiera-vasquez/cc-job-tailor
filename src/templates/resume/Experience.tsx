@@ -63,47 +63,49 @@ const styles = StyleSheet.create({
   },
 });
 
-const ExperienceEntry = ({ experience, debug }: { experience: ExperienceItem, debug: boolean }) => {
-  const { company, position, location, duration, description, company_description, achievements, name, linkedin } = experience as any;
+const ExperienceEntry = ({ experience, debug }: { experience: ExperienceItem; debug: boolean }) => {
+  const {
+    company,
+    position,
+    location,
+    duration,
+    description,
+    company_description,
+    achievements,
+    name,
+    linkedin,
+  } = experience as any;
 
   return (
     <View style={styles.experienceEntry} debug={debug}>
       <View style={styles.companyHeader}>
         <Text style={styles.companyName}>
           {linkedin ? (
-            <Link style={styles.companyName} src={linkedin}>{company || name.split(' - ')[0]}</Link>
+            <Link style={styles.companyName} src={linkedin}>
+              {company || name.split(' - ')[0]}
+            </Link>
           ) : (
             company || name.split(' - ')[0]
           )}
         </Text>
       </View>
-      
+
       <Text style={styles.positionTitle}>{position || name.split(' - ')[1]}</Text>
-      
+
       <Text style={styles.dateLocation}>
         {location} | {duration}
       </Text>
-      
-      { company_description && (
-        <Text style={styles.companyDescription}>
-          {company_description}
-        </Text>
-      )}
 
-      { description && (
-        <Text style={styles.companyDescription}>
-          {description}
-        </Text>
-      )}
-      
+      {company_description && <Text style={styles.companyDescription}>{company_description}</Text>}
+
+      {description && <Text style={styles.companyDescription}>{description}</Text>}
+
       {achievements && achievements.length > 0 && (
         <View>
           {achievements.map((achievement: string, index: number) => (
             <View key={index} style={styles.achievementItem}>
               <View style={styles.bullet} />
-              <Text style={styles.achievementText}>
-                {achievement}
-              </Text>
+              <Text style={styles.achievementText}>{achievement}</Text>
             </View>
           ))}
         </View>
@@ -112,15 +114,15 @@ const ExperienceEntry = ({ experience, debug }: { experience: ExperienceItem, de
   );
 };
 
-const Experience = ({resume, debug}: {resume: ResumeSchema, debug: boolean}) => (
+const Experience = ({ resume, debug }: { resume: ResumeSchema; debug: boolean }) => (
   <View style={styles.container} debug={debug}>
     <Text style={styles.sectionTitle}>Independent Projects</Text>
-        {resume.independent_projects.map((experience, index) => (
-        <ExperienceEntry
-          key={`${experience.name}-${experience.location}-${index}`}
-          experience={experience}
-          debug={debug}
-        />
+    {resume.independent_projects.map((experience, index) => (
+      <ExperienceEntry
+        key={`${experience.name}-${experience.location}-${index}`}
+        experience={experience}
+        debug={debug}
+      />
     ))}
     <Text style={styles.sectionTitle}>Professional Experience</Text>
     {resume.professional_experience.map((experience, index) => (

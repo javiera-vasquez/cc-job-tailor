@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet, Link } from '@react-pdf/renderer';
-import { colors, spacing, typography } from '../design-tokens';
-import type { CoverLetterSchema, ContactDetails } from '../../types';
+import { colors, spacing } from '../design-tokens';
+import type { CoverLetterSchema } from '../../types';
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
   },
 });
 
-
 const Header = ({ data }: { data: CoverLetterSchema }) => (
   <View>
     <View style={styles.headerContainer}>
@@ -56,9 +55,11 @@ const Header = ({ data }: { data: CoverLetterSchema }) => (
         <Text style={styles.contactName}>{data.personal_info.name}</Text>
         <Text style={styles.contactDetails}>{data.personal_info.address}</Text>
         <Text style={styles.contactDetails}>
-          <Link style={styles.contactDetails} src={data.personal_info.email}>{data.personal_info.email}</Link>
+          <Link style={styles.contactDetails} src={data.personal_info.email}>
+            {data.personal_info.email}
+          </Link>
         </Text>
-        <Text style={styles.contactDetails}>{data.personal_info.phone }</Text>
+        <Text style={styles.contactDetails}>{data.personal_info.phone}</Text>
       </View>
     </View>
     {/* Separator line to match mockup */}

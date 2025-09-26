@@ -1,12 +1,12 @@
-import type { ApplicationData, ResumeSchema, JobAnalysisSchema, CoverLetterSchema } from '../../src/types';
+import type { ApplicationData } from '../../src/types';
 
 // Console output capture for validation error testing
 export function captureConsoleOutput(fn: () => void): string[] {
   const originalError = console.error;
   const capturedOutput: string[] = [];
 
-  console.error = (...args: any[]) => {
-    const message = args.map(arg => String(arg)).join(' ');
+  console.error = (...args: unknown[]) => {
+    const message = args.map((arg) => String(arg)).join(' ');
     capturedOutput.push(message);
     // Show in console with test context indicator
     originalError(`[Expected Validation Error] ${message}`);
@@ -25,84 +25,94 @@ export function captureConsoleOutput(fn: () => void): string[] {
 export function createValidApplicationData(): ApplicationData {
   return {
     metadata: {
-      company: "Test Company",
-      position: "Software Engineer",
-      last_updated: "2024-01-01",
-      transformation_decisions: "Test transformation",
-      job_focus_used: "engineering"
+      company: 'Test Company',
+      position: 'Software Engineer',
+      last_updated: '2024-01-01',
+      transformation_decisions: 'Test transformation',
+      job_focus_used: 'engineering',
     },
     resume: {
-      name: "John Doe",
-      profile_picture: "profile.jpg",
-      title: "Software Engineer",
-      summary: "Experienced software engineer",
+      name: 'John Doe',
+      profile_picture: 'profile.jpg',
+      title: 'Software Engineer',
+      summary: 'Experienced software engineer',
       contact: {
-        name: "John Doe",
-        phone: "+1-234-567-8900",
-        email: "john@example.com",
-        address: "123 Main St, City, State",
-        linkedin: "https://linkedin.com/in/johndoe",
-        github: "https://github.com/johndoe"
+        name: 'John Doe',
+        phone: '+1-234-567-8900',
+        email: 'john@example.com',
+        address: '123 Main St, City, State',
+        linkedin: 'https://linkedin.com/in/johndoe',
+        github: 'https://github.com/johndoe',
       },
-      technical_expertise: [{
-        resume_title: "Frontend Development",
-        skills: ["React", "TypeScript"]
-      }],
-      skills: ["JavaScript", "Python"],
-      languages: [{
-        language: "English",
-        proficiency: "Native"
-      }],
-      professional_experience: [{
-        company: "Tech Corp",
-        position: "Developer",
-        location: "Remote",
-        duration: "2023-2024",
-        company_description: "Technology company",
-        linkedin: "https://linkedin.com/company/techcorp",
-        achievements: ["Built scalable applications"]
-      }],
-      independent_projects: [{
-        name: "Test Project",
-        description: "A test project",
-        location: "Remote",
-        duration: "2024",
-        achievements: ["Delivered on time"]
-      }],
-      education: [{
-        institution: "University",
-        program: "Computer Science",
-        location: "City, State",
-        duration: "2020-2024"
-      }]
+      technical_expertise: [
+        {
+          resume_title: 'Frontend Development',
+          skills: ['React', 'TypeScript'],
+        },
+      ],
+      skills: ['JavaScript', 'Python'],
+      languages: [
+        {
+          language: 'English',
+          proficiency: 'Native',
+        },
+      ],
+      professional_experience: [
+        {
+          company: 'Tech Corp',
+          position: 'Developer',
+          location: 'Remote',
+          duration: '2023-2024',
+          company_description: 'Technology company',
+          linkedin: 'https://linkedin.com/company/techcorp',
+          achievements: ['Built scalable applications'],
+        },
+      ],
+      independent_projects: [
+        {
+          name: 'Test Project',
+          description: 'A test project',
+          location: 'Remote',
+          duration: '2024',
+          achievements: ['Delivered on time'],
+        },
+      ],
+      education: [
+        {
+          institution: 'University',
+          program: 'Computer Science',
+          location: 'City, State',
+          duration: '2020-2024',
+        },
+      ],
     },
     job_analysis: null,
-    cover_letter: null
+    cover_letter: null,
   };
 }
 
 export function createValidJobFocus() {
   return [
     {
-      primary_area: "engineer" as const,
-      specialties: ["react" as const, "typescript" as const],
-      weight: 1.0
-    }
+      primary_area: 'engineer' as const,
+      specialties: ['react' as const, 'typescript' as const],
+      weight: 1.0,
+    },
   ];
 }
 
 export function createInvalidJobFocus() {
   return [
     {
-      primary_area: "engineer" as const,
-      specialties: ["react" as const],
-      weight: 0.7
+      primary_area: 'engineer' as const,
+      specialties: ['react' as const],
+      weight: 0.7,
     },
     {
-      primary_area: "senior_engineer" as const,
-      specialties: ["python" as const],
-      weight: 0.4  // Sum = 1.1, should fail validation
-    }
+      primary_area: 'senior_engineer' as const,
+      specialties: ['python' as const],
+      weight: 0.4, // Sum = 1.1, should fail validation
+    },
   ];
 }
 
@@ -111,7 +121,7 @@ export function createMinimalValidApplicationData(): ApplicationData {
     metadata: null,
     resume: null,
     job_analysis: null,
-    cover_letter: null
+    cover_letter: null,
   };
 }
 
@@ -128,7 +138,7 @@ export function createInvalidApplicationData(errorType: string): unknown {
     case 'missing-required-field':
       const validData2 = createValidApplicationData();
       if (validData2.resume) {
-        delete (validData2.resume as any).name;
+        delete (validData2.resume as Record<string, unknown>).name;
       }
       return validData2;
 
@@ -158,7 +168,7 @@ export function mockYAMLContent(content: object): string {
 
 // Mock file system operations for testing
 export function createMockExistsSync() {
-  const mockExistsSync = (path: string): boolean => {
+  const mockExistsSync = (_path: string): boolean => {
     // Default implementation - can be overridden by specific tests
     return false;
   };
@@ -166,7 +176,7 @@ export function createMockExistsSync() {
 }
 
 export function createMockReaddirSync() {
-  const mockReaddirSync = (path: string): string[] => {
+  const mockReaddirSync = (_path: string): string[] => {
     // Default implementation - can be overridden by specific tests
     return [];
   };
@@ -174,11 +184,11 @@ export function createMockReaddirSync() {
 }
 
 export function createMockBunFile() {
-  const mockBunFile = (path: string) => ({
+  const mockBunFile = (_path: string) => ({
     text: async (): Promise<string> => {
       // Default YAML content for testing
       return 'metadata:\n  company: "Test Company"\nresume:\n  name: "Test User"';
-    }
+    },
   });
   return mockBunFile;
 }
@@ -254,9 +264,9 @@ export function setupMockCompanyFolders(structure: MockCompanyStructure) {
       // Default content
       return mockYAMLContent({
         metadata: { company: 'Default Company' },
-        resume: { name: 'Default User' }
+        resume: { name: 'Default User' },
       });
-    }
+    },
   });
 
   return { mockExistsSync, mockReaddirSync, mockBunFile };
@@ -279,6 +289,8 @@ export function expectValidationError(fn: () => void, expectedMessage?: string):
   }
 
   if (expectedMessage && !actualMessage.includes(expectedMessage)) {
-    throw new Error(`Expected error message to contain "${expectedMessage}", but got "${actualMessage}"`);
+    throw new Error(
+      `Expected error message to contain "${expectedMessage}", but got "${actualMessage}"`,
+    );
   }
 }

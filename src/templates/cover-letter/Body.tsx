@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
-import { colors, spacing, typography } from '../design-tokens';
+import { colors, spacing } from '../design-tokens';
 import type { CoverLetterSchema } from '../../types';
 
 const styles = StyleSheet.create({
@@ -18,12 +18,13 @@ const styles = StyleSheet.create({
 });
 
 const Body = ({ data }: { data: CoverLetterSchema }) => {
-  
   return (
     <View style={styles.bodyContainer}>
       <Text style={styles.paragraph}>{data.content.opening_line}</Text>
       {data.content.body.map((paragraph, index) => (
-        <Text key={index} style={styles.paragraph}>{paragraph}</Text>
+        <Text key={index} style={styles.paragraph}>
+          {paragraph}
+        </Text>
       ))}
     </View>
   );

@@ -1,10 +1,10 @@
 import { load } from 'js-yaml';
 import { existsSync, readdirSync } from 'fs';
 import { parseArgs } from 'util';
-import type { ApplicationData, ResumeSchema } from './src/types';
+import type { ApplicationData } from './src/types';
 import { validateApplicationData } from './src/zod/validation';
 
-console.log('🔧 Generating application data module...');
+console.warn('🔧 Generating application data module...');
 
 // Parse command line arguments
 const { values } = parseArgs({
@@ -23,18 +23,18 @@ const { values } = parseArgs({
 const companyName = values.company;
 
 if (companyName) {
-  console.log(`🎯 Target company: "${companyName}"`);
+  console.warn(`🎯 Target company: "${companyName}"`);
 }
 
 // Function to provide error guidance when no company is specified
 function throwNoCompanyError(): never {
   throw new Error(
     `No company specified. Resume data must be tailored for specific job applications.\n\n` +
-    `To get started:\n` +
-    `1. Use Claude Code to analyze a job posting\n` +
-    `2. Run: @agent-job-tailor analyze job [file|url]\n` +
-    `3. Then use -C flag with the company name to generate tailored resume\n\n` +
-    `Example: bun run generate-data.ts -C "company-name"`
+      `To get started:\n` +
+      `1. Use Claude Code to analyze a job posting\n` +
+      `2. Run: @agent-job-tailor analyze job [file|url]\n` +
+      `3. Then use -C flag with the company name to generate tailored resume\n\n` +
+      `Example: bun run generate-data.ts -C "company-name"`,
   );
 }
 
@@ -55,20 +55,20 @@ function getCompanyFolderPath(company: string | undefined): string | null {
   // Check if company folder exists
   if (!existsSync(companyPath)) {
     // List available companies
-    const availableCompanies = readdirSync(tailorPath)
-      .filter(name => existsSync(`${tailorPath}/${name}/resume.yaml`) ||
-                      existsSync(`${tailorPath}/${name}/job_analysis.yaml`) ||
-                      existsSync(`${tailorPath}/${name}/cover_letter.yaml`));
+    const availableCompanies = readdirSync(tailorPath).filter(
+      (name) =>
+        existsSync(`${tailorPath}/${name}/resume.yaml`) ||
+        existsSync(`${tailorPath}/${name}/job_analysis.yaml`) ||
+        existsSync(`${tailorPath}/${name}/cover_letter.yaml`),
+    );
 
     if (availableCompanies.length > 0) {
       throw new Error(
         `Company "${company}" not found in ${tailorPath}.\n` +
-        `Available companies: ${availableCompanies.join(', ')}`
+          `Available companies: ${availableCompanies.join(', ')}`,
       );
     } else {
-      throw new Error(
-        `Company "${company}" not found and no companies available in ${tailorPath}`
-      );
+      throw new Error(`Company "${company}" not found and no companies available in ${tailorPath}`);
     }
   }
 
@@ -81,19 +81,19 @@ async function loadTailoredData(companyPath: string): Promise<ApplicationData> {
   const jobAnalysisPath = `${companyPath}/job_analysis.yaml`;
   const coverLetterPath = `${companyPath}/cover_letter.yaml`;
 
-  console.log(`📂 Loading tailored data from: ${companyPath}`);
+  console.warn(`📂 Loading tailored data from: ${companyPath}`);
 
   const resumeFile = existsSync(resumePath)
-    ? load(await Bun.file(resumePath).text())
-    : null;
+    ? (load(await Bun.file(resumePath).text()) as Record<string, unknown>)
+    : undefined;
 
   const jobAnalysis = existsSync(jobAnalysisPath)
-    ? load(await Bun.file(jobAnalysisPath).text())
-    : null;
+    ? (load(await Bun.file(jobAnalysisPath).text()) as Record<string, unknown>)
+    : undefined;
 
   const coverLetter = existsSync(coverLetterPath)
-    ? load(await Bun.file(coverLetterPath).text())
-    : null;
+    ? (load(await Bun.file(coverLetterPath).text()) as Record<string, unknown>)
+    : undefined;
 
   // Log what was found
   const foundFiles = [];
@@ -102,16 +102,16 @@ async function loadTailoredData(companyPath: string): Promise<ApplicationData> {
   if (coverLetter) foundFiles.push('cover_letter.yaml');
 
   if (foundFiles.length > 0) {
-    console.log(`✅ Found ${foundFiles.length} file(s): ${foundFiles.join(', ')}`);
+    console.warn(`✅ Found ${foundFiles.length} file(s): ${foundFiles.join(', ')}`);
   } else {
-    console.log(`⚠️  No data files found in ${companyPath}`);
+    console.warn(`⚠️  No data files found in ${companyPath}`);
   }
 
   return {
-    metadata: (resumeFile as any).metadata,
-    resume: (resumeFile as any).resume,
-    job_analysis: (jobAnalysis as any).job_analysis,
-    cover_letter: (coverLetter as any).cover_letter,
+    metadata: (resumeFile?.metadata as ApplicationData['metadata']) || null,
+    resume: (resumeFile?.resume as ApplicationData['resume']) || null,
+    job_analysis: (jobAnalysis?.job_analysis as ApplicationData['job_analysis']) || null,
+    cover_letter: (coverLetter?.cover_letter as ApplicationData['cover_letter']) || null,
   };
 }
 
@@ -137,19 +137,17 @@ async function loadApplicationData(): Promise<ApplicationData> {
 const applicationData = await loadApplicationData();
 
 // Validate the generated data against TypeScript schema
-console.log('🔍 Validating application data...');
+console.warn('🔍 Validating application data...');
 try {
   validateApplicationData(applicationData);
-  console.log('✅ Application data validation passed');
-} catch (error) {
+  console.warn('✅ Application data validation passed');
+} catch {
   console.error('💡 Fix the data issues in the tailor files and try again.');
   process.exit(1);
 }
 
 // Generate TypeScript module with proper imports
-const source = companyName
-  ? `company-specific data for "${companyName}"`
-  : "default source files";
+const source = companyName ? `company-specific data for "${companyName}"` : 'default source files';
 
 const tsContent = `// @ts-nocheck
 // Auto-generated application data - TypeScript validation disabled
@@ -164,7 +162,7 @@ export default applicationData;
 `;
 
 // Write the generated module
-console.log(`📝 Writing TypeScript module to src/data/application.ts...`);
-await Bun.write("./src/data/application.ts", tsContent);
+console.warn(`📝 Writing TypeScript module to src/data/application.ts...`);
+await Bun.write('./src/data/application.ts', tsContent);
 
-console.log(`✅ Application data module generated successfully from ${source}`);
+console.warn(`✅ Application data module generated successfully from ${source}`);

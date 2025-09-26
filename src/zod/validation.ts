@@ -3,13 +3,13 @@ import {
   ApplicationDataSchema,
   ResumeSchema,
   JobAnalysisSchema,
-  CoverLetterSchema
+  CoverLetterSchema,
 } from './schemas';
 import type {
   ApplicationData,
   ResumeSchema as ResumeType,
   JobAnalysisSchema as JobAnalysisType,
-  CoverLetterSchema as CoverLetterType
+  CoverLetterSchema as CoverLetterType,
 } from '../types';
 
 // Validation functions with detailed error reporting
@@ -23,7 +23,7 @@ export function validateApplicationData(data: unknown): ApplicationData {
       const errors = zodError.issues;
 
       console.error('❌ Application data validation failed:');
-      errors.forEach(err => {
+      errors.forEach((err) => {
         const path = err.path.join('.');
         const received = 'received' in err ? ` (received: ${err.received})` : '';
         console.error(`  • ${path}: ${err.message}${received}`);

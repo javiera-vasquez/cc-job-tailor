@@ -6,6 +6,7 @@ description: Show tailoring workflow and available commands
 # Resume Tailoring Help
 
 Important print direct to the user the following message
+
 ```
 The system allows you to:
 
@@ -28,5 +29,4 @@ The system allows you to:
 
   Would you like to start tailoring a resume for a specific job posting, or
   do you need help with any particular aspect of the system?
-  ```
-
+```

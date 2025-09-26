@@ -11,9 +11,11 @@ Claude Code hooks are shell commands that execute automatically at specific poin
 ### Available Hook Events
 
 #### `PreToolUse`
+
 **When it runs**: Before any tool call is executed
 **Purpose**: Block or validate tool calls before execution
 **Use cases**:
+
 - File protection (block edits to sensitive files)
 - Command validation
 - Security checks
@@ -28,9 +30,11 @@ fi
 ```
 
 #### `PostToolUse`
+
 **When it runs**: After a tool call completes successfully
 **Purpose**: Post-processing and cleanup
 **Use cases**:
+
 - Auto-formatting after file edits
 - Logging completed actions
 - Triggering dependent processes
@@ -44,9 +48,11 @@ fi
 ```
 
 #### `UserPromptSubmit`
+
 **When it runs**: When user submits a new prompt
 **Purpose**: Log user interactions and prepare environment
 **Use cases**:
+
 - Session logging
 - Environment preparation
 - User activity tracking
@@ -58,9 +64,11 @@ echo "$(date): User prompt - $1" >> ~/.claude/session.log
 ```
 
 #### `Notification`
+
 **When it runs**: When Claude Code sends notifications
 **Purpose**: Custom notification handling
 **Use cases**:
+
 - Desktop notifications
 - Slack/Teams integration
 - Email alerts
@@ -72,9 +80,11 @@ osascript -e "display notification \"$1\" with title \"Claude Code\""
 ```
 
 #### `Stop`
+
 **When it runs**: When Claude Code finishes responding
 **Purpose**: End-of-response processing
 **Use cases**:
+
 - Response logging
 - Cleanup operations
 - Status updates
@@ -86,9 +96,11 @@ echo "$(date): Response completed" >> ~/.claude/activity.log
 ```
 
 #### `SubagentStop`
+
 **When it runs**: When a subagent task completes
 **Purpose**: Subagent-specific post-processing
 **Use cases**:
+
 - Subagent result logging
 - Task completion notifications
 - Result validation
@@ -102,9 +114,11 @@ fi
 ```
 
 #### `PreCompact`
+
 **When it runs**: Before compact operations
 **Purpose**: Pre-compaction preparation
 **Use cases**:
+
 - Backup important context
 - Save session state
 - Clean temporary files
@@ -116,9 +130,11 @@ cp important.log ~/.claude/backups/$(date +%s).log
 ```
 
 #### `SessionStart`
+
 **When it runs**: At the beginning of a Claude Code session
 **Purpose**: Session initialization
 **Use cases**:
+
 - Environment setup
 - Tool preparation
 - Session logging
@@ -132,9 +148,11 @@ npm install
 ```
 
 #### `SessionEnd`
+
 **When it runs**: At the end of a Claude Code session
 **Purpose**: Session cleanup and finalization
 **Use cases**:
+
 - Cleanup temporary files
 - Session summaries
 - Backup session data
@@ -191,6 +209,7 @@ echo "Hook triggered: $TOOL_NAME on $FILE_PATH"
 ### Environment Variables
 
 Hooks receive context through environment variables:
+
 - `CLAUDE_WORKING_DIR`: Current working directory
 - `CLAUDE_SESSION_ID`: Unique session identifier
 - `TOOL_NAME`: Name of the tool being used (for tool-related hooks)
@@ -201,6 +220,7 @@ Hooks receive context through environment variables:
 ### Code Quality and Formatting
 
 #### Auto-format on file save
+
 ```yaml
 Event: PostToolUse
 Matcher: Edit,Write
@@ -215,6 +235,7 @@ Command: |
 ```
 
 #### Lint check before edits
+
 ```yaml
 Event: PreToolUse
 Matcher: Edit
@@ -230,6 +251,7 @@ Command: |
 ### Security and Protection
 
 #### Protect sensitive files
+
 ```yaml
 Event: PreToolUse
 Matcher: Edit,Write
@@ -245,6 +267,7 @@ Command: |
 ```
 
 #### Log all file modifications
+
 ```yaml
 Event: PostToolUse
 Matcher: Edit,Write
@@ -257,6 +280,7 @@ Command: |
 ### Development Workflow
 
 #### Auto-test after code changes
+
 ```yaml
 Event: PostToolUse
 Matcher: Edit
@@ -271,6 +295,7 @@ Command: |
 ```
 
 #### Git auto-commit for documentation
+
 ```yaml
 Event: PostToolUse
 Matcher: Edit,Write
@@ -288,6 +313,7 @@ Command: |
 ### Notifications and Logging
 
 #### Desktop notifications for long operations
+
 ```yaml
 Event: Stop
 Matcher: *
@@ -302,6 +328,7 @@ Command: |
 ```
 
 #### Comprehensive session logging
+
 ```yaml
 Event: UserPromptSubmit
 Matcher: *
@@ -315,6 +342,7 @@ Command: |
 ### Resume Manager Project Specific
 
 #### PDF generation workflow
+
 ```yaml
 Event: PostToolUse
 Matcher: Bash(bun run generate-pdf.ts:*)
@@ -331,6 +359,7 @@ Command: |
 ```
 
 #### Resume data validation
+
 ```yaml
 Event: PreToolUse
 Matcher: Edit,Write
@@ -403,6 +432,7 @@ fi
 ### Debugging Hooks
 
 #### Enable debug output
+
 ```bash
 # Add to hook for debugging
 set -x  # Enable debug output
@@ -412,12 +442,14 @@ set +x  # Disable debug output
 ```
 
 #### Test hooks manually
+
 ```bash
 # Test hook command independently
 TOOL_NAME="Edit" /path/to/hook/command test.ts
 ```
 
 #### Hook logging
+
 ```bash
 # Add comprehensive logging
 LOG_FILE="$HOME/.claude/hook-debug.log"

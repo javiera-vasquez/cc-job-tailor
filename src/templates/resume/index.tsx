@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Font,
-  Page,
-  View,
-  Text,
-  Document,
-  StyleSheet,
-} from '@react-pdf/renderer';
+import { Page, View, Text, Document, StyleSheet } from '@react-pdf/renderer';
 
 import Header from './Header';
 import Contact from './Contact';
@@ -15,11 +8,10 @@ import Languages from './Languages';
 import Education from './Education';
 import Experience from './Experience';
 
-import applicationData from "../../data/application";
+import applicationData from '../../data/application';
 import { colors, spacing, typography } from '../design-tokens';
 import type { ResumeSchema, ReactPDFProps } from '../../types';
 import { registerFonts } from '../fonts-register';
-
 
 // Register available fonts
 registerFonts();
@@ -27,10 +19,12 @@ registerFonts();
 // Transform source data format to ResumeSchema when needed
 function transformSourceToResumeSchema(sourceData: any): ResumeSchema {
   // Convert technical_expertise from object to array format
-  const technicalExpertise = Object.entries(sourceData.technical_expertise).map(([key, skills]) => ({
-    resume_title: key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
-    skills: skills as string[]
-  }));
+  const technicalExpertise = Object.entries(sourceData.technical_expertise).map(
+    ([key, skills]) => ({
+      resume_title: key.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
+      skills: skills as string[],
+    }),
+  );
 
   // Flatten soft_skills into a simple array
   const softSkills = Object.values(sourceData.soft_skills).flat() as string[];
@@ -54,44 +48,44 @@ function transformSourceToResumeSchema(sourceData: any): ResumeSchema {
 const resumeData: ResumeSchema | null = applicationData.resume
   ? (applicationData.resume as any).personal_info
     ? transformSourceToResumeSchema(applicationData.resume) // Source data format - needs transformation
-    : applicationData.resume as ResumeSchema // Tailored format
+    : (applicationData.resume as ResumeSchema) // Tailored format
   : null;
-  
+
 // 72 dpi is the default for PDF
 // Ensure A4 page sizing (595.5 × 842.25 points)
 const Resume = ({
-  size = 'A4', 
-  orientation = 'portrait', 
-  wrap = true, 
+  size = 'A4',
+  orientation = 'portrait',
+  wrap = true,
   debug = false,
   dpi = 72,
   bookmark,
-  data
+  data,
 }: ReactPDFProps) => (
-  <Page 
-    size={size} 
-    orientation={orientation} 
-    wrap={wrap} 
+  <Page
+    size={size}
+    orientation={orientation}
+    wrap={wrap}
     debug={debug}
     dpi={dpi}
     bookmark={bookmark}
     style={styles.page}
   >
     {/* fix type error */}
-    <Header resume={data as ResumeSchema}/>
-    
+    <Header resume={data as ResumeSchema} />
+
     <View style={styles.container}>
       {/* Left Column - Contact, Education, Skills, Languages */}
       <View style={styles.leftColumn} debug={debug}>
-        <Contact resume={data as ResumeSchema}/>
-        <Skills resume={data as ResumeSchema}/>
-        <Languages resume={data as ResumeSchema}/>
+        <Contact resume={data as ResumeSchema} />
+        <Skills resume={data as ResumeSchema} />
+        <Languages resume={data as ResumeSchema} />
       </View>
-      
+
       {/* Right Column - Experience */}
       <View style={styles.rightColumn}>
-        <Experience resume={data as ResumeSchema} debug={debug}/>
-        <Education resume={data as ResumeSchema} debug={debug}/>
+        <Experience resume={data as ResumeSchema} debug={debug} />
+        <Education resume={data as ResumeSchema} debug={debug} />
       </View>
     </View>
   </Page>
@@ -107,7 +101,8 @@ const ResumeDocument = (): React.ReactElement => {
             <Header resume={{} as ResumeSchema} />
             <View style={{ marginTop: 100 }}>
               <Text style={{ fontSize: 16, color: colors.darkGray }}>
-                No resume data available. Please ensure source files exist or use -C flag to specify a company folder.
+                No resume data available. Please ensure source files exist or use -C flag to specify
+                a company folder.
               </Text>
             </View>
           </View>
@@ -123,7 +118,7 @@ const ResumeDocument = (): React.ReactElement => {
       subject={`The resume of ${resumeData.name}`}
       title="Resume"
     >
-      <Resume data={resumeData}/>
+      <Resume data={resumeData} />
     </Document>
   );
 };
@@ -136,21 +131,21 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   leftColumn: {
     flexDirection: 'column',
-    width: spacing.columnWidth, 
+    width: spacing.columnWidth,
     paddingTop: spacing.pagePadding,
     paddingRight: spacing.pagePadding,
-    borderRight: `1px solid ${colors.separatorGray}`, 
+    borderRight: `1px solid ${colors.separatorGray}`,
   },
   rightColumn: {
     flex: 1,
     flexDirection: 'column',
     paddingLeft: spacing.pagePadding,
     paddingTop: spacing.pagePadding,
-  }
+  },
 });
 
 export default {

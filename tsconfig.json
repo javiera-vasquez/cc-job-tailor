@@ -25,7 +25,5 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false
   },
-  "exclude": [
-    "src/data/application.ts",
-  ]
+  "exclude": ["src/data/application.ts"]
 }

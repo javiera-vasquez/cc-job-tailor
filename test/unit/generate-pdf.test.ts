@@ -3,7 +3,6 @@ import { parseArgs } from 'util';
 import path from 'path';
 
 describe('Generate PDF Pipeline', () => {
-
   describe('Command Line Argument Parsing', () => {
     test('parses company name and document type from flags correctly', () => {
       const mockArgv = ['node', 'generate-pdf.ts', '-C', 'test-company', '-D', 'resume'];
@@ -86,14 +85,14 @@ describe('Generate PDF Pipeline', () => {
       function throwNoCompanyError(): never {
         throw new Error(
           `No company specified. PDF generation requires company-specific data.\n\n` +
-          `To generate a PDF:\n` +
-          `1. Use Claude Code to analyze a job posting\n` +
-          `2. Run: @agent-job-tailor analyze job [file|url]\n` +
-          `3. Then use -C flag with the company name to generate PDF\n\n` +
-          `Examples:\n` +
-          `  bun run generate-pdf.ts -C "company-name"                    # Generate both resume and cover letter\n` +
-          `  bun run generate-pdf.ts -C "company-name" -D resume          # Generate resume only\n` +
-          `  bun run generate-pdf.ts -C "company-name" -D cover-letter    # Generate cover letter only`
+            `To generate a PDF:\n` +
+            `1. Use Claude Code to analyze a job posting\n` +
+            `2. Run: @agent-job-tailor analyze job [file|url]\n` +
+            `3. Then use -C flag with the company name to generate PDF\n\n` +
+            `Examples:\n` +
+            `  bun run generate-pdf.ts -C "company-name"                    # Generate both resume and cover letter\n` +
+            `  bun run generate-pdf.ts -C "company-name" -D resume          # Generate resume only\n` +
+            `  bun run generate-pdf.ts -C "company-name" -D cover-letter    # Generate cover letter only`,
         );
       }
 
@@ -133,7 +132,9 @@ describe('Generate PDF Pipeline', () => {
       function validateDocumentTypeOrThrow(documentType: string): void {
         const validTypes = ['resume', 'cover-letter', 'both'];
         if (!validTypes.includes(documentType)) {
-          throw new Error(`Invalid document type: ${documentType}. Must be 'resume', 'cover-letter', or 'both'`);
+          throw new Error(
+            `Invalid document type: ${documentType}. Must be 'resume', 'cover-letter', or 'both'`,
+          );
         }
       }
 
@@ -165,11 +166,13 @@ describe('Generate PDF Pipeline', () => {
       const tmpDir = '/tmp/test';
       const companyName = 'test-company';
 
-      expect(generatePdfFilePath(tmpDir, 'resume', companyName))
-        .toBe('/tmp/test/resume-test-company.pdf');
+      expect(generatePdfFilePath(tmpDir, 'resume', companyName)).toBe(
+        '/tmp/test/resume-test-company.pdf',
+      );
 
-      expect(generatePdfFilePath(tmpDir, 'cover-letter', companyName))
-        .toBe('/tmp/test/cover-letter-test-company.pdf');
+      expect(generatePdfFilePath(tmpDir, 'cover-letter', companyName)).toBe(
+        '/tmp/test/cover-letter-test-company.pdf',
+      );
     });
 
     test('handles company names with spaces and special characters', () => {
@@ -179,11 +182,13 @@ describe('Generate PDF Pipeline', () => {
 
       const tmpDir = '/tmp/test';
 
-      expect(generatePdfFilePath(tmpDir, 'resume', 'Company With Spaces'))
-        .toBe('/tmp/test/resume-Company With Spaces.pdf');
+      expect(generatePdfFilePath(tmpDir, 'resume', 'Company With Spaces')).toBe(
+        '/tmp/test/resume-Company With Spaces.pdf',
+      );
 
-      expect(generatePdfFilePath(tmpDir, 'cover-letter', 'Company-Name'))
-        .toBe('/tmp/test/cover-letter-Company-Name.pdf');
+      expect(generatePdfFilePath(tmpDir, 'cover-letter', 'Company-Name')).toBe(
+        '/tmp/test/cover-letter-Company-Name.pdf',
+      );
     });
   });
 
@@ -191,16 +196,16 @@ describe('Generate PDF Pipeline', () => {
     // Mock Bun.spawn for testing subprocess calls
     async function callGenerateDataProcess(
       companyName: string,
-      mockSpawn?: (options: any) => { exited: Promise<number> }
+      mockSpawn?: (options: any) => { exited: Promise<number> },
     ) {
       const spawn = mockSpawn || (() => ({ exited: Promise.resolve(0) }));
 
-      console.log(`Generating data for ${companyName}...`);
+      console.warn(`Generating data for ${companyName}...`);
 
       const dataGenProcess = spawn({
         cmd: ['bun', 'run', 'generate-data.ts', '-C', companyName],
         cwd: process.cwd(),
-        stdio: ['inherit', 'inherit', 'inherit']
+        stdio: ['inherit', 'inherit', 'inherit'],
       });
 
       const exitCode = await dataGenProcess.exited;
@@ -209,7 +214,7 @@ describe('Generate PDF Pipeline', () => {
         throw new Error(`Data generation failed with exit code ${exitCode}`);
       }
 
-      console.log(`Data generation completed for ${companyName}`);
+      console.warn(`Data generation completed for ${companyName}`);
       return exitCode;
     }
 
@@ -258,7 +263,7 @@ describe('Generate PDF Pipeline', () => {
       companyName: string,
       tmpDir: string,
       mockRenderToFile?: (component: any, filePath: string) => Promise<void>,
-      mockReactCreateElement?: (component: any) => any
+      mockReactCreateElement?: (component: any) => any,
     ) {
       const renderToFile = mockRenderToFile || (() => Promise.resolve());
       const createElement = mockReactCreateElement || ((comp: any) => ({ type: comp.name }));
@@ -266,17 +271,17 @@ describe('Generate PDF Pipeline', () => {
       // Mock components
       const components = {
         resume: { Document: { name: 'ResumeDocument' } },
-        'cover-letter': { Document: { name: 'CoverLetterDocument' } }
+        'cover-letter': { Document: { name: 'CoverLetterDocument' } },
       };
 
       const component = createElement(components[docType].Document);
       const filePath = path.join(tmpDir, `${docType}-${companyName}.pdf`);
 
-      console.log(`Generating ${docType} PDF for ${companyName} at ${filePath}`);
+      console.warn(`Generating ${docType} PDF for ${companyName} at ${filePath}`);
 
       await renderToFile(component, filePath);
 
-      console.log(`${docType} PDF generated successfully for ${companyName}`);
+      console.warn(`${docType} PDF generated successfully for ${companyName}`);
 
       return filePath;
     }
@@ -299,7 +304,7 @@ describe('Generate PDF Pipeline', () => {
         'test-company',
         '/tmp/test',
         mockRenderToFile,
-        mockCreateElement
+        mockCreateElement,
       );
 
       expect(renderCalled).toBe(true);
@@ -326,7 +331,7 @@ describe('Generate PDF Pipeline', () => {
         'test-company',
         '/tmp/test',
         mockRenderToFile,
-        mockCreateElement
+        mockCreateElement,
       );
 
       expect(renderCalled).toBe(true);
@@ -350,14 +355,14 @@ describe('Generate PDF Pipeline', () => {
     // Mock mkdir functionality
     async function ensureTmpDirectory(
       tmpDir: string,
-      mockMkdir?: (path: string, options: any) => Promise<void>
+      mockMkdir?: (path: string, options: { recursive: boolean }) => Promise<void>,
     ) {
       const mkdir = mockMkdir || (() => Promise.resolve());
 
       try {
         await mkdir(tmpDir, { recursive: true });
         return { success: true, created: true };
-      } catch (error) {
+      } catch {
         // Directory might already exist, ignore error
         return { success: true, created: false };
       }

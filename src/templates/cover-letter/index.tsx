@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Page,
-  Document,
-  View,
-  Text,
-  StyleSheet,
-} from '@react-pdf/renderer';
+import { Page, Document, View, Text, StyleSheet } from '@react-pdf/renderer';
 
 import Header from './Header';
 import DateLine from './DateLine';
@@ -13,7 +7,7 @@ import Title from './Title';
 import Body from './Body';
 import Signature from './Signature';
 
-import applicationData from "../../data/application";
+import applicationData from '../../data/application';
 import { colors, spacing, typography } from '../design-tokens';
 import type { CoverLetterSchema, ContactDetails, ReactPDFProps } from '../../types';
 import { registerFonts } from '../fonts-register';
@@ -24,38 +18,38 @@ registerFonts();
 // Get cover letter data from application data
 const coverLetterData: CoverLetterSchema | null = applicationData.cover_letter || null;
 // Extract contact info and name from resume data
-const personalInfo: ContactDetails & { name?: string } | null = applicationData.resume
+const personalInfo: (ContactDetails & { name?: string }) | null = applicationData.resume
   ? { ...applicationData.resume.contact, name: applicationData.resume.name }
   : null;
 
 const CoverLetter = ({
-  size = 'A4', 
-  orientation = 'portrait', 
-  wrap = true, 
+  size = 'A4',
+  orientation = 'portrait',
+  wrap = true,
   debug = false,
   dpi = 72,
-  bookmark,
-  data
+  bookmark: _bookmark,
+  data,
 }: ReactPDFProps) => {
   const coverLetter = data as CoverLetterSchema;
 
   return (
-    <Page 
-      size={size} 
-      orientation={orientation} 
-      wrap={wrap} 
+    <Page
+      size={size}
+      orientation={orientation}
+      wrap={wrap}
       debug={debug}
       dpi={dpi}
       style={styles.letterPage}
     >
-      <Header data={coverLetter}/>
+      <Header data={coverLetter} />
       <DateLine data={coverLetter} />
       <Title data={coverLetter} />
       <Body data={coverLetter} />
-      <Signature data={coverLetter}/>
+      <Signature data={coverLetter} />
     </Page>
-  )
-}
+  );
+};
 
 const CoverLetterDocument = (): React.ReactElement => {
   if (!coverLetterData || !personalInfo) {

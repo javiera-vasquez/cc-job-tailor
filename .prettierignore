@@ -1,0 +1,2 @@
+# Test fixtures with intentionally malformed content
+test/fixtures/company-data/invalid/malformed-yaml.yaml
