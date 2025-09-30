@@ -1,0 +1,231 @@
+# Metadata Transformation Rules
+# This file defines how to generate metadata.yaml for company-specific applications
+
+schema_version: '1.0'
+description: 'Rules for generating metadata that provides context about the tailored application'
+
+# Target output schema for metadata
+target_schema:
+  metadata:
+    # Core identification
+    company: 'string' # Company name (from job_analysis)
+    folder_path: 'string' # Path to company tailor folder
+    available_files: 'array[string]' # List of generated files
+
+    # Job information
+    position: 'string' # Job position title (from job_analysis)
+    primary_focus: 'string' # Formatted job focus string (from job_analysis)
+    job_summary: 'string' # Brief job summary (max 100 chars)
+
+    # Extended context
+    job_details:
+      company: 'string' # Company name
+      location: 'string' # Job location
+      experience_level: 'string' # Required experience level
+      employment_type: 'string' # Full-time, Contract, etc.
+      must_have_skills: 'array[string]' # Critical required skills
+      nice_to_have_skills: 'array[string]' # Preferred skills
+      team_context: 'string' # Team/department context
+      user_scale: 'string' # Scale of users/impact
+
+    # Timestamp
+    last_updated: 'string' # ISO date when metadata was generated
+
+# Transformation rules
+transformation_rules:
+  # Core identification fields
+  company_info:
+    - source: 'job_analysis.company'
+      target: 'metadata.company'
+      description: 'Extract company name from job analysis'
+
+    - source: 'generated'
+      target: 'metadata.folder_path'
+      description: 'Generate folder path based on company name'
+      generation_logic: |
+        Convert company name to folder-safe format:
+        1. Lowercase the company name
+        2. Replace spaces and special chars with hyphens
+        3. Format: "resume-data/tailor/{company-slug}"
+        Example: "Tech Corp" → "resume-data/tailor/tech-corp"
+
+    - source: 'generated'
+      target: 'metadata.available_files'
+      description: 'List files that exist in company folder'
+      generation_logic: |
+        Check for existence of these files in order:
+        - resume.yaml
+        - job_analysis.yaml
+        - cover_letter.yaml
+        - metadata.yaml
+        Return array of found files
+
+  # Job information fields
+  job_info:
+    - source: 'job_analysis.position'
+      target: 'metadata.position'
+      description: 'Extract job position title'
+
+    - source: 'job_analysis.job_focus'
+      target: 'metadata.primary_focus'
+      transformation_type: 'format_job_focus'
+      description: 'Convert job_focus array to readable string'
+      format_logic: |
+        1. Get highest weighted job_focus item
+        2. Extract primary_area and top specialties
+        3. Format as: "{primary_area} + [{specialty1}, {specialty2}, ...]"
+        Example: "senior_engineer + [react, typescript, frontend, mobile]"
+
+    - source: 'job_analysis'
+      target: 'metadata.job_summary'
+      transformation_type: 'generate_summary'
+      max_length: 100
+      description: 'Generate brief job summary from key details'
+      generation_logic: |
+        Create concise summary combining:
+        - Company scale/impact (from role_context.team_size)
+        - Key technologies (from must_have_skills)
+        - Domain focus (from responsibilities)
+        Keep under 100 characters
+        Example: "Global delivery platform serving 20M+ users, modern TypeScript/React stack"
+
+  # Extended job details
+  job_details_extraction:
+    - source: 'job_analysis.company'
+      target: 'metadata.job_details.company'
+
+    - source: 'job_analysis.location'
+      target: 'metadata.job_details.location'
+
+    - source: 'job_analysis.experience_level'
+      target: 'metadata.job_details.experience_level'
+
+    - source: 'job_analysis.employment_type'
+      target: 'metadata.job_details.employment_type'
+
+    - source: 'job_analysis.requirements.must_have_skills'
+      target: 'metadata.job_details.must_have_skills'
+      transformation_type: 'extract_top_skills'
+      max_items: 5
+      description: 'Extract top 5 must-have skills by priority'
+      extraction_logic: |
+        1. Sort must_have_skills by priority (descending)
+        2. Take top 5 items
+        3. Extract just the skill names (not priority numbers)
+        Return as array of strings
+
+    - source: 'job_analysis.requirements.nice_to_have_skills'
+      target: 'metadata.job_details.nice_to_have_skills'
+      transformation_type: 'extract_skills'
+      max_items: 5
+      description: 'Extract nice-to-have skills'
+      extraction_logic: |
+        1. Take up to 5 nice_to_have_skills
+        2. Extract just skill names
+        Return as array of strings
+
+    - source: 'job_analysis.role_context'
+      target: 'metadata.job_details.team_context'
+      transformation_type: 'format_context'
+      description: 'Format team context from role_context'
+      format_logic: |
+        Combine department and key context points into single string
+        Example: "500+ people in product organization, cross-functional teams"
+
+    - source: 'job_analysis.role_context.team_size'
+      target: 'metadata.job_details.user_scale'
+      description: 'Extract scale information about users/impact'
+
+  # Timestamp
+  timestamp_generation:
+    - source: 'current_date'
+      target: 'metadata.last_updated'
+      description: 'Set to current ISO date when metadata is generated'
+      format: 'ISO 8601 (YYYY-MM-DDTHH:mm:ssZ)'
+
+# Validation rules
+validation_rules:
+  required_fields:
+    - 'metadata.company'
+    - 'metadata.folder_path'
+    - 'metadata.available_files'
+    - 'metadata.position'
+    - 'metadata.primary_focus'
+    - 'metadata.job_summary'
+    - 'metadata.job_details'
+    - 'metadata.last_updated'
+
+  field_constraints:
+    - field: 'metadata.job_summary'
+      max_length: 100
+
+    - field: 'metadata.available_files'
+      type: 'array'
+      allowed_values: ['resume.yaml', 'job_analysis.yaml', 'cover_letter.yaml', 'metadata.yaml']
+
+    - field: 'metadata.job_details.must_have_skills'
+      max_items: 5
+
+    - field: 'metadata.job_details.nice_to_have_skills'
+      max_items: 5
+
+  data_quality:
+    - rule: 'company name must match job_analysis.company'
+    - rule: 'folder_path must be consistent with company name'
+    - rule: 'available_files must list only existing files'
+    - rule: 'primary_focus must derive from highest weighted job_focus item'
+
+# Usage instructions for job-tailor agent
+usage_instructions: |
+  1. Load job_analysis.yaml from company folder
+  2. Extract core identification (company, position)
+  3. Generate folder_path from company name
+  4. Format job_focus array into primary_focus string
+  5. Generate job_summary from key details (max 100 chars)
+  6. Extract and transform job_details fields
+  7. Check which files exist in folder for available_files
+  8. Set last_updated to current timestamp
+  9. Validate against schema constraints
+  10. Write as metadata.yaml in company folder
+
+# Output template structure
+output_template: |
+  # Company Context File
+  # This file contains all the context information for this specific company
+  # Used by the /tailor command to set active company context
+
+  # Active company name (matches folder name in resume-data/tailor/)
+  company: '{{ job_analysis.company }}'
+
+  # Full path to company's tailor folder
+  folder_path: 'resume-data/tailor/{{ company_slug }}'
+
+  # List of files that exist in the company folder
+  available_files:
+    - 'resume.yaml'
+    - 'job_analysis.yaml'
+    - 'cover_letter.yaml'
+    - 'metadata.yaml'
+
+  # Job details extracted from job_analysis.yaml
+  position: '{{ job_analysis.position }}'
+
+  # Primary job focus area from job_analysis.yaml (highest weighted primary_area)
+  primary_focus: '{{ formatted_job_focus }}'
+
+  # Brief summary of job requirements (max 100 chars)
+  job_summary: '{{ generated_summary }}'
+
+  # Extended job details for context
+  job_details:
+    company: '{{ job_analysis.company }}'
+    location: '{{ job_analysis.location }}'
+    experience_level: '{{ job_analysis.experience_level }}'
+    employment_type: '{{ job_analysis.employment_type }}'
+    must_have_skills: {{ top_5_must_have_skills }}
+    nice_to_have_skills: {{ nice_to_have_skills }}
+    team_context: '{{ formatted_team_context }}'
+    user_scale: '{{ role_context.team_size }}'
+
+  # Timestamp when metadata was last generated (ISO format)
+  last_updated: '{{ current_iso_timestamp }}'
