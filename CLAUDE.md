@@ -143,4 +143,3 @@ Local documentation in `rpdf/`:
 ### Pull Request & Commit Message Policy
 
 **IMPORTANT**: Never include Claude Code attribution or co-authored-by lines in git commit messages or pull requests. All commits should be clean and focused on the actual changes without tool attribution.
-

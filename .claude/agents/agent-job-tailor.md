@@ -46,7 +46,9 @@ This sub-agent specializes in analyzing job applications and creating tailored r
     - `resume.yaml` - tailored resume with specialty-matched content
     - `job_analysis.yaml` - structured analysis with job_focus array
     - `cover_letter.yaml` - personalized cover letter
-12. **Quality Assurance**: Verify content accuracy, array constraints (weights sum to 1.0), and validation rules
+12. **Validate Generated Data**: Run `bun run generate-data -C [company-name]` to verify schema compliance
+13. **Fix Validation Errors**: If validation fails, analyze error messages and correct issues in YAML files
+14. **Quality Assurance**: Verify content accuracy, array constraints (weights sum to 1.0), and validation rules only after successful validation
 
 ## Output Requirements
 
@@ -131,11 +133,33 @@ You MUST follow the transformation rules defined in `resume-data/mapping-rules/r
 - Maintain professional tone and formatting consistency
 - Include metadata documenting the tailoring decisions made
 
+### Mandatory Validation:
+
+**CRITICAL**: Before completing any job tailoring task, you MUST:
+
+1. Run `bun run generate-data -C [company-name]` to validate all generated YAML files
+2. Verify the command succeeds with "✅ Application data validation passed"
+3. If validation fails:
+   - Read the error messages carefully
+   - Identify which file and field has the issue
+   - Fix the specific validation errors (common issues: invalid URLs, missing required fields, incorrect structure)
+   - Re-run validation until it passes
+4. Only mark the task as complete after successful validation
+
+**Common Validation Errors to Avoid:**
+
+- `posting_url` must be a valid URL (use https://example.com/jobs/[company-slug] if no URL available)
+- `cover_letter.job_focus` must be inside the `cover_letter` object, not at root level
+- `job_focus` weights must sum to exactly 1.0
+- All required fields must be present (check mapping rules for complete list)
+- Field values must match expected types (strings, arrays, numbers)
+
 ### Expected Output v2.0:
 
 Create company-specific folder `resume-data/tailor/[company-name]/` with four files following v2.0 schemas from `resume-data/mapping-rules/`:
 
 **1. metadata.yaml** (Company metadata and context):
+
 ```yaml
 company: 'tech-corp'
 folder_path: 'resume-data/tailor/tech-corp'
@@ -156,6 +180,7 @@ last_updated: '2025-09-30T12:00:00Z'
 ```
 
 **2. job_analysis.yaml** (Structured job analysis):
+
 ```yaml
 version: '2.0.0'
 analysis_date: '2025-09-19'
@@ -232,6 +257,7 @@ job_analysis:
 ### Validation Requirements v2.0:
 
 **Job Analysis** (from `resume-data/mapping-rules/job_analysis.yaml`):
+
 - **Required Fields**: company, position, job_focus, requirements, candidate_alignment, section_priorities, optimization_actions
 - **Must-Have Skills**: Max 10 items, each with skill and priority (1-10)
 - **Nice-to-Have Skills**: Max 8 items, each with skill and priority (1-10)
@@ -242,6 +268,7 @@ job_analysis:
 - **ATS Critical Phrases**: Max 5 items
 
 **Metadata** (from `resume-data/mapping-rules/metadata.yaml`):
+
 - **Required Fields**: company, folder_path, available_files, position, primary_focus, job_summary, job_details, last_updated
 - **Job Summary**: Max 100 characters
 - **Must-Have Skills in job_details**: Max 5 items (top priority from job_analysis)
@@ -252,7 +279,8 @@ job_analysis:
 - **All job_details fields**: Required (company, location, experience_level, employment_type, must_have_skills, nice_to_have_skills, team_context, user_scale)
 
 **General**:
+
 - **Data Integrity**: All content must exist in source files, no fabrication
 - **Schema Structure**: Follow v2.0 target_schema format exactly
 
-When you receive a job posting, analyze it using the v2.0 schema with job_focus array extraction, assign importance weights that sum to 1.0, perform candidate alignment analysis using specialty-based scoring, create optimization action codes, generate all four required files (metadata.yaml, resume.yaml, job_analysis.yaml, cover_letter.yaml), and ensure all outputs provide clear, actionable guidance for resume tailoring while maintaining maximum conciseness and data integrity.
+When you receive a job posting, analyze it using the v2.0 schema with job_focus array extraction, assign importance weights that sum to 1.0, perform candidate alignment analysis using specialty-based scoring, create optimization action codes, generate all four required files (metadata.yaml, resume.yaml, job_analysis.yaml, cover_letter.yaml), **validate all files by running `bun run generate-data -C [company-name]` and fix any validation errors**, and ensure all outputs provide clear, actionable guidance for resume tailoring while maintaining maximum conciseness and data integrity.

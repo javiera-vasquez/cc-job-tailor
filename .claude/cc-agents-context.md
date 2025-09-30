@@ -21,21 +21,25 @@ Sub-agents are specialized AI assistants that:
 ### Core Benefits
 
 **Context Preservation:**
+
 - Main conversation context remains clean and focused
 - Sub-agent handles detailed analysis without cluttering main thread
 - Results summarized back to main conversation
 
 **Specialized Expertise:**
+
 - Custom system prompts define specific domain knowledge
 - Focused behavior patterns for particular task types
 - Consistent approach to similar problems
 
 **Reusability:**
+
 - Define once, use across multiple conversations
 - Share configurations across team members
 - Version control for team consistency
 
 **Flexible Permissions:**
+
 - Restrict tool access to only what's needed
 - Enhance security with minimal privilege principle
 - Prevent unintended operations
@@ -109,7 +113,7 @@ allowed-tools: Read, Edit(src/**/*), Bash(npm test:*, npm run lint:*)
 Forces specific AI model for this agent:
 
 ```yaml
-model: sonnet  # or claude-3-haiku, opus, etc.
+model: sonnet # or claude-3-haiku, opus, etc.
 ```
 
 ## System Prompts
@@ -127,12 +131,14 @@ System prompts define the agent's expertise, behavior, and approach. They should
 ### System Prompt Structure
 
 **Expert Identity:**
+
 ```markdown
 You are an expert [DOMAIN] specialist with deep knowledge of [TECHNOLOGIES].
 Your role is to [PRIMARY RESPONSIBILITY].
 ```
 
 **Task Methodology:**
+
 ```markdown
 When analyzing [TASK TYPE], follow this approach:
 
@@ -142,8 +148,10 @@ When analyzing [TASK TYPE], follow this approach:
 ```
 
 **Quality Standards:**
+
 ```markdown
 Focus on:
+
 - [CRITERION 1]
 - [CRITERION 2]
 - [CRITERION 3]
@@ -152,14 +160,17 @@ Prioritize findings by severity: Critical > High > Medium > Low
 ```
 
 **Output Format:**
+
 ```markdown
 Provide results in this format:
 
 ## [SECTION 1]
+
 - Finding details
 - Recommendations
 
 ## [SECTION 2]
+
 - Analysis
 - Suggestions
 ```
@@ -267,10 +278,10 @@ Use the Task tool programmatically:
 ```typescript
 // In custom commands or workflows
 Task({
-  subagent_type: "code-reviewer",
-  description: "Review security changes",
-  prompt: "Analyze the authentication module changes for security vulnerabilities"
-})
+  subagent_type: 'code-reviewer',
+  description: 'Review security changes',
+  prompt: 'Analyze the authentication module changes for security vulnerabilities',
+});
 ```
 
 ## Common Agent Patterns
@@ -610,6 +621,7 @@ When [TASK TYPE]:
 3. [METHODOLOGY STEP 3]
 
 Focus on:
+
 - [QUALITY CRITERION 1]
 - [QUALITY CRITERION 2]
 
