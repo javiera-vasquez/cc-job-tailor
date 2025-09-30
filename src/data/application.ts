@@ -1,18 +1,35 @@
 // @ts-nocheck
 // Auto-generated application data - TypeScript validation disabled
 // Company: tech-corp
-// Generated at: 2025-09-24T16:28:51.847Z
+// Generated at: 2025-09-30T08:20:58.674Z
 
 import type { ApplicationData } from '../types';
 
 const applicationData: ApplicationData = {
   metadata: {
-    company: 'Tech-Corp',
+    company: 'tech-corp',
+    folder_path: 'resume-data/tailor/tech-corp',
+    available_files: ['resume.yaml', 'job_analysis.yaml', 'cover_letter.yaml', 'context.yaml'],
     position: 'Senior Frontend Engineer - Web, Open Application',
-    last_updated: '2025-09-19',
-    transformation_decisions:
-      'Prioritized React/TypeScript expertise for senior frontend role, emphasized scalable web application development, selected UI-focused achievements and performance optimization metrics',
-    job_focus_used: 'senior_engineer + [react, typescript, frontend, mobile]',
+    primary_focus: 'senior_engineer + [react, typescript, frontend, mobile]',
+    job_summary: 'Global delivery platform serving 20M+ users, modern TypeScript/React stack',
+    job_details: {
+      company: 'Tech-Corp',
+      location: 'Berlin, Germany',
+      experience_level: 'Senior',
+      employment_type: 'Full-time',
+      must_have_skills: [
+        'TypeScript',
+        'React',
+        '5+ years experience',
+        'Modern frontend development',
+        'Web application architecture',
+      ],
+      nice_to_have_skills: ['React Native', 'Python', 'Scala', 'International team experience'],
+      team_context: '500+ people in product organization, cross-functional teams',
+      user_scale: '20 million users in 30 countries',
+    },
+    last_updated: '2025-09-26T17:30:00Z',
   },
   resume: {
     name: 'John Doe',

@@ -20,8 +20,8 @@ Set the active company context for tailored resume operations. This command read
 ## What this command does:
 
 1. **Validate Company Folder**: Check that `resume-data/tailor/$1/` exists
-2. **Read Company Context**: Load the pre-built `context.yaml` file
-3. **Update Context State**: Copy content from `resume-data/tailor/$1/context.yaml` to `.claude/tailor-context.yaml` and update:
+2. **Read Company Metadata**: Load the pre-built `metadata.yaml` file
+3. **Update Context State**: Copy content from `resume-data/tailor/$1/metadata.yaml` to `.claude/tailor-context.yaml` and update:
    ```yaml
    last_updated: '2025-09-26T17:00:00Z'  # Only timestamp is updated
    ```
@@ -31,10 +31,10 @@ Set the active company context for tailored resume operations. This command read
 
 ```
 resume-data/tailor/$1/
+├── metadata.yaml        # Company metadata and context (REQUIRED)
 ├── resume.yaml          # Tailored resume for this company
 ├── job_analysis.yaml    # Job posting analysis and requirements
-├── cover_letter.yaml    # Tailored cover letter
-└── context.yaml         # Pre-built company context (REQUIRED)
+└── cover_letter.yaml    # Tailored cover letter
 ```
 
 ## Context Benefits:
@@ -51,11 +51,11 @@ After running this command, all subsequent interactions will:
 ## Process Flow:
 
 1. **Validate Folder**: Confirm `resume-data/tailor/$1/` exists
-2. **Validate Context File**: Check that `context.yaml` exists in company folder
-3. **Read Pre-built Context**: Load complete context from `resume-data/tailor/$1/context.yaml`
-4. **Update State**: Copy entire context to `.claude/tailor-context.yaml` and update:
+2. **Validate Metadata File**: Check that `metadata.yaml` exists in company folder
+3. **Read Pre-built Metadata**: Load complete metadata from `resume-data/tailor/$1/metadata.yaml`
+4. **Update State**: Copy entire metadata to `.claude/tailor-context.yaml` and update:
    - last_updated: Current timestamp (only field that changes)
-5. **Provide Summary**: Display company context overview from loaded context
+5. **Provide Summary**: Display company context overview from loaded metadata
 
 ## Example Output:
 
@@ -67,4 +67,4 @@ After running this command, all subsequent interactions will:
 🔧 Focus: senior_engineer + [react, typescript, frontend, mobile]
 ```
 
-Validate that the company folder exists, read the pre-built `context.yaml` file, copy its contents to `.claude/tailor-context.yaml` (updating only the timestamp), and provide a concise summary with company name, available files, position, and primary job focus.
+Validate that the company folder exists, read the pre-built `metadata.yaml` file, copy its contents to `.claude/tailor-context.yaml` (updating only the timestamp), and provide a concise summary with company name, available files, position, and primary job focus.

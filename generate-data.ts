@@ -57,6 +57,7 @@ function getCompanyFolderPath(company: string | undefined): string | null {
     // List available companies
     const availableCompanies = readdirSync(tailorPath).filter(
       (name) =>
+        existsSync(`${tailorPath}/${name}/metadata.yaml`) ||
         existsSync(`${tailorPath}/${name}/resume.yaml`) ||
         existsSync(`${tailorPath}/${name}/job_analysis.yaml`) ||
         existsSync(`${tailorPath}/${name}/cover_letter.yaml`),
@@ -77,11 +78,16 @@ function getCompanyFolderPath(company: string | undefined): string | null {
 
 // Load tailored data from company folder
 async function loadTailoredData(companyPath: string): Promise<ApplicationData> {
+  const metadataPath = `${companyPath}/metadata.yaml`;
   const resumePath = `${companyPath}/resume.yaml`;
   const jobAnalysisPath = `${companyPath}/job_analysis.yaml`;
   const coverLetterPath = `${companyPath}/cover_letter.yaml`;
 
   console.warn(`📂 Loading tailored data from: ${companyPath}`);
+
+  const metadata = existsSync(metadataPath)
+    ? (load(await Bun.file(metadataPath).text()) as Record<string, unknown>)
+    : undefined;
 
   const resumeFile = existsSync(resumePath)
     ? (load(await Bun.file(resumePath).text()) as Record<string, unknown>)
@@ -97,6 +103,7 @@ async function loadTailoredData(companyPath: string): Promise<ApplicationData> {
 
   // Log what was found
   const foundFiles = [];
+  if (metadata) foundFiles.push('metadata.yaml');
   if (resumeFile) foundFiles.push('resume.yaml');
   if (jobAnalysis) foundFiles.push('job_analysis.yaml');
   if (coverLetter) foundFiles.push('cover_letter.yaml');
@@ -108,7 +115,7 @@ async function loadTailoredData(companyPath: string): Promise<ApplicationData> {
   }
 
   return {
-    metadata: (resumeFile?.metadata as ApplicationData['metadata']) || null,
+    metadata: (metadata as ApplicationData['metadata']) || null,
     resume: (resumeFile?.resume as ApplicationData['resume']) || null,
     job_analysis: (jobAnalysis?.job_analysis as ApplicationData['job_analysis']) || null,
     cover_letter: (coverLetter?.cover_letter as ApplicationData['cover_letter']) || null,

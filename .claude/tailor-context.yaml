@@ -3,17 +3,17 @@
 # Used by the /tailor command to set active company context
 
 # Active company name (matches folder name in resume-data/tailor/)
-active_company: 'tech-corp'
+company: 'tech-corp'
 
 # Full path to company's tailor folder
 folder_path: 'resume-data/tailor/tech-corp'
 
 # List of files that exist in the company folder
 available_files:
+  - 'metadata.yaml'
   - 'resume.yaml'
   - 'job_analysis.yaml'
   - 'cover_letter.yaml'
-  - 'context.yaml'
 
 # Job details extracted from job_analysis.yaml
 position: 'Senior Frontend Engineer - Web, Open Application'
