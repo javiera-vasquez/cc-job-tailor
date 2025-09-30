@@ -23,7 +23,7 @@ Set the active company context for tailored resume operations. This command read
 2. **Read Company Metadata**: Load the pre-built `metadata.yaml` file
 3. **Update Context State**: Copy content from `resume-data/tailor/$1/metadata.yaml` to `.claude/tailor-context.yaml` and update:
    ```yaml
-   last_updated: '2025-09-26T17:00:00Z'  # Only timestamp is updated
+   last_updated: '2025-09-26T17:00:00Z' # Only timestamp is updated
    ```
 4. **Provide Summary**: Show brief overview of company materials and job focus
 

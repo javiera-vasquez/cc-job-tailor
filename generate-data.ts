@@ -174,10 +174,13 @@ await Bun.write('./src/data/application.ts', tsContent);
 
 // Format the generated file with Prettier
 console.warn('🎨 Formatting generated file with Prettier...');
-const prettierProcess = Bun.spawn(['bun', 'run', 'prettier', '--write', './src/data/application.ts'], {
-  stdout: 'pipe',
-  stderr: 'pipe',
-});
+const prettierProcess = Bun.spawn(
+  ['bun', 'run', 'prettier', '--write', './src/data/application.ts'],
+  {
+    stdout: 'pipe',
+    stderr: 'pipe',
+  },
+);
 
 await prettierProcess.exited;
 
