@@ -240,11 +240,23 @@ describe('Zod Schema Validation', () => {
   describe('MetadataSchema', () => {
     test('validates complete metadata', () => {
       const validMetadata = {
-        company: 'Test Company',
+        company: 'test-company',
+        folder_path: 'resume-data/tailor/test-company',
+        available_files: ['metadata.yaml', 'resume.yaml', 'job_analysis.yaml'],
         position: 'Software Engineer',
-        last_updated: '2024-01-01',
-        transformation_decisions: 'Test decisions',
-        job_focus_used: 'engineering',
+        primary_focus: 'engineer + [react, typescript]',
+        job_summary: 'Test company building modern applications',
+        job_details: {
+          company: 'Test Company',
+          location: 'Remote',
+          experience_level: 'Mid-level',
+          employment_type: 'Full-time',
+          must_have_skills: ['JavaScript', 'React'],
+          nice_to_have_skills: ['Node.js'],
+          team_context: 'Small team',
+          user_scale: '1000 users',
+        },
+        last_updated: '2024-01-01T00:00:00Z',
       };
 
       const result = MetadataSchema.safeParse(validMetadata);
@@ -254,10 +266,22 @@ describe('Zod Schema Validation', () => {
     test('requires all metadata fields to be non-empty strings', () => {
       const incompleteMetadata = {
         company: '', // Empty string should fail
+        folder_path: 'resume-data/tailor/test',
+        available_files: ['metadata.yaml'],
         position: 'Software Engineer',
+        primary_focus: 'engineer',
+        job_summary: 'Test summary',
+        job_details: {
+          company: 'Test Company',
+          location: 'Remote',
+          experience_level: 'Mid',
+          employment_type: 'Full-time',
+          must_have_skills: ['JS'],
+          nice_to_have_skills: [],
+          team_context: 'Team',
+          user_scale: '100',
+        },
         last_updated: '2024-01-01',
-        transformation_decisions: 'Test decisions',
-        job_focus_used: 'engineering',
       };
 
       const result = MetadataSchema.safeParse(incompleteMetadata);
