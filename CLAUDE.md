@@ -28,8 +28,22 @@ bun run save-to-pdf -C company-name
 # Generate TypeScript data from YAML
 bun run generate-data -C company-name
 
-# Type checking
-bun run tsc
+# Run all (generate data + start server)
+bun run start
+
+# Testing
+bun run test                # Run tests
+bun run test:watch          # Run tests in watch mode
+bun run test:coverage       # Run tests with coverage
+
+# Type checking and linting
+bun run tsc                 # Type checking
+bun run lint                # Run ESLint
+bun run lint:fix            # Run ESLint with auto-fix
+
+# Code formatting
+bun run format              # Format code with Prettier
+bun run format:check        # Check formatting without changes
 ```
 
 ## Architecture
@@ -100,36 +114,6 @@ Local documentation in `rpdf/`:
 - `fonts.md`: Font registration and typography
 - `styling.md`: CSS properties and responsive design
 
-## Design System
-
-### Design Tokens (`src/templates/design-tokens.ts`)
-
-Centralized styling constants for consistent PDF appearance:
-
-```typescript
-// Customizable brand colors
-colors: {
-  primary: tailwindColors.zinc[900],    // Main text/elements
-  accent: tailwindColors.rose[600],     // Highlights/links
-  darkGray: tailwindColors.zinc[800],   // Content text
-  mediumGray: tailwindColors.zinc[600], // Secondary text
-}
-
-// Typography scales
-typography: {
-  text: { size: 9, fontFamily: 'Lato' },
-  title: { fontSize: 22, fontFamily: 'Lato Bold' },
-  subtitle: { fontSize: 14, fontFamily: 'Lato Bold' },
-}
-
-// Layout spacing
-spacing: {
-  columnWidth: 180,
-  documentPadding: 42,
-  profileImageSize: 46,
-}
-```
-
 ## Quick Reference
 
 ### Key Files
@@ -156,10 +140,7 @@ spacing: {
 
 ## Claude Code Guidelines
 
-### Commit Message Policy
+### Pull Request & Commit Message Policy
 
 **IMPORTANT**: Never include Claude Code attribution or co-authored-by lines in git commit messages or pull requests. All commits should be clean and focused on the actual changes without tool attribution.
 
-### Pull Request Policy
-
-**CRITICAL**: Never add Claude Code attribution, "Generated with Claude Code", co-authored-by lines, or any tool attribution in pull request descriptions, titles, or comments. All PRs must appear as regular development work without mentioning AI assistance.
