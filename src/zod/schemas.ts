@@ -201,13 +201,27 @@ export const CoverLetterSchema = z.object({
   content: CoverLetterContentSchema,
 });
 
-// Metadata schema
+// Metadata schema (maps to metadata.yaml structure)
+export const JobDetailsSchema = z.object({
+  company: z.string().min(1),
+  location: z.string().min(1),
+  experience_level: z.string().min(1),
+  employment_type: z.string().min(1),
+  must_have_skills: z.array(z.string().min(1)),
+  nice_to_have_skills: z.array(z.string().min(1)),
+  team_context: z.string().min(1),
+  user_scale: z.string().min(1),
+});
+
 export const MetadataSchema = z.object({
   company: z.string().min(1),
+  folder_path: z.string().min(1),
+  available_files: z.array(z.string().min(1)),
   position: z.string().min(1),
+  primary_focus: z.string().min(1),
+  job_summary: z.string().min(1),
+  job_details: JobDetailsSchema,
   last_updated: z.string().min(1),
-  transformation_decisions: z.string().min(1),
-  job_focus_used: z.string().min(1),
 });
 
 // Main application data schema
