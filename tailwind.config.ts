@@ -4,7 +4,7 @@ export default {
   darkMode: ['class'],
   content: [
     './index.html',
-    './dev-server.tsx',
+    './index.tsx',
     './src/ui/**/*.{ts,tsx}',
   ],
   theme: {

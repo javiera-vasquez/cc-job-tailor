@@ -22,11 +22,6 @@ const App = () => {
       <header className="border-b bg-background p-4">
         <div className="container flex items-center justify-between">
           <h1 className="text-2xl font-bold">Resume Manager</h1>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm">
-              Download PDF
-            </Button>
-          </div>
         </div>
       </header>
 
