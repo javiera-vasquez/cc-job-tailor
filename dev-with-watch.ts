@@ -80,10 +80,10 @@ class EnhancedDevServer {
   }
 
   /**
-   * Create the main Bun dev server process
+   * Create the main Vite dev server process
    */
   private createDevServer(): ChildProcess {
-    const devServer = spawn('bun', ['--hot', 'index.html'], {
+    const devServer = spawn('bun', ['run', 'dev:vite'], {
       stdio: 'inherit',
       cwd: process.cwd(),
     });
