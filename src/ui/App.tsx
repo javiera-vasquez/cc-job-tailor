@@ -5,10 +5,10 @@ import { PDFViewer } from '@react-pdf/renderer';
 import '@ui/styles/globals.css';
 
 // Import shadcn/ui components
-import { Tabs, TabsList, TabsTrigger } from '@ui/components/ui/tabs';
 import { Card } from '@ui/components/ui/card';
 
 // Import custom components
+import { Header } from '@ui/components/Header';
 import { Sidebar } from '@ui/components/Sidebar';
 import { WidgetType, type WidgetConfig } from '@ui/components/widgets/types';
 
@@ -85,17 +85,7 @@ const App = () => {
   return (
     <div className="flex h-screen w-full flex-col">
       {/* Header */}
-      <header className="border-b border-border/40 px-6 py-2">
-        <div className="flex items-center justify-between">
-          <h1 className="text-xl font-semibold tracking-tight">Job Tailor</h1>
-          <Tabs value={activeDocument} onValueChange={(v) => setActiveDocument(v as 'resume' | 'cover-letter')}>
-            <TabsList className="bg-transparent border-0">
-              <TabsTrigger value="resume" className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-foreground rounded-none">Resume</TabsTrigger>
-              <TabsTrigger value="cover-letter" className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-foreground rounded-none">Cover Letter</TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
-      </header>
+      <Header activeDocument={activeDocument} onDocumentChange={setActiveDocument} />
 
       {/* Two column layout */}
       <div className="flex flex-1 overflow-hidden">
