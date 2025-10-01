@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
 import { PDFViewer } from '@react-pdf/renderer';
-
-// Import Tailwind CSS
-import '@ui/styles/globals.css';
-
-// Import shadcn/ui components
 import { Card } from '@ui/components/ui/card';
 
 // Import custom components
@@ -12,8 +7,10 @@ import { Header } from '@ui/components/Header';
 import { Sidebar } from '@ui/components/Sidebar';
 import { WidgetType, type WidgetConfig } from '@ui/components/widgets/types';
 
-import { resume, coverLetter } from '../';
+import { resume, coverLetter } from '../templates';
 import applicationData from '../data/application';
+
+import '@ui/styles/globals.css';
 
 console.log('Application Data', applicationData);
 
