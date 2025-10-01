@@ -7,20 +7,29 @@ import Title from './Title';
 import Body from './Body';
 import Signature from './Signature';
 
-import applicationData from '../../data/application';
 import { colors, spacing, typography } from '../design-tokens';
-import type { CoverLetterSchema, ContactDetails, ReactPDFProps } from '../../types';
+import type { CoverLetterSchema, ContactDetails, ReactPDFProps, ApplicationData } from '../../types';
 import { registerFonts } from '../fonts-register';
 
 // Register fonts
 registerFonts();
 
-// Get cover letter data from application data
-const coverLetterData: CoverLetterSchema | null = applicationData.cover_letter || null;
-// Extract contact info and name from resume data
-const personalInfo: (ContactDetails & { name?: string }) | null = applicationData.resume
-  ? { ...applicationData.resume.contact, name: applicationData.resume.name }
-  : null;
+// Extract cover letter and personal info from application data
+function getCoverLetterData(applicationData: ApplicationData | null): {
+  coverLetterData: CoverLetterSchema | null;
+  personalInfo: (ContactDetails & { name?: string }) | null;
+} {
+  if (!applicationData) {
+    return { coverLetterData: null, personalInfo: null };
+  }
+
+  const coverLetterData = applicationData.cover_letter || null;
+  const personalInfo = applicationData.resume
+    ? { ...applicationData.resume.contact, name: applicationData.resume.name }
+    : null;
+
+  return { coverLetterData, personalInfo };
+}
 
 const CoverLetter = ({
   size = 'A4',
@@ -51,7 +60,9 @@ const CoverLetter = ({
   );
 };
 
-const CoverLetterDocument = (): React.ReactElement => {
+const CoverLetterDocument = ({ data }: { data?: ApplicationData }): React.ReactElement => {
+  const { coverLetterData, personalInfo } = getCoverLetterData(data || null);
+
   if (!coverLetterData || !personalInfo) {
     // Return empty document if no cover letter data available
     return (

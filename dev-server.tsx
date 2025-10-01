@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { PDFViewer } from '@react-pdf/renderer';
-// import { Buffer } from 'buffer';
 
 // Import Tailwind CSS
 import '@ui/styles/globals.css';
@@ -11,10 +10,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@ui/components/ui/tabs
 import { Card } from '@ui/components/ui/card';
 import { Button } from '@ui/components/ui/button';
 
-// Polyfill Buffer for react-pdf in browser environment
-// globalThis.Buffer = Buffer;
-
 import { resume, coverLetter } from './src';
+import applicationData from './src/data/application';
 
 const App = () => {
   const [activeDocument, setActiveDocument] = useState<'resume' | 'cover-letter'>('resume');
@@ -48,7 +45,7 @@ const App = () => {
           <Card className="h-full overflow-hidden">
             {/* Fix issue reported on https://github.com/diegomura/react-pdf/issues/3153#issuecomment-2845169485 for react-reconsiler v0.31 */}
             <PDFViewer style={{ width: '100%', height: '100%' }} showToolbar={true} key={Date.now()}>
-              <resume.Document />
+              <resume.Document data={applicationData} />
             </PDFViewer>
           </Card>
         </TabsContent>
@@ -56,7 +53,7 @@ const App = () => {
         <TabsContent value="cover-letter" className="mt-4 h-[calc(100vh-12rem)]">
           <Card className="h-full overflow-hidden">
             <PDFViewer style={{ width: '100%', height: '100%' }} showToolbar={true} key={Date.now()}>
-              <coverLetter.Document />
+              <coverLetter.Document data={applicationData} />
             </PDFViewer>
           </Card>
         </TabsContent>
