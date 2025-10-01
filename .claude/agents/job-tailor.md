@@ -1,6 +1,6 @@
 ---
 name: job-tailor
-description: Job tailoring specialist that analyzes job applications and creates customized resume.yaml files optimized for specific positions and companies
+description: Job tailoring specialist, analyzes job applications and creates customized job analysis and resumes
 tools: Glob, Grep, Read, WebFetch, TodoWrite, WebSearch, BashOutput, KillBash, Edit, MultiEdit, Write, NotebookEdit, Bash
 ---
 

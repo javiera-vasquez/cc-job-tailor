@@ -1,6 +1,6 @@
 ---
 allowed-tools: Read, Write(.claude/tailor-context.yaml), Glob(resume-data/tailor/**)
-description: Set Claude Code context to work on a specifict company | argument-hint: company-name
+description: Set CC in /tailor mode, Ask claude for changes and improvements to the application assets  | argument-hint company-name
 ---
 
 # Tailor Company Context Command
