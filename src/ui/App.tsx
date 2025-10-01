@@ -23,7 +23,7 @@ const App = () => {
       {/* Header */}
       <header className="border-b border-border/40 px-6 py-4">
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-semibold tracking-tight">Resume Manager</h1>
+          <h1 className="text-xl font-semibold tracking-tight">Job Tailor</h1>
           <Tabs value={activeDocument} onValueChange={(v) => setActiveDocument(v as 'resume' | 'cover-letter')}>
             <TabsList className="bg-transparent border-0">
               <TabsTrigger value="resume" className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-foreground rounded-none">Resume</TabsTrigger>
@@ -46,7 +46,7 @@ const App = () => {
             </div>
           </div>
 
-          <Separator className="bg-border/30" />
+          <Separator className="bg-neutral-700" />
 
           {/* Job Summary */}
           <div className="space-y-3">
@@ -54,32 +54,7 @@ const App = () => {
             <p className="text-xs text-foreground opacity-80 leading-relaxed">{applicationData.metadata.job_summary}</p>
           </div>
 
-          <Separator className="bg-border/30" />
-
-          {/* Skills */}
-          <div className="space-y-3">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground opacity-60">Must Have Skills</h2>
-            <div className="flex flex-wrap gap-1.5">
-              {applicationData.job_analysis.requirements.must_have_skills.map((skill, i) => (
-                <Badge key={i} variant="secondary" className="text-xs font-normal px-2 py-0.5 text-foreground opacity-90 hover:opacity-100 transition-opacity">
-                  {skill.skill}
-                </Badge>
-              ))}
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground opacity-60">Nice to Have</h2>
-            <div className="flex flex-wrap gap-1.5">
-              {applicationData.job_analysis.requirements.nice_to_have_skills.map((skill, i) => (
-                <Badge key={i} variant="outline" className="text-xs font-normal px-2 py-0.5 text-foreground opacity-60 hover:opacity-90 transition-opacity">
-                  {skill.skill}
-                </Badge>
-              ))}
-            </div>
-          </div>
-
-          <Separator className="bg-border/30" />
+          <Separator className="bg-neutral-700" />
 
           {/* Job Details */}
           <div className="space-y-4">
@@ -104,10 +79,10 @@ const App = () => {
             </div>
           </div>
 
-          <Separator className="bg-border/30" />
+          <Separator className="bg-neutral-700" />
 
           {/* Responsibilities */}
-          <div className="space-y-3 pb-6">
+          <div className="space-y-3 pb-3">
             <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground opacity-60">Primary Responsibilities</h2>
             <ul className="space-y-2">
               {applicationData.job_analysis.responsibilities.primary.map((resp, i) => (
@@ -118,7 +93,9 @@ const App = () => {
             </ul>
           </div>
 
-          <div className="space-y-3">
+          <Separator className="bg-neutral-700" />
+
+          <div className="space-y-3 pb-3">
             <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground opacity-60">Secondary Responsibilities</h2>
             <ul className="space-y-2">
               {applicationData.job_analysis.responsibilities.secondary.map((resp, i) => (
@@ -128,6 +105,33 @@ const App = () => {
               ))}
             </ul>
           </div>
+
+          <Separator className="bg-neutral-700" />
+
+          {/* Skills */}
+          <div className="space-y-3">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground opacity-60">Must Have Skills</h2>
+            <div className="flex flex-wrap gap-1.5">
+              {applicationData.job_analysis.requirements.must_have_skills.map((skill, i) => (
+                <Badge key={i} variant="outline" className="text-xs font-normal px-2 py-0.5 text-foreground opacity-80">
+                  {skill.skill}
+                </Badge>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground opacity-60">Nice to Have</h2>
+            <div className="flex flex-wrap gap-1.5">
+              {applicationData.job_analysis.requirements.nice_to_have_skills.map((skill, i) => (
+                <Badge key={i} variant="outline" className="text-xs font-normal px-2 py-0.5 text-foreground opacity-80">
+                  {skill.skill}
+                </Badge>
+              ))}
+            </div>
+          </div>
+
+          
         </aside>
 
         {/* Main content - PDF Viewer */}
