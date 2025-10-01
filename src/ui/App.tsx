@@ -36,13 +36,13 @@ const App = () => {
       {/* Two column layout */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left sidebar - Metadata */}
-        <aside className="w-76 border-r border-border/40 bg-muted/20 overflow-y-auto px-6 py-6 space-y-8">
+        <aside className="w-76 border-r border-border/40 bg-muted/20 overflow-y-auto px-6 py-6 space-y-6">
           {/* Company */}
           <div className="space-y-3">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">Company</h2>
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground opacity-60">Company</h2>
             <div>
-              <p className="font-medium text-sm">{applicationData.metadata.company}</p>
-              <p className="text-xs text-muted-foreground/60 mt-1">{applicationData.metadata.position}</p>
+              <p className="font-medium text-sm text-foreground opacity-95">{applicationData.metadata.company}</p>
+              <p className="text-xs text-foreground opacity-60 mt-1">{applicationData.metadata.position}</p>
             </div>
           </div>
 
@@ -50,18 +50,18 @@ const App = () => {
 
           {/* Job Summary */}
           <div className="space-y-3">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">Summary</h2>
-            <p className="text-xs text-muted-foreground/80 leading-relaxed">{applicationData.metadata.job_summary}</p>
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground opacity-60">Summary</h2>
+            <p className="text-xs text-foreground opacity-80 leading-relaxed">{applicationData.metadata.job_summary}</p>
           </div>
 
           <Separator className="bg-border/30" />
 
           {/* Skills */}
           <div className="space-y-3">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">Must Have Skills</h2>
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground opacity-60">Must Have Skills</h2>
             <div className="flex flex-wrap gap-1.5">
               {applicationData.job_analysis.requirements.must_have_skills.map((skill, i) => (
-                <Badge key={i} variant="secondary" className="text-xs font-normal px-2 py-0.5 bg-muted/60 hover:bg-muted transition-colors">
+                <Badge key={i} variant="secondary" className="text-xs font-normal px-2 py-0.5 text-foreground opacity-90 hover:opacity-100 transition-opacity">
                   {skill.skill}
                 </Badge>
               ))}
@@ -69,10 +69,10 @@ const App = () => {
           </div>
 
           <div className="space-y-3">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">Nice to Have</h2>
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground opacity-60">Nice to Have</h2>
             <div className="flex flex-wrap gap-1.5">
               {applicationData.job_analysis.requirements.nice_to_have_skills.map((skill, i) => (
-                <Badge key={i} variant="outline" className="text-xs font-normal px-2 py-0.5 border-border/40 hover:bg-accent/5 transition-colors">
+                <Badge key={i} variant="outline" className="text-xs font-normal px-2 py-0.5 text-foreground opacity-60 hover:opacity-90 transition-opacity">
                   {skill.skill}
                 </Badge>
               ))}
@@ -83,23 +83,23 @@ const App = () => {
 
           {/* Job Details */}
           <div className="space-y-4">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">Details</h2>
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground opacity-60">Details</h2>
             <div className="space-y-3">
               <div>
-                <p className="text-xs text-muted-foreground/50 mb-0.5">Location</p>
-                <p className="text-xs text-muted-foreground/80">{applicationData.metadata.job_details.location}</p>
+                <p className="text-xs text-foreground opacity-50 mb-0.5">Location</p>
+                <p className="text-xs text-foreground opacity-90">{applicationData.metadata.job_details.location}</p>
               </div>
               <div>
-                <p className="text-xs text-muted-foreground/50 mb-0.5">Experience Level</p>
-                <p className="text-xs text-muted-foreground/80">{applicationData.metadata.job_details.experience_level}</p>
+                <p className="text-xs text-foreground opacity-50 mb-0.5">Experience Level</p>
+                <p className="text-xs text-foreground opacity-90">{applicationData.metadata.job_details.experience_level}</p>
               </div>
               <div>
-                <p className="text-xs text-muted-foreground/50 mb-0.5">Team Context</p>
-                <p className="text-xs text-muted-foreground/80">{applicationData.metadata.job_details.team_context}</p>
+                <p className="text-xs text-foreground opacity-50 mb-0.5">Team Context</p>
+                <p className="text-xs text-foreground opacity-90">{applicationData.metadata.job_details.team_context}</p>
               </div>
               <div>
-                <p className="text-xs text-muted-foreground/50 mb-0.5">User Scale</p>
-                <p className="text-xs text-muted-foreground/80">{applicationData.metadata.job_details.user_scale}</p>
+                <p className="text-xs text-foreground opacity-50 mb-0.5">User Scale</p>
+                <p className="text-xs text-foreground opacity-90">{applicationData.metadata.job_details.user_scale}</p>
               </div>
             </div>
           </div>
@@ -107,11 +107,11 @@ const App = () => {
           <Separator className="bg-border/30" />
 
           {/* Responsibilities */}
-          <div className="space-y-3">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">Primary Responsibilities</h2>
+          <div className="space-y-3 pb-6">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground opacity-60">Primary Responsibilities</h2>
             <ul className="space-y-2">
               {applicationData.job_analysis.responsibilities.primary.map((resp, i) => (
-                <li key={i} className="text-xs text-muted-foreground/70 pl-3 border-l-2 border-border/30 leading-relaxed">
+                <li key={i} className="text-xs text-foreground opacity-80 pl-3 border-l-2 border-border opacity-30 leading-relaxed">
                   {resp}
                 </li>
               ))}
@@ -119,10 +119,10 @@ const App = () => {
           </div>
 
           <div className="space-y-3">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">Secondary Responsibilities</h2>
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground opacity-60">Secondary Responsibilities</h2>
             <ul className="space-y-2">
               {applicationData.job_analysis.responsibilities.secondary.map((resp, i) => (
-                <li key={i} className="text-xs text-muted-foreground/70 pl-3 border-l-2 border-border/30 leading-relaxed">
+                <li key={i} className="text-xs text-foreground opacity-80 pl-3 border-l-2 border-border opacity-30 leading-relaxed">
                   {resp}
                 </li>
               ))}
