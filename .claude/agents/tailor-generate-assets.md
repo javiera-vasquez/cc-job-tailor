@@ -13,14 +13,17 @@ This sub-agent specializes in generating tailored `resume.yaml` and `cover_lette
 ## Prerequisites
 
 **REQUIRED INPUT:**
+
 - Company name argument (e.g., `tech-corp`)
 
 **REQUIRED FILES (must exist or agent throws error):**
+
 - `resume-data/tailor/[company-name]/` folder must exist
 - `resume-data/tailor/[company-name]/metadata.yaml` must exist
 - `resume-data/tailor/[company-name]/job_analysis.yaml` must exist
 
 **If prerequisites are missing, immediately return error:**
+
 ```
 Error: Cannot generate resume/cover letter for '[company-name]'
 Missing required files:
@@ -267,6 +270,7 @@ cover_letter:
 ### Validation Requirements:
 
 **Resume Schema:**
+
 - Technical expertise: max 4 categories
 - Skills per category: max 8 items
 - Soft skills: max 12 items
@@ -274,6 +278,7 @@ cover_letter:
 - Required fields: name, title, summary, contact, technical_expertise, skills
 
 **Cover Letter Schema:**
+
 - job_focus array is REQUIRED (copy from job_analysis.yaml)
 - job_focus weights must sum to 1.0
 - Body must be array of strings (200-400 words total)

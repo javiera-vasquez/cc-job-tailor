@@ -228,13 +228,7 @@ job_analysis:
   ats_analysis:
     title_variations: ['Senior AI Engineer', 'Senior ML Engineer', 'AI/ML Engineer']
     critical_phrases:
-      [
-        'React and TypeScript',
-        'AI/ML',
-        'LangChain',
-        'scalable applications',
-        '5+ years experience',
-      ]
+      ['React and TypeScript', 'AI/ML', 'LangChain', 'scalable applications', '5+ years experience']
 
   # Basic metadata
   application_info:
