@@ -35,6 +35,7 @@ The agents are pre-configured to generate files in v0.7 format with all required
 **Purpose**: Centralized company context and job details for the `/tailor` command and agents.
 
 **Schema**:
+
 ```yaml
 # Company Context File
 company: 'Company-Name'
@@ -67,6 +68,7 @@ last_updated: '2025-10-01T12:00:00Z'
 ```
 
 **How to Generate**:
+
 - Extract `company`, `position`, `location`, `experience_level`, `employment_type` from `job_analysis.yaml`
 - Derive `primary_focus` from highest weighted `job_focus` item
 - Extract `must_have_skills` and `nice_to_have_skills` from `job_analysis.requirements`
@@ -80,6 +82,7 @@ last_updated: '2025-10-01T12:00:00Z'
 **Changes**:
 
 **v0.6 Format** (BEFORE):
+
 ```yaml
 metadata:
   company: 'Company-Name'
@@ -94,6 +97,7 @@ resume:
 ```
 
 **v0.7 Format** (AFTER):
+
 ```yaml
 version: '2.0.0'
 metadata:
@@ -106,6 +110,7 @@ resume:
 ```
 
 **Key Changes**:
+
 - ✅ Add `version: '2.0.0'` at top level
 - ✅ Simplify `metadata` section:
   - Remove `company`, `position`, `transformation_decisions`, `job_focus_used`
@@ -123,15 +128,15 @@ resume:
 
 ```yaml
 # Top-level changes
-version: '2.0.0'  # Keep
-analysis_date: '2025-10-01'  # Update date
-source: 'Job posting source'  # Keep
+version: '2.0.0' # Keep
+analysis_date: '2025-10-01' # Update date
+source: 'Job posting source' # Keep
 
 job_analysis:
-  position: 'Senior Frontend Engineer - Web'  # v0.7: Shortened title
+  position: 'Senior Frontend Engineer - Web' # v0.7: Shortened title
   # v0.6 had: 'Senior Frontend Engineer - Web, Open Application'
 
-  location: 'Berlin, Germany (or remote in Sweden, Estonia, Finland)'  # v0.7: More specific
+  location: 'Berlin, Germany (or remote in Sweden, Estonia, Finland)' # v0.7: More specific
   # v0.6 had: 'Berlin, Germany'
 
   requirements:
@@ -144,6 +149,7 @@ job_analysis:
 ```
 
 **Minor adjustments**:
+
 - Shorten verbose position titles
 - Expand location details if remote options exist
 - Ensure `must_have_skills` includes explicit skill names (not just frameworks)
@@ -157,10 +163,10 @@ job_analysis:
 ```yaml
 # Top-level remains the same
 version: '2.0.0'
-analysis_date: '2025-10-01'  # Update date
+analysis_date: '2025-10-01' # Update date
 
 cover_letter:
-  position: 'Senior Frontend Engineer - Web'  # Shortened (match job_analysis)
+  position: 'Senior Frontend Engineer - Web' # Shortened (match job_analysis)
   # v0.6 had: 'Senior Frontend Engineer - Web, Open Application'
 
   # All other fields remain unchanged
@@ -215,6 +221,7 @@ All validation scripts use Zod schemas defined in `src/zod/schemas.ts`.
 ## Questions?
 
 Refer to:
+
 - `CHANGELOG.md` - Full v0.7 release notes
 - `src/zod/schemas.ts` - Schema definitions
 - `scripts/validate-*.ts` - Validation script implementations
