@@ -11,9 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **Job Analysis Agent**: New specialized agent for analyzing job postings and extracting structured requirements
-- **Job Tailoring Agent**: Comprehensive agent for generating tailored resumes and cover letters based on job analysis
-- **Validation Scripts**: Four new validation scripts for resume, cover letter, job analysis, and metadata files
+- **Job Analysis Agent**: New specialized `@agent-job-analysis` for analyzing job postings and extracting structured requirements
+- **Resume Tailoring Agent**: `@agent-tailor-resume-and-cover` for generating tailored resumes and cover letters based on job analysis
+- **Validation Scripts**: Four new validation scripts for `resume`, `cover letter`, `job analysis`, and `metadata` files
 - **Metadata System**: Introduced `metadata.yaml` for storing company-specific application context and job details
 - **Company Loader Module**: Centralized company data loading with validation and error handling
 - **CLI Arguments Parser**: Shared module for consistent command-line argument parsing across scripts
