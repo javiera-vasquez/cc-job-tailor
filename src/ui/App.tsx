@@ -18,7 +18,7 @@ const App = () => {
   const [activeDocument, setActiveDocument] = useState<'resume' | 'cover-letter'>('resume');
 
   return (
-    <div className="flex h-screen w-full flex-col">
+    <div className="dark flex h-screen w-full flex-col">
       {/* Header */}
       <header className="border-b bg-background p-4">
         <div className="container flex items-center justify-between">
