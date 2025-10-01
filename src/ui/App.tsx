@@ -90,7 +90,7 @@ const App = () => {
         <Sidebar widgets={SIDEBAR_WIDGETS} />
 
         {/* Main content - PDF Viewer */}
-        <main className="flex-1 p-6 pb-0">
+        <main className="flex-1 p-3 pb-0">
           <Card className="h-full overflow-hidden border-border/40 shadow-sm rounded-b-none">
             {activeDocument === 'resume' ? (
               <PDFViewer style={{ width: '100%', height: '100%' }} showToolbar={true} key={Date.now()}>
