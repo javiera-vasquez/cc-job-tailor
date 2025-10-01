@@ -21,8 +21,6 @@
   "scripts": {
     "dev": "bun dev-with-watch.ts",
     "dev:vite": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
     "save-to-pdf": "bun scripts/generate-data.ts \"$@\" && bun scripts/generate-pdf.ts \"$@\"",
     "generate-data": "bun scripts/generate-data.ts",
     "generate-pdf": "bun scripts/generate-pdf.ts",
