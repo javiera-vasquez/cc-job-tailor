@@ -7,13 +7,77 @@ import '@ui/styles/globals.css';
 // Import shadcn/ui components
 import { Tabs, TabsList, TabsTrigger } from '@ui/components/ui/tabs';
 import { Card } from '@ui/components/ui/card';
-import { Badge } from '@ui/components/ui/badge';
-import { Separator } from '@ui/components/ui/separator';
+
+// Import custom components
+import { Sidebar } from '@ui/components/Sidebar';
+import { WidgetType, type WidgetConfig } from '@ui/components/widgets/types';
 
 import { resume, coverLetter } from '../';
 import applicationData from '../data/application';
 
 console.log('Application Data', applicationData);
+
+const SIDEBAR_WIDGETS: WidgetConfig[] = [
+  {
+    type: WidgetType.HEADER,
+    title: 'Company',
+    data: {
+      primary: applicationData.metadata?.company || '',
+      secondary: applicationData.metadata?.position || '',
+    },
+  },
+  {
+    type: WidgetType.TEXT,
+    title: 'Summary',
+    data: {
+      content: applicationData.metadata?.job_summary || '',
+    },
+  },
+  {
+    type: WidgetType.KEY_VALUE,
+    title: 'Details',
+    className: 'space-y-4',
+    data: {
+      fields: [
+        { label: 'Location', value: applicationData.metadata?.job_details.location || '' },
+        { label: 'Experience Level', value: applicationData.metadata?.job_details.experience_level || '' },
+        { label: 'Team Context', value: applicationData.metadata?.job_details.team_context || '' },
+        { label: 'User Scale', value: applicationData.metadata?.job_details.user_scale || '' },
+      ],
+    },
+  },
+  {
+    type: WidgetType.LIST,
+    title: 'Primary Responsibilities',
+    className: 'pb-3',
+    data: {
+      items: applicationData.job_analysis?.responsibilities.primary || [],
+    },
+  },
+  {
+    type: WidgetType.LIST,
+    title: 'Secondary Responsibilities',
+    className: 'pb-3',
+    data: {
+      items: applicationData.job_analysis?.responsibilities.secondary || [],
+    },
+  },
+  {
+    type: WidgetType.BADGE_GROUP,
+    title: 'Must Have Skills',
+    data: {
+      badges: applicationData.job_analysis?.requirements.must_have_skills || [],
+    },
+  },
+  {
+    type: WidgetType.BADGE_GROUP,
+    title: 'Nice to Have',
+    showSeparator: false,
+    data: {
+      badges: applicationData.job_analysis?.requirements.nice_to_have_skills || [],
+    },
+  },
+];
 
 const App = () => {
   const [activeDocument, setActiveDocument] = useState<'resume' | 'cover-letter'>('resume');
@@ -21,7 +85,7 @@ const App = () => {
   return (
     <div className="flex h-screen w-full flex-col">
       {/* Header */}
-      <header className="border-b border-border/40 px-6 py-4">
+      <header className="border-b border-border/40 px-6 py-2">
         <div className="flex items-center justify-between">
           <h1 className="text-xl font-semibold tracking-tight">Job Tailor</h1>
           <Tabs value={activeDocument} onValueChange={(v) => setActiveDocument(v as 'resume' | 'cover-letter')}>
@@ -36,107 +100,11 @@ const App = () => {
       {/* Two column layout */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left sidebar - Metadata */}
-        <aside className="w-76 border-r border-border/40 bg-muted/20 overflow-y-auto px-6 py-6 space-y-6">
-          {/* Company */}
-          <div className="space-y-3">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground opacity-60">Company</h2>
-            <div>
-              <p className="font-medium text-sm text-foreground opacity-95">{applicationData.metadata.company}</p>
-              <p className="text-xs text-foreground opacity-60 mt-1">{applicationData.metadata.position}</p>
-            </div>
-          </div>
-
-          <Separator className="bg-neutral-700" />
-
-          {/* Job Summary */}
-          <div className="space-y-3">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground opacity-60">Summary</h2>
-            <p className="text-xs text-foreground opacity-80 leading-relaxed">{applicationData.metadata.job_summary}</p>
-          </div>
-
-          <Separator className="bg-neutral-700" />
-
-          {/* Job Details */}
-          <div className="space-y-4">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground opacity-60">Details</h2>
-            <div className="space-y-3">
-              <div>
-                <p className="text-xs text-foreground opacity-50 mb-0.5">Location</p>
-                <p className="text-xs text-foreground opacity-90">{applicationData.metadata.job_details.location}</p>
-              </div>
-              <div>
-                <p className="text-xs text-foreground opacity-50 mb-0.5">Experience Level</p>
-                <p className="text-xs text-foreground opacity-90">{applicationData.metadata.job_details.experience_level}</p>
-              </div>
-              <div>
-                <p className="text-xs text-foreground opacity-50 mb-0.5">Team Context</p>
-                <p className="text-xs text-foreground opacity-90">{applicationData.metadata.job_details.team_context}</p>
-              </div>
-              <div>
-                <p className="text-xs text-foreground opacity-50 mb-0.5">User Scale</p>
-                <p className="text-xs text-foreground opacity-90">{applicationData.metadata.job_details.user_scale}</p>
-              </div>
-            </div>
-          </div>
-
-          <Separator className="bg-neutral-700" />
-
-          {/* Responsibilities */}
-          <div className="space-y-3 pb-3">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground opacity-60">Primary Responsibilities</h2>
-            <ul className="space-y-2">
-              {applicationData.job_analysis.responsibilities.primary.map((resp, i) => (
-                <li key={i} className="text-xs text-foreground opacity-80 pl-3 border-l-2 border-border opacity-30 leading-relaxed">
-                  {resp}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <Separator className="bg-neutral-700" />
-
-          <div className="space-y-3 pb-3">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground opacity-60">Secondary Responsibilities</h2>
-            <ul className="space-y-2">
-              {applicationData.job_analysis.responsibilities.secondary.map((resp, i) => (
-                <li key={i} className="text-xs text-foreground opacity-80 pl-3 border-l-2 border-border opacity-30 leading-relaxed">
-                  {resp}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <Separator className="bg-neutral-700" />
-
-          {/* Skills */}
-          <div className="space-y-3">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground opacity-60">Must Have Skills</h2>
-            <div className="flex flex-wrap gap-1.5">
-              {applicationData.job_analysis.requirements.must_have_skills.map((skill, i) => (
-                <Badge key={i} variant="outline" className="text-xs font-normal px-2 py-0.5 text-foreground opacity-80">
-                  {skill.skill}
-                </Badge>
-              ))}
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground opacity-60">Nice to Have</h2>
-            <div className="flex flex-wrap gap-1.5">
-              {applicationData.job_analysis.requirements.nice_to_have_skills.map((skill, i) => (
-                <Badge key={i} variant="outline" className="text-xs font-normal px-2 py-0.5 text-foreground opacity-80">
-                  {skill.skill}
-                </Badge>
-              ))}
-            </div>
-          </div>
-
-          
-        </aside>
+        <Sidebar widgets={SIDEBAR_WIDGETS} />
 
         {/* Main content - PDF Viewer */}
-        <main className="flex-1 p-6">
-          <Card className="h-full overflow-hidden border-border/40 shadow-sm">
+        <main className="flex-1 p-6 pb-0">
+          <Card className="h-full overflow-hidden border-border/40 shadow-sm rounded-b-none">
             {activeDocument === 'resume' ? (
               <PDFViewer style={{ width: '100%', height: '100%' }} showToolbar={true} key={Date.now()}>
                 <resume.Document data={applicationData} />
