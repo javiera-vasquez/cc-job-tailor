@@ -1,4 +1,4 @@
-# Agent Usage Report: Tech-Corp Application
+# Report Card: Tokens Consumptions
 
 **Date:** 2025-10-01
 **Company:** Tech-Corp
@@ -8,14 +8,20 @@
 
 ## Resource Summary
 
-### Approach Comparison
+| Metric              | job-analysis | tailor-resume-and-cover | **Two-Agent Total** | Reference | **job-tailor** | **Difference** |
+| ------------------- | ------------ | ----------------------- | ------------------- | --------- | -------------- | -------------- |
+| **Execution Time**  | 1m 10s       | 2m 16s                  | **3m 26s**          | 7m 49s    | **4m 25s**     | **+59s**       |
+| **Total Tokens**    | 30,900       | 36,800                  | **67,700**          | 51,400    | **52,300**     | **-15,400 (-23%)** |
+| **Tool Uses**       | 8            | 22                      | **30**              | 33        | **30**         | **0**          |
+| **Files Generated** | 2            | 2                       | **4**               | 3         | **4**          | **0**          |
 
-| Metric              | job-analysis | tailor-resume-and-cover | **Two-Agent Total** | job-tailor | **Difference** |
-| ------------------- | ------------ | ----------------------- | ------------------- | ---------- | -------------- |
-| **Execution Time**  | 1m 10s       | 2m 16s                  | **3m 26s**          | 4m 25s     | +59s           |
-| **Total Tokens**    | 30,900       | 36,800                  | **67,700**          | 52,300     | -15,400 (-23%) |
-| **Tool Uses**       | 8            | 22                      | **30**              | 30         | 0              |
-| **Files Generated** | 2            | 2                       | **4**               | 4          | 0              |
+**Legend:**
+- **job-analysis**: Extracts job requirements and creates structured analysis (metadata.yaml + job_analysis.yaml)
+- **tailor-resume-and-cover**: Customizes resume and cover letter based on job analysis (resume.yaml + cover_letter.yaml)
+- **Two-Agent Total**: Sequential workflow running both agents above (original approach)
+- **Reference**: Initial unified agent (v0.6) combining both analysis and tailoring in one workflow (baseline)
+- **job-tailor**: Optimized unified agent (v0.7) with improved efficiency and faster execution
+- **Difference**: Comparison between job-tailor (v0.7) and Two-Agent Total approach
 
 ---
 
