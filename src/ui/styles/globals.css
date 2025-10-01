@@ -30,25 +30,25 @@
 
 .dark {
   @theme inline {
-    --color-background: hsl(0 0% 12%);
+    --color-background: hsl(0 0% 9%);
     --color-foreground: hsl(0 0% 100%);
-    --color-card: hsl(0 0% 16%);
+    --color-card: hsl(0 0% 13%);
     --color-card-foreground: hsl(0 0% 100%);
-    --color-popover: hsl(0 0% 16%);
+    --color-popover: hsl(0 0% 13%);
     --color-popover-foreground: hsl(0 0% 100%);
-    --color-primary: hsl(17 65% 60%);
+    --color-primary: hsl(17 75% 64%);
     --color-primary-foreground: hsl(0 0% 100%);
-    --color-secondary: hsl(0 0% 20%);
+    --color-secondary: hsl(0 0% 17%);
     --color-secondary-foreground: hsl(0 0% 100%);
-    --color-muted: hsl(0 0% 20%);
+    --color-muted: hsl(0 0% 17%);
     --color-muted-foreground: hsl(0 0% 70%);
-    --color-accent: hsl(17 65% 60%);
+    --color-accent: hsl(17 75% 64%);
     --color-accent-foreground: hsl(0 0% 100%);
     --color-destructive: hsl(358 75% 59%);
     --color-destructive-foreground: hsl(0 0% 100%);
-    --color-border: hsl(0 0% 20%);
-    --color-input: hsl(0 0% 20%);
-    --color-ring: hsl(17 65% 60%);
+    --color-border: hsl(0 0% 17%);
+    --color-input: hsl(0 0% 17%);
+    --color-ring: hsl(17 75% 64%);
   }
 }
 
