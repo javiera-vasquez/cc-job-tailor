@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from '@ui/components/ui/button';
+import { FileText, Mail } from 'lucide-react';
 
 interface HeaderProps {
   activeDocument: 'resume' | 'cover-letter';
@@ -16,12 +17,14 @@ export const Header: React.FC<HeaderProps> = ({ activeDocument, onDocumentChange
             variant={activeDocument === 'resume' ? 'default' : 'outline'}
             onClick={() => onDocumentChange('resume')}
           >
+            <FileText />
             Resume
           </Button>
           <Button
             variant={activeDocument === 'cover-letter' ? 'default' : 'outline'}
             onClick={() => onDocumentChange('cover-letter')}
           >
+            <Mail />
             Cover Letter
           </Button>
         </div>
