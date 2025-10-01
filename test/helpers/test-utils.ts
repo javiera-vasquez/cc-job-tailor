@@ -25,11 +25,23 @@ export function captureConsoleOutput(fn: () => void): string[] {
 export function createValidApplicationData(): ApplicationData {
   return {
     metadata: {
-      company: 'Test Company',
+      company: 'test-company',
+      folder_path: 'resume-data/tailor/test-company',
+      available_files: ['metadata.yaml', 'resume.yaml', 'job_analysis.yaml', 'cover_letter.yaml'],
       position: 'Software Engineer',
-      last_updated: '2024-01-01',
-      transformation_decisions: 'Test transformation',
-      job_focus_used: 'engineering',
+      primary_focus: 'engineer + [react, typescript]',
+      job_summary: 'Test company building modern applications',
+      job_details: {
+        company: 'Test Company',
+        location: 'Remote',
+        experience_level: 'Mid-level',
+        employment_type: 'Full-time',
+        must_have_skills: ['JavaScript', 'React', 'TypeScript'],
+        nice_to_have_skills: ['Node.js', 'GraphQL'],
+        team_context: 'Small agile team',
+        user_scale: '10,000 users',
+      },
+      last_updated: '2024-01-01T00:00:00Z',
     },
     resume: {
       name: 'John Doe',

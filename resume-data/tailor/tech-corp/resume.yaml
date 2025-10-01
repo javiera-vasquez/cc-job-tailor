@@ -1,15 +1,14 @@
+version: '2.0.0'
 metadata:
-  company: 'Tech-Corp'
-  position: 'Senior Frontend Engineer - Web, Open Application'
-  last_updated: '2025-09-19'
-  transformation_decisions: 'Prioritized React/TypeScript expertise for senior frontend role, emphasized scalable web application development, selected UI-focused achievements and performance optimization metrics'
-  job_focus_used: 'senior_engineer + [react, typescript, frontend, mobile]'
+  last_updated: '2025-10-01'
+  tailored_for: 'Tech-Corp - Senior Frontend Engineer - Web'
 
 resume:
   name: 'John Doe'
   profile_picture: 'https://i.guim.co.uk/img/media/a23aeb1f7ff20bb80f68852da17743b0e557f8ed/0_224_3504_2102/master/3504.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=9e9a99e479ee60270b69ede4d869b20f'
   title: 'Senior Frontend Engineer | UI/UX Advocate'
-  summary: 'Passionate Senior Frontend Engineer with a decade of experience creating beautiful, responsive, and accessible user interfaces. Expert in React, TypeScript, and modern CSS frameworks. Dedicated to best practices, component-driven development, and exceptional user experience.'
+  summary: 'Passionate Senior Frontend Engineer with a decade of experience building scalable applications serving millions of users daily. Expert in React, TypeScript, and modern frontend architecture, with proven impact delivering APIs handling 1M+ requests/day and leading platform migrations that improved performance by 30%. Dedicated to best practices, component-driven development, and exceptional user experience across cross-functional teams.'
+
   contact:
     phone: '+1 (555) 555-5555'
     email: 'john.doe@example.com'
@@ -19,24 +18,42 @@ resume:
 
   technical_expertise:
     - resume_title: 'Frontend Development'
-      skills: ['React', 'TypeScript', 'Next.js', 'JavaScript (ES6+)', 'HTML5 & CSS3']
+      skills:
+        - 'React'
+        - 'TypeScript'
+        - 'Next.js'
+        - 'JavaScript (ES6+)'
+        - 'HTML5 & CSS3'
+        - 'Tailwind CSS'
     - resume_title: 'Backend Development'
-      skills: ['Node.js', 'Express.js', 'Python', 'FastAPI', 'PostgreSQL']
+      skills:
+        - 'Node.js'
+        - 'Express.js'
+        - 'Python'
+        - 'FastAPI'
+        - 'PostgreSQL'
     - resume_title: 'Systems & Architecture'
-      skills: ['Microservices Architecture', 'REST APIs', 'GraphQL', 'Docker']
+      skills:
+        - 'Microservices Architecture'
+        - 'REST APIs'
+        - 'Docker'
+        - 'Kubernetes'
+    - resume_title: 'Version Control'
+      skills:
+        - 'Git'
+        - 'GitHub'
+        - 'GitLab'
 
   skills:
-    [
-      'Cross-functional Teamwork',
-      'Agile/Scrum Methodologies',
-      'Mentorship & Coaching',
-      'Analytical Thinking',
-      'Pattern Recognition',
-      'Strategic Planning',
-      'Technical Documentation',
-      'Stakeholder Communication',
-      'Clear Code Commenting',
-    ]
+    - 'Cross-functional Teamwork'
+    - 'Agile/Scrum Methodologies'
+    - 'Analytical Thinking'
+    - 'Strategic Planning'
+    - 'Technical Documentation'
+    - 'Stakeholder Communication'
+    - 'Mentorship & Coaching'
+    - 'Pattern Recognition'
+    - 'Clear Code Commenting'
 
   languages:
     - language: 'Spanish'
@@ -56,8 +73,8 @@ resume:
       achievements:
         - 'Created a complex data visualization dashboard with React and D3.js to display model performance metrics.'
         - 'Championed the adoption of a design system, ensuring UI consistency across all AI products.'
-        - 'Designed and implemented a REST API for a new semantic search feature, serving over 1M requests per day.'
         - 'Developed a full-stack application for real-time log analysis using Node.js, React, and WebSocket.'
+        - 'Designed and implemented a REST API for a new semantic search feature, serving over 1M requests per day.'
 
     - company: 'NextGen Solutions'
       position: 'Senior Software Engineer'
@@ -81,7 +98,6 @@ resume:
         - 'Translated complex design mockups into pixel-perfect, responsive web pages using HTML, CSS, and JavaScript.'
         - 'Worked closely with designers to improve user experience and accessibility.'
         - 'Developed and maintained over 15 full-stack web applications for clients using the MERN stack.'
-        - 'Performed manual and automated testing to ensure cross-browser compatibility and functionality.'
 
   independent_projects:
     - name: 'Claude Code Job Tailor'
@@ -91,7 +107,6 @@ resume:
       url: 'https://github.com/javiera-vasquez/cc-job-tailor'
       achievements:
         - 'Developed a data-driven system to manage resume content in structured YAML files.'
-        - 'Built an AI agent with Claude Code to analyze job postings and automatically select relevant achievements and skills.'
         - 'Created a PDF generation service using @react-pdf/renderer to produce professional, ATS-friendly resumes.'
         - 'Implemented a live preview server with hot reload using Bun.js to facilitate rapid template development.'
       impact: 'Automates the time-consuming process of resume customization, enabling users to generate optimized applications in minutes instead of hours and improving job application effectiveness.'

@@ -25,6 +25,7 @@ import {
   JobAnalysisSchema as JobAnalysisSchemaZod,
   CoverLetterContentSchema,
   CoverLetterSchema as CoverLetterSchemaZod,
+  JobDetailsSchema,
   MetadataSchema as MetadataSchemaZod,
   ApplicationDataSchema,
 } from './zod/schemas';
@@ -53,6 +54,7 @@ export type ATSAnalysis = z.infer<typeof ATSAnalysisSchema>;
 export type JobAnalysisSchema = z.infer<typeof JobAnalysisSchemaZod>;
 export type CoverLetterContent = z.infer<typeof CoverLetterContentSchema>;
 export type CoverLetterSchema = z.infer<typeof CoverLetterSchemaZod>;
+export type JobDetails = z.infer<typeof JobDetailsSchema>;
 export type MetadataSchema = z.infer<typeof MetadataSchemaZod>;
 export type ApplicationData = z.infer<typeof ApplicationDataSchema>;
 

@@ -7,6 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 2025-10-01
+
+### Added
+
+- **Job Analysis Agent**: New specialized `@agent-job-analysis` for analyzing job postings and extracting structured requirements
+- **Resume Tailoring Agent**: `@agent-tailor-resume-and-cover` for generating tailored resumes and cover letters based on job analysis
+- **Validation Scripts**: Four new validation scripts for `resume`, `cover letter`, `job analysis`, and `metadata` files
+- **Metadata System**: Introduced `metadata.yaml` for storing company-specific application context and job details
+- **Company Loader Module**: Centralized company data loading with validation and error handling
+- **CLI Arguments Parser**: Shared module for consistent command-line argument parsing across scripts
+- **Sub-agents Documentation**: Comprehensive guide for creating and configuring Claude Code sub-agents
+
+### Changed
+
+- **Script Organization**: Moved `generate-data.ts` and `generate-pdf.ts` to `scripts/` directory
+- **Data Generation**: Enhanced to load and validate `metadata.yaml` alongside other company files
+- **Tailor Command**: Updated to utilize pre-built `context.yaml` file instead of reading multiple individual files
+- **Agent Workflow**: Improved job tailoring agent with mandatory validation steps and metadata generation
+- **Application Data Structure**: Enhanced metadata structure with job details, skills requirements, and folder paths
+- **Formatting Process**: Integrated Prettier formatting for generated TypeScript modules
+
+### Technical Details
+
+- **JobDetailsSchema**: New Zod schema for structured job information (company, location, experience level, skills)
+- **MetadataSchema**: Updated to include comprehensive job details and extended context fields
+- **Validation Requirements**: All generated YAML files must pass schema validation before task completion
+- **Error Handling**: Enhanced error messages and validation feedback for missing or invalid data
+- **Context Management**: Improved company context tracking with timestamps and available files list
+
+### Documentation
+
+- **Token Consumption Report** (`TOKEN_CONSUME.md`): Added cost and resource usage analysis for different agent approaches
+- **CC Agents Context**: Comprehensive documentation on sub-agent system fundamentals and best practices
+- **CLAUDE.md**: Updated with pull request and commit message policies
+- **Transformation Rules**: Enhanced mapping rules with metadata generation specifications
+
 ## [0.6.2] - 2025-09-26
 
 ### Added

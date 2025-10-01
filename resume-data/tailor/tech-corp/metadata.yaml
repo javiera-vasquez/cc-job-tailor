@@ -3,7 +3,7 @@
 # Used by the /tailor command to set active company context
 
 # Active company name (matches folder name in resume-data/tailor/)
-company: 'tech-corp'
+company: 'Tech-Corp'
 
 # Full path to company's tailor folder
 folder_path: 'resume-data/tailor/tech-corp'
@@ -11,15 +11,15 @@ folder_path: 'resume-data/tailor/tech-corp'
 # List of files that exist in the company folder
 available_files:
   - 'metadata.yaml'
-  - 'resume.yaml'
   - 'job_analysis.yaml'
+  - 'resume.yaml'
   - 'cover_letter.yaml'
 
 # Job details extracted from job_analysis.yaml
-position: 'Senior Frontend Engineer - Web, Open Application'
+position: 'Senior Frontend Engineer - Web'
 
 # Primary job focus area from job_analysis.yaml (highest weighted primary_area)
-primary_focus: 'senior_engineer + [react, typescript, frontend, mobile]'
+primary_focus: 'senior_engineer + [react, typescript, frontend]'
 
 # Brief summary of job requirements (max 100 chars)
 job_summary: 'Global delivery platform serving 20M+ users, modern TypeScript/React stack'
@@ -27,20 +27,22 @@ job_summary: 'Global delivery platform serving 20M+ users, modern TypeScript/Rea
 # Extended job details for context
 job_details:
   company: 'Tech-Corp'
-  location: 'Berlin, Germany'
+  location: 'Berlin, Germany (or remote in Sweden, Estonia, Finland)'
   experience_level: 'Senior'
   employment_type: 'Full-time'
   must_have_skills:
-    [
-      'TypeScript',
-      'React',
-      '5+ years experience',
-      'Modern frontend development',
-      'Web application architecture',
-    ]
-  nice_to_have_skills: ['React Native', 'Python', 'Scala', 'International team experience']
+    - 'TypeScript'
+    - 'React'
+    - 'Frontend Development'
+    - '5+ years experience'
+    - 'Scalable applications'
+  nice_to_have_skills:
+    - 'React Native'
+    - 'Backend experience'
+    - 'Python'
+    - 'Scala'
   team_context: '500+ people in product organization, cross-functional teams'
-  user_scale: '20 million users in 30 countries'
+  user_scale: '20 million users globally across 500 cities in 30 countries'
 
-# Timestamp when context was last set (ISO format)
-last_updated: '2025-10-01T13:56:45Z'
+# Timestamp when metadata was last generated (ISO format)
+last_updated: '2025-10-01T12:00:00Z'

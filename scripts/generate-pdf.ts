@@ -1,46 +1,17 @@
 import React from 'react';
 import { renderToFile } from '@react-pdf/renderer';
-import { resume, coverLetter } from './src';
+import { resume, coverLetter } from '../src';
 import path from 'path';
-import { parseArgs } from 'util';
 import { mkdir } from 'fs/promises';
+import { parsePdfArgs } from './shared/cli-args';
+import {
+  throwNoCompanyError,
+  throwInvalidDocumentTypeError,
+  throwDataGenerationError,
+} from './shared/error-messages';
 
 // Parse command line arguments
-const { values } = parseArgs({
-  args: Bun.argv.slice(2),
-  options: {
-    company: {
-      type: 'string',
-      short: 'C',
-      multiple: false,
-    },
-    document: {
-      type: 'string',
-      short: 'D',
-      multiple: false,
-    },
-  },
-  strict: true,
-  allowPositionals: false,
-});
-
-const companyName = values.company;
-const documentType = values.document || 'both'; // 'resume', 'cover-letter', or 'both'
-
-// Function to provide error guidance when no company is specified
-function throwNoCompanyError(): never {
-  throw new Error(
-    `No company specified. PDF generation requires company-specific data.\n\n` +
-      `To generate a PDF:\n` +
-      `1. Use Claude Code to analyze a job posting\n` +
-      `2. Run: @agent-job-tailor analyze job [file|url]\n` +
-      `3. Then use -C flag with the company name to generate PDF\n\n` +
-      `Examples:\n` +
-      `  bun run generate-pdf.ts -C "company-name"                    # Generate both resume and cover letter\n` +
-      `  bun run generate-pdf.ts -C "company-name" -D resume          # Generate resume only\n` +
-      `  bun run generate-pdf.ts -C "company-name" -D cover-letter    # Generate cover letter only`,
-  );
-}
+const { company: companyName, document: documentType } = parsePdfArgs();
 
 const generatePdf = async () => {
   if (!companyName) {
@@ -51,14 +22,14 @@ const generatePdf = async () => {
   console.warn(`Generating data for ${companyName}...`);
   try {
     const dataGenProcess = Bun.spawn({
-      cmd: ['bun', 'run', 'generate-data.ts', '-C', companyName],
+      cmd: ['bun', 'run', 'scripts/generate-data.ts', '-C', companyName],
       cwd: process.cwd(),
       stdio: ['inherit', 'inherit', 'inherit'],
     });
 
     const exitCode = await dataGenProcess.exited;
     if (exitCode !== 0) {
-      throw new Error(`Data generation failed with exit code ${exitCode}`);
+      throwDataGenerationError(companyName, exitCode);
     }
 
     console.warn(`Data generation completed for ${companyName}`);
@@ -68,7 +39,7 @@ const generatePdf = async () => {
   }
 
   // Ensure tmp directory exists
-  const tmpDir = path.join(__dirname, 'tmp');
+  const tmpDir = path.join(import.meta.dir, '..', 'tmp');
   try {
     await mkdir(tmpDir, { recursive: true });
   } catch {
@@ -99,10 +70,8 @@ const generatePdf = async () => {
     await generateDocument('resume');
   } else if (documentType === 'cover-letter') {
     await generateDocument('cover-letter');
-  } else {
-    throw new Error(
-      `Invalid document type: ${documentType}. Must be 'resume', 'cover-letter', or 'both'`,
-    );
+  } else if (documentType) {
+    throwInvalidDocumentTypeError(documentType);
   }
 };
 

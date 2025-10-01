@@ -21,16 +21,18 @@ Claude-powered resume generator that treats your career as structured data. Writ
 
 This project includes specialized commands and AI agents to streamline your resume tailoring workflow:
 
-| Command                                                   | Purpose                                                                                                                              |
-| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `/tailor company-name`                                    | Set Claude Code in `/tailor` mode, define a company and then let Claude help you to decide what skill are the most valuables to show |
-| `/generate-pdf company-name [resume\|cover-letter\|both]` | Generate PDF documents for specific company                                                                                          |
-| `/tailor-help`                                            | Show resume tailoring workflow and available commands                                                                                |
-| `@agent-job-tailor`                                       | Claude help you to analyzing job postings and created tailored resumes and cover letters                                             |
-| `@agent-pdf-template-migrator`                            | Expert agent for migrating visual PDF templates to React-PDF components                                                              |
-| `bun run dev`                                             | Start the live preview development server with file watching                                                                         |
-| `bun run save-to-pdf -C company-name`                     | Generate PDF to `tmp/resume-{company-name}.pdf` (automatically generates data first)                                                 |
-| `bun run generate-data -C company-name`                   | Manually convert YAML data to TypeScript module for specific company                                                                 |
+| Command/Agent                                             | Type    | Purpose                                                                                                                                                       |
+| --------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/tailor company-name`                                    | Command | Set active company context for tailored resume operations. **Protip:** Add "run dev server" and Claude will start live preview with automatic data validation |
+| `/generate-pdf company-name [resume\|cover-letter\|both]` | Command | Generate PDF documents for specific company                                                                                                                   |
+| `/tailor-help`                                            | Command | Show resume tailoring workflow and available commands                                                                                                         |
+| `@agent-job-analysis`                                     | Agent   | Analyze job postings and extract structured requirements and metadata                                                                                         |
+| `@agent-job-tailor`                                       | Agent   | Complete workflow: analyze jobs and create tailored resumes and cover letters                                                                                 |
+| `@agent-tailor-resume-and-cover`                          | Agent   | Generate tailored resume and cover letter using existing job analysis                                                                                         |
+| `@agent-rpdf-template-expert`                             | Agent   | Expert for migrating visual PDF templates to React-PDF components                                                                                             |
+| `bun run dev`                                             | Script  | Start live preview development server with file watching                                                                                                      |
+| `bun run save-to-pdf -C company-name`                     | Script  | Generate PDF to `tmp/` (automatically generates data first)                                                                                                   |
+| `bun run generate-data -C company-name`                   | Script  | Convert YAML data to TypeScript module for specific company                                                                                                   |
 
 ## PDF Output Examples
 
@@ -43,7 +45,7 @@ You can review the PDF examples generated by the system in the [`public/pdf-exam
 | [`resume.pdf`](public/pdf-examples/resume.pdf)             | Example tailored resume for a Senior Frontend Engineer position | [`ResumeSchema`](src/types.ts#L43): name, title, summary, contact details, technical expertise categories, skills array, languages, professional experience, independent projects, education |
 | [`cover-letter.pdf`](public/pdf-examples/cover-letter.pdf) | Example personalized cover letter                               | [`CoverLetterSchema`](src/types.ts#L59): company, position, job focus array, primary focus, date, personal info, content with opening/body/signature                                         |
 
-These files demonstrate the default styling using the design tokens system in `src/templates/design-tokens.ts`. Use `@agent-pdf-template-migrator` to modify templates and styling.
+These files demonstrate the default styling using the design tokens system in `src/templates/design-tokens.ts`. Use `@agent-rpdf-template-expert` to modify templates and styling.
 
 ## How It Works
 
@@ -66,6 +68,15 @@ The process is designed to be simple and powerful, flowing from your data to the
                   └────────────────┘     │ tailor/)          │     └─────────────────┘
                                          └───────────────────┘
 ```
+
+### Tailored Documents (`resume-data/tailor/[company-name]/`)
+
+Each company folder contains four optimized files:
+
+- **`metadata.yaml`** - Company context including position, primary focus areas, job summary, must-have skills, and folder information. Used by the `/tailor` command to set active context.
+- **`job_analysis.yaml`** - Structured job requirements with weighted skills priorities (1-10 scale), candidate alignment analysis, optimization strategies, and ATS keywords.
+- **`resume.yaml`** - Optimized resume with selected title and summary based on job focus, prioritized technical expertise, and relevant achievements matching job specialties.
+- **`cover_letter.yaml`** - Personalized cover letter emphasizing qualifications that align with the job's weighted focus areas and required skills.
 
 ## Getting Started
 

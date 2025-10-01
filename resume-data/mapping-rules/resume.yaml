@@ -6,13 +6,6 @@ description: 'Transformation rules for job-tailor agent to convert rich resume d
 
 # Target output schema structure (what React-PDF expects)
 target_schema:
-  metadata:
-    company: 'string' # Target company name
-    position: 'string' # Job position title
-    last_updated: 'string' # ISO date when data was last updated
-    transformation_decisions: 'string' # Summary of tailoring decisions made
-    job_focus_used: 'string' # Primary job focus applied for tailoring
-
   resume:
     name: 'string'
     profile_picture: 'string'
@@ -28,36 +21,6 @@ target_schema:
 
 # Transformation mapping rules
 transformation_rules:
-  # Metadata generation rules
-  metadata_generation:
-    - source: 'job_analysis.company'
-      target: 'metadata.company'
-      description: 'Extract company name from job analysis'
-    - source: 'job_analysis.position'
-      target: 'metadata.position'
-      description: 'Extract position title from job analysis'
-    - source: 'current_date'
-      target: 'metadata.last_updated'
-      description: 'Set to current ISO date when tailoring is performed'
-    - source: 'generated'
-      target: 'metadata.transformation_decisions'
-      description: 'Document key decisions made during tailoring process'
-      generation_logic: |
-        Generate concise summary of transformation decisions:
-        - Primary job focus selected and rationale
-        - Technical expertise categories prioritized
-        - Experience achievements selected
-        - Skills emphasized or de-emphasized
-        Example: "Prioritized React/TypeScript expertise for senior frontend role, emphasized scalable app development, selected UI-focused achievements"
-    - source: 'job_analysis.job_focus'
-      target: 'metadata.job_focus_used'
-      description: 'Format job focus array into readable string'
-      format_logic: |
-        Convert job_focus array to descriptive string:
-        - Use highest weighted primary_area as main focus
-        - List key specialties in brackets
-        Example: "senior_engineer + [react, typescript, frontend]"
-
   # Direct copy fields (no transformation needed)
   direct_mapping:
     - source: 'personal_info.name'

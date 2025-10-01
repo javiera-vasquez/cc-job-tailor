@@ -1,6 +1,6 @@
 ---
-name: pdf-template-migrator
-description: Expert in migrating visual PDF templates to React-PDF components through template analysis and component modification
+name: rpdf-template-expert
+description: Expert in creating stunning PDF templates using React-PDF
 tools: Read, Grep, Glob, Edit, MultiEdit, Task, WebFetch
 ---
 
