@@ -1,6 +1,7 @@
 import React from 'react';
 import { renderToFile } from '@react-pdf/renderer';
 import { resume, coverLetter } from '../src';
+import applicationData from '../src/data/application';
 import path from 'path';
 import { mkdir } from 'fs/promises';
 import { parsePdfArgs } from './shared/cli-args';
@@ -50,14 +51,15 @@ const generatePdf = async () => {
   const generateDocument = async (docType: 'resume' | 'cover-letter') => {
     const component =
       docType === 'resume'
-        ? React.createElement(resume.Document)
-        : React.createElement(coverLetter.Document);
+        ? React.createElement(resume.Document, { data: applicationData })
+        : React.createElement(coverLetter.Document, { data: applicationData });
 
     const filePath = path.join(tmpDir, `${docType}-${companyName}.pdf`);
 
     console.warn(`Generating ${docType} PDF for ${companyName} at ${filePath}`);
 
-    await renderToFile(component, filePath);
+    // Type assertion needed because renderToFile expects DocumentProps but our wrapper has custom props
+    await renderToFile(component as any, filePath);
 
     console.warn(`${docType} PDF generated successfully for ${companyName}`);
   };
