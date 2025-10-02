@@ -13,8 +13,8 @@ export const Header: React.FC<HeaderProps> = ({ activeDocument, onDocumentChange
       <div className="grid grid-cols-[300px_1fr] items-center">
         <h1 className="flex items-center gap-2 text-md font-semibold tracking-tight">
           <svg
-            width="28"
-            height="28"
+            width="24"
+            height="24"
             viewBox="0 0 1200 1200"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -27,7 +27,7 @@ export const Header: React.FC<HeaderProps> = ({ activeDocument, onDocumentChange
               />
             </g>
           </svg>
-          Job Tailor
+          <span className='opacity-80'>Job Tailor</span>
         </h1>
         <div className="flex justify-center gap-2">
           <Button
