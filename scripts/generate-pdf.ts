@@ -1,6 +1,6 @@
 import React from 'react';
 import { renderToFile } from '@react-pdf/renderer';
-import { resume, coverLetter } from '../src';
+import { resume, coverLetter } from '../src/templates';
 import applicationData from '../src/data/application';
 import path from 'path';
 import { mkdir } from 'fs/promises';
