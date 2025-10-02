@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0] - 2025-10-02
+
+### Added
+
+- **Interactive Development UI**: New web-based interface with live PDF preview and document switcher
+- **Job Context Sidebar**: Display job requirements, must-have/nice-to-have skills, and key responsibilities with automatic scroll tracking
+- **Visual Navigation**: Smooth scrolling between sidebar sections with active section highlighting
+- **Dark Mode Support**: Complete dark theme implementation
+
+### Changed
+
+- **Development Workflow**: Replaced basic PDF viewer with rich web UI using Vite, Tailwind CSS, and shadcn/ui
+- **Document Selection**: Easy toggle between Resume and Cover Letter views with icon indicators
+- **Component Architecture**: Modular design with reusable UI components (Header, Sidebar, Navigation)
+
 ## [0.7.0] - 2025-10-01
 
 ### Added
