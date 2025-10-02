@@ -53,7 +53,7 @@ bun run format:check        # Check formatting without changes
 ### File Structure
 
 ```
-├── dev-server-index.tsx    # Development server entry point
+├── index.tsx    # Development server entry point
 ├── dev-with-watch.ts      # Development server with file watching
 ├── generate-data.ts       # YAML to TypeScript converter with Zod validation
 ├── generate-pdf.ts        # Server-side PDF generation

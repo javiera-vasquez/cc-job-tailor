@@ -6,6 +6,9 @@ out
 dist
 tmp/
 *.tgz
+
+# generated CSS
+src/ui/styles/output.css
 # public/jobs/
 # src/data/
 # resume-data/tailor/

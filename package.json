@@ -1,11 +1,18 @@
 {
-  "version": "0.7.0",
+  "version": "0.8.0",
   "dependencies": {
+    "@radix-ui/react-separator": "^1.1.7",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-tabs": "^1.1.13",
     "@react-pdf/renderer": "^4.3.0",
     "@types/js-yaml": "^4.0.9",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "js-yaml": "^4.1.0",
+    "lucide-react": "^0.544.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "tailwind-merge": "^3.3.1",
     "zod": "^3.23.8"
   },
   "name": "cc-resume-manager",
@@ -14,6 +21,7 @@
   "license": "CC-BY-NC-4.0",
   "scripts": {
     "dev": "bun dev-with-watch.ts",
+    "dev:vite": "vite",
     "save-to-pdf": "bun scripts/generate-data.ts \"$@\" && bun scripts/generate-pdf.ts \"$@\"",
     "generate-data": "bun scripts/generate-data.ts",
     "generate-pdf": "bun scripts/generate-pdf.ts",
@@ -31,13 +39,21 @@
     "format:check": "prettier --check ."
   },
   "devDependencies": {
+    "@tailwindcss/vite": "^4.1.13",
     "@types/bun": "latest",
+    "@types/node": "^24.6.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@typescript-eslint/eslint-plugin": "^8.44.1",
     "@typescript-eslint/parser": "^8.44.1",
+    "@vitejs/plugin-react": "^5.0.4",
+    "autoprefixer": "^10.4.21",
     "eslint": "^9.36.0",
-    "prettier": "^3.6.2"
+    "postcss": "^8.5.6",
+    "prettier": "^3.6.2",
+    "tailwindcss": "^4.1.13",
+    "tailwindcss-animate": "^1.0.7",
+    "vite": "^7.1.7"
   },
   "peerDependencies": {
     "typescript": "^5"

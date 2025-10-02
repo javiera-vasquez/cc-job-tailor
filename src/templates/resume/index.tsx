@@ -8,9 +8,8 @@ import Languages from './Languages';
 import Education from './Education';
 import Experience from './Experience';
 
-import applicationData from '../../data/application';
 import { colors, spacing, typography } from '../design-tokens';
-import type { ResumeSchema, ReactPDFProps } from '../../types';
+import type { ResumeSchema, ReactPDFProps, ApplicationData } from '../../types';
 import { registerFonts } from '../fonts-register';
 
 // Register available fonts
@@ -44,12 +43,14 @@ function transformSourceToResumeSchema(sourceData: any): ResumeSchema {
   };
 }
 
-// Get resume data from application data
-const resumeData: ResumeSchema | null = applicationData.resume
-  ? (applicationData.resume as any).personal_info
+// Transform application data to resume data
+function getResumeData(applicationData: ApplicationData | null): ResumeSchema | null {
+  if (!applicationData?.resume) return null;
+
+  return (applicationData.resume as any).personal_info
     ? transformSourceToResumeSchema(applicationData.resume) // Source data format - needs transformation
-    : (applicationData.resume as ResumeSchema) // Tailored format
-  : null;
+    : (applicationData.resume as ResumeSchema); // Tailored format
+}
 
 // 72 dpi is the default for PDF
 // Ensure A4 page sizing (595.5 × 842.25 points)
@@ -91,7 +92,9 @@ const Resume = ({
   </Page>
 );
 
-const ResumeDocument = (): React.ReactElement => {
+const ResumeDocument = ({ data }: { data?: ApplicationData }): React.ReactElement => {
+  const resumeData = getResumeData(data || null);
+
   if (!resumeData) {
     // Return empty document if no resume data available
     return (
