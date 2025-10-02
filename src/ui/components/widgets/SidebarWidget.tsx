@@ -16,7 +16,6 @@ interface SidebarWidgetProps {
   title?: string;
   data: WidgetData;
   showSeparator?: boolean;
-  className?: string;
 }
 
 export const SidebarWidget: React.FC<SidebarWidgetProps> = ({
@@ -24,7 +23,6 @@ export const SidebarWidget: React.FC<SidebarWidgetProps> = ({
   title,
   data,
   showSeparator = true,
-  className = '',
 }) => {
   const renderContent = () => {
     switch (type) {
@@ -99,7 +97,7 @@ export const SidebarWidget: React.FC<SidebarWidgetProps> = ({
 
   return (
     <>
-      <div className={`space-y-3 ${className}`}>
+      <div className="space-y-3">
         {title && (
           <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground opacity-60">
             {title}
@@ -107,7 +105,7 @@ export const SidebarWidget: React.FC<SidebarWidgetProps> = ({
         )}
         {renderContent()}
       </div>
-      {showSeparator && <Separator className="bg-neutral-700" />}
+      {showSeparator && <Separator className="bg-white/15 mt-6" />}
     </>
   );
 };

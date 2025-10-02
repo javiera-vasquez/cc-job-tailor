@@ -60,7 +60,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ widgets }) => {
                 title={widget.title}
                 data={widget.data}
                 showSeparator={widget.showSeparator}
-                className={widget.className}
               />
             </div>
           ))}

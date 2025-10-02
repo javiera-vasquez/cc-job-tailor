@@ -18,7 +18,6 @@ const SIDEBAR_WIDGETS: WidgetConfig[] = [
   {
     type: WidgetType.HEADER,
     title: 'Company',
-    className: 'pb-3',
     data: {
       primary: applicationData.metadata?.company || '',
       secondary: applicationData.metadata?.position || '',
@@ -27,7 +26,6 @@ const SIDEBAR_WIDGETS: WidgetConfig[] = [
   {
     type: WidgetType.TEXT,
     title: 'Summary',
-    className: 'pb-3',
     data: {
       content: applicationData.metadata?.job_summary || '',
     },
@@ -35,7 +33,6 @@ const SIDEBAR_WIDGETS: WidgetConfig[] = [
   {
     type: WidgetType.KEY_VALUE,
     title: 'Details',
-    className: 'space-y-4 pb-3',
     data: {
       fields: [
         { label: 'Location', value: applicationData.metadata?.job_details.location || '' },
@@ -51,7 +48,6 @@ const SIDEBAR_WIDGETS: WidgetConfig[] = [
   {
     type: WidgetType.LIST,
     title: 'Primary Responsibilities',
-    className: 'pb-3',
     data: {
       items: applicationData.job_analysis?.responsibilities.primary || [],
     },
@@ -59,7 +55,6 @@ const SIDEBAR_WIDGETS: WidgetConfig[] = [
   {
     type: WidgetType.LIST,
     title: 'Secondary Responsibilities',
-    className: 'pb-3',
     data: {
       items: applicationData.job_analysis?.responsibilities.secondary || [],
     },
@@ -67,7 +62,6 @@ const SIDEBAR_WIDGETS: WidgetConfig[] = [
   {
     type: WidgetType.BADGE_GROUP,
     title: 'Must Have Skills',
-    className: 'pb-3',
     data: {
       badges: applicationData.job_analysis?.requirements.must_have_skills || [],
     },
@@ -75,7 +69,6 @@ const SIDEBAR_WIDGETS: WidgetConfig[] = [
   {
     type: WidgetType.BADGE_GROUP,
     title: 'Nice to Have',
-    className: 'pb-3',
     data: {
       badges: applicationData.job_analysis?.requirements.nice_to_have_skills || [],
     },
@@ -83,7 +76,6 @@ const SIDEBAR_WIDGETS: WidgetConfig[] = [
   {
     type: WidgetType.BADGE_GROUP,
     title: 'Soft Skills',
-    className: 'pb-3',
     data: {
       badges:
         applicationData.job_analysis?.requirements.soft_skills.map((skill) => ({ skill })) || [],
@@ -92,7 +84,6 @@ const SIDEBAR_WIDGETS: WidgetConfig[] = [
   {
     type: WidgetType.LIST,
     title: 'Key Role Context',
-    className: 'pb-3',
     data: {
       items: applicationData.job_analysis?.role_context.key_points || [],
     },
@@ -100,7 +91,6 @@ const SIDEBAR_WIDGETS: WidgetConfig[] = [
   {
     type: WidgetType.LIST,
     title: 'Strong Matches',
-    className: 'pb-3',
     data: {
       items: applicationData.job_analysis?.candidate_alignment.strong_matches || [],
     },
@@ -109,7 +99,6 @@ const SIDEBAR_WIDGETS: WidgetConfig[] = [
     type: WidgetType.KEY_VALUE,
     title: 'Application Info',
     showSeparator: false,
-    className: 'pb-3',
     data: {
       fields: [
         {

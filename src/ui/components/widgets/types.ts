@@ -44,5 +44,4 @@ export interface WidgetConfig {
   title?: string;
   data: WidgetData;
   showSeparator?: boolean;
-  className?: string;
 }
