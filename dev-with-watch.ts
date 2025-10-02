@@ -84,9 +84,13 @@ class EnhancedDevServer {
    */
   private createDevServer(): ChildProcess {
     const devServer = spawn('bun', ['run', 'dev:vite'], {
-      stdio: 'inherit',
+      stdio: ['ignore', 'pipe', 'pipe'],
       cwd: process.cwd(),
     });
+
+    // Consume output to prevent buffer overflow but don't log it
+    devServer.stdout?.on('data', () => {});
+    devServer.stderr?.on('data', () => {});
 
     devServer.on('exit', (code) => {
       console.warn(`Dev server exited with code ${code}`);
