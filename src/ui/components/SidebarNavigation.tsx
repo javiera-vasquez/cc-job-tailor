@@ -13,7 +13,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
   activeSectionIndex,
   onNavigate,
 }) => {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const activeTitle = widgets[activeSectionIndex]?.title || 'Section 1';
 
   return (
