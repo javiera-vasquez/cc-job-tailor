@@ -34,6 +34,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ widgets }) => {
 
   return (
     <aside className="w-78 border-r border-border bg-muted/20 overflow-y-auto flex flex-col">
+      <div className='w-full'>
       <SidebarNavigation
         widgets={widgets}
         visibilityMap={visibilityMap}
@@ -51,6 +52,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ widgets }) => {
             />
           </div>
         ))}
+      </div>
       </div>
     </aside>
   );

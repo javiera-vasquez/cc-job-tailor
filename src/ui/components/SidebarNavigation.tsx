@@ -29,10 +29,10 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
   const activeTitle = widgets[activeSectionIndex]?.title || 'Section 1';
 
   return (
-    <nav className="top-0 z-10  border-b border-border pb-2 mb-4 -mx-6 px-6 pt-4">
-      <div className="w-full sticky">
+    <nav className="sticky top-0 z-10  bg-accent border-b border-border pb-2 mb-4 pt-2">
+      <div className="w-full overflow-hidden">
         {/* Toggle Button Header */}
-        <div className='mx-2'> 
+        <div className='mx-4'> 
           <Button
             variant={'outline'}
             onClick={() => setIsExpanded(!isExpanded)}
