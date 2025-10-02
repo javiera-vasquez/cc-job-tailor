@@ -17,7 +17,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
   const activeTitle = widgets[activeSectionIndex]?.title || 'Section 1';
 
   return (
-    <nav className="sticky top-0 z-10  bg-background border-b border-border pb-0 mb-4 pt-2">
+    <nav className="sticky top-0 z-10  bg-background border-b border-border pb-2 mb-4 pt-2">
       <div className="w-full overflow-hidden sticky">
         {/* Toggle Button Header */}
         <div className='mx-4 bg-black border-round'> 

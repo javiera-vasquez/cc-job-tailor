@@ -9,6 +9,9 @@ interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ widgets }) => {
+  // Ref for the scrollable sidebar container
+  const sidebarRef = useRef<HTMLElement>(null);
+
   // Create refs for each widget section
   const widgetRefs = useRef<React.RefObject<HTMLDivElement>[]>(
     widgets.map(() => React.createRef<HTMLDivElement>())
@@ -33,19 +36,26 @@ export const Sidebar: React.FC<SidebarProps> = ({ widgets }) => {
 
   const activeSectionIndex = getActiveSection();
 
-  // Scroll to specific section
+  // Scroll to specific section with offset for sticky navigation
   const handleNavigate = useCallback((index: number) => {
-    const ref = widgetRefs.current[index];
-    if (ref?.current) {
-      ref.current.scrollIntoView({
+    const targetRef = widgetRefs.current[index];
+    const container = sidebarRef.current;
+
+    if (targetRef?.current && container) {
+      const element = targetRef.current;
+      const offset = 80; // Height of SidebarNavigation sticky element
+      const elementTop = element.offsetTop;
+      const scrollPosition = elementTop - offset;
+
+      container.scrollTo({
+        top: scrollPosition,
         behavior: 'smooth',
-        block: 'start',
       });
     }
   }, []);
 
   return (
-    <aside className="w-78 border-r border-border bg-muted/20 overflow-y-auto flex flex-col">
+    <aside ref={sidebarRef} className="w-78 border-r border-border bg-muted/20 overflow-y-auto flex flex-col">
       <div className='w-full'>
         <SidebarNavigation
           widgets={widgets}
