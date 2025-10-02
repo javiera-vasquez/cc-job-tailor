@@ -35,24 +35,24 @@ export const Sidebar: React.FC<SidebarProps> = ({ widgets }) => {
   return (
     <aside className="w-78 border-r border-border bg-muted/20 overflow-y-auto flex flex-col">
       <div className='w-full'>
-      <SidebarNavigation
-        widgets={widgets}
-        visibilityMap={visibilityMap}
-        onNavigate={handleNavigate}
-      />
-      <div className="space-y-6 px-6 pb-6">
-        {widgets.map((widget, index) => (
-          <div key={index} ref={widgetRefs.current[index]}>
-            <SidebarWidget
-              type={widget.type}
-              title={widget.title}
-              data={widget.data}
-              showSeparator={widget.showSeparator}
-              className={widget.className}
-            />
-          </div>
-        ))}
-      </div>
+        <SidebarNavigation
+          widgets={widgets}
+          visibilityMap={visibilityMap}
+          onNavigate={handleNavigate}
+        />
+        <div className="space-y-6 px-6 pb-6">
+          {widgets.map((widget, index) => (
+            <div key={index} ref={widgetRefs.current[index]}>
+              <SidebarWidget
+                type={widget.type}
+                title={widget.title}
+                data={widget.data}
+                showSeparator={widget.showSeparator}
+                className={widget.className}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </aside>
   );
