@@ -1,4 +1,4 @@
-import React, { type RefObject, useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from '@ui/components/ui/button';
 import type { WidgetConfig } from '@ui/components/widgets/types';
 
@@ -20,17 +20,21 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
     <nav className="sticky top-0 z-10  bg-background border-b border-border pb-2 mb-4 pt-2">
       <div className="w-full overflow-hidden sticky">
         {/* Toggle Button Header */}
-        <div className='mx-4 bg-black border-round'> 
+        <div className="mx-4 bg-black border-round">
           <Button
             variant={'outline'}
             onClick={() => setIsExpanded(!isExpanded)}
             className="w-full h-auto py-2 px-4 justify-between border-accent/20"
           >
             <div className="flex flex-col items-start gap-0.5">
-              <span className="text-[10px] uppercase tracking-wider text-primary/75 font-medium">Sections</span>
+              <span className="text-[10px] uppercase tracking-wider text-primary/75 font-medium">
+                Sections
+              </span>
               <span className="text-sm font-medium truncate text-foreground/75">{activeTitle}</span>
             </div>
-            <span className={`text-[10px] opacity-75 transition-transform ml-2 ${isExpanded ? 'rotate-180' : ''}`}>
+            <span
+              className={`text-[10px] opacity-75 transition-transform ml-2 ${isExpanded ? 'rotate-180' : ''}`}
+            >
               ▼
             </span>
           </Button>

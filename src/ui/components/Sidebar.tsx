@@ -14,7 +14,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ widgets }) => {
 
   // Create refs for each widget section
   const widgetRefs = useRef<React.RefObject<HTMLDivElement | null>[]>(
-    widgets.map(() => React.createRef<HTMLDivElement>())
+    widgets.map(() => React.createRef<HTMLDivElement>()),
   );
 
   // Track which sections are in viewport
@@ -55,8 +55,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ widgets }) => {
   }, []);
 
   return (
-    <aside ref={sidebarRef} className="w-78 border-r border-border bg-muted/20 overflow-y-auto flex flex-col">
-      <div className='w-full'>
+    <aside
+      ref={sidebarRef}
+      className="w-78 border-r border-border bg-muted/20 overflow-y-auto flex flex-col"
+    >
+      <div className="w-full">
         <SidebarNavigation
           widgets={widgets}
           activeSectionIndex={activeSectionIndex}

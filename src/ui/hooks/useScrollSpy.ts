@@ -45,7 +45,7 @@ export function useScrollSpy({
       {
         rootMargin,
         threshold,
-      }
+      },
     );
 
     // Observe all refs
