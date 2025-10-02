@@ -21,6 +21,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ widgets }) => {
     threshold: 0.1,
   });
 
+  // Determine the active section (first visible section or first section)
+  const getActiveSection = (): number => {
+    for (let i = 0; i < widgets.length; i++) {
+      if (visibilityMap.get(i)) {
+        return i;
+      }
+    }
+    return 0; // Default to first section if none visible
+  };
+
+  const activeSectionIndex = getActiveSection();
+
   // Scroll to specific section
   const handleNavigate = useCallback((index: number) => {
     const ref = widgetRefs.current[index];
@@ -37,7 +49,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ widgets }) => {
       <div className='w-full'>
         <SidebarNavigation
           widgets={widgets}
-          visibilityMap={visibilityMap}
+          activeSectionIndex={activeSectionIndex}
           onNavigate={handleNavigate}
         />
         <div className="space-y-6 px-6 pb-6">
