@@ -8,7 +8,12 @@ import Body from './Body';
 import Signature from './Signature';
 
 import { colors, spacing, typography } from '../design-tokens';
-import type { CoverLetterSchema, ContactDetails, ReactPDFProps, ApplicationData } from '../../types';
+import type {
+  CoverLetterSchema,
+  ContactDetails,
+  ReactPDFProps,
+  ApplicationData,
+} from '../../types';
 import { registerFonts } from '../fonts-register';
 
 // Register fonts

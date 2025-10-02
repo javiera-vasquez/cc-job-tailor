@@ -40,7 +40,9 @@ export const SidebarWidget: React.FC<SidebarWidgetProps> = ({
 
       case WidgetType.TEXT: {
         const textData = data as TextWidgetData;
-        return <p className="text-xs text-foreground opacity-80 leading-relaxed">{textData.content}</p>;
+        return (
+          <p className="text-xs text-foreground opacity-80 leading-relaxed">{textData.content}</p>
+        );
       }
 
       case WidgetType.KEY_VALUE: {
@@ -78,7 +80,11 @@ export const SidebarWidget: React.FC<SidebarWidgetProps> = ({
         return (
           <div className="flex flex-wrap gap-1.5">
             {badgeData.badges.map((badge, i) => (
-              <Badge key={i} variant="outline" className="text-xs font-normal px-2 py-0.5 text-foreground opacity-80">
+              <Badge
+                key={i}
+                variant="outline"
+                className="text-xs font-normal px-2 py-0.5 text-foreground opacity-80"
+              >
                 {badge.skill}
               </Badge>
             ))}
@@ -95,7 +101,9 @@ export const SidebarWidget: React.FC<SidebarWidgetProps> = ({
     <>
       <div className={`space-y-3 ${className}`}>
         {title && (
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground opacity-60">{title}</h2>
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-foreground opacity-60">
+            {title}
+          </h2>
         )}
         {renderContent()}
       </div>

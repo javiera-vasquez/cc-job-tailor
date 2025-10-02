@@ -37,7 +37,10 @@ const SIDEBAR_WIDGETS: WidgetConfig[] = [
     data: {
       fields: [
         { label: 'Location', value: applicationData.metadata?.job_details.location || '' },
-        { label: 'Experience Level', value: applicationData.metadata?.job_details.experience_level || '' },
+        {
+          label: 'Experience Level',
+          value: applicationData.metadata?.job_details.experience_level || '',
+        },
         { label: 'Team Context', value: applicationData.metadata?.job_details.team_context || '' },
         { label: 'User Scale', value: applicationData.metadata?.job_details.user_scale || '' },
       ],
@@ -69,9 +72,47 @@ const SIDEBAR_WIDGETS: WidgetConfig[] = [
   {
     type: WidgetType.BADGE_GROUP,
     title: 'Nice to Have',
-    showSeparator: false,
     data: {
       badges: applicationData.job_analysis?.requirements.nice_to_have_skills || [],
+    },
+  },
+  {
+    type: WidgetType.BADGE_GROUP,
+    title: 'Soft Skills',
+    data: {
+      badges:
+        applicationData.job_analysis?.requirements.soft_skills.map((skill) => ({ skill })) || [],
+    },
+  },
+  {
+    type: WidgetType.LIST,
+    title: 'Key Role Context',
+    className: 'pb-3',
+    data: {
+      items: applicationData.job_analysis?.role_context.key_points || [],
+    },
+  },
+  {
+    type: WidgetType.LIST,
+    title: 'Strong Matches',
+    className: 'pb-3',
+    data: {
+      items: applicationData.job_analysis?.candidate_alignment.strong_matches || [],
+    },
+  },
+  {
+    type: WidgetType.KEY_VALUE,
+    title: 'Application Info',
+    showSeparator: false,
+    data: {
+      fields: [
+        {
+          label: 'Posting Date',
+          value: applicationData.job_analysis?.application_info.posting_date || '',
+        },
+        { label: 'Deadline', value: applicationData.job_analysis?.application_info.deadline || '' },
+        { label: 'Employment Type', value: applicationData.job_analysis?.employment_type || '' },
+      ],
     },
   },
 ];
@@ -93,11 +134,19 @@ const App = () => {
         <main className="flex-1 p-3 pb-0">
           <Card className="h-full overflow-hidden border-border/40 shadow-sm rounded-b-none">
             {activeDocument === 'resume' ? (
-              <PDFViewer style={{ width: '100%', height: '100%' }} showToolbar={true} key={Date.now()}>
+              <PDFViewer
+                style={{ width: '100%', height: '100%' }}
+                showToolbar={true}
+                key={Date.now()}
+              >
                 <resume.Document data={applicationData} />
               </PDFViewer>
             ) : (
-              <PDFViewer style={{ width: '100%', height: '100%' }} showToolbar={true} key={Date.now()}>
+              <PDFViewer
+                style={{ width: '100%', height: '100%' }}
+                showToolbar={true}
+                key={Date.now()}
+              >
                 <coverLetter.Document data={applicationData} />
               </PDFViewer>
             )}
