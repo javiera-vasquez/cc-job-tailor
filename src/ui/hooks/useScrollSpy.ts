@@ -1,10 +1,10 @@
-import { useEffect, useState, RefObject } from 'react';
+import { useEffect, useState, type RefObject } from 'react';
 
 interface UseScrollSpyOptions {
   /**
    * Array of refs to observe
    */
-  refs: RefObject<HTMLElement>[];
+  refs: RefObject<HTMLElement | null>[];
   /**
    * Root margin for the Intersection Observer
    * @default "0px 0px -80% 0px"

@@ -13,7 +13,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ widgets }) => {
   const sidebarRef = useRef<HTMLElement>(null);
 
   // Create refs for each widget section
-  const widgetRefs = useRef<React.RefObject<HTMLDivElement>[]>(
+  const widgetRefs = useRef<React.RefObject<HTMLDivElement | null>[]>(
     widgets.map(() => React.createRef<HTMLDivElement>())
   );
 

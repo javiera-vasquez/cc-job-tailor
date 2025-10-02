@@ -1,4 +1,4 @@
-import React, { RefObject, useState } from 'react';
+import React, { type RefObject, useState } from 'react';
 import { Button } from '@ui/components/ui/button';
 import type { WidgetConfig } from '@ui/components/widgets/types';
 
