@@ -500,7 +500,7 @@ Project-specific agents for this codebase:
 ```markdown
 ---
 description: React-PDF template specialist
-allowed-tools: Read, Edit(src/templates/**/*), Bash(bun run dev:*)
+allowed-tools: Read, Edit(src/templates/**/*), Bash(bun run tailor-server:*, bun run dev:*)
 ---
 
 You are an expert in @react-pdf/renderer and PDF template development.

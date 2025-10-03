@@ -20,7 +20,7 @@ Dynamic PDF resume generator built with React and `@react-pdf/renderer`. Creates
 bun install
 
 # Development server with hot reload and file watching
-bun run dev
+bun run tailor-server
 
 # Generate PDF to disk with company-specific data
 bun run save-to-pdf -C company-name
@@ -54,7 +54,7 @@ bun run format:check        # Check formatting without changes
 
 ```
 ├── index.tsx    # Development server entry point
-├── dev-with-watch.ts      # Development server with file watching
+├── tailor-server.ts       # Development server with file watching
 ├── generate-data.ts       # YAML to TypeScript converter with Zod validation
 ├── generate-pdf.ts        # Server-side PDF generation
 ├── src/
@@ -133,7 +133,7 @@ Local documentation in `rpdf/`:
 
 ## Development Notes
 
-- **File watching**: `dev-with-watch.ts` monitors YAML changes and auto-regenerates
+- **File watching**: `tailor-server.ts` monitors YAML changes and auto-regenerates
 - **No build step**: Bun handles bundling directly
 - **Type safety**: Full TypeScript coverage from YAML to PDF components
 - **Font loading**: Requires internet connection for Google Fonts

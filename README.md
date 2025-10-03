@@ -23,14 +23,14 @@ This project includes specialized commands and AI agents to streamline your resu
 
 | Command/Agent                                             | Type    | Purpose                                                                                                                                                       |
 | --------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/tailor company-name`                                    | Command | Set active company context for tailored resume operations. **Protip:** Add "run dev server" and Claude will start live preview with automatic data validation |
+| `/tailor company-name`                                    | Command | Set active company context for tailored resume operations. **Protip:** Add "bun run tailor-server" and Claude will start live preview with automatic data validation |
 | `/generate-pdf company-name [resume\|cover-letter\|both]` | Command | Generate PDF documents for specific company                                                                                                                   |
 | `/tailor-help`                                            | Command | Show resume tailoring workflow and available commands                                                                                                         |
 | `@agent-job-analysis`                                     | Agent   | Analyze job postings and extract structured requirements and metadata                                                                                         |
 | `@agent-job-tailor`                                       | Agent   | Complete workflow: analyze jobs and create tailored resumes and cover letters                                                                                 |
 | `@agent-tailor-resume-and-cover`                          | Agent   | Generate tailored resume and cover letter using existing job analysis                                                                                         |
 | `@agent-rpdf-template-expert`                             | Agent   | Expert for migrating visual PDF templates to React-PDF components                                                                                             |
-| `bun run dev`                                             | Script  | Start live preview development server with file watching                                                                                                      |
+| `bun run tailor-server`                                   | Script  | Start live preview development server with file watching                                                                                                      |
 | `bun run save-to-pdf -C company-name`                     | Script  | Generate PDF to `tmp/` (automatically generates data first)                                                                                                   |
 | `bun run generate-data -C company-name`                   | Script  | Convert YAML data to TypeScript module for specific company                                                                                                   |
 
