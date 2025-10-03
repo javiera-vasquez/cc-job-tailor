@@ -20,7 +20,8 @@
   "private": false,
   "license": "CC-BY-NC-4.0",
   "scripts": {
-    "dev": "bun dev-with-watch.ts",
+    "dev": "bun run tailor-server",
+    "tailor-server": "bun tailor-server.ts",
     "dev:vite": "vite",
     "save-to-pdf": "bun scripts/generate-data.ts \"$@\" && bun scripts/generate-pdf.ts \"$@\"",
     "generate-data": "bun scripts/generate-data.ts",
