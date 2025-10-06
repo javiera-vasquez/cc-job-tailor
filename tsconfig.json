@@ -21,7 +21,8 @@
       "@ui/*": ["./src/ui/*"],
       "@design-tokens": ["./src/templates/design-tokens.ts"],
       "@types": ["./src/types.ts"],
-      "@fonts-register": ["./src/templates/fonts-register.ts"]
+      "@fonts-register": ["./src/templates/fonts-register.ts"],
+      "@utils/*": ["./src/utils/*"]
     },
 
     // Best practices
