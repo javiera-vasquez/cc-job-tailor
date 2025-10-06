@@ -8,33 +8,12 @@ import Body from './Body';
 import Signature from './Signature';
 
 import { colors, spacing, typography } from '../design-tokens';
-import type {
-  CoverLetterSchema,
-  ContactDetails,
-  ReactPDFProps,
-  ApplicationData,
-} from '../../types';
+import type { CoverLetterSchema, ReactPDFProps } from '../../types';
 import { registerFonts } from '../fonts-register';
 
 // Register fonts
 registerFonts();
 
-// Extract cover letter and personal info from application data
-function getCoverLetterData(applicationData: ApplicationData | null): {
-  coverLetterData: CoverLetterSchema | null;
-  personalInfo: (ContactDetails & { name?: string }) | null;
-} {
-  if (!applicationData) {
-    return { coverLetterData: null, personalInfo: null };
-  }
-
-  const coverLetterData = applicationData.cover_letter || null;
-  const personalInfo = applicationData.resume
-    ? { ...applicationData.resume.contact, name: applicationData.resume.name }
-    : null;
-
-  return { coverLetterData, personalInfo };
-}
 
 const CoverLetter = ({
   size = 'A4',
@@ -65,10 +44,8 @@ const CoverLetter = ({
   );
 };
 
-const CoverLetterDocument = ({ data }: { data?: ApplicationData }): React.ReactElement => {
-  const { coverLetterData, personalInfo } = getCoverLetterData(data || null);
-
-  if (!coverLetterData || !personalInfo) {
+const CoverLetterDocument = ({ data }: { data?: CoverLetterSchema }): React.ReactElement => {
+  if (!data) {
     // Return empty document if no cover letter data available
     return (
       <Document title="No Cover Letter Data Available">
@@ -85,12 +62,12 @@ const CoverLetterDocument = ({ data }: { data?: ApplicationData }): React.ReactE
 
   return (
     <Document
-      author={personalInfo.name || 'Resume Applicant'}
+      author={data.personal_info.name || 'Resume Applicant'}
       keywords="cover letter, application, professional"
-      subject={`Cover Letter for ${coverLetterData.position} at ${coverLetterData.company}`}
+      subject={`Cover Letter for ${data.position} at ${data.company}`}
       title="Cover Letter"
     >
-      <CoverLetter data={coverLetterData} />
+      <CoverLetter data={data} />
     </Document>
   );
 };

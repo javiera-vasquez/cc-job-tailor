@@ -134,7 +134,7 @@ const App = () => {
                 showToolbar={true}
                 key={Date.now()}
               >
-                <resume.Document data={applicationData} />
+                <resume.Document data={applicationData.resume ?? undefined} />
               </PDFViewer>
             ) : (
               <PDFViewer
@@ -142,7 +142,7 @@ const App = () => {
                 showToolbar={true}
                 key={Date.now()}
               >
-                <coverLetter.Document data={applicationData} />
+                <coverLetter.Document data={applicationData.cover_letter ?? undefined} />
               </PDFViewer>
             )}
           </Card>

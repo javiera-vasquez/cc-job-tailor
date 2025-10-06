@@ -9,7 +9,7 @@ import Education from './Education';
 import Experience from './Experience';
 
 import { colors, spacing, typography } from '../design-tokens';
-import type { ResumeSchema, ReactPDFProps, ApplicationData } from '../../types';
+import type { ResumeSchema, ReactPDFProps } from '../../types';
 import { registerFonts } from '../fonts-register';
 
 // Register available fonts
@@ -43,14 +43,6 @@ function transformSourceToResumeSchema(sourceData: any): ResumeSchema {
   };
 }
 
-// Transform application data to resume data
-function getResumeData(applicationData: ApplicationData | null): ResumeSchema | null {
-  if (!applicationData?.resume) return null;
-
-  return (applicationData.resume as any).personal_info
-    ? transformSourceToResumeSchema(applicationData.resume) // Source data format - needs transformation
-    : (applicationData.resume as ResumeSchema); // Tailored format
-}
 
 // 72 dpi is the default for PDF
 // Ensure A4 page sizing (595.5 × 842.25 points)
@@ -92,10 +84,8 @@ const Resume = ({
   </Page>
 );
 
-const ResumeDocument = ({ data }: { data?: ApplicationData }): React.ReactElement => {
-  const resumeData = getResumeData(data || null);
-
-  if (!resumeData) {
+const ResumeDocument = ({ data }: { data?: ResumeSchema }): React.ReactElement => {
+  if (!data) {
     // Return empty document if no resume data available
     return (
       <Document title="No Resume Data Available">
@@ -113,6 +103,11 @@ const ResumeDocument = ({ data }: { data?: ApplicationData }): React.ReactElemen
       </Document>
     );
   }
+
+  // Check if data needs transformation (source format vs tailored format)
+  const resumeData = (data as any).personal_info
+    ? transformSourceToResumeSchema(data) // Source data format - needs transformation
+    : data; // Tailored format
 
   return (
     <Document
