@@ -5,7 +5,6 @@ import { colors, typography, spacing } from '@design-tokens';
 export type DocumentConfig<T> = {
   getDocumentProps: (data: T) => {
     author: string;
-    keywords: string;
     subject: string;
     title: string;
   };
