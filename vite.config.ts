@@ -10,6 +10,9 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       '@ui': fileURLToPath(new URL('./src/ui', import.meta.url)),
+      '@design-tokens': fileURLToPath(new URL('./src/templates/design-tokens.ts', import.meta.url)),
+      '@types': fileURLToPath(new URL('./src/types.ts', import.meta.url)),
+      '@fonts-register': fileURLToPath(new URL('./src/templates/fonts-register.ts', import.meta.url)),
     },
   },
   server: {
