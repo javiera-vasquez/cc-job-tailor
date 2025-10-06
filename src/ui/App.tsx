@@ -7,7 +7,7 @@ import { Header } from '@ui/components/Header';
 import { Sidebar } from '@ui/components/Sidebar';
 import { WidgetType, type WidgetConfig } from '@ui/components/widgets/types';
 
-import { resume, coverLetter } from '../templates';
+import { themes, type ThemeName } from '../templates';
 import applicationData from '../data/application';
 
 import '@ui/styles/globals.css';
@@ -114,11 +114,19 @@ const SIDEBAR_WIDGETS: WidgetConfig[] = [
 
 const App = () => {
   const [activeDocument, setActiveDocument] = useState<'resume' | 'cover-letter'>('resume');
+  const [activeTheme, setActiveTheme] = useState<ThemeName>('modern');
+
+  const { resume, coverLetter } = themes[activeTheme];
 
   return (
     <div className="flex h-screen w-full flex-col">
       {/* Header */}
-      <Header activeDocument={activeDocument} onDocumentChange={setActiveDocument} />
+      <Header
+        activeDocument={activeDocument}
+        onDocumentChange={setActiveDocument}
+        activeTheme={activeTheme}
+        onThemeChange={setActiveTheme}
+      />
 
       {/* Two column layout */}
       <div className="flex flex-1 overflow-hidden">

@@ -1,7 +1,10 @@
 import React from 'react';
 import { renderToFile } from '@react-pdf/renderer';
-import { resume, coverLetter } from '../src/templates';
+import { themes } from '../src/templates';
 import applicationData from '../src/data/application';
+
+// Use default 'modern' theme for PDF generation
+const { resume, coverLetter } = themes.modern;
 import path from 'path';
 import { mkdir } from 'fs/promises';
 import { parsePdfArgs } from './shared/cli-args';
