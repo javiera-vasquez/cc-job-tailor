@@ -67,4 +67,17 @@ After running this command, all subsequent interactions will:
 🔧 Focus: senior_engineer + [react, typescript, frontend, mobile]
 ```
 
-Validate that the company folder exists, read the pre-built `metadata.yaml` file, copy its contents to `.claude/tailor-context.yaml` (updating only the timestamp), and provide a concise summary with company name, available files, position, and primary job focus.
+## Execution Steps:
+
+1. **Validate & Load Context**:
+   - Confirm company folder exists
+   - Read pre-built `metadata.yaml` file
+   - Copy contents to `.claude/tailor-context.yaml` (update only timestamp)
+   - Provide summary with company name, available files, position, and primary job focus
+
+2. **Start Live Preview Server**:
+   - Invoke `/tailor-server` command to start background development server
+   - Inform user that live preview is available
+   - Explain that all YAML edits will trigger automatic validation and browser updates
+
+Now validate the company folder, set the context, start the live preview server, and provide a comprehensive summary.
