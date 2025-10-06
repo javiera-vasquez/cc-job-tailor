@@ -52,7 +52,7 @@ const tsContent = `// @ts-nocheck
 // Company: ${companyName || 'default (merged source files)'}
 // Generated at: ${new Date().toISOString()}
 
-import type { ApplicationData } from '../types';
+import type { ApplicationData } from '@types';
 
 const applicationData: ApplicationData = ${JSON.stringify(applicationData, null, 2)};
 

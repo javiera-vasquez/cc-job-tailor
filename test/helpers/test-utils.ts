@@ -306,3 +306,52 @@ export function expectValidationError(fn: () => void, expectedMessage?: string):
     );
   }
 }
+
+// Theme validation helper functions
+export function createMockThemeComponent(name: string = 'MockComponent') {
+  const Component = ({ data }: { data?: any }) => {
+    return { type: 'mock', name, data };
+  };
+  Component.displayName = name;
+  return Component;
+}
+
+export function createValidTheme(overrides?: Partial<any>) {
+  const MockResumeComponent = createMockThemeComponent('ResumeComponent');
+  const MockCoverLetterComponent = createMockThemeComponent('CoverLetterComponent');
+
+  return {
+    id: 'test-theme',
+    name: 'Test Theme',
+    description: 'A test theme for unit testing',
+    documents: ['resume', 'cover-letter'],
+    components: {
+      resume: MockResumeComponent,
+      coverLetter: MockCoverLetterComponent,
+    },
+    initialize: () => {
+      console.log('Test theme initialized');
+    },
+    ...overrides,
+  };
+}
+
+export function createValidThemeRegistry() {
+  return {
+    modern: createValidTheme({ id: 'modern', name: 'Modern Theme' }),
+    classic: createValidTheme({ id: 'classic', name: 'Classic Theme' }),
+  };
+}
+
+// WithPDFWrapper test helpers
+export function createMockDocumentConfig<T>(overrides?: Partial<any>) {
+  return {
+    getDocumentProps: (_data: T) => ({
+      author: 'Test Author',
+      subject: 'Test Subject',
+      title: 'Test Document',
+    }),
+    emptyStateMessage: 'No data available',
+    ...overrides,
+  };
+}

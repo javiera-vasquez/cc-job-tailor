@@ -20,7 +20,7 @@ Dynamic PDF resume generator built with React and `@react-pdf/renderer`. Creates
 bun install
 
 # Development server with hot reload and file watching
-bun run dev
+bun run tailor-server
 
 # Generate PDF to disk with company-specific data
 bun run save-to-pdf -C company-name
@@ -53,26 +53,29 @@ bun run format:check        # Check formatting without changes
 ### File Structure
 
 ```
-├── index.tsx    # Development server entry point
-├── dev-with-watch.ts      # Development server with file watching
-├── generate-data.ts       # YAML to TypeScript converter with Zod validation
-├── generate-pdf.ts        # Server-side PDF generation
+├── index.tsx                      # Development server entry point
+├── scripts/
+│   ├── tailor-server.ts           # Development server with file watching
+│   ├── generate-data.ts           # YAML to TypeScript converter with Zod validation
+│   └── generate-pdf.ts            # Server-side PDF generation
 ├── src/
-│   ├── data/application.ts          # Auto-generated from YAML sources
+│   ├── data/application.ts        # Auto-generated from YAML sources
+│   ├── ui/                        # UI components
 │   ├── templates/
-│   │   ├── resume/                  # Resume PDF components
-│   │   ├── cover-letter/            # Cover letter PDF components
-│   │   ├── design-tokens.ts         # Styling constants
-│   │   └── fonts-register.ts        # Font configuration
+│   │   ├── resume/                # Resume PDF components
+│   │   ├── cover-letter/          # Cover letter PDF components
+│   │   ├── shared/                # Shared template components
+│   │   ├── design-tokens.ts       # Styling constants
+│   │   └── fonts-register.ts      # Font configuration
 │   ├── zod/
-│   │   ├── schemas.ts               # Zod validation schemas
-│   │   └── validation.ts            # Validation utilities
-│   └── types.ts                     # TypeScript definitions
+│   │   ├── schemas.ts             # Zod validation schemas
+│   │   └── validation.ts          # Validation utilities
+│   └── types.ts                   # TypeScript definitions
 ├── resume-data/
-│   ├── sources/                     # Source YAML files
-│   ├── mapping-rules/               # Transformation schemas
-│   └── tailor/[company]/           # Company-specific outputs
-└── tmp/                            # Generated PDFs
+│   ├── sources/                   # Source YAML files
+│   ├── mapping-rules/             # Transformation schemas
+│   └── tailor/[company]/          # Company-specific outputs
+└── tmp/                           # Generated PDFs
 ```
 
 ### Application Flow
@@ -133,7 +136,7 @@ Local documentation in `rpdf/`:
 
 ## Development Notes
 
-- **File watching**: `dev-with-watch.ts` monitors YAML changes and auto-regenerates
+- **File watching**: `tailor-server.ts` monitors YAML changes and auto-regenerates
 - **No build step**: Bun handles bundling directly
 - **Type safety**: Full TypeScript coverage from YAML to PDF components
 - **Font loading**: Requires internet connection for Google Fonts

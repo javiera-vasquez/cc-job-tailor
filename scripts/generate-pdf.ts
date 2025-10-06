@@ -1,6 +1,6 @@
 import React from 'react';
 import { renderToFile } from '@react-pdf/renderer';
-import { resume, coverLetter } from '../src/templates';
+import { themes } from '../src/templates';
 import applicationData from '../src/data/application';
 import path from 'path';
 import { mkdir } from 'fs/promises';
@@ -10,6 +10,11 @@ import {
   throwInvalidDocumentTypeError,
   throwDataGenerationError,
 } from './shared/error-messages';
+
+// Use default 'modern' theme for PDF generation
+const modernTheme = themes.modern;
+const ResumeDocument = modernTheme?.components.resume;
+const CoverLetterDocument = modernTheme?.components.coverLetter;
 
 // Parse command line arguments
 const { company: companyName, document: documentType } = parsePdfArgs();
@@ -49,10 +54,16 @@ const generatePdf = async () => {
 
   // Generate PDFs based on document type
   const generateDocument = async (docType: 'resume' | 'cover-letter') => {
+    if (!ResumeDocument || !CoverLetterDocument) {
+      throw new Error('Theme components not properly loaded');
+    }
+
     const component =
       docType === 'resume'
-        ? React.createElement(resume.Document, { data: applicationData })
-        : React.createElement(coverLetter.Document, { data: applicationData });
+        ? React.createElement(ResumeDocument, { data: applicationData.resume ?? undefined })
+        : React.createElement(CoverLetterDocument, {
+            data: applicationData.cover_letter ?? undefined,
+          });
 
     const filePath = path.join(tmpDir, `${docType}-${companyName}.pdf`);
 

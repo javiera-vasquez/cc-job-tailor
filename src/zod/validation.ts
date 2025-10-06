@@ -10,7 +10,7 @@ import type {
   ResumeSchema as ResumeType,
   JobAnalysisSchema as JobAnalysisType,
   CoverLetterSchema as CoverLetterType,
-} from '../types';
+} from '@types';
 
 // Validation functions with detailed error reporting
 export function validateApplicationData(data: unknown): ApplicationData {

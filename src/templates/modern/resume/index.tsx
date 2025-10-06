@@ -1,22 +1,35 @@
 import React from 'react';
-import { Page, View, Text, Document, StyleSheet } from '@react-pdf/renderer';
+import { Page, View, StyleSheet } from '@react-pdf/renderer';
 
-import Header from './Header';
-import Contact from './Contact';
-import Skills from './Skills';
-import Languages from './Languages';
-import Education from './Education';
-import Experience from './Experience';
+import Header from './components/Header';
+import Contact from './components/Contact';
+import Skills from './components/Skills';
+import Languages from './components/Languages';
+import Education from './components/Education';
+import Experience from './components/Experience';
 
-import { colors, spacing, typography } from '../design-tokens';
-import type { ResumeSchema, ReactPDFProps, ApplicationData } from '../../types';
-import { registerFonts } from '../fonts-register';
+import { colors, spacing, typography } from '@design-tokens';
+import type { ResumeSchema, ReactPDFProps } from '@types';
 
-// Register available fonts
-registerFonts();
+/**
+ * Configuration for the Resume document wrapper
+ */
+export const resumeConfig = {
+  getDocumentProps: (data: ResumeSchema) => ({
+    title: 'Resume',
+    author: data.name,
+    subject: `The resume of ${data.name}`,
+  }),
+  transformData: (data: any) => (data.personal_info ? transformSourceToResumeSchema(data) : data),
+  emptyStateMessage:
+    'No resume data available. Please ensure source files exist or use -C flag to specify a company folder.',
+};
 
-// Transform source data format to ResumeSchema when needed
-function transformSourceToResumeSchema(sourceData: any): ResumeSchema {
+/**
+ * Transform source data format to ResumeSchema when needed
+ * Used by the HOC wrapper to normalize data before rendering
+ */
+export function transformSourceToResumeSchema(sourceData: any): ResumeSchema {
   // Convert technical_expertise from object to array format
   const technicalExpertise = Object.entries(sourceData.technical_expertise).map(
     ([key, skills]) => ({
@@ -43,18 +56,9 @@ function transformSourceToResumeSchema(sourceData: any): ResumeSchema {
   };
 }
 
-// Transform application data to resume data
-function getResumeData(applicationData: ApplicationData | null): ResumeSchema | null {
-  if (!applicationData?.resume) return null;
-
-  return (applicationData.resume as any).personal_info
-    ? transformSourceToResumeSchema(applicationData.resume) // Source data format - needs transformation
-    : (applicationData.resume as ResumeSchema); // Tailored format
-}
-
 // 72 dpi is the default for PDF
 // Ensure A4 page sizing (595.5 × 842.25 points)
-const Resume = ({
+export const Resume = ({
   size = 'A4',
   orientation = 'portrait',
   wrap = true,
@@ -72,7 +76,6 @@ const Resume = ({
     bookmark={bookmark}
     style={styles.page}
   >
-    {/* fix type error */}
     <Header resume={data as ResumeSchema} />
 
     <View style={styles.container}>
@@ -91,40 +94,6 @@ const Resume = ({
     </View>
   </Page>
 );
-
-const ResumeDocument = ({ data }: { data?: ApplicationData }): React.ReactElement => {
-  const resumeData = getResumeData(data || null);
-
-  if (!resumeData) {
-    // Return empty document if no resume data available
-    return (
-      <Document title="No Resume Data Available">
-        <Page size="A4" style={styles.page}>
-          <View style={{ padding: 50, textAlign: 'center' }}>
-            <Header resume={{} as ResumeSchema} />
-            <View style={{ marginTop: 100 }}>
-              <Text style={{ fontSize: 16, color: colors.darkGray }}>
-                No resume data available. Please ensure source files exist or use -C flag to specify
-                a company folder.
-              </Text>
-            </View>
-          </View>
-        </Page>
-      </Document>
-    );
-  }
-
-  return (
-    <Document
-      author={resumeData.name}
-      keywords="frontend, react, typescript, senior engineer"
-      subject={`The resume of ${resumeData.name}`}
-      title="Resume"
-    >
-      <Resume data={resumeData} />
-    </Document>
-  );
-};
 
 const styles = StyleSheet.create({
   page: {
@@ -150,10 +119,3 @@ const styles = StyleSheet.create({
     paddingTop: spacing.pagePadding,
   },
 });
-
-export default {
-  id: 'resume',
-  name: 'Resume',
-  description: '',
-  Document: ResumeDocument,
-};

@@ -1,6 +1,7 @@
 {
-  "version": "0.8.0",
+  "version": "0.8.1",
   "dependencies": {
+    "@radix-ui/react-select": "^2.2.6",
     "@radix-ui/react-separator": "^1.1.7",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tabs": "^1.1.13",
@@ -20,7 +21,8 @@
   "private": false,
   "license": "CC-BY-NC-4.0",
   "scripts": {
-    "dev": "bun dev-with-watch.ts",
+    "dev": "bun run tailor-server",
+    "tailor-server": "bun tailor-server.ts",
     "dev:vite": "vite",
     "save-to-pdf": "bun scripts/generate-data.ts \"$@\" && bun scripts/generate-pdf.ts \"$@\"",
     "generate-data": "bun scripts/generate-data.ts",
@@ -39,6 +41,7 @@
     "format:check": "prettier --check ."
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.14",
     "@tailwindcss/vite": "^4.1.13",
     "@types/bun": "latest",
     "@types/node": "^24.6.1",

@@ -296,7 +296,7 @@ interface ResumeSchema {
 
 ```bash
 # Development with hot reload
-bun run dev
+bun run tailor-server
 
 # Generate PDF file (outputs to tmp/resume.pdf)
 bun run save-to-pdf
@@ -308,7 +308,7 @@ bun run generate-data
 ### Development Process
 
 1. **Data First**: Ensure `data/resume.yaml` contains required data
-2. **Component Development**: Use `bun run dev` for live preview with PDFViewer
+2. **Component Development**: Use `bun run tailor-server` for live preview with PDFViewer
 3. **Styling**: Use design tokens for consistency
 4. **Testing**: Test with both PDFViewer and file generation
 5. **Debugging**: Enable debug mode for layout issues
@@ -797,7 +797,7 @@ const styles = StyleSheet.create({
 - [ ] Create StyleSheet with design token usage
 - [ ] Implement component with proper data access
 - [ ] Add to main document in appropriate column
-- [ ] Test with `bun run dev` and debug mode
+- [ ] Test with `bun run tailor-server` and debug mode
 - [ ] Verify with file generation `bun run save-to-pdf`
 
 ### Modifying Existing Components

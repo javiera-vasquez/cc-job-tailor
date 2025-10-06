@@ -1,4 +1,4 @@
-import { type PageSize, type Orientation, type Bookmark } from '@react-pdf/types';
+import type { PageSize, Orientation, Bookmark } from '@react-pdf/types';
 import { z } from 'zod';
 
 import {
@@ -73,6 +73,32 @@ export type ReactPDFProps = {
   dpi?: number;
   bookmark?: Bookmark;
   data: ResumeSchema | CoverLetterSchema;
+};
+
+// Component prop types for theme components
+export type ResumeComponentProps = {
+  data?: ResumeSchema;
+};
+
+export type CoverLetterComponentProps = {
+  data?: CoverLetterSchema;
+};
+
+// Strict theme component types
+export type ThemeComponents = {
+  resume: React.ComponentType<ResumeComponentProps>;
+  coverLetter: React.ComponentType<CoverLetterComponentProps>;
+};
+
+export type DocumentType = 'resume' | 'cover-letter';
+
+export type TailorThemeProps = {
+  id: string;
+  name: string;
+  description: string;
+  documents: readonly DocumentType[];
+  components: ThemeComponents;
+  initialize?: () => void | Promise<void>;
 };
 
 export type Schemas = {
