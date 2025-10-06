@@ -146,9 +146,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default {
-  id: 'resume',
-  name: 'Resume',
-  description: '',
-  Document: ResumeDocument,
-};
+export default ResumeDocument;

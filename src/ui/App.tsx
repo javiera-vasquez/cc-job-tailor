@@ -116,7 +116,9 @@ const App = () => {
   const [activeDocument, setActiveDocument] = useState<'resume' | 'cover-letter'>('resume');
   const [activeTheme, setActiveTheme] = useState<ThemeName>('modern');
 
-  const { resume, coverLetter } = themes[activeTheme];
+  const theme = themes[activeTheme];
+  const ResumeComponent = theme?.components.resume;
+  const CoverLetterComponent = theme?.components.coverLetter;
 
   return (
     <div className="flex h-screen w-full flex-col">
@@ -142,7 +144,7 @@ const App = () => {
                 showToolbar={true}
                 key={Date.now()}
               >
-                <resume.Document data={applicationData.resume ?? undefined} />
+                {ResumeComponent && <ResumeComponent data={applicationData.resume ?? undefined} />}
               </PDFViewer>
             ) : (
               <PDFViewer
@@ -150,7 +152,7 @@ const App = () => {
                 showToolbar={true}
                 key={Date.now()}
               >
-                <coverLetter.Document data={applicationData.cover_letter ?? undefined} />
+                {CoverLetterComponent && <CoverLetterComponent data={applicationData.cover_letter ?? undefined} />}
               </PDFViewer>
             )}
           </Card>

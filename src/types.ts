@@ -1,4 +1,4 @@
-import { type PageSize, type Orientation, type Bookmark } from '@react-pdf/types';
+import type { PageSize, Orientation, Bookmark } from '@react-pdf/types';
 import { z } from 'zod';
 
 import {
@@ -74,6 +74,14 @@ export type ReactPDFProps = {
   bookmark?: Bookmark;
   data: ResumeSchema | CoverLetterSchema;
 };
+
+export type TailorThemeProps ={
+  id: string;
+  name: string;
+  description: string;
+  documents: string[];
+  components: Record<string, React.ComponentType<any>>
+}
 
 export type Schemas = {
   metadata: MetadataSchema;

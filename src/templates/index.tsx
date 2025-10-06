@@ -1,11 +1,8 @@
-import modernResume from './modern/resume/index';
-import modernCoverLetter from './modern/cover-letter/index';
+import { type TailorThemeProps } from '../types';
+import modernTheme from './modern';
 
-export const themes = {
-  modern: {
-    resume: modernResume,
-    coverLetter: modernCoverLetter,
-  },
+export const themes: Record<string, TailorThemeProps> = {
+  modern: modernTheme,
 } as const;
 
 export type ThemeName = keyof typeof themes;

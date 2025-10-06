@@ -81,9 +81,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default {
-  id: 'cover-letter',
-  name: 'Cover Letter',
-  description: 'Professional cover letter template',
-  Document: CoverLetterDocument,
-};
+export default CoverLetterDocument;
