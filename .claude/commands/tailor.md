@@ -80,4 +80,15 @@ After running this command, all subsequent interactions will:
    - Inform user that live preview is available
    - Explain that all YAML edits will trigger automatic validation and browser updates
 
+## CRITICAL: Post-Edit Validation
+
+**IMPORTANT**: After making ANY changes to YAML files in the company folder, you MUST:
+
+1. Use `BashOutput` tool to check the tailor-server output for validation errors
+2. Look for messages like "✅ Data regenerated successfully" or "❌ Data regeneration failed"
+3. If validation fails, the error message will show exactly which fields are invalid
+4. Fix validation errors immediately before proceeding
+
+**Why this matters**: The tailor-server validates all YAML changes against Zod schemas. If validation fails, the PDF won't regenerate and the user's browser won't update. Always verify your changes passed validation by checking the server output.
+
 Now validate the company folder, set the context, start the live preview server, and provide a comprehensive summary.
