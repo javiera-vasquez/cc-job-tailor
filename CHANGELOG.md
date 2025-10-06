@@ -7,6 +7,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.1] - 2025-10-06
+
+### Added
+
+- **Theme System**: New theming architecture for resume and cover letter templates
+- **WithPDFWrapper Component**: Reusable wrapper for PDF document generation with standardized configuration
+- **Theme Validation**: Comprehensive Zod schemas for validating theme structure and components
+- **Theme Selector**: Interactive dropdown in UI for switching between themes
+- **Test Coverage**: 41 new unit tests for theme validation (27 tests) and PDF wrapper component (14 tests)
+
+### Changed
+
+- **Template Organization**: Restructured templates into `modern/` theme directory with component subdirectories
+- **Component Architecture**: Introduced `components/` subdirectories for resume and cover letter sections
+- **Module Aliases**: Added new TypeScript/Vite aliases for design tokens, types, fonts, and utilities
+- **Development Command**: Updated `dev` script to use `tailor-server` for consistency
+- **Tailor Documentation**: Enhanced with live preview server instructions and validation requirements
+
+### Improved
+
+- **Type Safety**: Enhanced with new component prop types (`ResumeComponentProps`, `CoverLetterComponentProps`)
+- **Theme Initialization**: Centralized font registration in theme definition
+- **PDF Generation**: Modular theme structure with dynamic component loading
+- **Data Handling**: Simplified component data extraction and optional data handling
+- **Error Handling**: Better validation for missing or invalid theme data
+- **Code Organization**: Clearer separation between templates, themes, and shared components
+
+### Technical Details
+
+- **Theme Structure**: Each theme now contains `resume`, `coverLetter`, and `init()` function
+- **Component Props**: Type-safe props for all theme components with explicit data structures
+- **Validation Schemas**: `ThemeSchema`, `ThemeComponentSchema`, and document type validation
+- **Module Organization**: `/src/templates/[theme-name]/[document-type]/components/`
+- **Radix UI Integration**: Added `@radix-ui/react-select` for enhanced UI components
+
 ## [0.8.0] - 2025-10-02
 
 ### Added
