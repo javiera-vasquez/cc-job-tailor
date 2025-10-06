@@ -1,12 +1,12 @@
 import React from 'react';
 import { Page, View, StyleSheet } from '@react-pdf/renderer';
 
-import Header from './Header';
-import Contact from './Contact';
-import Skills from './Skills';
-import Languages from './Languages';
-import Education from './Education';
-import Experience from './Experience';
+import Header from './components/Header';
+import Contact from './components/Contact';
+import Skills from './components/Skills';
+import Languages from './components/Languages';
+import Education from './components/Education';
+import Experience from './components/Experience';
 
 import { colors, spacing, typography } from '@design-tokens';
 import type { ResumeSchema, ReactPDFProps } from '@types';
@@ -16,10 +16,9 @@ import type { ResumeSchema, ReactPDFProps } from '@types';
  */
 export const resumeConfig = {
   getDocumentProps: (data: ResumeSchema) => ({
-    author: data.name,
-    keywords: 'frontend, react, typescript, senior engineer',
-    subject: `The resume of ${data.name}`,
     title: 'Resume',
+    author: data.name,
+    subject: `The resume of ${data.name}`,
   }),
   transformData: (data: any) =>
     data.personal_info ? transformSourceToResumeSchema(data) : data,

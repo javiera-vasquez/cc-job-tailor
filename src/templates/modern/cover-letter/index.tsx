@@ -1,11 +1,11 @@
 import React from 'react';
 import { Page, StyleSheet } from '@react-pdf/renderer';
 
-import Header from './Header';
-import DateLine from './DateLine';
-import Title from './Title';
-import Body from './Body';
-import Signature from './Signature';
+import Header from './components/Header';
+import DateLine from './components/DateLine';
+import Title from './components/Title';
+import Body from './components/Body';
+import Signature from './components/Signature';
 
 import { colors, spacing, typography } from '@design-tokens';
 import type { CoverLetterSchema, ReactPDFProps } from '@types';
@@ -15,10 +15,9 @@ import type { CoverLetterSchema, ReactPDFProps } from '@types';
  */
 export const coverLetterConfig = {
   getDocumentProps: (data: CoverLetterSchema) => ({
-    author: data.personal_info.name || 'Resume Applicant',
-    keywords: 'cover letter, application, professional',
-    subject: `Cover Letter for ${data.position} at ${data.company}`,
     title: 'Cover Letter',
+    author: data.personal_info.name || 'Resume Applicant',
+    subject: `Cover Letter for ${data.position} at ${data.company}`,
   }),
   emptyStateMessage: 'No cover letter data available. Please ensure cover letter data exists.',
 };
