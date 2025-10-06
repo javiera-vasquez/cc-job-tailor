@@ -51,8 +51,10 @@ const generatePdf = async () => {
   const generateDocument = async (docType: 'resume' | 'cover-letter') => {
     const component =
       docType === 'resume'
-        ? React.createElement(resume.Document, { data: applicationData })
-        : React.createElement(coverLetter.Document, { data: applicationData });
+        ? React.createElement(resume.Document, { data: applicationData.resume ?? undefined })
+        : React.createElement(coverLetter.Document, {
+            data: applicationData.cover_letter ?? undefined,
+          });
 
     const filePath = path.join(tmpDir, `${docType}-${companyName}.pdf`);
 
