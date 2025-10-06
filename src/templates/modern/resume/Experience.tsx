@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet, Link } from '@react-pdf/renderer';
-import { colors, spacing } from '../design-tokens';
-import type { ExperienceItem, ResumeSchema } from '../../types';
+import { colors, spacing } from '@design-tokens';
+import type { ExperienceItem, ResumeSchema } from '@types';
 
 const styles = StyleSheet.create({
   container: {

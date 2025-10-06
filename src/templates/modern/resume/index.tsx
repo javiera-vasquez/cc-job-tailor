@@ -8,9 +8,9 @@ import Languages from './Languages';
 import Education from './Education';
 import Experience from './Experience';
 
-import { colors, spacing, typography } from '../design-tokens';
-import type { ResumeSchema, ReactPDFProps } from '../../types';
-import { registerFonts } from '../fonts-register';
+import { colors, spacing, typography } from '@design-tokens';
+import type { ResumeSchema, ReactPDFProps } from '@types';
+import { registerFonts } from '@fonts-register';
 
 // Register available fonts
 registerFonts();

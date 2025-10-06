@@ -1,4 +1,4 @@
-import resume from './resume/index';
-import coverLetter from './cover-letter/index';
+import resume from './modern/resume/index';
+import coverLetter from './modern/cover-letter/index';
 
 export { resume, coverLetter };
