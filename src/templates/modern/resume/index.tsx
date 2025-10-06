@@ -1,5 +1,5 @@
 import React from 'react';
-import { Page, View, Text, Document, StyleSheet } from '@react-pdf/renderer';
+import { Page, View, StyleSheet } from '@react-pdf/renderer';
 
 import Header from './Header';
 import Contact from './Contact';
@@ -11,8 +11,27 @@ import Experience from './Experience';
 import { colors, spacing, typography } from '@design-tokens';
 import type { ResumeSchema, ReactPDFProps } from '@types';
 
-// Transform source data format to ResumeSchema when needed
-function transformSourceToResumeSchema(sourceData: any): ResumeSchema {
+/**
+ * Configuration for the Resume document wrapper
+ */
+export const resumeConfig = {
+  getDocumentProps: (data: ResumeSchema) => ({
+    author: data.name,
+    keywords: 'frontend, react, typescript, senior engineer',
+    subject: `The resume of ${data.name}`,
+    title: 'Resume',
+  }),
+  transformData: (data: any) =>
+    data.personal_info ? transformSourceToResumeSchema(data) : data,
+  emptyStateMessage:
+    'No resume data available. Please ensure source files exist or use -C flag to specify a company folder.',
+};
+
+/**
+ * Transform source data format to ResumeSchema when needed
+ * Used by the HOC wrapper to normalize data before rendering
+ */
+export function transformSourceToResumeSchema(sourceData: any): ResumeSchema {
   // Convert technical_expertise from object to array format
   const technicalExpertise = Object.entries(sourceData.technical_expertise).map(
     ([key, skills]) => ({
@@ -39,10 +58,9 @@ function transformSourceToResumeSchema(sourceData: any): ResumeSchema {
   };
 }
 
-
 // 72 dpi is the default for PDF
 // Ensure A4 page sizing (595.5 × 842.25 points)
-const Resume = ({
+export const Resume = ({
   size = 'A4',
   orientation = 'portrait',
   wrap = true,
@@ -60,7 +78,6 @@ const Resume = ({
     bookmark={bookmark}
     style={styles.page}
   >
-    {/* fix type error */}
     <Header resume={data as ResumeSchema} />
 
     <View style={styles.container}>
@@ -79,43 +96,6 @@ const Resume = ({
     </View>
   </Page>
 );
-
-const ResumeDocument = ({ data }: { data?: ResumeSchema }): React.ReactElement => {
-  if (!data) {
-    // Return empty document if no resume data available
-    return (
-      <Document title="No Resume Data Available">
-        <Page size="A4" style={styles.page}>
-          <View style={{ padding: 50, textAlign: 'center' }}>
-            <Header resume={{} as ResumeSchema} />
-            <View style={{ marginTop: 100 }}>
-              <Text style={{ fontSize: 16, color: colors.darkGray }}>
-                No resume data available. Please ensure source files exist or use -C flag to specify
-                a company folder.
-              </Text>
-            </View>
-          </View>
-        </Page>
-      </Document>
-    );
-  }
-
-  // Check if data needs transformation (source format vs tailored format)
-  const resumeData = (data as any).personal_info
-    ? transformSourceToResumeSchema(data) // Source data format - needs transformation
-    : data; // Tailored format
-
-  return (
-    <Document
-      author={resumeData.name}
-      keywords="frontend, react, typescript, senior engineer"
-      subject={`The resume of ${resumeData.name}`}
-      title="Resume"
-    >
-      <Resume data={resumeData} />
-    </Document>
-  );
-};
 
 const styles = StyleSheet.create({
   page: {
@@ -141,5 +121,3 @@ const styles = StyleSheet.create({
     paddingTop: spacing.pagePadding,
   },
 });
-
-export default ResumeDocument;

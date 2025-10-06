@@ -22,6 +22,7 @@
       "@design-tokens": ["./src/templates/design-tokens.ts"],
       "@types": ["./src/types.ts"],
       "@fonts-register": ["./src/templates/fonts-register.ts"],
+      "@with-pdf-wrapper": ["./src/templates/with-pdf-wrapper.tsx"],
       "@utils/*": ["./src/utils/*"]
     },
 

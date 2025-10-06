@@ -13,6 +13,7 @@ export default defineConfig({
       '@design-tokens': fileURLToPath(new URL('./src/templates/design-tokens.ts', import.meta.url)),
       '@types': fileURLToPath(new URL('./src/types.ts', import.meta.url)),
       '@fonts-register': fileURLToPath(new URL('./src/templates/fonts-register.ts', import.meta.url)),
+      '@with-pdf-wrapper': fileURLToPath(new URL('./src/templates/with-pdf-wrapper.tsx', import.meta.url)),
       '@utils': fileURLToPath(new URL('./src/utils', import.meta.url)),
     },
   },
