@@ -17,6 +17,7 @@ Start the tailor development server in background for live validation and browse
 ## Server Behavior:
 
 The tailor-server combines two key features:
+
 - **Vite Hot Reload**: Browser preview auto-updates on data regeneration
 - **Smart File Watching**: Only watches YAML files in the active company's folder (reads from `.claude/tailor-context.yaml`)
 

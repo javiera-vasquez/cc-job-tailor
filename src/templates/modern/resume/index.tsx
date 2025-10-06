@@ -20,8 +20,7 @@ export const resumeConfig = {
     author: data.name,
     subject: `The resume of ${data.name}`,
   }),
-  transformData: (data: any) =>
-    data.personal_info ? transformSourceToResumeSchema(data) : data,
+  transformData: (data: any) => (data.personal_info ? transformSourceToResumeSchema(data) : data),
   emptyStateMessage:
     'No resume data available. Please ensure source files exist or use -C flag to specify a company folder.',
 };

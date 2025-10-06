@@ -69,10 +69,10 @@ const generatePdf = async () => {
 
     console.warn(`Generating ${docType} PDF for ${companyName} at ${filePath}`);
 
-      // Type assertion needed because renderToFile expects DocumentProps but our wrapper has custom props
-      await renderToFile(component as any, filePath);
+    // Type assertion needed because renderToFile expects DocumentProps but our wrapper has custom props
+    await renderToFile(component as any, filePath);
 
-      console.warn(`${docType} PDF generated successfully for ${companyName}`);
+    console.warn(`${docType} PDF generated successfully for ${companyName}`);
   };
 
   // Generate documents based on specified type

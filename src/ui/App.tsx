@@ -152,7 +152,9 @@ const App = () => {
                 showToolbar={true}
                 key={Date.now()}
               >
-                {CoverLetterComponent && <CoverLetterComponent data={applicationData.cover_letter ?? undefined} />}
+                {CoverLetterComponent && (
+                  <CoverLetterComponent data={applicationData.cover_letter ?? undefined} />
+                )}
               </PDFViewer>
             )}
           </Card>

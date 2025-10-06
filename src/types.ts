@@ -99,7 +99,7 @@ export type TailorThemeProps = {
   documents: readonly DocumentType[];
   components: ThemeComponents;
   initialize?: () => void | Promise<void>;
-}
+};
 
 export type Schemas = {
   metadata: MetadataSchema;

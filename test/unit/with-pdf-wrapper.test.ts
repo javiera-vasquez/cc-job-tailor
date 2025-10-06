@@ -618,7 +618,7 @@ describe('WithPDFWrapper Component', () => {
         contact: {
           phone: '+1234567890',
           email: 'test+special@example.com',
-          address: '123 St. Mary\'s Avenue',
+          address: "123 St. Mary's Avenue",
           linkedin: 'https://linkedin.com/in/test',
           github: 'https://github.com/test',
         },

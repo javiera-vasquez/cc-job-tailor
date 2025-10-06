@@ -346,7 +346,7 @@ export function createValidThemeRegistry() {
 // WithPDFWrapper test helpers
 export function createMockDocumentConfig<T>(overrides?: Partial<any>) {
   return {
-    getDocumentProps: (data: T) => ({
+    getDocumentProps: (_data: T) => ({
       author: 'Test Author',
       subject: 'Test Subject',
       title: 'Test Document',
