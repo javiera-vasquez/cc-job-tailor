@@ -20,7 +20,7 @@ describe('WithPDFWrapper Component', () => {
         data: undefined,
         config,
         children: (data) => React.createElement('div', null, data.name),
-      });
+      }) as React.ReactElement<{ title: string }>;
 
       expect(component).toBeDefined();
       expect(component.props).toBeDefined();
@@ -42,7 +42,7 @@ describe('WithPDFWrapper Component', () => {
         data: undefined,
         config,
         children: (data) => React.createElement('div', null, data.name),
-      });
+      }) as React.ReactElement<{ title: string }>;
 
       // The empty state should use the custom message
       expect(component.props.title).toBe('No Data Available');
@@ -62,7 +62,7 @@ describe('WithPDFWrapper Component', () => {
         data: null as any,
         config,
         children: (data) => React.createElement('div', null, data.name),
-      });
+      }) as React.ReactElement<{ title: string }>;
 
       expect(component).toBeDefined();
       expect(component.props.title).toBe('No Data Available');
@@ -87,7 +87,7 @@ describe('WithPDFWrapper Component', () => {
         data: resumeData,
         config,
         children: (data) => React.createElement('div', null, data.name),
-      });
+      }) as React.ReactElement<{ author: string; subject: string; title: string }>;
 
       expect(component.props.author).toBe(resumeData.name);
       expect(component.props.subject).toBe(`Resume for ${resumeData.title}`);
@@ -153,7 +153,7 @@ describe('WithPDFWrapper Component', () => {
         data: minimalData,
         config,
         children: (data) => React.createElement('div', null, data.name),
-      });
+      }) as React.ReactElement<{ author: string; subject: string; title: string }>;
 
       expect(component.props.author).toBe('Test User');
       expect(component.props.subject).toBe('Resume');
@@ -234,7 +234,7 @@ describe('WithPDFWrapper Component', () => {
           transformedDataReceived = data;
           return React.createElement('div', null, data.name);
         },
-      });
+      }) as React.ReactElement<{ title: string }>;
 
       expect(transformedDataReceived).not.toBeNull();
       expect(transformedDataReceived!.name).toBe('JOHN DOE');
@@ -305,9 +305,9 @@ describe('WithPDFWrapper Component', () => {
           receivedData = data;
           return React.createElement('div', null, data.name);
         },
-      });
+      }) as React.ReactElement<{ title: string }>;
 
-      expect(receivedData).toEqual(originalData);
+      expect(receivedData).toEqual(originalData as any);
     });
 
     test('transforms complex nested data structures', () => {
@@ -386,11 +386,11 @@ describe('WithPDFWrapper Component', () => {
           transformedData = data;
           return React.createElement('div', null, data.name);
         },
-      });
+      }) as React.ReactElement<{ title: string }>;
 
       expect(transformedData).not.toBeNull();
       expect(transformedData!.technical_expertise).toHaveLength(1);
-      expect(transformedData!.technical_expertise[0].resume_title).toBe('Frontend');
+      expect(transformedData!.technical_expertise[0]!.resume_title).toBe('Frontend');
     });
   });
 
@@ -461,10 +461,10 @@ describe('WithPDFWrapper Component', () => {
           dataReceived = data;
           return React.createElement('div', null, data.name);
         },
-      });
+      }) as React.ReactElement<{ title: string }>;
 
       expect(childrenCalled).toBe(true);
-      expect(dataReceived).toEqual(resumeData);
+      expect(dataReceived).toEqual(resumeData as any);
     });
 
     test('renders children component inside Document', () => {
@@ -526,7 +526,12 @@ describe('WithPDFWrapper Component', () => {
         data: resumeData,
         config,
         children: (data) => React.createElement('Page', null, data.name),
-      });
+      }) as React.ReactElement<{
+        author: string;
+        subject: string;
+        title: string;
+        children: React.ReactNode;
+      }>;
 
       expect(component).toBeDefined();
       expect(component.props.author).toBe('Test User');
@@ -576,7 +581,7 @@ describe('WithPDFWrapper Component', () => {
         data: coverLetterData,
         config,
         children: (data) => React.createElement('div', null, data.company),
-      });
+      }) as React.ReactElement<{ author: string; subject: string; title: string }>;
 
       expect(component.props.author).toBe('test@example.com');
       expect(component.props.subject).toBe('Cover Letter - Software Engineer');
@@ -597,7 +602,7 @@ describe('WithPDFWrapper Component', () => {
         data: undefined,
         config,
         children: (data) => React.createElement('div', null, data.company),
-      });
+      }) as React.ReactElement<{ title: string }>;
 
       expect(component.props.title).toBe('No Data Available');
     });
@@ -663,7 +668,7 @@ describe('WithPDFWrapper Component', () => {
         data: dataWithSpecialChars,
         config,
         children: (data) => React.createElement('div', null, data.name),
-      });
+      }) as React.ReactElement<{ author: string; subject: string; title: string }>;
 
       expect(component.props.author).toBe("O'Brien-Smith");
       expect(component.props.subject).toBe('Engineer & Developer');
@@ -725,7 +730,7 @@ describe('WithPDFWrapper Component', () => {
           receivedData = data;
           return React.createElement('div', null, data.name);
         },
-      });
+      }) as React.ReactElement<{ title: string }>;
 
       expect(receivedData).not.toBeNull();
       expect(receivedData!.skills).toEqual([]);
