@@ -1,5 +1,5 @@
 ---
-allowed-tools: Read, Write(.claude/tailor-context.yaml), Glob(resume-data/tailor/**)
+allowed-tools: Read, Write(.claude/tailor-context.yaml), Glob(resume-data/tailor/**), SlashCommand
 description: Set CC in /tailor mode, Ask claude for changes and improvements to the application assets  | argument-hint company-name
 ---
 
