@@ -10,10 +10,6 @@ import Experience from './Experience';
 
 import { colors, spacing, typography } from '@design-tokens';
 import type { ResumeSchema, ReactPDFProps } from '@types';
-import { registerFonts } from '@fonts-register';
-
-// Register available fonts
-registerFonts();
 
 // Transform source data format to ResumeSchema when needed
 function transformSourceToResumeSchema(sourceData: any): ResumeSchema {

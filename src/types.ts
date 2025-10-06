@@ -75,12 +75,30 @@ export type ReactPDFProps = {
   data: ResumeSchema | CoverLetterSchema;
 };
 
-export type TailorThemeProps ={
+// Component prop types for theme components
+export type ResumeComponentProps = {
+  data?: ResumeSchema;
+};
+
+export type CoverLetterComponentProps = {
+  data?: CoverLetterSchema;
+};
+
+// Strict theme component types
+export type ThemeComponents = {
+  resume: React.ComponentType<ResumeComponentProps>;
+  coverLetter: React.ComponentType<CoverLetterComponentProps>;
+};
+
+export type DocumentType = 'resume' | 'cover-letter';
+
+export type TailorThemeProps = {
   id: string;
   name: string;
   description: string;
-  documents: string[];
-  components: Record<string, React.ComponentType<any>>
+  documents: readonly DocumentType[];
+  components: ThemeComponents;
+  initialize?: () => void | Promise<void>;
 }
 
 export type Schemas = {

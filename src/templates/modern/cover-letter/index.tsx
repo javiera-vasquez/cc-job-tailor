@@ -9,10 +9,6 @@ import Signature from './Signature';
 
 import { colors, spacing, typography } from '@design-tokens';
 import type { CoverLetterSchema, ReactPDFProps } from '@types';
-import { registerFonts } from '@fonts-register';
-
-// Register fonts
-registerFonts();
 
 
 const CoverLetter = ({
