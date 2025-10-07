@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PDFViewer } from '@react-pdf/renderer';
 import { Card } from '@ui/components/ui/card';
 
@@ -119,6 +119,14 @@ const App = () => {
     (applicationData.metadata?.active_template as ThemeName) || 'modern',
   );
 
+  // Sync activeTheme with applicationData.metadata?.active_template
+  useEffect(() => {
+    const metadataTheme = applicationData.metadata?.active_template as ThemeName;
+    if (metadataTheme && metadataTheme !== activeTheme) {
+      setActiveTheme(metadataTheme);
+    }
+  }, [applicationData.metadata?.active_template]);
+
   const theme = themes[activeTheme];
   const ResumeComponent = theme?.components.resume;
   const CoverLetterComponent = theme?.components.coverLetter;
@@ -145,7 +153,7 @@ const App = () => {
               <PDFViewer
                 style={{ width: '100%', height: '100%' }}
                 showToolbar={true}
-                key={Date.now()}
+                key={`${Date.now()}-${activeTheme}-${activeDocument}`}
               >
                 {ResumeComponent && <ResumeComponent data={applicationData.resume ?? undefined} />}
               </PDFViewer>
@@ -153,7 +161,7 @@ const App = () => {
               <PDFViewer
                 style={{ width: '100%', height: '100%' }}
                 showToolbar={true}
-                key={Date.now()}
+                key={`${Date.now()}-${activeTheme}-${activeDocument}`}
               >
                 {CoverLetterComponent && (
                   <CoverLetterComponent data={applicationData.cover_letter ?? undefined} />
