@@ -1,7 +1,9 @@
 import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
-import { colors, spacing } from '@template-core/design-tokens';
+import { tokens } from '@template-core/design-tokens';
 import type { CoverLetterSchema } from '@types';
+
+const { colors, spacing } = tokens.classic;
 
 const styles = StyleSheet.create({
   signatureContainer: {

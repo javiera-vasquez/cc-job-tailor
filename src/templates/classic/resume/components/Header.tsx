@@ -1,7 +1,9 @@
 import React from 'react';
 import { Text, View, StyleSheet, Image } from '@react-pdf/renderer';
-import { colors, spacing } from '@template-core/design-tokens';
+import { tokens } from '@template-core/design-tokens';
 import type { ResumeSchema } from '@types';
+
+const { colors, spacing } = tokens.classic;
 
 const styles = StyleSheet.create({
   // Main header container
@@ -78,10 +80,12 @@ const Header = ({ resume }: { resume: ResumeSchema }) => (
         <Text style={styles.position}>{resume.title}</Text>
       </View>
 
-      {/* Profile picture in top-right corner */}
-      <View style={styles.profileArea}>
-        <Image src={resume.profile_picture} style={styles.profileImage} />
-      </View>
+      {/* Profile picture in top-right corner - only render if profileImageSize > 0 */}
+      {spacing.profileImageSize > 0 && (
+        <View style={styles.profileArea}>
+          <Image src={resume.profile_picture} style={styles.profileImage} />
+        </View>
+      )}
     </View>
 
     {/* Resume summary */}

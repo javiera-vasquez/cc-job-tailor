@@ -8,8 +8,10 @@ import Languages from './components/Languages';
 import Education from './components/Education';
 import Experience from './components/Experience';
 
-import { colors, spacing, typography } from '@template-core/design-tokens';
+import { tokens } from '@template-core/design-tokens';
 import type { ResumeSchema, ReactPDFProps } from '@types';
+
+const { colors, spacing, typography } = tokens.classic;
 
 /**
  * Configuration for the Resume document wrapper

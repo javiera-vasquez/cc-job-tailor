@@ -1,6 +1,8 @@
 import React from 'react';
 import { Document, Page, View, Text, StyleSheet } from '@react-pdf/renderer';
-import { colors, typography, spacing } from './design-tokens';
+import { tokens } from './design-tokens';
+
+const { colors, typography, spacing } = tokens.shared;
 
 export type DocumentConfig<T> = {
   getDocumentProps: (data: T) => {
