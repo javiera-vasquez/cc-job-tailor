@@ -1,6 +1,6 @@
 // Design system constants for resume components
 // Centralized design tokens to avoid circular imports
-import tailwindColors from '../libs/tailwind-colors';
+import tailwindColors from './libs/tailwind-colors';
 
 // Design system colors with support for accent and primary color configuration
 export const colors = {
