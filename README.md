@@ -7,7 +7,7 @@
 
 Claude-powered resume generator that treats your career as structured data. Write your experience once in YAML files, then automatically generate tailored PDF cover letters and resumes optimized for any job posting using Claude Code.
 
-![Tailor in action!](https://s6.imgcdn.dev/YnKNew.gif)
+![Tailor in action!](/public/images/hi-im-tailor.png)
 
 **Example Usage:**
 
