@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.3] - 2025-10-07
+
+### Added
+
+- **Classic Theme**: New professional resume and cover letter theme with clean, traditional layout
+- **Theme Components**: Complete component set for classic theme (Header, Summary, Experience, Education, Skills, Languages, Additional, Contact)
+- **Cover Letter Components**: Classic theme cover letter with Header, Title, DateLine, Body, and Signature components
+- **Single-Column Layout**: Simplified resume structure with improved visual hierarchy
+
+### Changed
+
+- **Design Token System**: Unified token imports across all templates for better consistency
+- **Theme Initialization**: Updated to prioritize `active_template` from metadata, defaulting to 'modern'
+- **PDF Viewer**: Enhanced key generation to include theme and document type for proper re-renders
+- **Tailor Command**: Expanded metadata management with `active_company`, `active_template`, and `available_files` fields
+- **UI Simplification**: Removed theme selector dropdown from Header component
+
+### Improved
+
+- **Component Organization**: Better structured classic theme components with Summary and Additional sections
+- **Design Tokens**: Enhanced token structure for improved styling consistency and maintainability
+- **Styling System**: Consolidated color management using modern design tokens in PDF wrapper
+- **Metadata Tracking**: Streamlined template management with automatic timestamp updates
+
+### Removed
+
+- **Template Configuration**: Removed redundant template section from metadata.yaml
+- **Unused Logic**: Cleaned up contact formatting code from Header component
+- **UI Elements**: Removed manual theme selector in favor of metadata-driven theme selection
+
 ## [0.8.2] - 2025-10-07
 
 ### Added

@@ -10,7 +10,7 @@ import Signature from './components/Signature';
 import { tokens } from '@template-core/design-tokens';
 import type { CoverLetterSchema, ReactPDFProps } from '@types';
 
-const { colors, spacing, typography } = tokens.modern;
+const { colors, spacing, typography } = tokens.classic;
 
 /**
  * Configuration for the CoverLetter document wrapper

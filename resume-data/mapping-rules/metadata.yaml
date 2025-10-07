@@ -136,18 +136,6 @@ transformation_rules:
       target: 'metadata.job_details.user_scale'
       description: 'Extract scale information about users/impact'
 
-  # Template configuration
-  template_configuration:
-    - source: 'metadata.active_template'
-      target: 'metadata.active_template'
-      default: 'modern'
-      description: 'Template/theme to use for PDF generation'
-      validation_logic: |
-        1. Check if active_template is provided in metadata
-        2. Validate against available themes in src/templates/
-        3. Default to 'modern' if not specified or invalid
-        4. Must match theme IDs in themes registry
-
   # Timestamp
   timestamp_generation:
     - source: 'current_date'

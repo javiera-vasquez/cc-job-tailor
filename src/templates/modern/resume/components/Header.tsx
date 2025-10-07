@@ -1,7 +1,9 @@
 import React from 'react';
 import { Text, View, StyleSheet, Image } from '@react-pdf/renderer';
-import { colors, spacing } from '@template-core/design-tokens';
+import { tokens } from '@template-core/design-tokens';
 import type { ResumeSchema } from '@types';
+
+const { colors, spacing } = tokens.modern;
 
 const styles = StyleSheet.create({
   // Main header container

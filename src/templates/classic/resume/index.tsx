@@ -2,16 +2,15 @@ import React from 'react';
 import { Page, View, StyleSheet } from '@react-pdf/renderer';
 
 import Header from './components/Header';
-import Contact from './components/Contact';
-import Skills from './components/Skills';
-import Languages from './components/Languages';
+import Summary from './components/Summary';
+import Additional from './components/Additional';
 import Education from './components/Education';
 import Experience from './components/Experience';
 
 import { tokens } from '@template-core/design-tokens';
 import type { ResumeSchema, ReactPDFProps } from '@types';
 
-const { colors, spacing, typography } = tokens.modern;
+const { colors, spacing, typography } = tokens.classic;
 
 /**
  * Configuration for the Resume document wrapper
@@ -80,19 +79,12 @@ export const Resume = ({
   >
     <Header resume={data as ResumeSchema} />
 
+    {/* Single column layout */}
     <View style={styles.container}>
-      {/* Left Column - Contact, Education, Skills, Languages */}
-      <View style={styles.leftColumn} debug={debug}>
-        <Contact resume={data as ResumeSchema} />
-        <Skills resume={data as ResumeSchema} />
-        <Languages resume={data as ResumeSchema} />
-      </View>
-
-      {/* Right Column - Experience */}
-      <View style={styles.rightColumn}>
-        <Experience resume={data as ResumeSchema} debug={debug} />
-        <Education resume={data as ResumeSchema} debug={debug} />
-      </View>
+      <Summary resume={data as ResumeSchema} />
+      <Education resume={data as ResumeSchema} debug={debug} />
+      <Experience resume={data as ResumeSchema} debug={debug} />
+      <Additional resume={data as ResumeSchema} />
     </View>
   </Page>
 );
@@ -105,19 +97,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    flexDirection: 'row',
-  },
-  leftColumn: {
     flexDirection: 'column',
-    width: spacing.columnWidth,
-    paddingTop: spacing.pagePadding,
-    paddingRight: spacing.pagePadding,
-    borderRight: `1px solid ${colors.separatorGray}`,
-  },
-  rightColumn: {
-    flex: 1,
-    flexDirection: 'column',
-    paddingLeft: spacing.pagePadding,
-    paddingTop: spacing.pagePadding,
   },
 });

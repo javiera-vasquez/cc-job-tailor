@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, Link } from '@react-pdf/renderer';
 import { tokens } from '@template-core/design-tokens';
 import type { CoverLetterSchema } from '@types';
 
-const { colors, spacing } = tokens.modern;
+const { colors, spacing } = tokens.classic;
 
 const styles = StyleSheet.create({
   headerContainer: {
