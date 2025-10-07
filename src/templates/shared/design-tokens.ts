@@ -54,14 +54,14 @@ const modernTokens = {
 // Classic theme design tokens (traditional, single-column layout)
 const classicTokens = {
   colors: {
-    // Traditional black text, no accent color
+    // Monochrome color scheme (black/gray only)
     primary: tailwindColors.zinc[900],
-    accent: tailwindColors.zinc[900], // Same as primary for classic
+    accent: tailwindColors.zinc[900], // No accent color - same as primary
 
     // Semantic colors
     darkGray: tailwindColors.zinc[800],
     mediumGray: tailwindColors.zinc[600],
-    separatorGray: tailwindColors.zinc[900], // Darker separator for classic
+    separatorGray: tailwindColors.zinc[400], // Lighter gray for separator lines
 
     // Full tailwind palette access
     ...tailwindColors,
@@ -80,7 +80,7 @@ const classicTokens = {
       lineHeight: 1.2,
     },
     subtitle: {
-      fontSize: 11,
+      fontSize: 10,
       fontFamily: 'Lato Bold',
       textTransform: 'none' as const,
       marginBottom: 2,
@@ -93,9 +93,9 @@ const classicTokens = {
   },
   spacing: {
     columnWidth: 0, // Single column layout
-    documentPadding: 50,
-    pagePadding: 12,
-    profileImageSize: 0, // No profile image in classic
+    documentPadding: 32,
+    pagePadding: 6,
+    profileImageSize: 40, // Square profile image (60x60) - set to 0 to disable
     listItemSpacing: 3,
   },
 };

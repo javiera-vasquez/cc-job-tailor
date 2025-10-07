@@ -7,61 +7,60 @@ const { colors, spacing } = tokens.classic;
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 0,
-    marginRight: spacing.pagePadding / 3,
+    // marginBottom: spacing.pagePadding,
+    // paddingBottom: spacing.pagePadding,
+    // borderBottom: `1px solid ${colors.separatorGray}`,
   },
   sectionTitle: {
     color: colors.primary,
     fontFamily: 'Lato Bold',
-    fontSize: 12,
+    fontSize: 11,
+    textTransform: 'uppercase',
     marginBottom: spacing.pagePadding / 2,
   },
   experienceEntry: {
-    marginBottom: spacing.pagePadding / 2,
+    marginBottom: spacing.pagePadding,
   },
   companyHeader: {
     marginBottom: 2,
   },
   companyName: {
     fontFamily: 'Lato Bold',
-    fontSize: 11,
+    fontSize: 10,
     color: colors.primary,
   },
   positionTitle: {
-    fontFamily: 'Lato Bold',
-    fontSize: 9,
+    fontFamily: 'Lato',
+    fontSize: 10,
     color: colors.darkGray,
     marginBottom: 2,
   },
   dateLocation: {
-    fontSize: 9,
+    fontSize: 10,
     color: colors.mediumGray,
     marginBottom: 4,
   },
   companyDescription: {
-    fontSize: 9,
+    fontSize: 10,
     color: colors.darkGray,
     marginBottom: 6,
-    lineHeight: 1.33,
+    lineHeight: 1.4,
   },
   achievementItem: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: 2,
+    marginBottom: 0,
   },
   bullet: {
-    width: 2,
-    height: 2,
-    backgroundColor: colors.darkGray,
-    borderRadius: 500,
+    fontSize: 10,
+    color: colors.darkGray,
     marginRight: 6,
-    marginTop: 4,
-    flexShrink: 0,
   },
   achievementText: {
-    fontSize: 9,
+    flex: 1,
+    fontSize: 10,
     color: colors.darkGray,
-    lineHeight: 1.3,
+    lineHeight: 1.4,
   },
 });
 
@@ -106,7 +105,7 @@ const ExperienceEntry = ({ experience, debug }: { experience: ExperienceItem; de
         <View>
           {achievements.map((achievement: string, index: number) => (
             <View key={index} style={styles.achievementItem}>
-              <View style={styles.bullet} />
+              <Text style={styles.bullet}>•</Text>
               <Text style={styles.achievementText}>{achievement}</Text>
             </View>
           ))}
@@ -118,18 +117,19 @@ const ExperienceEntry = ({ experience, debug }: { experience: ExperienceItem; de
 
 const Experience = ({ resume, debug }: { resume: ResumeSchema; debug: boolean }) => (
   <View style={styles.container} debug={debug}>
-    <Text style={styles.sectionTitle}>Independent Projects</Text>
-    {resume.independent_projects.map((experience, index) => (
+    <Text style={styles.sectionTitle}>WORK EXPERIENCE</Text>
+    {/* Render professional experience first */}
+    {resume.professional_experience.map((experience, index) => (
       <ExperienceEntry
-        key={`${experience.name}-${experience.location}-${index}`}
+        key={`${experience.company}-${experience.position}-${index}`}
         experience={experience}
         debug={debug}
       />
     ))}
-    <Text style={styles.sectionTitle}>Professional Experience</Text>
-    {resume.professional_experience.map((experience, index) => (
+    {/* Then render independent projects */}
+    {resume.independent_projects.map((experience, index) => (
       <ExperienceEntry
-        key={`${experience.company}-${experience.position}-${index}`}
+        key={`${experience.name}-${experience.location}-${index}`}
         experience={experience}
         debug={debug}
       />

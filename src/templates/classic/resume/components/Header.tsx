@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, Image } from '@react-pdf/renderer';
+import { Text, View, StyleSheet, Image, Link } from '@react-pdf/renderer';
 import { tokens } from '@template-core/design-tokens';
 import type { ResumeSchema } from '@types';
 
@@ -8,76 +8,93 @@ const { colors, spacing } = tokens.classic;
 const styles = StyleSheet.create({
   // Main header container
   headerContainer: {
-    // height: 56,
     width: '100%',
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: spacing.pagePadding / 1.5,
-  },
-
-  // Resume summary container
-  summaryContainer: {
-    width: '100%',
-    paddingTop: spacing.pagePadding / 2,
-    paddingBottom: spacing.pagePadding / 2,
-    borderBottom: `1px solid ${colors.separatorGray}`,
-    borderTop: `1px solid ${colors.separatorGray}`,
+    justifyContent: 'space-between',
+    marginBottom: spacing.pagePadding / 2,
   },
 
   // Profile picture area (top-right corner)
   profileArea: {
-    top: 0,
-    right: 0,
     width: spacing.profileImageSize,
     height: spacing.profileImageSize,
-    position: 'absolute',
+    marginLeft: spacing.pagePadding,
   },
 
   profileImage: {
     width: spacing.profileImageSize,
     height: spacing.profileImageSize,
-    borderRadius: spacing.profileImageSize / 2, // Circular crop
+    // Square image - no borderRadius
   },
 
-  // Main content area (name, title, summary)
+  // Main content area (name and contact info)
   contentArea: {
     flex: 1,
-    paddingRight: spacing.profileImageSize + spacing.pagePadding,
+    flexDirection: 'column',
   },
 
-  // TODO: Add rules to claude.md that never use letterSpacing in the future
-  // Typography styles following Figma specifications
+  // Name styling
   name: {
     color: colors.primary,
-    fontSize: 22,
+    fontSize: 14,
     fontFamily: 'Lato Bold',
     textTransform: 'uppercase',
     marginBottom: 2,
   },
 
-  position: {
-    color: colors.mediumGray,
-    fontSize: 14,
-    fontFamily: 'Lato Bold',
-    textTransform: 'capitalize',
-    marginBottom: 0,
+  // Contact line styling
+  contactLine: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    fontSize: 9,
+    fontFamily: 'Lato',
+    color: colors.darkGray,
   },
 
-  summary: {
+  contactItem: {
+    marginRight: 4,
+  },
+
+  contactSeparator: {
+    marginRight: 4,
+  },
+
+  contactLink: {
     color: colors.darkGray,
-    fontSize: 10,
-    lineHeight: 1.4,
+    textDecoration: 'none',
   },
 });
 
-const Header = ({ resume }: { resume: ResumeSchema }) => (
-  <View>
-    {/* Main header content */}
+const Header = ({ resume }: { resume: ResumeSchema }) => {
+  const { name, contact } = resume;
+
+  // Format contact info for inline display
+  const contactItems = [
+    contact.address,
+    contact.phone,
+    contact.email,
+    'linkedin.com/in/username', // Display format for LinkedIn
+  ];
+
+  return (
     <View style={styles.headerContainer}>
-      {/* Content area with name, title, summary */}
+      {/* Content area with name and contact */}
       <View style={styles.contentArea}>
-        <Text style={styles.name}>{resume.name}</Text>
-        <Text style={styles.position}>{resume.title}</Text>
+        <Text style={styles.name}>{name}</Text>
+        <View style={styles.contactLine}>
+          <Text style={styles.contactItem}>{contact.address}</Text>
+          <Text style={styles.contactSeparator}>|</Text>
+          <Text style={styles.contactItem}>{contact.phone}</Text>
+          <Text style={styles.contactSeparator}>|</Text>
+          <Link src={`mailto:${contact.email}`} style={[styles.contactItem, styles.contactLink]}>
+            {contact.email}
+          </Link>
+          <Text style={styles.contactSeparator}>|</Text>
+          <Link src={contact.linkedin} style={[styles.contactItem, styles.contactLink]}>
+            linkedin.com/in/username
+          </Link>
+        </View>
       </View>
 
       {/* Profile picture in top-right corner - only render if profileImageSize > 0 */}
@@ -87,12 +104,7 @@ const Header = ({ resume }: { resume: ResumeSchema }) => (
         </View>
       )}
     </View>
-
-    {/* Resume summary */}
-    <View style={styles.summaryContainer}>
-      <Text style={styles.summary}>{resume.summary}</Text>
-    </View>
-  </View>
-);
+  );
+};
 
 export default Header;

@@ -8,15 +8,15 @@ const { colors, spacing } = tokens.classic;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: spacing.pagePadding / 2,
-    paddingTop: spacing.pagePadding,
-    borderTop: `1px solid ${colors.separatorGray}`,
+    marginBottom: spacing.pagePadding,
+    paddingBottom: spacing.pagePadding,
+    borderBottom: `1px solid ${colors.separatorGray}`,
   },
-
   sectionTitle: {
     color: colors.primary,
     fontFamily: 'Lato Bold',
-    fontSize: 12,
+    fontSize: 11,
+    textTransform: 'uppercase',
     marginBottom: spacing.pagePadding / 2,
   },
   educationEntry: {
@@ -24,18 +24,19 @@ const styles = StyleSheet.create({
   },
   institution: {
     fontFamily: 'Lato Bold',
-    fontSize: 9,
+    fontSize: 10,
     color: colors.primary,
     marginBottom: 2,
   },
   program: {
-    fontSize: 8,
+    fontFamily: 'Lato',
+    fontSize: 10,
     color: colors.darkGray,
     marginBottom: 2,
   },
   locationDuration: {
     fontFamily: 'Lato',
-    fontSize: 8,
+    fontSize: 10,
     color: colors.mediumGray,
   },
 });
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
 const Education = ({ resume, debug }: { resume: ResumeSchema; debug: boolean }) => (
   <View style={styles.container} debug={debug}>
     {/* Section title */}
-    <Text style={styles.sectionTitle}>Education</Text>
+    <Text style={styles.sectionTitle}>EDUCATION</Text>
 
     {/* Education entries */}
     {resume.education.map((edu, index) => (
