@@ -69,14 +69,6 @@ const styles = StyleSheet.create({
 const Header = ({ resume }: { resume: ResumeSchema }) => {
   const { name, contact } = resume;
 
-  // Format contact info for inline display
-  const contactItems = [
-    contact.address,
-    contact.phone,
-    contact.email,
-    'linkedin.com/in/username', // Display format for LinkedIn
-  ];
-
   return (
     <View style={styles.headerContainer}>
       {/* Content area with name and contact */}

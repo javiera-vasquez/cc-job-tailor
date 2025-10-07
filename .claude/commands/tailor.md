@@ -54,8 +54,8 @@ After running this command, all subsequent interactions will:
 2. **Validate Metadata File**: Check that `metadata.yaml` exists in company folder
 3. **Read Pre-built Metadata**: Load complete metadata from `resume-data/tailor/$1/metadata.yaml`
 4. **Update State**: Copy entire metadata to `.claude/tailor-context.yaml` and update:
-   - last_updated: Current timestamp 
-   - active_company: Current Company 
+   - last_updated: Current timestamp
+   - active_company: Current Company
    - active_template: 'modern' or 'classic' default value is 'modern'
    - available_files: list of available files on `resume-data/tailor/$1/`
 5. **Provide Summary**: Display company context overview from loaded metadata

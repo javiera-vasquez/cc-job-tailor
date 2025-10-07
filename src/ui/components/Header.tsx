@@ -1,28 +1,13 @@
 import React from 'react';
 import { Button } from '@ui/components/ui/button';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@ui/components/ui/select';
-import { FileText, Mail, Palette } from 'lucide-react';
-import type { ThemeName } from '../../templates';
+import { FileText, Mail } from 'lucide-react';
 
 interface HeaderProps {
   activeDocument: 'resume' | 'cover-letter';
   onDocumentChange: (document: 'resume' | 'cover-letter') => void;
-  activeTheme: ThemeName;
-  onThemeChange: (theme: ThemeName) => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({
-  activeDocument,
-  onDocumentChange,
-  activeTheme,
-  onThemeChange,
-}) => {
+export const Header: React.FC<HeaderProps> = ({ activeDocument, onDocumentChange }) => {
   return (
     <header className="border-b border-border px-6 py-2">
       <div className="grid grid-cols-[300px_1fr_200px] items-center">

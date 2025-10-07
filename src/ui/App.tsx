@@ -12,8 +12,6 @@ import applicationData from '../data/application';
 
 import '@ui/styles/globals.css';
 
-console.log('Application Data', applicationData);
-
 const SIDEBAR_WIDGETS: WidgetConfig[] = [
   {
     type: WidgetType.HEADER,
@@ -134,12 +132,7 @@ const App = () => {
   return (
     <div className="flex h-screen w-full flex-col">
       {/* Header */}
-      <Header
-        activeDocument={activeDocument}
-        onDocumentChange={setActiveDocument}
-        activeTheme={activeTheme}
-        onThemeChange={setActiveTheme}
-      />
+      <Header activeDocument={activeDocument} onDocumentChange={setActiveDocument} />
 
       {/* Two column layout */}
       <div className="flex flex-1 overflow-hidden">
