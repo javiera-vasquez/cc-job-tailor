@@ -135,15 +135,11 @@ This will generate a tailor job and cover letter application for the position.
     - `cp professional-experience.example.yaml professional-experience.yaml`
     - `cp resume.example.yaml resume.yaml`
 
-3.  **Edit the new `.yaml` files** with your personal information. The system will automatically detect and use your files instead of the examples.
+3.  **Edit the new `.yaml` files** 
+    with your personal information. The system will automatically detect and use your files instead of the examples.
 
-4.  **Validation rules and schema guidance:**
-
-    All data transformation and validation rules are available in `resume-data/mapping-rules/`:
-    - `resume.yaml` - Resume schema and transformation rules
-    - `cover_letter.yaml` - Cover letter schema and validation constraints
-    - `job_analysis.yaml` - Job analysis structure and requirements
-    - `metadata.yaml` - Company metadata format and field definitions
+1.  **Validation rules and schema guidance:**
+    All data transformation and validation rules are in `resume-data/mapping-rules/`. Claude already knows how to use them.
 
 **Need help migrating your data?** 
 Claude Code can read your existing resume and help you migrate it to the YAML format!
