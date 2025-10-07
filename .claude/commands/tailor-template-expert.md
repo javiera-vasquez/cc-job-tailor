@@ -18,11 +18,13 @@ Enter template development mode with full context for creating and modifying Rea
 ### 1. Template Architecture Discovery
 
 **Scan Current Structure**:
+
 - Use Glob to discover all files in `src/templates/`
 - Identify existing templates (modern/resume, modern/cover-letter, etc.)
 - Map component organization and file structure
 
 **Load Design System**:
+
 - Read `src/templates/design-tokens.ts` for:
   - Color palette (primary, accent, darkGray, mediumGray, separatorGray)
   - Typography system (text, title, subtitle, small)
@@ -30,6 +32,7 @@ Enter template development mode with full context for creating and modifying Rea
 - Read `src/templates/fonts-register.ts` for available font families (Lato, Open Sans)
 
 **Load React-PDF Documentation**:
+
 - Reference `.claude/rpdf-context/components.md` for component APIs
 - Reference `.claude/rpdf-context/styling.md` for CSS properties
 - Reference `.claude/rpdf-context/fonts.md` for typography patterns
@@ -38,6 +41,7 @@ Enter template development mode with full context for creating and modifying Rea
 ### 2. Start Development Server
 
 **Launch Vite**:
+
 - Run `bun run dev:vite` in background
 - Provide server URL to user at http://localhost:3000
 - Explain hot-reload capabilities for instant template preview
@@ -46,6 +50,7 @@ Enter template development mode with full context for creating and modifying Rea
 
 **Present Template Context**:
 Display summary of:
+
 - Available templates discovered
 - Design system configuration
 - Font families available
@@ -53,6 +58,7 @@ Display summary of:
 
 **Prompt for Action**:
 Ask user what they want to do:
+
 - Create new template variant
 - Modify existing template components
 - Update design tokens
@@ -62,6 +68,7 @@ Ask user what they want to do:
 - Fix rendering issues
 
 **Common Modification Patterns**:
+
 - Layout transformations (single to multi-column, sidebar implementations)
 - Typography enhancements (font registration, hierarchy creation)
 - Visual polish (color schemes, spacing systems, alignment)
@@ -71,10 +78,12 @@ Ask user what they want to do:
 ## Critical Implementation Rules
 
 ### ❌ NEVER Use These:
+
 - **`letterSpacing` prop**: Causes rendering issues in React-PDF Text components
   - Use font selection, fontSize adjustments, or layout spacing instead
 
 ### ✅ Always Use:
+
 - **Design tokens**: Import from `@template-core/design-tokens.ts`
 - **Registered fonts**: Use Lato or Open Sans families from `@template-core/fonts-register.ts`
 - **StyleSheet.create()**: For performance optimization
@@ -84,6 +93,7 @@ Ask user what they want to do:
 ## Design System Integration
 
 All template modifications should:
+
 - Use centralized design tokens for consistency
 - Follow established typography hierarchy
 - Maintain responsive design patterns
@@ -112,6 +122,7 @@ All template modifications should:
 ## Scope
 
 **Can modify**:
+
 - Any files in `src/templates/` directory
 - Template components (resume, cover-letter)
 - Shared template utilities
@@ -119,6 +130,7 @@ All template modifications should:
 - Font configurations
 
 **Cannot modify**:
+
 - Files outside `src/templates/`
 - Source data files
 - Build scripts
