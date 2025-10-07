@@ -41,6 +41,7 @@ export function createValidApplicationData(): ApplicationData {
         team_context: 'Small agile team',
         user_scale: '10,000 users',
       },
+      active_template: 'modern' as const,
       last_updated: '2024-01-01T00:00:00Z',
     },
     resume: {
@@ -354,4 +355,117 @@ export function createMockDocumentConfig<T>(overrides?: Partial<any>) {
     emptyStateMessage: 'No data available',
     ...overrides,
   };
+}
+
+// TailorContext test helpers
+export function createValidTailorContext(overrides?: Partial<any>) {
+  return {
+    active_company: 'test-company',
+    active_template: 'modern',
+    folder_path: 'resume-data/tailor/test-company',
+    available_files: ['metadata.yaml', 'resume.yaml', 'job_analysis.yaml', 'cover_letter.yaml'],
+    last_updated: '2025-10-07T00:00:00Z',
+    _display_cache: {
+      position: 'Software Engineer',
+      primary_focus: 'engineer + [react, typescript]',
+      job_summary: 'Test company building modern applications',
+      job_details: {
+        company: 'Test Company',
+        location: 'Remote',
+        experience_level: 'Mid-level',
+        employment_type: 'Full-time',
+        must_have_skills: ['JavaScript', 'React', 'TypeScript'],
+        nice_to_have_skills: ['Node.js', 'GraphQL'],
+        team_context: 'Small agile team',
+        user_scale: '10,000 users',
+      },
+    },
+    ...overrides,
+  };
+}
+
+export function createMinimalValidTailorContext() {
+  return {
+    active_company: 'test-company',
+    active_template: 'modern',
+    folder_path: 'resume-data/tailor/test-company',
+    available_files: ['metadata.yaml'],
+    last_updated: '2025-10-07T00:00:00Z',
+  };
+}
+
+export function createInvalidTailorContext(errorType: string): unknown {
+  switch (errorType) {
+    case 'missing-active-company':
+      return {
+        active_template: 'modern',
+        folder_path: 'resume-data/tailor/test-company',
+        available_files: ['metadata.yaml'],
+        last_updated: '2025-10-07T00:00:00Z',
+      };
+
+    case 'missing-active-template':
+      return {
+        active_company: 'test-company',
+        folder_path: 'resume-data/tailor/test-company',
+        available_files: ['metadata.yaml'],
+        last_updated: '2025-10-07T00:00:00Z',
+      };
+
+    case 'invalid-template-name':
+      return {
+        active_company: 'test-company',
+        active_template: 'invalid-theme-name',
+        folder_path: 'resume-data/tailor/test-company',
+        available_files: ['metadata.yaml'],
+        last_updated: '2025-10-07T00:00:00Z',
+      };
+
+    case 'invalid-datetime':
+      return {
+        active_company: 'test-company',
+        active_template: 'modern',
+        folder_path: 'resume-data/tailor/test-company',
+        available_files: ['metadata.yaml'],
+        last_updated: 'not-a-datetime',
+      };
+
+    case 'empty-available-files':
+      return {
+        active_company: 'test-company',
+        active_template: 'modern',
+        folder_path: 'resume-data/tailor/test-company',
+        available_files: [],
+        last_updated: '2025-10-07T00:00:00Z',
+      };
+
+    case 'missing-folder-path':
+      return {
+        active_company: 'test-company',
+        active_template: 'modern',
+        available_files: ['metadata.yaml'],
+        last_updated: '2025-10-07T00:00:00Z',
+      };
+
+    case 'non-existent-folder':
+      return {
+        active_company: 'test-company',
+        active_template: 'modern',
+        folder_path: '/non/existent/path',
+        available_files: ['metadata.yaml'],
+        last_updated: '2025-10-07T00:00:00Z',
+      };
+
+    case 'mismatched-folder-company':
+      return {
+        active_company: 'test-company',
+        active_template: 'modern',
+        folder_path: 'resume-data/tailor/different-company',
+        available_files: ['metadata.yaml'],
+        last_updated: '2025-10-07T00:00:00Z',
+      };
+
+    default:
+      return null;
+  }
 }

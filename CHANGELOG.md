@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.2] - 2025-10-07
+
+### Added
+
+- **Active Template Feature**: Template selection system with `active_template` configuration in tailor context
+- **Template Development Command**: New `/tailor-template-expert` slash command for experimental template development workspace
+- **React-PDF Documentation**: Comprehensive local documentation for components, fonts, styling, and troubleshooting in `rpdf/` directory
+- **Tailor Context Validation**: Enhanced validation system for tailor context management
+
+### Changed
+
+- **Design Tokens Structure**: Restructured design tokens with improved import paths and organization
+- **Module Imports**: Updated template imports to use new design token paths
+- **Live Preview URL**: Fixed tailor-server documentation with correct preview URL
+
+### Documentation
+
+- **README Updates**: Multiple iterations improving clarity, structure, and usage examples
+- **Template Documentation**: Enhanced documentation for components, fonts, and styling reference
+- **rpdf/ Directory**: Added local React-PDF reference documentation (components.md, fonts.md, styling.md)
+
+### Technical Details
+
+- **Import Path Fixes**: Corrected tailwindColors import path and added tailwind color definitions
+- **Font Registration**: Updated fonts-register module location and imports
+- **Template Organization**: Improved template component structure and design token access
+
 ## [0.8.1] - 2025-10-06
 
 ### Added

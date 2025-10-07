@@ -15,6 +15,10 @@ available_files:
   - 'resume.yaml'
   - 'cover_letter.yaml'
 
+# Template/theme to use for PDF generation (defaults to 'modern')
+# Test comment: When classic theme is available, change this to 'classic'
+active_template: 'modern'
+
 # Job details extracted from job_analysis.yaml
 position: 'Senior Frontend Engineer - Web'
 
@@ -45,4 +49,4 @@ job_details:
   user_scale: '20 million users globally across 500 cities in 30 countries'
 
 # Timestamp when metadata was last generated (ISO format)
-last_updated: '2025-10-01T12:00:00Z'
+last_updated: '2025-10-07T08:23:00Z'

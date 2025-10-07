@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
-import { colors, spacing } from '@design-tokens';
+import { colors, spacing } from '@template-core/design-tokens';
 import type { CoverLetterSchema } from '@types';
 
 const styles = StyleSheet.create({

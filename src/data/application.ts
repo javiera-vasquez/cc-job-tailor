@@ -1,15 +1,16 @@
 // @ts-nocheck
 // Auto-generated application data - TypeScript validation disabled
 // Company: tech-corp
-// Generated at: 2025-10-01T12:47:27.068Z
+// Generated at: 2025-10-07T08:41:31.926Z
 
-import type { ApplicationData } from '../types';
+import type { ApplicationData } from '@types';
 
 const applicationData: ApplicationData = {
   metadata: {
     company: 'Tech-Corp',
     folder_path: 'resume-data/tailor/tech-corp',
     available_files: ['metadata.yaml', 'job_analysis.yaml', 'resume.yaml', 'cover_letter.yaml'],
+    active_template: 'modern',
     position: 'Senior Frontend Engineer - Web',
     primary_focus: 'senior_engineer + [react, typescript, frontend]',
     job_summary: 'Global delivery platform serving 20M+ users, modern TypeScript/React stack',
@@ -29,7 +30,7 @@ const applicationData: ApplicationData = {
       team_context: '500+ people in product organization, cross-functional teams',
       user_scale: '20 million users globally across 500 cities in 30 countries',
     },
-    last_updated: '2025-10-01T12:00:00Z',
+    last_updated: '2025-10-07T08:23:00Z',
   },
   resume: {
     name: 'John Doe',

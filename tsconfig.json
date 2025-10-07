@@ -19,10 +19,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "@ui/*": ["./src/ui/*"],
-      "@design-tokens": ["./src/templates/design-tokens.ts"],
+      "@template-core/*": ["./src/templates/shared/*"],
       "@types": ["./src/types.ts"],
-      "@fonts-register": ["./src/templates/fonts-register.ts"],
-      "@with-pdf-wrapper": ["./src/templates/with-pdf-wrapper.tsx"],
       "@utils/*": ["./src/utils/*"]
     },
 

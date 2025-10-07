@@ -10,11 +10,21 @@ import {
   throwInvalidDocumentTypeError,
   throwDataGenerationError,
 } from './shared/error-messages';
+import { validateTailorContext } from '../src/zod/tailor-context-schema';
 
-// Use default 'modern' theme for PDF generation
-const modernTheme = themes.modern;
-const ResumeDocument = modernTheme?.components.resume;
-const CoverLetterDocument = modernTheme?.components.coverLetter;
+// Dynamic theme selection based on metadata
+const activeTemplate = applicationData.metadata?.active_template || 'modern';
+const selectedTheme = themes[activeTemplate];
+
+if (!selectedTheme) {
+  console.error(
+    `❌ Theme '${activeTemplate}' not found. Available themes: ${Object.keys(themes).join(', ')}`,
+  );
+  process.exit(1);
+}
+
+const ResumeDocument = selectedTheme.components.resume;
+const CoverLetterDocument = selectedTheme.components.coverLetter;
 
 // Parse command line arguments
 const { company: companyName, document: documentType } = parsePdfArgs();
@@ -42,6 +52,31 @@ const generatePdf = async () => {
   } catch (error) {
     console.error(`Failed to generate data for ${companyName}:`, (error as Error).message);
     process.exit(1);
+  }
+
+  // Validate tailor context before generating PDF
+  if (applicationData.metadata) {
+    const contextValidation = validateTailorContext({
+      active_company: companyName,
+      active_template: applicationData.metadata.active_template,
+      folder_path: applicationData.metadata.folder_path,
+      available_files: applicationData.metadata.available_files,
+      last_updated: applicationData.metadata.last_updated,
+    });
+
+    if (!contextValidation.success) {
+      console.error('❌ Context validation failed:');
+      contextValidation.errors.forEach((err) => console.error(`  - ${err}`));
+      process.exit(1);
+    }
+
+    // Show warnings if any
+    if (contextValidation.warnings && contextValidation.warnings.length > 0) {
+      console.warn('⚠️  Context validation warnings:');
+      contextValidation.warnings.forEach((warn) => console.warn(`  - ${warn}`));
+    }
+
+    console.warn(`✅ Using template: ${applicationData.metadata.active_template}`);
   }
 
   // Ensure tmp directory exists

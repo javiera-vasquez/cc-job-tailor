@@ -10,7 +10,7 @@ Start the tailor development server in background for live validation and browse
 ## What this command does:
 
 1. **Start Background Server**: Launch `bun run tailor-server` as a background process
-2. **Enable Live Preview**: Vite dev server provides browser preview (typically http://localhost:5173)
+2. **Enable Live Preview**: Vite dev server provides browser preview at http://localhost:3000
 3. **Auto-Validation**: File watcher detects YAML changes in active company folder
 4. **Instant Feedback**: Validation errors appear in console immediately on save
 
