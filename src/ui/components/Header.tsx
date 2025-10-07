@@ -55,17 +55,6 @@ export const Header: React.FC<HeaderProps> = ({
             Cover Letter
           </Button>
         </div>
-        <div className="flex items-center justify-end gap-2">
-          <Palette className="h-4 w-4 text-muted-foreground" />
-          <Select value={activeTheme} onValueChange={onThemeChange}>
-            <SelectTrigger className="w-[140px]">
-              <SelectValue placeholder="Select theme" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="modern">Modern</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
       </div>
     </header>
   );

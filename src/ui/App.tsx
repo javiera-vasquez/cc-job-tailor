@@ -115,10 +115,9 @@ const SIDEBAR_WIDGETS: WidgetConfig[] = [
 const App = () => {
   const [activeDocument, setActiveDocument] = useState<'resume' | 'cover-letter'>('resume');
   // Initialize theme from metadata.active_template, fallback to 'modern'
-  const [activeTheme, setActiveTheme] = useState<ThemeName>('classic');
-  // const [activeTheme, setActiveTheme] = useState<ThemeName>(
-  //   (applicationData.metadata?.active_template as ThemeName) || 'modern',
-  // );
+  const [activeTheme, setActiveTheme] = useState<ThemeName>(
+    (applicationData.metadata?.active_template as ThemeName) || 'modern',
+  );
 
   const theme = themes[activeTheme];
   const ResumeComponent = theme?.components.resume;
