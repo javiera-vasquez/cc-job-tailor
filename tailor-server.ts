@@ -13,24 +13,28 @@ import { spawn, type ChildProcess } from 'child_process';
 import { watch, existsSync, type FSWatcher } from 'fs';
 import { load } from 'js-yaml';
 import { sep } from 'path';
+import { validateTailorContext } from './src/zod/tailor-context-schema';
 
 interface TailorContext {
   active_company: string;
+  active_template: string;
   folder_path: string;
   available_files: string[];
-  position: string;
-  primary_focus: string;
   last_updated: string;
-  job_summary: string;
-  job_details: {
-    company: string;
-    location: string;
-    experience_level: string;
-    employment_type: string;
-    must_have_skills: string[];
-    nice_to_have_skills: string[];
-    team_context: string;
-    user_scale: string;
+  _display_cache?: {
+    position?: string;
+    primary_focus?: string;
+    job_summary?: string;
+    job_details?: {
+      company: string;
+      location: string;
+      experience_level: string;
+      employment_type: string;
+      must_have_skills: string[];
+      nice_to_have_skills: string[];
+      team_context: string;
+      user_scale: string;
+    };
   };
 }
 
@@ -66,12 +70,28 @@ class EnhancedDevServer {
       const contextText = await contextFile.text();
       const context = load(contextText) as TailorContext;
 
-      if (!context?.active_company) {
+      // Validate tailor context
+      const validation = validateTailorContext(context);
+
+      if (!validation.success) {
+        console.error('❌ Invalid tailor context:');
+        validation.errors.forEach((err) => console.error(`  - ${err}`));
+        console.warn('⚠️  Watching all companies due to validation errors');
+        return null;
+      }
+
+      // Show warnings if any
+      if (validation.warnings && validation.warnings.length > 0) {
+        console.warn('⚠️  Tailor context warnings:');
+        validation.warnings.forEach((warn) => console.warn(`  - ${warn}`));
+      }
+
+      if (!validation.data?.active_company) {
         console.warn('⚠️  No active company in tailor context');
         return null;
       }
 
-      return context.active_company;
+      return validation.data.active_company;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       console.warn('⚠️  Could not read tailor context:', errorMessage);

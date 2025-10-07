@@ -28,7 +28,9 @@ import {
   JobDetailsSchema,
   MetadataSchema as MetadataSchemaZod,
   ApplicationDataSchema,
+  TemplateThemeEnum,
 } from './zod/schemas';
+import type { TailorContext as TailorContextType } from './zod/tailor-context-schema';
 
 // Inferred types from Zod schemas
 export type Expertise = z.infer<typeof ExpertiseSchema>;
@@ -57,6 +59,8 @@ export type CoverLetterSchema = z.infer<typeof CoverLetterSchemaZod>;
 export type JobDetails = z.infer<typeof JobDetailsSchema>;
 export type MetadataSchema = z.infer<typeof MetadataSchemaZod>;
 export type ApplicationData = z.infer<typeof ApplicationDataSchema>;
+export type TemplateTheme = z.infer<typeof TemplateThemeEnum>;
+export type TailorContext = TailorContextType;
 
 // TODO: Investigate why these types are not covered by Zod schemas - root cause
 // Additional types not covered by Zod schemas

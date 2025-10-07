@@ -19,6 +19,9 @@ export const TailorThemeSchema = z.object({
 
 export const ThemeRegistrySchema = z.record(z.string(), TailorThemeSchema);
 
+// Template theme enum for active_template selection
+export const TemplateThemeEnum = z.enum(['modern', 'classic']).default('modern');
+
 // Basic component schemas
 export const ExpertiseSchema = z.object({
   resume_title: z.string().min(1),
@@ -240,6 +243,7 @@ export const MetadataSchema = z.object({
   primary_focus: z.string().min(1),
   job_summary: z.string().min(1),
   job_details: JobDetailsSchema,
+  active_template: TemplateThemeEnum,
   last_updated: z.string().min(1),
 });
 

@@ -238,7 +238,7 @@ describe('Zod Schema Validation', () => {
   });
 
   describe('MetadataSchema', () => {
-    test('validates complete metadata', () => {
+    test('validates complete metadata with active_template', () => {
       const validMetadata = {
         company: 'test-company',
         folder_path: 'resume-data/tailor/test-company',
@@ -256,11 +256,15 @@ describe('Zod Schema Validation', () => {
           team_context: 'Small team',
           user_scale: '1000 users',
         },
+        active_template: 'modern',
         last_updated: '2024-01-01T00:00:00Z',
       };
 
       const result = MetadataSchema.safeParse(validMetadata);
       expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.active_template).toBe('modern');
+      }
     });
 
     test('requires all metadata fields to be non-empty strings', () => {
@@ -281,11 +285,125 @@ describe('Zod Schema Validation', () => {
           team_context: 'Team',
           user_scale: '100',
         },
+        active_template: 'modern',
         last_updated: '2024-01-01',
       };
 
       const result = MetadataSchema.safeParse(incompleteMetadata);
       expect(result.success).toBe(false);
+    });
+
+    test('accepts "modern" as valid active_template value', () => {
+      const metadataWithModern = {
+        company: 'test-company',
+        folder_path: 'resume-data/tailor/test-company',
+        available_files: ['metadata.yaml'],
+        position: 'Software Engineer',
+        primary_focus: 'engineer',
+        job_summary: 'Test summary',
+        job_details: {
+          company: 'Test Company',
+          location: 'Remote',
+          experience_level: 'Mid',
+          employment_type: 'Full-time',
+          must_have_skills: ['JS'],
+          nice_to_have_skills: [],
+          team_context: 'Team',
+          user_scale: '100',
+        },
+        active_template: 'modern',
+        last_updated: '2024-01-01T00:00:00Z',
+      };
+
+      const result = MetadataSchema.safeParse(metadataWithModern);
+      expect(result.success).toBe(true);
+    });
+
+    test('accepts "classic" as valid active_template value', () => {
+      const metadataWithClassic = {
+        company: 'test-company',
+        folder_path: 'resume-data/tailor/test-company',
+        available_files: ['metadata.yaml'],
+        position: 'Software Engineer',
+        primary_focus: 'engineer',
+        job_summary: 'Test summary',
+        job_details: {
+          company: 'Test Company',
+          location: 'Remote',
+          experience_level: 'Mid',
+          employment_type: 'Full-time',
+          must_have_skills: ['JS'],
+          nice_to_have_skills: [],
+          team_context: 'Team',
+          user_scale: '100',
+        },
+        active_template: 'classic',
+        last_updated: '2024-01-01T00:00:00Z',
+      };
+
+      const result = MetadataSchema.safeParse(metadataWithClassic);
+      expect(result.success).toBe(true);
+    });
+
+    test('rejects invalid active_template value', () => {
+      const metadataWithInvalidTemplate = {
+        company: 'test-company',
+        folder_path: 'resume-data/tailor/test-company',
+        available_files: ['metadata.yaml'],
+        position: 'Software Engineer',
+        primary_focus: 'engineer',
+        job_summary: 'Test summary',
+        job_details: {
+          company: 'Test Company',
+          location: 'Remote',
+          experience_level: 'Mid',
+          employment_type: 'Full-time',
+          must_have_skills: ['JS'],
+          nice_to_have_skills: [],
+          team_context: 'Team',
+          user_scale: '100',
+        },
+        active_template: 'invalid-theme',
+        last_updated: '2024-01-01T00:00:00Z',
+      };
+
+      const result = MetadataSchema.safeParse(metadataWithInvalidTemplate);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        const hasTemplateError = result.error.issues.some((issue) =>
+          issue.path.includes('active_template'),
+        );
+        expect(hasTemplateError).toBe(true);
+      }
+    });
+
+    test('uses default "modern" value when active_template is missing', () => {
+      const metadataWithoutTemplate = {
+        company: 'test-company',
+        folder_path: 'resume-data/tailor/test-company',
+        available_files: ['metadata.yaml'],
+        position: 'Software Engineer',
+        primary_focus: 'engineer',
+        job_summary: 'Test summary',
+        job_details: {
+          company: 'Test Company',
+          location: 'Remote',
+          experience_level: 'Mid',
+          employment_type: 'Full-time',
+          must_have_skills: ['JS'],
+          nice_to_have_skills: [],
+          team_context: 'Team',
+          user_scale: '100',
+        },
+        // active_template intentionally omitted
+        last_updated: '2024-01-01T00:00:00Z',
+      };
+
+      const result = MetadataSchema.safeParse(metadataWithoutTemplate);
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.active_template).toBe('modern');
+      }
     });
   });
 });
