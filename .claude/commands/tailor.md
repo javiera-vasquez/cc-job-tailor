@@ -56,7 +56,7 @@ After running this command, all subsequent interactions will:
 4. **Update State**: Copy entire metadata to `.claude/tailor-context.yaml` and update:
    - last_updated: Current timestamp
    - active_company: Current Company
-   - active_template: 'modern' or 'classic' default value is 'modern'
+   - active_template: 'modern' or 'classic' default value is 'modern' - If user prompt to update the 'active_template' we need to update `tailor-context.yaml` and `metadata.yaml`
    - available_files: list of available files on `resume-data/tailor/$1/`
 5. **Provide Summary**: Display company context overview from loaded metadata
 
