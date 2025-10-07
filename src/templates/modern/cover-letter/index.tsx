@@ -7,7 +7,7 @@ import Title from './components/Title';
 import Body from './components/Body';
 import Signature from './components/Signature';
 
-import { colors, spacing, typography } from '@design-tokens';
+import { colors, spacing, typography } from '@template-core/design-tokens';
 import type { CoverLetterSchema, ReactPDFProps } from '@types';
 
 /**

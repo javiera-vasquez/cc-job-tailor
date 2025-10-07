@@ -1,7 +1,7 @@
 import React from 'react';
 import { type TailorThemeProps, type ResumeSchema, type CoverLetterSchema } from '@/types';
-import { registerFonts } from '@fonts-register';
-import { WithPDFWrapper } from '@with-pdf-wrapper';
+import { registerFonts } from '@template-core/fonts-register';
+import { WithPDFWrapper } from '@template-core/with-pdf-wrapper';
 import { Resume, resumeConfig } from './resume';
 import { CoverLetter, coverLetterConfig } from './cover-letter';
 

@@ -1,6 +1,6 @@
 import { test, expect, describe } from 'bun:test';
 import React from 'react';
-import { WithPDFWrapper, type DocumentConfig } from '../../src/templates/with-pdf-wrapper';
+import { WithPDFWrapper, type DocumentConfig } from '../../src/templates/shared/with-pdf-wrapper';
 import type { ResumeSchema, CoverLetterSchema } from '../../src/types';
 import { createValidApplicationData } from '../helpers/test-utils';
 
