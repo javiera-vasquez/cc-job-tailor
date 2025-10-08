@@ -13,30 +13,7 @@ import { spawn, type ChildProcess } from 'child_process';
 import { watch, existsSync, type FSWatcher } from 'fs';
 import { load } from 'js-yaml';
 import { sep } from 'path';
-import { validateTailorContext } from './src/zod/tailor-context-schema';
-
-interface TailorContext {
-  active_company: string;
-  active_template: string;
-  folder_path: string;
-  available_files: string[];
-  last_updated: string;
-  _display_cache?: {
-    position?: string;
-    primary_focus?: string;
-    job_summary?: string;
-    job_details?: {
-      company: string;
-      location: string;
-      experience_level: string;
-      employment_type: string;
-      must_have_skills: string[];
-      nice_to_have_skills: string[];
-      team_context: string;
-      user_scale: string;
-    };
-  };
-}
+import { validateTailorContext, type TailorContext } from '../src/zod/tailor-context-schema';
 
 interface WatcherState {
   devServer: ChildProcess;

@@ -365,4 +365,72 @@ describe('TailorContext Schema Validation', () => {
       expect(result.errors.some((err) => err.includes('modern'))).toBe(true);
     });
   });
+
+  describe('PDF Generation Context Validation Regression', () => {
+    test('validateTailorContextStrict should NOT require job analysis fields', () => {
+      // Regression test for issue where PDF generation failed because
+      // it was validating full tailor context including job_details, company, position, etc.
+      // which are not present in applicationData.metadata
+      const metadataOnlyContext = {
+        active_company: 'tech-corp',
+        active_template: 'modern',
+        folder_path: testFolderPath,
+        available_files: ['resume.yaml', 'metadata.yaml', 'cover_letter.yaml'],
+        last_updated: new Date().toISOString(),
+        // NOTE: No company, position, primary_focus, or job_details fields
+      };
+
+      const result = validateTailorContextStrict(metadataOnlyContext);
+
+      expect(result.success).toBe(true);
+      expect(result.errors).toHaveLength(0);
+    });
+
+    test('validateTailorContext SHOULD require job analysis fields', () => {
+      // For comparison: the full validation requires all fields
+      const metadataOnlyContext = {
+        active_company: 'tech-corp',
+        active_template: 'modern',
+        folder_path: testFolderPath,
+        available_files: ['resume.yaml', 'metadata.yaml', 'cover_letter.yaml'],
+        last_updated: new Date().toISOString(),
+        // Missing: company, position, primary_focus, job_details
+      };
+
+      const result = validateTailorContext(metadataOnlyContext);
+
+      expect(result.success).toBe(false);
+      expect(result.errors.length).toBeGreaterThan(0);
+      // Should fail because full validation requires job analysis fields
+      expect(
+        result.errors.some(
+          (err) =>
+            err.includes('company') || err.includes('position') || err.includes('primary_focus'),
+        ),
+      ).toBe(true);
+    });
+
+    test('PDF generation workflow uses strict validation correctly', () => {
+      // Simulates the exact data structure used in generate-pdf.ts
+      const applicationMetadata = {
+        active_company: 'tech-corp',
+        active_template: 'modern' as const,
+        folder_path: testFolderPath,
+        available_files: ['resume.yaml', 'metadata.yaml', 'cover_letter.yaml', 'job_analysis.yaml'],
+        last_updated: new Date().toISOString(),
+      };
+
+      // This is what generate-pdf.ts does
+      const contextValidation = validateTailorContextStrict({
+        active_company: applicationMetadata.active_company,
+        active_template: applicationMetadata.active_template,
+        folder_path: applicationMetadata.folder_path,
+        available_files: applicationMetadata.available_files,
+        last_updated: applicationMetadata.last_updated,
+      });
+
+      expect(contextValidation.success).toBe(true);
+      expect(contextValidation.errors).toHaveLength(0);
+    });
+  });
 });

@@ -10,7 +10,7 @@ import {
   throwInvalidDocumentTypeError,
   throwDataGenerationError,
 } from './shared/error-messages';
-import { validateTailorContext } from '../src/zod/tailor-context-schema';
+import { validateTailorContextStrict } from '../src/zod/tailor-context-schema';
 
 // Dynamic theme selection based on metadata
 const activeTemplate = applicationData.metadata?.active_template || 'modern';
@@ -54,9 +54,9 @@ const generatePdf = async () => {
     process.exit(1);
   }
 
-  // Validate tailor context before generating PDF
+  // Validate tailor context before generating PDF (only required fields)
   if (applicationData.metadata) {
-    const contextValidation = validateTailorContext({
+    const contextValidation = validateTailorContextStrict({
       active_company: companyName,
       active_template: applicationData.metadata.active_template,
       folder_path: applicationData.metadata.folder_path,

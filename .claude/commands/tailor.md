@@ -27,6 +27,7 @@ Set the active company context for tailored resume operations. This command read
 4. **Provide Summary**: Show brief overview of company materials and job focus
 
 The `set-env` script performs comprehensive validation:
+
 - Validates company folder exists
 - Validates `metadata.yaml` exists and passes Zod schema validation
 - Validates `job_analysis.yaml` exists and passes Zod schema validation
@@ -84,6 +85,7 @@ After running this command, all subsequent interactions will:
 ## Execution Steps:
 
 1. **Run set-env Script**:
+
    ```bash
    bun run set-env -C $1
    ```
