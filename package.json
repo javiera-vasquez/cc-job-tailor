@@ -22,7 +22,7 @@
   "license": "CC-BY-NC-4.0",
   "scripts": {
     "dev": "bun run tailor-server",
-    "tailor-server": "bun tailor-server.ts",
+    "tailor-server": "bun scripts/tailor-server.ts",
     "dev:vite": "vite",
     "set-env": "bun scripts/set-env.ts",
     "save-to-pdf": "bun scripts/generate-data.ts \"$@\" && bun scripts/generate-pdf.ts \"$@\"",
