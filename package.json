@@ -13,7 +13,9 @@
     "lucide-react": "^0.544.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "remeda": "^2.32.0",
     "tailwind-merge": "^3.3.1",
+    "ts-pattern": "^5.8.0",
     "zod": "^3.23.8"
   },
   "name": "cc-resume-manager",
