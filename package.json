@@ -24,6 +24,7 @@
     "dev": "bun run tailor-server",
     "tailor-server": "bun tailor-server.ts",
     "dev:vite": "vite",
+    "set-env": "bun scripts/set-env.ts",
     "save-to-pdf": "bun scripts/generate-data.ts \"$@\" && bun scripts/generate-pdf.ts \"$@\"",
     "generate-data": "bun scripts/generate-data.ts",
     "generate-pdf": "bun scripts/generate-pdf.ts",

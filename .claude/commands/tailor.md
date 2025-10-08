@@ -1,5 +1,5 @@
 ---
-allowed-tools: Read, Write(.claude/tailor-context.yaml), Glob(resume-data/tailor/**), SlashCommand
+allowed-tools: Bash(bun run set-env), SlashCommand, BashOutput
 description: Set CC in /tailor mode, Ask claude for changes and improvements to the application assets  | argument-hint company-name
 ---
 
@@ -19,13 +19,19 @@ Set the active company context for tailored resume operations. This command read
 
 ## What this command does:
 
-1. **Validate Company Folder**: Check that `resume-data/tailor/$1/` exists
-2. **Read Company Metadata**: Load the pre-built `metadata.yaml` file
-3. **Update Context State**: Copy content from `resume-data/tailor/$1/metadata.yaml` to `.claude/tailor-context.yaml` and update:
-   ```yaml
-   last_updated: '2025-09-26T17:00:00Z' # Only timestamp is updated
-   ```
+1. **Execute set-env script**: Run `bun run set-env -C $1` to validate and configure context
+2. **Check exit code**:
+   - Exit 0 = Success → Parse JSON output and start server
+   - Exit 1 = Failure → Display error message to user
+3. **Start Development Server**: If validation succeeds, invoke `/tailor-server` command
 4. **Provide Summary**: Show brief overview of company materials and job focus
+
+The `set-env` script performs comprehensive validation:
+- Validates company folder exists
+- Validates `metadata.yaml` exists and passes Zod schema validation
+- Validates `job_analysis.yaml` exists and passes Zod schema validation
+- Updates `.claude/tailor-context.yaml` atomically
+- Returns structured JSON on success or detailed errors on failure
 
 ## Expected Company Folder Structure:
 
@@ -50,15 +56,20 @@ After running this command, all subsequent interactions will:
 
 ## Process Flow:
 
-1. **Validate Folder**: Confirm `resume-data/tailor/$1/` exists
-2. **Validate Metadata File**: Check that `metadata.yaml` exists in company folder
-3. **Read Pre-built Metadata**: Load complete metadata from `resume-data/tailor/$1/metadata.yaml`
-4. **Update State**: Copy entire metadata to `.claude/tailor-context.yaml` and update:
-   - last_updated: Current timestamp
-   - active_company: Current Company
-   - active_template: 'modern' or 'classic' default value is 'modern' - If user prompt to update the 'active_template' we need to update `tailor-context.yaml` and `metadata.yaml`
-   - available_files: list of available files on `resume-data/tailor/$1/`
-5. **Provide Summary**: Display company context overview from loaded metadata
+1. **Validate Company Name**: Ensure company name argument is provided
+2. **Execute Validation Script**: Run `bun run set-env -C $1`
+   - The script validates folder structure
+   - Validates `metadata.yaml` exists and passes schema validation
+   - Validates `job_analysis.yaml` exists and passes schema validation
+   - Updates `.claude/tailor-context.yaml` atomically
+3. **Check Result**:
+   - If exit code 0: Parse JSON output and proceed to step 4
+   - If exit code 1: Display error message from stderr and stop
+4. **Provide Summary**: Display company context overview:
+   - Company name and folder path
+   - Available files
+   - Position and primary focus
+5. **Start Development Server**: Invoke `/tailor-server` command
 
 ## Example Output:
 
@@ -72,13 +83,22 @@ After running this command, all subsequent interactions will:
 
 ## Execution Steps:
 
-1. **Validate & Load Context**:
-   - Confirm company folder exists
-   - Read pre-built `metadata.yaml` file
-   - Copy contents to `.claude/tailor-context.yaml` (update only timestamp)
-   - Provide summary with company name, available files, position, and primary job focus
+1. **Run set-env Script**:
+   ```bash
+   bun run set-env -C $1
+   ```
 
-2. **Start Live Preview Server**:
+2. **Handle Result**:
+   - **On success (exit 0)**:
+     - Parse JSON output from stdout
+     - Display formatted summary to user
+     - Proceed to step 3
+   - **On failure (exit 1)**:
+     - Display error message from stderr
+     - Ask user to fix the issue
+     - Stop execution
+
+3. **Start Live Preview Server**:
    - Invoke `/tailor-server` command to start background development server
    - Inform user that live preview is available
    - Explain that all YAML edits will trigger automatic validation and browser updates
