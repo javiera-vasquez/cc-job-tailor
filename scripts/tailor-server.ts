@@ -141,19 +141,8 @@ class EnhancedDevServer {
     return new Promise((resolve, reject) => {
       try {
         const generateData = spawn('bun', ['run', SCRIPTS.GENERATE_DATA, '-C', companyName], {
-          stdio: 'pipe',
+          stdio: 'inherit', // Let subprocess errors flow through naturally
           cwd: process.cwd(),
-        });
-
-        let output = '';
-        let errorOutput = '';
-
-        generateData.stdout?.on('data', (data: Buffer) => {
-          output += data.toString();
-        });
-
-        generateData.stderr?.on('data', (data: Buffer) => {
-          errorOutput += data.toString();
         });
 
         generateData.on('close', (code) => {
@@ -162,11 +151,7 @@ class EnhancedDevServer {
             loggers.server.info('Hot reload will pick up changes automatically');
             resolve();
           } else {
-            loggers.server.error('Data regeneration failed (validation or other error)', null, {
-              exitCode: code,
-              stderr: errorOutput.trim() || undefined,
-              stdout: output.trim() || undefined,
-            });
+            // Subprocess already displayed the error - just show recovery hint
             loggers.server.info(
               '💡 Fix the data issues in the tailor files and save again to retry',
             );
@@ -174,7 +159,7 @@ class EnhancedDevServer {
               'File watcher is still active - auto-regeneration will resume on next save',
             );
 
-            // Don't reject - just log the error and continue watching
+            // Don't reject - just continue watching
             // This keeps the dev server running even with validation failures
             resolve();
           }

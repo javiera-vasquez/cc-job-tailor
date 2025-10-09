@@ -14,30 +14,9 @@ import type {
 import { loggers } from '../../scripts/shared/logger';
 
 // Validation functions with detailed error reporting
+// Note: Error formatting is handled by the centralized validation-error-handler
 export function validateApplicationData(data: unknown): ApplicationData {
-  try {
-    return ApplicationDataSchema.parse(data);
-  } catch (error) {
-    // Check if it's a ZodError (can be checked by name or by issues property)
-    if (error instanceof z.ZodError || (error && typeof error === 'object' && 'issues' in error)) {
-      const zodError = error as z.ZodError;
-      const errors = zodError.issues;
-
-      loggers.validation.error('Application data validation failed:');
-      errors.forEach((err) => {
-        const path = err.path.join('.');
-        const received = 'received' in err ? ` (received: ${err.received})` : '';
-        loggers.validation.error(`  • ${path}: ${err.message}${received}`);
-      });
-
-      throw new Error(`Application data validation failed with ${errors.length} error(s)`);
-    } else {
-      // Handle non-Zod errors
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      loggers.validation.error('Unexpected validation error:', error as Error);
-      throw new Error(`Validation error: ${errorMessage}`);
-    }
-  }
+  return ApplicationDataSchema.parse(data);
 }
 
 export function validateResume(data: unknown): ResumeType {

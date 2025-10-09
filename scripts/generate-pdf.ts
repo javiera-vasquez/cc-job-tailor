@@ -5,11 +5,7 @@ import applicationData from '../src/data/application';
 import path from 'path';
 import { mkdir } from 'fs/promises';
 import { parsePdfArgs } from './shared/cli-args';
-import {
-  throwNoCompanyError,
-  throwInvalidDocumentTypeError,
-  throwDataGenerationError,
-} from './shared/error-messages';
+import { throwNoCompanyError, throwInvalidDocumentTypeError } from './shared/error-messages';
 import { validateTailorContextStrict } from '../src/zod/tailor-context-schema';
 import { PATHS, DOCUMENT_TYPES } from './shared/config';
 import { loggers } from './shared/logger';
@@ -47,12 +43,14 @@ const generatePdf = async () => {
 
     const exitCode = await dataGenProcess.exited;
     if (exitCode !== 0) {
-      throwDataGenerationError(companyName, exitCode);
+      // Subprocess already displayed the error - just exit with same code
+      process.exit(exitCode);
     }
 
     loggers.pdf.success(`Data generation completed for ${companyName}`);
-  } catch (error) {
-    loggers.pdf.error(`Failed to generate data for ${companyName}`, error as Error);
+  } catch {
+    // Only handle spawn errors here (not validation errors from subprocess)
+    loggers.pdf.error(`Failed to spawn data generation process for ${companyName}`);
     process.exit(1);
   }
 

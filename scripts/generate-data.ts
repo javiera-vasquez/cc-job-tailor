@@ -3,6 +3,7 @@ import { validateApplicationData } from '../src/zod/validation';
 import { parseCompanyArgs } from './shared/cli-args';
 import { getCompanyFolderPath, loadTailoredData } from './shared/company-loader';
 import { throwNoCompanyError } from './shared/error-messages';
+import { handleValidationError } from './shared/validation-error-handler';
 import { PATHS, SCRIPTS } from './shared/config';
 import { loggers } from './shared/logger';
 
@@ -42,9 +43,11 @@ try {
   validateApplicationData(applicationData);
   loggers.generate.success('Application data validation passed');
 } catch (error) {
-  loggers.generate.error('Validation failed', error);
-  loggers.generate.info('💡 Fix the data issues in the tailor files and try again');
-  process.exit(1);
+  handleValidationError(error, {
+    context: 'generate-data',
+    exitOnError: true,
+    showHelpHint: true,
+  });
 }
 
 // Generate TypeScript module with proper imports
