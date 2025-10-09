@@ -1,20 +1,35 @@
 import { z } from 'zod';
 import { existsSync } from 'fs';
 import { themes } from '../templates';
+import { PathHelpers } from '../../scripts/shared/config';
 
-// Core required fields for tailor operation
-const TailorContextRequiredSchema = z.object({
+// This is the single source of truth for TailorContext
+// All types and YAML generation should derive from this schema
+export const TailorContextSchema = z.object({
+  // Core required fields for tailor operation
   active_company: z.string().min(1, 'Company name is required'),
+  company: z.string().min(1, 'Display company name is required'),
   active_template: z.string().min(1, 'Template name is required'),
   folder_path: z.string().min(1, 'Folder path is required'),
   available_files: z.array(z.string().min(1), {
     required_error: 'Available files list is required',
   }),
+  position: z.string().min(1, 'Position is required'),
+  primary_focus: z.string().min(1, 'Primary focus is required'),
+  job_summary: z.string().optional(),
+  job_details: z.object({
+    company: z.string(),
+    location: z.string(),
+    experience_level: z.string(),
+    employment_type: z.string(),
+    must_have_skills: z.array(z.string()),
+    nice_to_have_skills: z.array(z.string()),
+    team_context: z.string(),
+    user_scale: z.string(),
+  }),
   last_updated: z.string().datetime('Must be valid ISO datetime'),
-});
 
-// Optional display/cached fields
-const TailorContextOptionalSchema = z.object({
+  // Optional display cache (deprecated - fields moved to top level)
   _display_cache: z
     .object({
       position: z.string().optional(),
@@ -36,8 +51,16 @@ const TailorContextOptionalSchema = z.object({
     .optional(),
 });
 
-// Combined schema
-export const TailorContextSchema = TailorContextRequiredSchema.merge(TailorContextOptionalSchema);
+// Core required fields schema (for strict validation)
+const TailorContextRequiredSchema = z.object({
+  active_company: z.string().min(1, 'Company name is required'),
+  active_template: z.string().min(1, 'Template name is required'),
+  folder_path: z.string().min(1, 'Folder path is required'),
+  available_files: z.array(z.string().min(1), {
+    required_error: 'Available files list is required',
+  }),
+  last_updated: z.string().datetime('Must be valid ISO datetime'),
+});
 
 export type TailorContext = z.infer<typeof TailorContextSchema>;
 export type TailorContextRequired = z.infer<typeof TailorContextRequiredSchema>;
@@ -84,7 +107,7 @@ export function validateTailorContext(data: unknown): ValidationResult {
   }
 
   // Layer 4: Validate folder_path matches active_company
-  const expectedPath = `resume-data/tailor/${context.active_company.toLowerCase().replace(/\s+/g, '-')}`;
+  const expectedPath = PathHelpers.getExpectedPath(context.active_company);
   if (!context.folder_path.includes(expectedPath)) {
     warnings.push(
       `folder_path '${context.folder_path}' may not match active_company '${context.active_company}'. Expected path to include: ${expectedPath}`,

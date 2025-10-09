@@ -37,51 +37,44 @@ describe('Validation Functions', () => {
       expect(result.cover_letter).toBeNull();
     });
 
-    test('throws descriptive error for invalid data with console output', () => {
+    test('throws ZodError for invalid data', () => {
       const invalidData = createInvalidApplicationData('invalid-email');
 
-      const consoleOutput = captureConsoleOutput(() => {
-        expectValidationError(() => {
-          validateApplicationData(invalidData);
-        }, 'Application data validation failed');
-      });
+      // validateApplicationData now just throws ZodError directly
+      // Error formatting is handled by the centralized validation-error-handler
+      expect(() => validateApplicationData(invalidData)).toThrow();
 
-      // Check that validation errors were logged to console
-      expect(consoleOutput.length).toBeGreaterThan(0);
-      expect(
-        consoleOutput.some((line) => line.includes('❌ Application data validation failed')),
-      ).toBe(true);
+      try {
+        validateApplicationData(invalidData);
+      } catch (error) {
+        expect(error).toBeInstanceOf(ZodError);
+      }
     });
 
     test('handles nested validation errors correctly ', () => {
       const invalidData = createInvalidApplicationData('missing-required-field');
 
-      const consoleOutput = captureConsoleOutput(() => {
-        expectValidationError(() => {
-          validateApplicationData(invalidData);
-        });
-      });
-
-      // Should log specific field path and error
-      expect(
-        consoleOutput.some((line) => line.includes('resume.name') || line.includes('Required')),
-      ).toBe(true);
+      // validateApplicationData throws ZodError with field paths
+      try {
+        validateApplicationData(invalidData);
+        expect(true).toBe(false); // Should not reach here
+      } catch (error) {
+        expect(error).toBeInstanceOf(ZodError);
+        const zodError = error as ZodError;
+        // Check that error includes field path information
+        const errorMessages = zodError.issues.map((issue) => issue.path.join('.'));
+        expect(errorMessages.some((path) => path.includes('name'))).toBe(true);
+      }
     });
 
     test('handles null input gracefully ', () => {
-      captureConsoleOutput(() => {
-        expectValidationError(() => {
-          validateApplicationData(null);
-        }, 'Application data validation failed');
-      });
+      // validateApplicationData now just throws ZodError
+      expect(() => validateApplicationData(null)).toThrow(ZodError);
     });
 
     test('handles undefined input gracefully ', () => {
-      captureConsoleOutput(() => {
-        expectValidationError(() => {
-          validateApplicationData(undefined);
-        }, 'Application data validation failed');
-      });
+      // validateApplicationData now just throws ZodError
+      expect(() => validateApplicationData(undefined)).toThrow(ZodError);
     });
 
     test('handles non-object input ', () => {
@@ -100,7 +93,7 @@ describe('Validation Functions', () => {
       });
     });
 
-    test('logs detailed error information for multiple validation errors ', () => {
+    test('throws ZodError with multiple validation errors ', () => {
       const badData = {
         metadata: {
           company: '', // Empty string
@@ -120,19 +113,16 @@ describe('Validation Functions', () => {
         cover_letter: null,
       };
 
-      const consoleOutput = captureConsoleOutput(() => {
-        expectValidationError(() => {
-          validateApplicationData(badData);
-        });
-      });
-
-      // Should log multiple errors
-      expect(consoleOutput.length).toBeGreaterThan(1);
-      expect(
-        consoleOutput.some(
-          (line) => line.includes('error(s)') || line.includes('validation failed'),
-        ),
-      ).toBe(true);
+      // validateApplicationData throws ZodError with multiple issues
+      try {
+        validateApplicationData(badData);
+        expect(true).toBe(false); // Should not reach here
+      } catch (error) {
+        expect(error).toBeInstanceOf(ZodError);
+        const zodError = error as ZodError;
+        // Should have multiple validation errors
+        expect(zodError.issues.length).toBeGreaterThan(1);
+      }
     });
 
     test('handles non-ZodError exceptions', () => {
@@ -158,9 +148,7 @@ describe('Validation Functions', () => {
         }, 'Validation error: Custom error');
       });
 
-      expect(consoleOutput.some((line) => line.includes('❌ Unexpected validation error'))).toBe(
-        true,
-      );
+      expect(consoleOutput.some((line) => line.includes('Unexpected validation error'))).toBe(true);
     });
   });
 
@@ -196,7 +184,7 @@ describe('Validation Functions', () => {
         });
       });
 
-      expect(consoleOutput.some((line) => line.includes('❌ Resume validation failed'))).toBe(true);
+      expect(consoleOutput.some((line) => line.includes('Resume validation failed'))).toBe(true);
     });
 
     test('handles non-ZodError exceptions in resume validation', () => {

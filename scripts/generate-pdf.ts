@@ -5,20 +5,18 @@ import applicationData from '../src/data/application';
 import path from 'path';
 import { mkdir } from 'fs/promises';
 import { parsePdfArgs } from './shared/cli-args';
-import {
-  throwNoCompanyError,
-  throwInvalidDocumentTypeError,
-  throwDataGenerationError,
-} from './shared/error-messages';
-import { validateTailorContext } from '../src/zod/tailor-context-schema';
+import { throwNoCompanyError, throwInvalidDocumentTypeError } from './shared/error-messages';
+import { validateTailorContextStrict } from '../src/zod/tailor-context-schema';
+import { PATHS, DOCUMENT_TYPES } from './shared/config';
+import { loggers } from './shared/logger';
 
 // Dynamic theme selection based on metadata
 const activeTemplate = applicationData.metadata?.active_template || 'modern';
 const selectedTheme = themes[activeTemplate];
 
 if (!selectedTheme) {
-  console.error(
-    `❌ Theme '${activeTemplate}' not found. Available themes: ${Object.keys(themes).join(', ')}`,
+  loggers.pdf.error(
+    `Theme '${activeTemplate}' not found. Available themes: ${Object.keys(themes).join(', ')}`,
   );
   process.exit(1);
 }
@@ -35,7 +33,7 @@ const generatePdf = async () => {
   }
 
   // First, generate the data for the specified company
-  console.warn(`Generating data for ${companyName}...`);
+  loggers.pdf.loading(`Generating data for ${companyName}...`);
   try {
     const dataGenProcess = Bun.spawn({
       cmd: ['bun', 'run', 'scripts/generate-data.ts', '-C', companyName],
@@ -45,18 +43,20 @@ const generatePdf = async () => {
 
     const exitCode = await dataGenProcess.exited;
     if (exitCode !== 0) {
-      throwDataGenerationError(companyName, exitCode);
+      // Subprocess already displayed the error - just exit with same code
+      process.exit(exitCode);
     }
 
-    console.warn(`Data generation completed for ${companyName}`);
-  } catch (error) {
-    console.error(`Failed to generate data for ${companyName}:`, (error as Error).message);
+    loggers.pdf.success(`Data generation completed for ${companyName}`);
+  } catch {
+    // Only handle spawn errors here (not validation errors from subprocess)
+    loggers.pdf.error(`Failed to spawn data generation process for ${companyName}`);
     process.exit(1);
   }
 
-  // Validate tailor context before generating PDF
+  // Validate tailor context before generating PDF (only required fields)
   if (applicationData.metadata) {
-    const contextValidation = validateTailorContext({
+    const contextValidation = validateTailorContextStrict({
       active_company: companyName,
       active_template: applicationData.metadata.active_template,
       folder_path: applicationData.metadata.folder_path,
@@ -65,22 +65,22 @@ const generatePdf = async () => {
     });
 
     if (!contextValidation.success) {
-      console.error('❌ Context validation failed:');
-      contextValidation.errors.forEach((err) => console.error(`  - ${err}`));
+      loggers.pdf.error('Context validation failed:');
+      contextValidation.errors.forEach((err) => loggers.pdf.error(`  - ${err}`));
       process.exit(1);
     }
 
     // Show warnings if any
     if (contextValidation.warnings && contextValidation.warnings.length > 0) {
-      console.warn('⚠️  Context validation warnings:');
-      contextValidation.warnings.forEach((warn) => console.warn(`  - ${warn}`));
+      loggers.pdf.warn('Context validation warnings:');
+      contextValidation.warnings.forEach((warn) => loggers.pdf.warn(`  - ${warn}`));
     }
 
-    console.warn(`✅ Using template: ${applicationData.metadata.active_template}`);
+    loggers.pdf.info(`Using template: ${applicationData.metadata.active_template}`);
   }
 
   // Ensure tmp directory exists
-  const tmpDir = path.join(import.meta.dir, '..', 'tmp');
+  const tmpDir = path.join(import.meta.dir, '..', PATHS.TEMP_PDF);
   try {
     await mkdir(tmpDir, { recursive: true });
   } catch {
@@ -88,13 +88,15 @@ const generatePdf = async () => {
   }
 
   // Generate PDFs based on document type
-  const generateDocument = async (docType: 'resume' | 'cover-letter') => {
+  const generateDocument = async (
+    docType: typeof DOCUMENT_TYPES.RESUME | typeof DOCUMENT_TYPES.COVER_LETTER,
+  ) => {
     if (!ResumeDocument || !CoverLetterDocument) {
       throw new Error('Theme components not properly loaded');
     }
 
     const component =
-      docType === 'resume'
+      docType === DOCUMENT_TYPES.RESUME
         ? React.createElement(ResumeDocument, { data: applicationData.resume ?? undefined })
         : React.createElement(CoverLetterDocument, {
             data: applicationData.cover_letter ?? undefined,
@@ -102,22 +104,23 @@ const generatePdf = async () => {
 
     const filePath = path.join(tmpDir, `${docType}-${companyName}.pdf`);
 
-    console.warn(`Generating ${docType} PDF for ${companyName} at ${filePath}`);
+    loggers.pdf.loading(`Generating ${docType} PDF for ${companyName}`);
+    loggers.pdf.debug(`Output path: ${filePath}`);
 
     // Type assertion needed because renderToFile expects DocumentProps but our wrapper has custom props
     await renderToFile(component as any, filePath);
 
-    console.warn(`${docType} PDF generated successfully for ${companyName}`);
+    loggers.pdf.success(`${docType} PDF generated successfully for ${companyName}`);
   };
 
   // Generate documents based on specified type
-  if (documentType === 'both') {
-    await generateDocument('resume');
-    await generateDocument('cover-letter');
-  } else if (documentType === 'resume') {
-    await generateDocument('resume');
-  } else if (documentType === 'cover-letter') {
-    await generateDocument('cover-letter');
+  if (documentType === DOCUMENT_TYPES.BOTH) {
+    await generateDocument(DOCUMENT_TYPES.RESUME);
+    await generateDocument(DOCUMENT_TYPES.COVER_LETTER);
+  } else if (documentType === DOCUMENT_TYPES.RESUME) {
+    await generateDocument(DOCUMENT_TYPES.RESUME);
+  } else if (documentType === DOCUMENT_TYPES.COVER_LETTER) {
+    await generateDocument(DOCUMENT_TYPES.COVER_LETTER);
   } else if (documentType) {
     throwInvalidDocumentTypeError(documentType);
   }

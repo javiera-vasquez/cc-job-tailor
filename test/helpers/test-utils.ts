@@ -361,9 +361,23 @@ export function createMockDocumentConfig<T>(overrides?: Partial<any>) {
 export function createValidTailorContext(overrides?: Partial<any>) {
   return {
     active_company: 'test-company',
+    company: 'Test Company',
     active_template: 'modern',
     folder_path: 'resume-data/tailor/test-company',
     available_files: ['metadata.yaml', 'resume.yaml', 'job_analysis.yaml', 'cover_letter.yaml'],
+    position: 'Software Engineer',
+    primary_focus: 'engineer + [react, typescript]',
+    job_summary: 'Test company building modern applications',
+    job_details: {
+      company: 'Test Company',
+      location: 'Remote',
+      experience_level: 'Mid-level',
+      employment_type: 'Full-time',
+      must_have_skills: ['JavaScript', 'React', 'TypeScript'],
+      nice_to_have_skills: ['Node.js', 'GraphQL'],
+      team_context: 'Small agile team',
+      user_scale: '10,000 users',
+    },
     last_updated: '2025-10-07T00:00:00Z',
     _display_cache: {
       position: 'Software Engineer',
@@ -387,82 +401,74 @@ export function createValidTailorContext(overrides?: Partial<any>) {
 export function createMinimalValidTailorContext() {
   return {
     active_company: 'test-company',
+    company: 'Test Company',
     active_template: 'modern',
     folder_path: 'resume-data/tailor/test-company',
     available_files: ['metadata.yaml'],
+    position: 'Software Engineer',
+    primary_focus: 'engineer + [react, typescript]',
+    job_details: {
+      company: 'Test Company',
+      location: 'Remote',
+      experience_level: 'Mid-level',
+      employment_type: 'Full-time',
+      must_have_skills: ['JavaScript', 'React'],
+      nice_to_have_skills: ['Node.js'],
+      team_context: 'Small team',
+      user_scale: '1,000 users',
+    },
     last_updated: '2025-10-07T00:00:00Z',
   };
 }
 
 export function createInvalidTailorContext(errorType: string): unknown {
+  const baseValid = createMinimalValidTailorContext();
+
   switch (errorType) {
     case 'missing-active-company':
-      return {
-        active_template: 'modern',
-        folder_path: 'resume-data/tailor/test-company',
-        available_files: ['metadata.yaml'],
-        last_updated: '2025-10-07T00:00:00Z',
-      };
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { active_company, ...withoutCompany } = baseValid;
+      return withoutCompany;
 
     case 'missing-active-template':
-      return {
-        active_company: 'test-company',
-        folder_path: 'resume-data/tailor/test-company',
-        available_files: ['metadata.yaml'],
-        last_updated: '2025-10-07T00:00:00Z',
-      };
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { active_template, ...withoutTemplate } = baseValid;
+      return withoutTemplate;
 
     case 'invalid-template-name':
       return {
-        active_company: 'test-company',
+        ...baseValid,
         active_template: 'invalid-theme-name',
-        folder_path: 'resume-data/tailor/test-company',
-        available_files: ['metadata.yaml'],
-        last_updated: '2025-10-07T00:00:00Z',
       };
 
     case 'invalid-datetime':
       return {
-        active_company: 'test-company',
-        active_template: 'modern',
-        folder_path: 'resume-data/tailor/test-company',
-        available_files: ['metadata.yaml'],
+        ...baseValid,
         last_updated: 'not-a-datetime',
       };
 
     case 'empty-available-files':
       return {
-        active_company: 'test-company',
-        active_template: 'modern',
-        folder_path: 'resume-data/tailor/test-company',
+        ...baseValid,
         available_files: [],
-        last_updated: '2025-10-07T00:00:00Z',
       };
 
     case 'missing-folder-path':
-      return {
-        active_company: 'test-company',
-        active_template: 'modern',
-        available_files: ['metadata.yaml'],
-        last_updated: '2025-10-07T00:00:00Z',
-      };
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { folder_path, ...withoutFolder } = baseValid;
+      return withoutFolder;
 
     case 'non-existent-folder':
       return {
-        active_company: 'test-company',
-        active_template: 'modern',
+        ...baseValid,
         folder_path: '/non/existent/path',
-        available_files: ['metadata.yaml'],
-        last_updated: '2025-10-07T00:00:00Z',
       };
 
     case 'mismatched-folder-company':
       return {
+        ...baseValid,
         active_company: 'test-company',
-        active_template: 'modern',
         folder_path: 'resume-data/tailor/different-company',
-        available_files: ['metadata.yaml'],
-        last_updated: '2025-10-07T00:00:00Z',
       };
 
     default:

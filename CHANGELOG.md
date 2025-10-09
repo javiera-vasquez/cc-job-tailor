@@ -7,6 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.4] - 2025-10-09
+
+### Added
+
+- **Tailor Context Setup Script**: New `set-env` script for validating and configuring tailor environment context
+- **Field-to-File Mapper**: Utility to map validation error field paths to their corresponding YAML files for better debugging
+- **Structured Logging System**: Comprehensive logging module with dual output formats (human-readable and JSON)
+- **Company Data Validation**: Automatic validation of application data before server startup
+- **Enhanced Dev Server**: Intelligent file watching with automatic data regeneration on YAML changes
+- **Comprehensive Test Coverage**: New tests for tailor context utilities, validation handlers, and logging functionality
+
+### Changed
+
+- **Tailor Command**: Expanded to include development server startup with automatic validation and hot reload
+- **Tailor Context Structure**: Enhanced `.claude/tailor-context.yaml` with additional fields (position, primary focus, job details)
+- **Validation Scripts**: Consolidated individual validation scripts into unified `validate-tailor-schema.ts`
+- **Error Handling**: Centralized validation error handling across all scripts with improved user feedback
+- **Dependencies**: Added `remeda` and `ts-pattern` for improved functional programming capabilities
+
+### Improved
+
+- **Configuration Management**: Centralized paths, script names, and constants in new `config.ts` file
+- **Type Safety**: Enhanced error handling with functional programming patterns using `remeda` and `ts-pattern`
+- **Logging Output**: Context-aware logging with log levels (debug, info, warn, error) for better traceability
+- **Error Messages**: Validation errors now include file locations and clearer guidance for fixing issues
+- **Code Organization**: Streamlined codebase by removing redundant error handling code
+
+### Fixed
+
+- **Type Safety**: Added TypeScript guard for undefined top-level field in field-to-file mapper
+
+### Technical Details
+
+- **Validation Pipeline**: Unified schema validation with centralized error handling
+- **File Watching**: Real-time YAML change detection with intelligent data regeneration
+- **Context Management**: Strict validation modes for different contexts (PDF generation vs. general use)
+- **Logging Architecture**: Structured logging with dual output formats for development and production
+
 ## [0.8.3] - 2025-10-07
 
 ### Added
