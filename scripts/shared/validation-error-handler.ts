@@ -13,12 +13,16 @@
 
 import { z } from 'zod';
 import { loggers } from './logger';
+import { formatErrorWithFile } from './field-to-file-mapper';
 
 export type ErrorContext = 'generate-data' | 'generate-pdf' | 'tailor-server';
 
 export interface ValidationErrorOptions {
   /** Context/script where the error occurred */
   context: ErrorContext;
+
+  /** Company name for file path display (optional) */
+  companyName?: string;
 
   /** Whether to exit the process after logging (default: true) */
   exitOnError?: boolean;
@@ -43,6 +47,7 @@ export interface ValidationErrorOptions {
  * } catch (error) {
  *   handleValidationError(error, {
  *     context: 'generate-data',
+ *     companyName: 'tech-corp',
  *     exitOnError: true,
  *     showHelpHint: true,
  *   });
@@ -50,7 +55,7 @@ export interface ValidationErrorOptions {
  * ```
  */
 export function handleValidationError(error: unknown, options: ValidationErrorOptions): void {
-  const { context, exitOnError = true, showHelpHint = true } = options;
+  const { context, companyName, exitOnError = true, showHelpHint = true } = options;
 
   const logger = getLoggerForContext(context);
 
@@ -61,8 +66,17 @@ export function handleValidationError(error: unknown, options: ValidationErrorOp
     logger.error('Application data validation failed:');
     zodError.issues.forEach((err) => {
       const path = err.path.join('.');
-      const received = 'received' in err ? ` (received: ${err.received})` : '';
-      logger.error(`  • ${path}: ${err.message}${received}`);
+      const received = 'received' in err ? String(err.received) : undefined;
+
+      // If we have a company name, show file location
+      if (companyName) {
+        const errorLines = formatErrorWithFile(path, err.message, companyName, received);
+        errorLines.forEach((line) => logger.error(line));
+      } else {
+        // Fallback to simple format
+        const receivedStr = received ? ` (received: ${received})` : '';
+        logger.error(`  • ${path}: ${err.message}${receivedStr}`);
+      }
     });
   } else if (error instanceof Error) {
     // Handle other Error types (don't show stack trace for validation errors)

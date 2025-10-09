@@ -45,6 +45,7 @@ try {
 } catch (error) {
   handleValidationError(error, {
     context: 'generate-data',
+    companyName: companyName || undefined,
     exitOnError: true,
     showHelpHint: true,
   });
