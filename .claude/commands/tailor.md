@@ -5,7 +5,7 @@ description: Set CC in /tailor mode, Ask claude for changes and improvements to 
 
 # Tailor Company Context Command
 
-Set the active company context for tailored resume operations. This command reads the company's tailored materials and establishes context for all subsequent interactions.
+Set the active company context for tailored resume operations and start the development server with automatic validation and hot reload.
 
 ## Usage
 
@@ -13,107 +13,141 @@ Set the active company context for tailored resume operations. This command read
 /tailor company-name
 ```
 
-## IMPORTANT: .claude Directory
+## Command Pipeline
 
-**Do not try to create the .claude folder - it is already created.**
-
-## What this command does:
-
-1. **Execute set-env script**: Run `bun run set-env -C $1` to validate and configure context
-2. **Check exit code**:
-   - Exit 0 = Success → Parse JSON output and start server
-   - Exit 1 = Failure → Display error message to user
-3. **Start Development Server**: If validation succeeds, invoke `/tailor-server` command
-4. **Provide Summary**: Show brief overview of company materials and job focus
-
-The `set-env` script performs comprehensive validation:
-
-- Validates company folder exists
-- Validates `metadata.yaml` exists and passes Zod schema validation
-- Validates `job_analysis.yaml` exists and passes Zod schema validation
-- Updates `.claude/tailor-context.yaml` atomically
-- Returns structured JSON on success or detailed errors on failure
-
-## Expected Company Folder Structure:
+### 1. User Invokes Command
 
 ```
-resume-data/tailor/$1/
-├── metadata.yaml        # Company metadata and context (REQUIRED)
-├── resume.yaml          # Tailored resume for this company
-├── job_analysis.yaml    # Job posting analysis and requirements
-└── cover_letter.yaml    # Tailored cover letter
+/tailor tech-corp
 ```
 
-## Context Benefits:
+### 2. Claude Sets Context
 
-After running this command, all subsequent interactions will:
+Runs `bun run set-env -C tech-corp`:
 
-- Automatically reference the active company's materials via tailor-context.yaml
-- Default file operations to the company's folder
-- Understand the job context for relevant suggestions
-- Allow direct editing of company-specific files
+- Validates company folder exists at `resume-data/tailor/tech-corp/`
+- Validates required files (`metadata.yaml`, `job_analysis.yaml`)
+- Updates `.claude/tailor-context.yaml` automatically
+- Returns structured JSON with company details
 
-**Company**: $1
+**Exit codes:**
 
-## Process Flow:
+- `0` = Success → Continue to step 3
+- `1` = Failure → Display error and stop
 
-1. **Validate Company Name**: Ensure company name argument is provided
-2. **Execute Validation Script**: Run `bun run set-env -C $1`
-   - The script validates folder structure
-   - Validates `metadata.yaml` exists and passes schema validation
-   - Validates `job_analysis.yaml` exists and passes schema validation
-   - Updates `.claude/tailor-context.yaml` atomically
-3. **Check Result**:
-   - If exit code 0: Parse JSON output and proceed to step 4
-   - If exit code 1: Display error message from stderr and stop
-4. **Provide Summary**: Display company context overview:
-   - Company name and folder path
-   - Available files
-   - Position and primary focus
-5. **Start Development Server**: Invoke `/tailor-server` command
+### 3. Claude Starts Development Server
 
-## Example Output:
+Invokes `/tailor-server` slash command:
+
+- Starts file watcher monitoring `resume-data/tailor/`
+- Enables automatic data regeneration on file changes
+- Launches browser preview with hot reload
+- Provides real-time validation feedback
+
+### 4. Claude Displays Context Summary
 
 ```
-✅ Active company context set: tech-corp
-📁 Folder: resume-data/tailor/tech-corp
-📄 Available files: resume.yaml, job_analysis.yaml, cover_letter.yaml
-🎯 Position: Senior Frontend Engineer - Web, Open Application
-🔧 Focus: senior_engineer + [react, typescript, frontend, mobile]
+✅ Active company context: company-name
+📁 Path: resume-data/tailor/[company-name]
+📄 Files: metadata.yaml, job_analysis.yaml, resume.yaml, cover_letter.yaml
+🎯 Position: actual possition described on publication
+🔧 Focus: main roll + [top 3 skill to have]
+🌐 Dev server: http://localhost:3000
+
+What would you like to work on? I can help you with:
+• Refine resume summary or professional experience
+• Update technical skills and expertise
+• Improve cover letter content and tone
+• Add or modify achievements with metrics
+• Adjust job focus and requirements analysis
+• Review and optimize for ATS keywords
+• Generate PDF for final review
 ```
 
-## Execution Steps:
+## Iterative Development Loop
 
-1. **Run set-env Script**:
+Once the server is running, the workflow is:
 
-   ```bash
-   bun run set-env -C $1
-   ```
+### Step 1: User Requests Changes
 
-2. **Handle Result**:
-   - **On success (exit 0)**:
-     - Parse JSON output from stdout
-     - Display formatted summary to user
-     - Proceed to step 3
-   - **On failure (exit 1)**:
-     - Display error message from stderr
-     - Ask user to fix the issue
-     - Stop execution
+```
+User: "Make the resume summary more impactful"
+User: "Add a new achievement about performance optimization"
+User: "Update the cover letter opening paragraph"
+```
 
-3. **Start Live Preview Server**:
-   - Invoke `/tailor-server` command to start background development server
-   - Inform user that live preview is available
-   - Explain that all YAML edits will trigger automatic validation and browser updates
+### Step 2: Claude Edits YAML Files
 
-## CRITICAL: Post-Edit Validation
+Claude edits files in `resume-data/tailor/tech-corp/`:
 
-**IMPORTANT**: After making ANY changes to YAML files in the company folder, you MUST:
+- `resume.yaml` - Professional experience, skills, summary
+- `cover_letter.yaml` - Cover letter content
+- `job_analysis.yaml` - Job requirements analysis
+- `metadata.yaml` - Company/position details
 
-1. Use `BashOutput` tool to check the tailor-server output for validation errors
-2. Look for messages like "✅ Data regenerated successfully" or "❌ Data regeneration failed"
-3. If validation fails, the error message will show exactly which fields are invalid
-4. Fix validation errors immediately before proceeding
+### Step 3: System Auto-Validates
 
-**Why this matters**: The tailor-server validates all YAML changes against Zod schemas. If validation fails, the PDF won't regenerate and the user's browser won't update. Always verify your changes passed validation by checking the server output.
+File watcher triggers automatic pipeline:
 
-Now validate the company folder, set the context, start the live preview server, and provide a comprehensive summary.
+```
+[file-watcher] Tailor data changed: tech-corp/resume.yaml
+[tailor-server] 🔄 Regenerating data for company: tech-corp
+[generate-data] Validating application data
+```
+
+Pipeline: File change → YAML parsing → Zod schema validation → TypeScript generation → Hot reload
+
+### Step 4: Claude Checks Validation Result
+
+**CRITICAL:** After each edit, Claude MUST use `BashOutput` to check server logs.
+
+**Success path:**
+
+```
+[generate-data] ✅ Application data validation passed
+[generate-data] Writing TypeScript module to src/data/application.ts
+[tailor-server] ✅ Data regenerated successfully
+[tailor-server] Hot reload will pick up changes automatically
+```
+
+**Failure path:**
+
+```
+[tailor-server] Application data validation failed:
+[tailor-server]   • resume.contact: Required (received: undefined)
+[tailor-server]     → in resume-data/tailor/tech-corp/resume.yaml
+[tailor-server] 💡 Fix the data issues and try again
+```
+
+### Step 5: Claude Responds Based on Result
+
+**If validation passes:**
+
+- Confirm changes to user
+- Mention browser preview has updated
+- Proceed with next task or await further instructions
+
+**If validation fails:**
+
+- Fix the validation error immediately
+- Re-check logs with `BashOutput`
+- Verify fix was successful before responding to user
+
+## Company Folder Structure
+
+```
+resume-data/tailor/company-name/
+├── metadata.yaml        # Company/position metadata (REQUIRED)
+├── job_analysis.yaml    # Job requirements analysis (REQUIRED)
+├── resume.yaml          # Tailored resume content
+└── cover_letter.yaml    # Tailored cover letter content
+```
+
+## Why Validation Matters
+
+- **PDF generation** depends on valid TypeScript data module
+- **Browser preview** won't update if validation fails
+- **Error messages** show exact field path and file location
+- **Actionable feedback** helps fix issues quickly (e.g., "Required field missing")
+
+Now set the company context, start the development server, and enter tailor mode.
