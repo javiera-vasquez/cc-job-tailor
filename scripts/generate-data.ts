@@ -3,6 +3,7 @@ import { validateApplicationData } from '../src/zod/validation';
 import { parseCompanyArgs } from './shared/cli-args';
 import { getCompanyFolderPath, loadTailoredData } from './shared/company-loader';
 import { throwNoCompanyError } from './shared/error-messages';
+import { PATHS, SCRIPTS } from './shared/config';
 
 console.warn('🔧 Generating application data module...');
 
@@ -60,13 +61,13 @@ export default applicationData;
 `;
 
 // Write the generated module
-console.warn(`📝 Writing TypeScript module to src/data/application.ts...`);
-await Bun.write('./src/data/application.ts', tsContent);
+console.warn(`📝 Writing TypeScript module to ${PATHS.GENERATED_DATA}...`);
+await Bun.write(PATHS.GENERATED_DATA, tsContent);
 
 // Format the generated file with Prettier
 console.warn('🎨 Formatting generated file with Prettier...');
 const prettierProcess = Bun.spawn(
-  ['bun', 'run', 'prettier', '--write', './src/data/application.ts'],
+  ['bun', 'run', SCRIPTS.PRETTIER, '--write', PATHS.GENERATED_DATA],
   {
     stdout: 'pipe',
     stderr: 'pipe',

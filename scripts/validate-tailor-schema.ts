@@ -6,6 +6,7 @@ import {
   ResumeSchema,
 } from '../src/zod/schemas';
 import { validateDataFile } from './shared/validator';
+import { COMPANY_FILES } from './shared/config';
 
 type ValidationType = 'metadata' | 'resume' | 'job-analysis' | 'cover-letter';
 
@@ -18,24 +19,24 @@ interface ValidationConfig {
 
 const validationConfigs: Record<ValidationType, ValidationConfig> = {
   metadata: {
-    fileName: 'metadata.yaml',
+    fileName: COMPANY_FILES.METADATA,
     schema: MetadataSchema,
     displayName: 'Metadata',
   },
   resume: {
-    fileName: 'resume.yaml',
+    fileName: COMPANY_FILES.RESUME,
     schema: ResumeSchema,
     displayName: 'Resume',
     extractKey: 'resume',
   },
   'job-analysis': {
-    fileName: 'job_analysis.yaml',
+    fileName: COMPANY_FILES.JOB_ANALYSIS,
     schema: JobAnalysisSchema,
     displayName: 'Job analysis',
     extractKey: 'job_analysis',
   },
   'cover-letter': {
-    fileName: 'cover_letter.yaml',
+    fileName: COMPANY_FILES.COVER_LETTER,
     schema: CoverLetterSchema,
     displayName: 'Cover letter',
     extractKey: 'cover_letter',
@@ -60,7 +61,7 @@ const validationType = positionals[0] as ValidationType;
 
 if (!validationType || !validationConfigs[validationType]) {
   console.error(
-    `Invalid validation type: ${validationType}\nValid types: ${Object.keys(validationConfigs).join(', ')}`
+    `Invalid validation type: ${validationType}\nValid types: ${Object.keys(validationConfigs).join(', ')}`,
   );
   process.exit(1);
 }

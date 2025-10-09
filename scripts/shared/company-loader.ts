@@ -6,8 +6,7 @@ import {
   throwMissingTailorDirectoryError,
   throwNoFilesFoundError,
 } from './error-messages';
-
-const TAILOR_PATH = './resume-data/tailor';
+import { PATHS, COMPANY_FILES, PathHelpers } from './config';
 
 /**
  * Get the file path for a company's tailor directory
@@ -20,25 +19,25 @@ export function getCompanyFolderPath(company: string | undefined): string | null
     return null;
   }
 
-  const companyPath = `${TAILOR_PATH}/${company}`;
+  const companyPath = PathHelpers.getCompanyPath(company);
 
   // Check if tailor directory exists
-  if (!existsSync(TAILOR_PATH)) {
-    throwMissingTailorDirectoryError(TAILOR_PATH);
+  if (!existsSync(PATHS.TAILOR_BASE)) {
+    throwMissingTailorDirectoryError(PATHS.TAILOR_BASE);
   }
 
   // Check if company folder exists
   if (!existsSync(companyPath)) {
     // List available companies
-    const availableCompanies = readdirSync(TAILOR_PATH).filter(
+    const availableCompanies = readdirSync(PATHS.TAILOR_BASE).filter(
       (name) =>
-        existsSync(`${TAILOR_PATH}/${name}/metadata.yaml`) ||
-        existsSync(`${TAILOR_PATH}/${name}/resume.yaml`) ||
-        existsSync(`${TAILOR_PATH}/${name}/job_analysis.yaml`) ||
-        existsSync(`${TAILOR_PATH}/${name}/cover_letter.yaml`),
+        existsSync(PathHelpers.getCompanyFile(name, 'METADATA')) ||
+        existsSync(PathHelpers.getCompanyFile(name, 'RESUME')) ||
+        existsSync(PathHelpers.getCompanyFile(name, 'JOB_ANALYSIS')) ||
+        existsSync(PathHelpers.getCompanyFile(name, 'COVER_LETTER')),
     );
 
-    throwCompanyNotFoundError(company, availableCompanies, TAILOR_PATH);
+    throwCompanyNotFoundError(company, availableCompanies, PATHS.TAILOR_BASE);
   }
 
   return companyPath;
@@ -72,17 +71,17 @@ export async function loadYamlFile(
 export async function loadTailoredData(companyPath: string): Promise<ApplicationData> {
   console.warn(`📂 Loading tailored data from: ${companyPath}`);
 
-  const metadata = await loadYamlFile(companyPath, 'metadata.yaml');
-  const resumeFile = await loadYamlFile(companyPath, 'resume.yaml');
-  const jobAnalysis = await loadYamlFile(companyPath, 'job_analysis.yaml');
-  const coverLetter = await loadYamlFile(companyPath, 'cover_letter.yaml');
+  const metadata = await loadYamlFile(companyPath, COMPANY_FILES.METADATA);
+  const resumeFile = await loadYamlFile(companyPath, COMPANY_FILES.RESUME);
+  const jobAnalysis = await loadYamlFile(companyPath, COMPANY_FILES.JOB_ANALYSIS);
+  const coverLetter = await loadYamlFile(companyPath, COMPANY_FILES.COVER_LETTER);
 
   // Log what was found
   const foundFiles = [];
-  if (metadata) foundFiles.push('metadata.yaml');
-  if (resumeFile) foundFiles.push('resume.yaml');
-  if (jobAnalysis) foundFiles.push('job_analysis.yaml');
-  if (coverLetter) foundFiles.push('cover_letter.yaml');
+  if (metadata) foundFiles.push(COMPANY_FILES.METADATA);
+  if (resumeFile) foundFiles.push(COMPANY_FILES.RESUME);
+  if (jobAnalysis) foundFiles.push(COMPANY_FILES.JOB_ANALYSIS);
+  if (coverLetter) foundFiles.push(COMPANY_FILES.COVER_LETTER);
 
   if (foundFiles.length > 0) {
     console.warn(`✅ Found ${foundFiles.length} file(s): ${foundFiles.join(', ')}`);
@@ -103,15 +102,15 @@ export async function loadTailoredData(companyPath: string): Promise<Application
  * @returns Array of company names
  */
 export function getAvailableCompanies(): string[] {
-  if (!existsSync(TAILOR_PATH)) {
+  if (!existsSync(PATHS.TAILOR_BASE)) {
     return [];
   }
 
-  return readdirSync(TAILOR_PATH).filter(
+  return readdirSync(PATHS.TAILOR_BASE).filter(
     (name) =>
-      existsSync(`${TAILOR_PATH}/${name}/metadata.yaml`) ||
-      existsSync(`${TAILOR_PATH}/${name}/resume.yaml`) ||
-      existsSync(`${TAILOR_PATH}/${name}/job_analysis.yaml`) ||
-      existsSync(`${TAILOR_PATH}/${name}/cover_letter.yaml`),
+      existsSync(PathHelpers.getCompanyFile(name, 'METADATA')) ||
+      existsSync(PathHelpers.getCompanyFile(name, 'RESUME')) ||
+      existsSync(PathHelpers.getCompanyFile(name, 'JOB_ANALYSIS')) ||
+      existsSync(PathHelpers.getCompanyFile(name, 'COVER_LETTER')),
   );
 }

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { existsSync } from 'fs';
 import { themes } from '../templates';
+import { PathHelpers } from '../../scripts/shared/config';
 
 // This is the single source of truth for TailorContext
 // All types and YAML generation should derive from this schema
@@ -106,7 +107,7 @@ export function validateTailorContext(data: unknown): ValidationResult {
   }
 
   // Layer 4: Validate folder_path matches active_company
-  const expectedPath = `resume-data/tailor/${context.active_company.toLowerCase().replace(/\s+/g, '-')}`;
+  const expectedPath = PathHelpers.getExpectedPath(context.active_company);
   if (!context.folder_path.includes(expectedPath)) {
     warnings.push(
       `folder_path '${context.folder_path}' may not match active_company '${context.active_company}'. Expected path to include: ${expectedPath}`,

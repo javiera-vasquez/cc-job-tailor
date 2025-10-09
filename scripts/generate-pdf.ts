@@ -11,6 +11,7 @@ import {
   throwDataGenerationError,
 } from './shared/error-messages';
 import { validateTailorContextStrict } from '../src/zod/tailor-context-schema';
+import { PATHS, DOCUMENT_TYPES } from './shared/config';
 
 // Dynamic theme selection based on metadata
 const activeTemplate = applicationData.metadata?.active_template || 'modern';
@@ -80,7 +81,7 @@ const generatePdf = async () => {
   }
 
   // Ensure tmp directory exists
-  const tmpDir = path.join(import.meta.dir, '..', 'tmp');
+  const tmpDir = path.join(import.meta.dir, '..', PATHS.TEMP_PDF);
   try {
     await mkdir(tmpDir, { recursive: true });
   } catch {
@@ -88,13 +89,15 @@ const generatePdf = async () => {
   }
 
   // Generate PDFs based on document type
-  const generateDocument = async (docType: 'resume' | 'cover-letter') => {
+  const generateDocument = async (
+    docType: typeof DOCUMENT_TYPES.RESUME | typeof DOCUMENT_TYPES.COVER_LETTER,
+  ) => {
     if (!ResumeDocument || !CoverLetterDocument) {
       throw new Error('Theme components not properly loaded');
     }
 
     const component =
-      docType === 'resume'
+      docType === DOCUMENT_TYPES.RESUME
         ? React.createElement(ResumeDocument, { data: applicationData.resume ?? undefined })
         : React.createElement(CoverLetterDocument, {
             data: applicationData.cover_letter ?? undefined,
@@ -111,13 +114,13 @@ const generatePdf = async () => {
   };
 
   // Generate documents based on specified type
-  if (documentType === 'both') {
-    await generateDocument('resume');
-    await generateDocument('cover-letter');
-  } else if (documentType === 'resume') {
-    await generateDocument('resume');
-  } else if (documentType === 'cover-letter') {
-    await generateDocument('cover-letter');
+  if (documentType === DOCUMENT_TYPES.BOTH) {
+    await generateDocument(DOCUMENT_TYPES.RESUME);
+    await generateDocument(DOCUMENT_TYPES.COVER_LETTER);
+  } else if (documentType === DOCUMENT_TYPES.RESUME) {
+    await generateDocument(DOCUMENT_TYPES.RESUME);
+  } else if (documentType === DOCUMENT_TYPES.COVER_LETTER) {
+    await generateDocument(DOCUMENT_TYPES.COVER_LETTER);
   } else if (documentType) {
     throwInvalidDocumentTypeError(documentType);
   }

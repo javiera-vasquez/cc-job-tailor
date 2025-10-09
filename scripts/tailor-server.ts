@@ -14,6 +14,7 @@ import { watch, existsSync, type FSWatcher } from 'fs';
 import { load } from 'js-yaml';
 import { sep } from 'path';
 import { validateTailorContext, type TailorContext } from '../src/zod/tailor-context-schema';
+import { PATHS, PATTERNS, SCRIPTS } from './shared/config';
 
 interface WatcherState {
   devServer: ChildProcess;
@@ -23,8 +24,8 @@ interface WatcherState {
 
 class EnhancedDevServer {
   private state: WatcherState;
-  private readonly tailorDir = './resume-data/tailor';
-  private readonly contextPath = './.claude/tailor-context.yaml';
+  private readonly tailorDir = PATHS.TAILOR_BASE;
+  private readonly contextPath = PATHS.CONTEXT_FILE;
 
   constructor() {
     this.state = {
@@ -80,7 +81,7 @@ class EnhancedDevServer {
    * Create the main Vite dev server process
    */
   private createDevServer(): ChildProcess {
-    const devServer = spawn('bun', ['run', 'dev:vite'], {
+    const devServer = spawn('bun', ['run', SCRIPTS.DEV_VITE], {
       stdio: ['ignore', 'pipe', 'pipe'],
       cwd: process.cwd(),
     });
@@ -109,7 +110,7 @@ class EnhancedDevServer {
    * Check if file change should trigger regeneration
    */
   private shouldProcessChange(filename: string | null, companyFromPath: string | null): boolean {
-    if (!filename || !filename.endsWith('.yaml')) {
+    if (!filename || !PATTERNS.YAML.test(filename)) {
       return false;
     }
 
@@ -133,7 +134,7 @@ class EnhancedDevServer {
 
     return new Promise((resolve, reject) => {
       try {
-        const generateData = spawn('bun', ['run', 'generate-data', '-C', companyName], {
+        const generateData = spawn('bun', ['run', SCRIPTS.GENERATE_DATA, '-C', companyName], {
           stdio: 'pipe',
           cwd: process.cwd(),
         });

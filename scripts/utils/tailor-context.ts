@@ -1,10 +1,10 @@
 import { existsSync, readFileSync, writeFileSync, readdirSync } from 'fs';
-import { join } from 'path';
 import yaml from 'js-yaml';
 import { pipe } from 'remeda';
 import { match, P } from 'ts-pattern';
 import { MetadataSchema, JobAnalysisSchema } from '../../src/zod/schemas';
 import { TailorContextSchema, type TailorContext } from '../../src/zod/tailor-context-schema';
+import { PATHS, COMPANY_FILES, PathHelpers } from '../shared/config';
 import type { z } from 'zod';
 
 // Result type for functional error handling
@@ -124,12 +124,11 @@ const generateContextYaml = (
  * Validates and sets the tailor context for a specific company
  */
 export function setTailorContext(companyName: string): SetContextResult {
-  const base = 'resume-data/tailor';
-  const companyPath = join(base, companyName);
+  const companyPath = PathHelpers.getCompanyPath(companyName);
   const paths = {
-    metadata: join(companyPath, 'metadata.yaml'),
-    jobAnalysis: join(companyPath, 'job_analysis.yaml'),
-    context: '.claude/tailor-context.yaml',
+    metadata: PathHelpers.getCompanyFile(companyName, 'METADATA'),
+    jobAnalysis: PathHelpers.getCompanyFile(companyName, 'JOB_ANALYSIS'),
+    context: PATHS.CONTEXT_FILE,
   };
 
   // Validate paths
@@ -137,14 +136,14 @@ export function setTailorContext(companyName: string): SetContextResult {
     return {
       success: false,
       error: `Company folder not found: ${companyPath}`,
-      details: `Available companies: ${getAvailableCompanies(base).join(', ') || 'none'}`,
+      details: `Available companies: ${getAvailableCompanies(PATHS.TAILOR_BASE).join(', ') || 'none'}`,
     };
   }
   if (!existsSync(paths.metadata)) {
-    return { success: false, error: `metadata.yaml not found in ${companyPath}` };
+    return { success: false, error: `${COMPANY_FILES.METADATA} not found in ${companyPath}` };
   }
   if (!existsSync(paths.jobAnalysis)) {
-    return { success: false, error: `job_analysis.yaml not found in ${companyPath}` };
+    return { success: false, error: `${COMPANY_FILES.JOB_ANALYSIS} not found in ${companyPath}` };
   }
 
   // Read and validate
