@@ -14,6 +14,9 @@ import { watch, existsSync, type FSWatcher } from 'fs';
 import { load } from 'js-yaml';
 import { sep } from 'path';
 import { validateTailorContext, type TailorContext } from '../src/zod/tailor-context-schema';
+import { validateApplicationData } from '../src/zod/validation';
+import { getCompanyFolderPath, loadTailoredData } from './shared/company-loader';
+import { handleValidationError } from './shared/validation-error-handler';
 import { PATHS, PATTERNS, SCRIPTS } from './shared/config';
 import { loggers } from './shared/logger';
 
@@ -80,6 +83,38 @@ class EnhancedDevServer {
         stack: err.stack,
       });
       return null;
+    }
+  }
+
+  /**
+   * Validate company data before starting the server
+   */
+  private async validateCompanyData(companyName: string): Promise<void> {
+    loggers.server.info(`Validating data for company: ${companyName}`);
+
+    try {
+      const companyPath = getCompanyFolderPath(companyName);
+
+      if (!companyPath) {
+        loggers.server.error(
+          `Company folder not found for: ${companyName}`,
+          new Error('Company folder not found'),
+        );
+        throw new Error(`Company folder not found: ${companyName}`);
+      }
+
+      // Load and validate the tailored data
+      const applicationData = await loadTailoredData(companyPath);
+      validateApplicationData(applicationData);
+
+      loggers.server.success('Application data validation passed');
+    } catch (error) {
+      handleValidationError(error, {
+        context: 'tailor-server',
+        companyName,
+        exitOnError: true,
+        showHelpHint: true,
+      });
     }
   }
 
@@ -262,8 +297,12 @@ class EnhancedDevServer {
 
     if (this.state.activeCompany) {
       loggers.server.info(`Watching tailor data for active company: ${this.state.activeCompany}`);
+
+      // Validate company data before starting the server
+      await this.validateCompanyData(this.state.activeCompany);
     } else {
       loggers.server.info('Watching all tailor data changes');
+      loggers.server.warn('Skipping initial validation - no active company specified');
     }
 
     // Set up file watcher
