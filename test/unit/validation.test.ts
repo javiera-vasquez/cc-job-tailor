@@ -49,7 +49,7 @@ describe('Validation Functions', () => {
       // Check that validation errors were logged to console
       expect(consoleOutput.length).toBeGreaterThan(0);
       expect(
-        consoleOutput.some((line) => line.includes('❌ Application data validation failed')),
+        consoleOutput.some((line) => line.includes('Application data validation failed')),
       ).toBe(true);
     });
 
@@ -158,7 +158,7 @@ describe('Validation Functions', () => {
         }, 'Validation error: Custom error');
       });
 
-      expect(consoleOutput.some((line) => line.includes('❌ Unexpected validation error'))).toBe(
+      expect(consoleOutput.some((line) => line.includes('Unexpected validation error'))).toBe(
         true,
       );
     });
@@ -196,7 +196,7 @@ describe('Validation Functions', () => {
         });
       });
 
-      expect(consoleOutput.some((line) => line.includes('❌ Resume validation failed'))).toBe(true);
+      expect(consoleOutput.some((line) => line.includes('Resume validation failed'))).toBe(true);
     });
 
     test('handles non-ZodError exceptions in resume validation', () => {

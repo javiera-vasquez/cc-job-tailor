@@ -2,6 +2,7 @@
 
 import { parseArgs } from 'util';
 import { setTailorContext } from './utils/tailor-context';
+import { loggers } from './shared/logger';
 
 /**
  * CLI script to set tailor environment context
@@ -26,8 +27,8 @@ const companyName = values.C;
 
 // Validate company name argument
 if (!companyName) {
-  console.error('Error: Company name required');
-  console.error('Usage: bun run set-env -C company-name');
+  loggers.setEnv.error('Company name required');
+  loggers.setEnv.info('Usage: bun run set-env -C company-name');
   process.exit(1);
 }
 
@@ -35,14 +36,15 @@ if (!companyName) {
 const result = setTailorContext(companyName);
 
 if (result.success) {
-  // Success: output JSON to stdout for Claude to parse
-  console.log(JSON.stringify(result.data, null, 2));
+  // Success: use logger (respects LOG_FORMAT for JSON/human output)
+  loggers.setEnv.info('Tailor context set successfully', result.data);
   process.exit(0);
 } else {
-  // Failure: output error to stderr
-  console.error(`Error: ${result.error}`);
-  if (result.details) {
-    console.error(`\nDetails:\n${result.details}`);
-  }
+  // Failure: log error with details
+  loggers.setEnv.error(
+    result.error,
+    null,
+    result.details ? { details: result.details } : undefined,
+  );
   process.exit(1);
 }

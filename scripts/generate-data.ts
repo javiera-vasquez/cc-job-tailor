@@ -4,14 +4,15 @@ import { parseCompanyArgs } from './shared/cli-args';
 import { getCompanyFolderPath, loadTailoredData } from './shared/company-loader';
 import { throwNoCompanyError } from './shared/error-messages';
 import { PATHS, SCRIPTS } from './shared/config';
+import { loggers } from './shared/logger';
 
-console.warn('🔧 Generating application data module...');
+loggers.generate.info('Generating application data module');
 
 // Parse command line arguments
 const { company: companyName } = parseCompanyArgs();
 
 if (companyName) {
-  console.warn(`🎯 Target company: "${companyName}"`);
+  loggers.generate.info(`Target company: "${companyName}"`);
 }
 
 // Main data loading logic
@@ -27,7 +28,7 @@ async function loadApplicationData(): Promise<ApplicationData> {
       throwNoCompanyError();
     }
   } catch (error) {
-    console.error(`Error: ${(error as Error).message}`);
+    loggers.generate.error('Error loading application data', error);
     process.exit(1);
   }
 }
@@ -36,12 +37,13 @@ async function loadApplicationData(): Promise<ApplicationData> {
 const applicationData = await loadApplicationData();
 
 // Validate the generated data against TypeScript schema
-console.warn('🔍 Validating application data...');
+loggers.generate.info('Validating application data');
 try {
   validateApplicationData(applicationData);
-  console.warn('✅ Application data validation passed');
-} catch {
-  console.error('💡 Fix the data issues in the tailor files and try again.');
+  loggers.generate.success('Application data validation passed');
+} catch (error) {
+  loggers.generate.error('Validation failed', error);
+  loggers.generate.info('💡 Fix the data issues in the tailor files and try again');
   process.exit(1);
 }
 
@@ -61,11 +63,11 @@ export default applicationData;
 `;
 
 // Write the generated module
-console.warn(`📝 Writing TypeScript module to ${PATHS.GENERATED_DATA}...`);
+loggers.generate.info(`Writing TypeScript module to ${PATHS.GENERATED_DATA}`);
 await Bun.write(PATHS.GENERATED_DATA, tsContent);
 
 // Format the generated file with Prettier
-console.warn('🎨 Formatting generated file with Prettier...');
+loggers.generate.info('Formatting generated file with Prettier');
 const prettierProcess = Bun.spawn(
   ['bun', 'run', SCRIPTS.PRETTIER, '--write', PATHS.GENERATED_DATA],
   {
@@ -76,4 +78,4 @@ const prettierProcess = Bun.spawn(
 
 await prettierProcess.exited;
 
-console.warn(`✅ Application data module generated successfully from ${source}`);
+loggers.generate.success(`Application data module generated successfully from ${source}`);

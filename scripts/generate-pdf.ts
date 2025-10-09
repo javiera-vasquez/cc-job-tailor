@@ -12,14 +12,15 @@ import {
 } from './shared/error-messages';
 import { validateTailorContextStrict } from '../src/zod/tailor-context-schema';
 import { PATHS, DOCUMENT_TYPES } from './shared/config';
+import { loggers } from './shared/logger';
 
 // Dynamic theme selection based on metadata
 const activeTemplate = applicationData.metadata?.active_template || 'modern';
 const selectedTheme = themes[activeTemplate];
 
 if (!selectedTheme) {
-  console.error(
-    `❌ Theme '${activeTemplate}' not found. Available themes: ${Object.keys(themes).join(', ')}`,
+  loggers.pdf.error(
+    `Theme '${activeTemplate}' not found. Available themes: ${Object.keys(themes).join(', ')}`,
   );
   process.exit(1);
 }
@@ -36,7 +37,7 @@ const generatePdf = async () => {
   }
 
   // First, generate the data for the specified company
-  console.warn(`Generating data for ${companyName}...`);
+  loggers.pdf.loading(`Generating data for ${companyName}...`);
   try {
     const dataGenProcess = Bun.spawn({
       cmd: ['bun', 'run', 'scripts/generate-data.ts', '-C', companyName],
@@ -49,9 +50,9 @@ const generatePdf = async () => {
       throwDataGenerationError(companyName, exitCode);
     }
 
-    console.warn(`Data generation completed for ${companyName}`);
+    loggers.pdf.success(`Data generation completed for ${companyName}`);
   } catch (error) {
-    console.error(`Failed to generate data for ${companyName}:`, (error as Error).message);
+    loggers.pdf.error(`Failed to generate data for ${companyName}`, error as Error);
     process.exit(1);
   }
 
@@ -66,18 +67,18 @@ const generatePdf = async () => {
     });
 
     if (!contextValidation.success) {
-      console.error('❌ Context validation failed:');
-      contextValidation.errors.forEach((err) => console.error(`  - ${err}`));
+      loggers.pdf.error('Context validation failed:');
+      contextValidation.errors.forEach((err) => loggers.pdf.error(`  - ${err}`));
       process.exit(1);
     }
 
     // Show warnings if any
     if (contextValidation.warnings && contextValidation.warnings.length > 0) {
-      console.warn('⚠️  Context validation warnings:');
-      contextValidation.warnings.forEach((warn) => console.warn(`  - ${warn}`));
+      loggers.pdf.warn('Context validation warnings:');
+      contextValidation.warnings.forEach((warn) => loggers.pdf.warn(`  - ${warn}`));
     }
 
-    console.warn(`✅ Using template: ${applicationData.metadata.active_template}`);
+    loggers.pdf.info(`Using template: ${applicationData.metadata.active_template}`);
   }
 
   // Ensure tmp directory exists
@@ -105,12 +106,13 @@ const generatePdf = async () => {
 
     const filePath = path.join(tmpDir, `${docType}-${companyName}.pdf`);
 
-    console.warn(`Generating ${docType} PDF for ${companyName} at ${filePath}`);
+    loggers.pdf.loading(`Generating ${docType} PDF for ${companyName}`);
+    loggers.pdf.debug(`Output path: ${filePath}`);
 
     // Type assertion needed because renderToFile expects DocumentProps but our wrapper has custom props
     await renderToFile(component as any, filePath);
 
-    console.warn(`${docType} PDF generated successfully for ${companyName}`);
+    loggers.pdf.success(`${docType} PDF generated successfully for ${companyName}`);
   };
 
   // Generate documents based on specified type

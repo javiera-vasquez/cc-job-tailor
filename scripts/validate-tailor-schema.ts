@@ -7,6 +7,7 @@ import {
 } from '../src/zod/schemas';
 import { validateDataFile } from './shared/validator';
 import { COMPANY_FILES } from './shared/config';
+import { loggers } from './shared/logger';
 
 type ValidationType = 'metadata' | 'resume' | 'job-analysis' | 'cover-letter';
 
@@ -60,9 +61,10 @@ const { values, positionals } = parseArgs({
 const validationType = positionals[0] as ValidationType;
 
 if (!validationType || !validationConfigs[validationType]) {
-  console.error(
-    `Invalid validation type: ${validationType}\nValid types: ${Object.keys(validationConfigs).join(', ')}`,
-  );
+  loggers.validation.error('Invalid validation type', null, {
+    received: validationType,
+    validTypes: Object.keys(validationConfigs),
+  });
   process.exit(1);
 }
 

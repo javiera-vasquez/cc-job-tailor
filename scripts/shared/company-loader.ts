@@ -7,6 +7,7 @@ import {
   throwNoFilesFoundError,
 } from './error-messages';
 import { PATHS, COMPANY_FILES, PathHelpers } from './config';
+import { loggers } from './logger';
 
 /**
  * Get the file path for a company's tailor directory
@@ -69,7 +70,7 @@ export async function loadYamlFile(
  * @returns ApplicationData object with loaded data
  */
 export async function loadTailoredData(companyPath: string): Promise<ApplicationData> {
-  console.warn(`📂 Loading tailored data from: ${companyPath}`);
+  loggers.loader.info(`Loading tailored data from: ${companyPath}`);
 
   const metadata = await loadYamlFile(companyPath, COMPANY_FILES.METADATA);
   const resumeFile = await loadYamlFile(companyPath, COMPANY_FILES.RESUME);
@@ -84,7 +85,7 @@ export async function loadTailoredData(companyPath: string): Promise<Application
   if (coverLetter) foundFiles.push(COMPANY_FILES.COVER_LETTER);
 
   if (foundFiles.length > 0) {
-    console.warn(`✅ Found ${foundFiles.length} file(s): ${foundFiles.join(', ')}`);
+    loggers.loader.success(`Found ${foundFiles.length} file(s): ${foundFiles.join(', ')}`);
   } else {
     throwNoFilesFoundError(companyPath.split('/').pop() || 'unknown', companyPath);
   }

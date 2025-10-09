@@ -1,6 +1,7 @@
 import { z, type ZodSchema } from 'zod';
 import { getCompanyFolderPath, loadYamlFile } from './company-loader';
 import { throwNoCompanyError } from './error-messages';
+import { loggers } from './logger';
 
 export interface ValidationConfig {
   companyName: string | undefined;
@@ -17,13 +18,13 @@ export interface ValidationConfig {
 export async function validateDataFile(config: ValidationConfig): Promise<void> {
   const { companyName, fileName, extractKey, schema, displayName } = config;
 
-  console.warn(`🔍 Validating ${displayName.toLowerCase()}...`);
+  loggers.validator.info(`Validating ${displayName.toLowerCase()}`);
 
   if (!companyName) {
     throwNoCompanyError();
   }
 
-  console.warn(`🎯 Target company: "${companyName}"`);
+  loggers.validator.info(`Target company: "${companyName}"`);
 
   try {
     const companyPath = getCompanyFolderPath(companyName);
@@ -39,7 +40,7 @@ export async function validateDataFile(config: ValidationConfig): Promise<void> 
       throw new Error(`${fileName} not found in ${companyPath}`);
     }
 
-    console.warn(`📂 Loaded ${fileName}`);
+    loggers.validator.info(`Loaded ${fileName}`);
 
     // Extract data if needed (some files have wrapper keys like 'resume', 'job_analysis')
     let dataToValidate: unknown = yamlFile;
@@ -54,18 +55,19 @@ export async function validateDataFile(config: ValidationConfig): Promise<void> 
     // Validate against schema
     schema.parse(dataToValidate);
 
-    console.warn(`✅ ${displayName} validation passed`);
+    loggers.validator.success(`${displayName} validation passed`);
     process.exit(0);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      console.error(`❌ ${displayName} validation failed:`);
-      error.issues.forEach((issue) => {
-        const path = issue.path.join('.');
-        console.error(`  • ${path}: ${issue.message}`);
+      loggers.validator.error(`${displayName} validation failed`, null, {
+        issues: error.issues.map((issue) => ({
+          path: issue.path.join('.'),
+          message: issue.message,
+        })),
       });
-      console.error(`\n💡 Fix the issues in ${fileName} and try again.`);
+      loggers.validator.info(`💡 Fix the issues in ${fileName} and try again`);
     } else {
-      console.error(`Error: ${(error as Error).message}`);
+      loggers.validator.error('Validation error', error);
     }
     process.exit(1);
   }
