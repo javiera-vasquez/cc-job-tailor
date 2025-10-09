@@ -38,6 +38,9 @@ export function getFileForField(fieldPath: string): string | null {
   // Extract the top-level field (first segment of the path)
   const topLevelField = fieldPath.split('.')[0];
 
+  // TypeScript guard: topLevelField could be undefined if split returns empty array
+  if (!topLevelField) return null;
+
   return FIELD_TO_FILE_MAP[topLevelField] || null;
 }
 

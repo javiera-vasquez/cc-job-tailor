@@ -148,9 +148,7 @@ describe('Validation Functions', () => {
         }, 'Validation error: Custom error');
       });
 
-      expect(consoleOutput.some((line) => line.includes('Unexpected validation error'))).toBe(
-        true,
-      );
+      expect(consoleOutput.some((line) => line.includes('Unexpected validation error'))).toBe(true);
     });
   });
 
