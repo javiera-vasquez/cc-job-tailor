@@ -17,13 +17,14 @@ import { validateTailorContext, type TailorContext } from '../src/zod/tailor-con
 import { validateApplicationData } from '../src/zod/validation';
 import { getCompanyFolderPath, loadTailoredData } from './shared/company-loader';
 import { handleValidationError } from './shared/validation-error-handler';
-import { PATHS, PATTERNS, SCRIPTS } from './shared/config';
+import { PATHS, PATTERNS, SCRIPTS, TIMEOUTS } from './shared/config';
 import { loggers } from './shared/logger';
 
 interface WatcherState {
   devServer: ChildProcess;
   fileWatcher?: FSWatcher;
   activeCompany: string | null;
+  debounceTimer?: NodeJS.Timeout;
 }
 
 class EnhancedDevServer {
@@ -212,9 +213,9 @@ class EnhancedDevServer {
   }
 
   /**
-   * Handle file system change events
+   * Handle file system change events with debouncing
    */
-  private async handleFileChange(eventType: string, filename: string | null): Promise<void> {
+  private handleFileChange(eventType: string, filename: string | null): void {
     const companyFromPath = filename ? this.extractCompanyFromPath(filename) : null;
 
     if (!this.shouldProcessChange(filename, companyFromPath)) {
@@ -226,10 +227,35 @@ class EnhancedDevServer {
       return; // This should never happen due to shouldProcessChange logic, but satisfies TypeScript
     }
 
-    loggers.watcher.info(`Tailor data changed: ${filename}`);
+    // Clear existing debounce timer
+    if (this.state.debounceTimer) {
+      clearTimeout(this.state.debounceTimer);
+    }
 
+    const debounceDelay = TIMEOUTS.FILE_WATCH_DEBOUNCE;
+
+    // If debouncing is disabled (0ms), process immediately
+    if (debounceDelay === 0) {
+      loggers.watcher.info(`Tailor data changed: ${filename} (no debounce)`);
+      this.processFileChange(companyFromPath);
+      return;
+    }
+
+    // Otherwise, debounce the change
+    loggers.watcher.debug(`File change detected: ${filename} (debouncing for ${debounceDelay}ms)`);
+
+    this.state.debounceTimer = setTimeout(() => {
+      loggers.watcher.info(`Tailor data changed: ${filename}`);
+      this.processFileChange(companyFromPath);
+    }, debounceDelay);
+  }
+
+  /**
+   * Process file change and regenerate data
+   */
+  private async processFileChange(companyName: string): Promise<void> {
     try {
-      await this.regenerateData(companyFromPath);
+      await this.regenerateData(companyName);
     } catch {
       // Error already logged in regenerateData method
       // File watcher continues running regardless of validation failures
@@ -270,6 +296,11 @@ class EnhancedDevServer {
   private setupShutdownHandlers(): void {
     const shutdown = () => {
       loggers.server.info('Shutting down dev server and file watcher...');
+
+      // Clear any pending debounce timer
+      if (this.state.debounceTimer) {
+        clearTimeout(this.state.debounceTimer);
+      }
 
       if (this.state.fileWatcher) {
         this.state.fileWatcher.close();

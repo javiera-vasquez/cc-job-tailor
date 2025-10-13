@@ -120,8 +120,8 @@ export const PATTERNS = {
  * Timeouts and timing-related configuration
  */
 export const TIMEOUTS = {
-  /** Debounce period for file watching (ms) */
-  FILE_WATCH_DEBOUNCE: 300,
+  /** Debounce period for file watching (ms) - set to 0 to disable */
+  FILE_WATCH_DEBOUNCE: parseInt(process.env.FILE_WATCH_DEBOUNCE_MS || '300', 10),
 
   /** Cooldown before process restart (ms) */
   PROCESS_RESTART_COOLDOWN: 5000,
