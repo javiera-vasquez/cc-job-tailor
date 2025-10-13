@@ -18,14 +18,14 @@ Set the active company context for tailored resume operations and start the deve
 ### 1. User Invokes Command
 
 ```
-/tailor tech-corp
+/tailor company-name
 ```
 
 ### 2. Claude Sets Context
 
-Runs `bun run set-env -C tech-corp`:
+Runs `bun run set-env -C company-name`:
 
-- Validates company folder exists at `resume-data/tailor/tech-corp/`
+- Validates company folder exists at `resume-data/tailor/company-name/`
 - Validates required files (`metadata.yaml`, `job_analysis.yaml`)
 - Updates `.claude/tailor-context.yaml` automatically
 - Returns structured JSON with company details
