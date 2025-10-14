@@ -229,9 +229,9 @@ export const CoverLetterContentSchema = z.object({
 export const CoverLetterSchema = z.object({
   name: z.string().min(1),
   company: z.string().min(1),
-  position: z.string().min(1),
-  job_focus: JobFocusSchema,
-  primary_focus: z.string().min(1),
+  position: z.string().min(1).optional(),
+  job_focus: JobFocusSchema.optional(),
+  primary_focus: z.string().min(1).optional(),
   date: z.string().min(1),
   personal_info: ContactDetailsSchema,
   content: CoverLetterContentSchema,

@@ -18,10 +18,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const Title = ({ data }: { data: CoverLetterSchema }) => (
-  <View style={styles.titleContainer}>
-    <Text style={styles.titleText}>Cover Letter {data.position}</Text>
-  </View>
-);
+const Title = ({ data }: { data: CoverLetterSchema }) => {
+  // Use position if available, otherwise fall back to letter_title
+  const titleText = data.position ? `Cover Letter ${data.position}` : data.content.letter_title;
+
+  return (
+    <View style={styles.titleContainer}>
+      <Text style={styles.titleText}>{titleText}</Text>
+    </View>
+  );
+};
 
 export default Title;

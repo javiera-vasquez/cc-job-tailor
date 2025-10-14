@@ -55,7 +55,9 @@ const Header = ({ data }: { data: CoverLetterSchema }) => (
 
       <View style={styles.contactArea}>
         <Text style={styles.contactName}>{data.name}</Text>
-        <Text style={styles.contactDetails}>{data.personal_info.address}</Text>
+        {data.personal_info.address && (
+          <Text style={styles.contactDetails}>{data.personal_info.address}</Text>
+        )}
         <Text style={styles.contactDetails}>
           <Link style={styles.contactDetails} src={data.personal_info.email}>
             {data.personal_info.email}
