@@ -13,13 +13,13 @@ target_schema:
   analysis_date: 'string' # Date of job analysis
 
   cover_letter:
+    name: 'string' # Full name (top-level field)
     company: 'string' # Target company name
     position: 'string' # Target job position
     primary_focus: 'string' # highest weighted primary_area from job_focus array
     date: 'string' # Application date
 
     personal_info:
-      name: 'string' # Full name
       address: 'string' # Physical address
       email: 'string' # Email address
       phone: 'string' # Phone number
@@ -90,8 +90,8 @@ output_template: |
     primary_focus: "{{ job_analysis.job_focus[0].primary_area }}"  # Highest weighted focus
     date: "{{ current_date }}"
 
+    name: "{{ personal_info.name }}"
     personal_info:
-      name: "{{ personal_info.name }}"
       address: "{{ personal_info.address }}"
       email: "{{ personal_info.email }}"
       phone: "{{ personal_info.phone }}"

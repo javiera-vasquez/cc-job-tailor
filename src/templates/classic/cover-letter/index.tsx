@@ -18,7 +18,7 @@ const { colors, spacing, typography } = tokens.classic;
 export const coverLetterConfig = {
   getDocumentProps: (data: CoverLetterSchema) => ({
     title: 'Cover Letter',
-    author: data.personal_info.name || 'Resume Applicant',
+    author: data.name || 'Resume Applicant',
     subject: `Cover Letter for ${data.position} at ${data.company}`,
   }),
   emptyStateMessage: 'No cover letter data available. Please ensure cover letter data exists.',

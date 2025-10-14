@@ -3,6 +3,7 @@ analysis_date: '2025-10-01'
 
 cover_letter:
   company: 'Tech-Corp'
+  name: 'John Doe'
   position: 'Senior Frontend Engineer - Web'
   primary_focus: 'senior_engineer'
   date: '2025-10-01'

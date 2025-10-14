@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, test as it, expect } from 'bun:test';
 import type { ResumeSchema } from '@/types';
 import {
   RESUME_SECTIONS,
@@ -12,7 +12,6 @@ const createMinimalResume = (): ResumeSchema => ({
   name: 'John Doe',
   title: 'Software Engineer',
   contact: {
-    name: 'John Doe',
     phone: '+1234567890',
     email: 'john@example.com',
   },

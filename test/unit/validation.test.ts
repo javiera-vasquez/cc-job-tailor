@@ -277,6 +277,7 @@ describe('Validation Functions', () => {
   describe('validateCoverLetter()', () => {
     test('validates cover letter data when valid', () => {
       const validCoverLetter = {
+        name: 'John Doe',
         company: 'Test Company',
         position: 'Engineer',
         job_focus: [
@@ -289,7 +290,6 @@ describe('Validation Functions', () => {
         primary_focus: 'Frontend development',
         date: '2024-01-01',
         personal_info: {
-          name: 'John Doe',
           phone: '+1-234-567-8900',
           email: 'test@example.com',
           address: '123 Main St',

@@ -42,7 +42,6 @@ export const EducationSchema = z.object({
 
 export const ContactDetailsSchema = z.object({
   // Required fields
-  name: z.string().min(1),
   phone: z.string().min(1),
   email: z.string().email(),
 
@@ -228,6 +227,7 @@ export const CoverLetterContentSchema = z.object({
 });
 
 export const CoverLetterSchema = z.object({
+  name: z.string().min(1),
   company: z.string().min(1),
   position: z.string().min(1),
   job_focus: JobFocusSchema,

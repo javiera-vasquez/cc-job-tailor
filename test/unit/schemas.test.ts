@@ -147,7 +147,6 @@ describe('Zod Schema Validation', () => {
   describe('ContactDetailsSchema', () => {
     test('validates correct email format', () => {
       const validContact = {
-        name: 'John Doe',
         phone: '+1-234-567-8900',
         email: 'valid@example.com',
         address: '123 Main St',
@@ -161,7 +160,6 @@ describe('Zod Schema Validation', () => {
 
     test('rejects invalid email format', () => {
       const invalidContact = {
-        name: 'John Doe',
         phone: '+1-234-567-8900',
         email: 'invalid-email-format',
         address: '123 Main St',
@@ -175,7 +173,6 @@ describe('Zod Schema Validation', () => {
 
     test('validates URL format for linkedin and github', () => {
       const validContact = {
-        name: 'John Doe',
         phone: '+1-234-567-8900',
         email: 'test@example.com',
         address: '123 Main St',
@@ -189,7 +186,6 @@ describe('Zod Schema Validation', () => {
 
     test('rejects invalid URL format for linkedin', () => {
       const invalidContact = {
-        name: 'John Doe',
         phone: '+1-234-567-8900',
         email: 'test@example.com',
         address: '123 Main St',

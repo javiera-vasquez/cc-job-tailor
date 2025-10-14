@@ -54,7 +54,7 @@ const Header = ({ data }: { data: CoverLetterSchema }) => (
       </View>
 
       <View style={styles.contactArea}>
-        <Text style={styles.contactName}>{data.personal_info.name}</Text>
+        <Text style={styles.contactName}>{data.name}</Text>
         <Text style={styles.contactDetails}>{data.personal_info.address}</Text>
         <Text style={styles.contactDetails}>
           <Link style={styles.contactDetails} src={data.personal_info.email}>
