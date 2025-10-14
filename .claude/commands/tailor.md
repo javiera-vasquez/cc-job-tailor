@@ -3,9 +3,18 @@ allowed-tools: Bash(bun run set-env), SlashCommand, BashOutput
 description: Set CC in /tailor mode, Ask claude for changes and improvements to the application assets  | argument-hint company-name
 ---
 
-# Tailor Company Context Command
+# Tailor Mode - Collaborative Resume & Cover Letter Editing
 
-Set the active company context for tailored resume operations and start the development server with automatic validation and hot reload.
+This command activates **tailor mode**, where you (Claude) become the user's active collaborator for refining and improving their resume and cover letter for a specific company.
+
+**Your role in tailor mode:**
+- Be a proactive editor and writing coach
+- Suggest improvements to content, tone, and structure
+- Implement changes directly to YAML files based on user feedback
+- Ensure all edits align with the job posting requirements
+- Validate changes in real-time and fix any issues immediately
+
+The technical infrastructure (server, file watching, validation) runs in the background to support this collaborative editing workflow.
 
 ## Usage
 
@@ -28,12 +37,23 @@ Runs `bun run set-env -C company-name`:
 - Validates company folder exists at `resume-data/tailor/company-name/`
 - Validates required files (`metadata.yaml`, `job_analysis.yaml`)
 - Updates `.claude/tailor-context.yaml` automatically
-- Returns structured JSON with company details
+- Returns formatted output with company context details
 
 **Exit codes:**
 
 - `0` = Success → Continue to step 3
 - `1` = Failure → Display error and stop
+
+**Example output:**
+
+```
+[10:00:00] [set-env] ✅ Context set • Tech-Corp • 4 file(s)
+[10:00:00] [set-env]    -Path: resume-data/tailor/tech-corp
+[10:00:00] [set-env]    -Position: Senior Frontend Engineer - Web
+[10:00:00] [set-env]    -Focus: senior_engineer + [react, typescript, frontend]
+[10:00:00] [set-env]    -Files: metadata.yaml, job_analysis.yaml, resume.yaml, cover_letter.yaml
+[10:00:00] [set-env] 🚀 All good, please start the tailor-server
+```
 
 ### 3. Claude Starts Development Server
 
@@ -44,15 +64,14 @@ Invokes `/tailor-server` slash command:
 - Launches browser preview with hot reload
 - Provides real-time validation feedback
 
-### 4. Claude Displays Context Summary
+### 4. Claude Confirms Server is Running
+
+After the tailor-server starts, Claude should confirm the setup:
 
 ```
-✅ Active company context: company-name
-📁 Path: resume-data/tailor/[company-name]
-📄 Files: metadata.yaml, job_analysis.yaml, resume.yaml, cover_letter.yaml
-🎯 Position: actual possition described on publication
-🔧 Focus: main roll + [top 3 skill to have]
-🌐 Dev server: http://localhost:3000
+✅ Tailor mode active for [company-name]
+🌐 Dev server running at http://localhost:3000
+📁 Watching: resume-data/tailor/[company-name]
 
 What would you like to work on? I can help you with:
 • Refine resume summary or professional experience
@@ -89,13 +108,9 @@ Claude edits files in `resume-data/tailor/tech-corp/`:
 
 File watcher triggers automatic pipeline:
 
-```
-[file-watcher] Tailor data changed: tech-corp/resume.yaml
-[tailor-server] 🔄 Regenerating data for company: tech-corp
-[generate-data] Validating application data
-```
-
 Pipeline: File change → YAML parsing → Zod schema validation → TypeScript generation → Hot reload
+
+The system processes changes silently and shows only the final result (see Step 4 for output examples).
 
 ### Step 4: Claude Checks Validation Result
 
@@ -104,19 +119,19 @@ Pipeline: File change → YAML parsing → Zod schema validation → TypeScript 
 **Success path:**
 
 ```
-[generate-data] ✅ Application data validation passed
-[generate-data] Writing TypeScript module to src/data/application.ts
-[tailor-server] ✅ Data regenerated successfully
-[tailor-server] Hot reload will pick up changes automatically
+✅ resume.yaml → Regenerated (0.2s)
 ```
 
 **Failure path:**
 
 ```
-[tailor-server] Application data validation failed:
-[tailor-server]   • resume.contact: Required (received: undefined)
-[tailor-server]     → in resume-data/tailor/tech-corp/resume.yaml
-[tailor-server] 💡 Fix the data issues and try again
+❌ resume.yaml → Failed (0.1s)
+$ bun scripts/generate-data.ts -C tech-corp
+[10:24:34] [generate-data] Application data validation failed:
+[10:24:34] [generate-data]   • resume.name: Required (received: undefined)
+[10:24:34] [generate-data]     → in resume-data/tailor/tech-corp/resume.yaml
+error: script "generate-data" exited with code 1
+💡 Fix the errors above and save to retry
 ```
 
 ### Step 5: Claude Responds Based on Result
