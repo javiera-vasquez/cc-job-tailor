@@ -1,11 +1,7 @@
 import React from 'react';
 import { Page, StyleSheet } from '@react-pdf/renderer';
 
-import Header from './components/Header';
-import DateLine from './components/DateLine';
-import Title from './components/Title';
-import Body from './components/Body';
-import Signature from './components/Signature';
+import { getVisibleCoverLetterSections } from './section-registry';
 
 import { tokens } from '@template-core/design-tokens';
 import type { CoverLetterSchema, ReactPDFProps } from '@types';
@@ -34,6 +30,7 @@ export const CoverLetter = ({
   data,
 }: ReactPDFProps) => {
   const coverLetter = data as CoverLetterSchema;
+  const visibleSections = getVisibleCoverLetterSections(coverLetter);
 
   return (
     <Page
@@ -44,11 +41,10 @@ export const CoverLetter = ({
       dpi={dpi}
       style={styles.letterPage}
     >
-      <Header data={coverLetter} />
-      <DateLine data={coverLetter} />
-      <Title data={coverLetter} />
-      <Body data={coverLetter} />
-      <Signature data={coverLetter} />
+      {visibleSections.map((section) => {
+        const SectionComponent = section.component;
+        return <SectionComponent key={section.id} data={coverLetter} debug={debug} />;
+      })}
     </Page>
   );
 };

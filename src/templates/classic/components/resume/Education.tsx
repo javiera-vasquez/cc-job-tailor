@@ -41,22 +41,29 @@ const styles = StyleSheet.create({
   },
 });
 
-const Education = ({ resume, debug }: { resume: ResumeSchema; debug: boolean }) => (
-  <View style={styles.container} debug={debug}>
-    {/* Section title */}
-    <Text style={styles.sectionTitle}>EDUCATION</Text>
+const Education = ({ resume, debug = false }: { resume: ResumeSchema; debug?: boolean }) => {
+  // Don't render if education is empty (should be caught by registry, but defensive check)
+  if (!resume.education || resume.education.length === 0) {
+    return null;
+  }
 
-    {/* Education entries */}
-    {resume.education.map((edu, index) => (
-      <View key={index} style={styles.educationEntry}>
-        <Text style={styles.institution}>{edu.institution}</Text>
-        <Text style={styles.program}>{edu.program}</Text>
-        <Text style={styles.locationDuration}>
-          {edu.location} | {edu.duration}
-        </Text>
-      </View>
-    ))}
-  </View>
-);
+  return (
+    <View style={styles.container} debug={debug}>
+      {/* Section title */}
+      <Text style={styles.sectionTitle}>EDUCATION</Text>
+
+      {/* Education entries */}
+      {resume.education.map((edu, index) => (
+        <View key={index} style={styles.educationEntry}>
+          <Text style={styles.institution}>{edu.institution}</Text>
+          <Text style={styles.program}>{edu.program}</Text>
+          <Text style={styles.locationDuration}>
+            {edu.location} | {edu.duration}
+          </Text>
+        </View>
+      ))}
+    </View>
+  );
+};
 
 export default Education;

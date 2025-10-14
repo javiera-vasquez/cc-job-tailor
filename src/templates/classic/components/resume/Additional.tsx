@@ -40,12 +40,21 @@ const styles = StyleSheet.create({
 });
 
 const Additional = ({ resume }: { resume: ResumeSchema }) => {
+  const hasTechnicalExpertise = (resume.technical_expertise?.length ?? 0) > 0;
+  const hasSoftSkills = (resume.skills?.length ?? 0) > 0;
+  const hasLanguages = (resume.languages?.length ?? 0) > 0;
+
+  // Don't render if all sections are empty (should be caught by registry, but defensive check)
+  if (!hasTechnicalExpertise && !hasSoftSkills && !hasLanguages) {
+    return null;
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.sectionTitle}>ADDITIONAL</Text>
 
       {/* Technical Expertise */}
-      {resume.technical_expertise && resume.technical_expertise.length > 0 && (
+      {hasTechnicalExpertise && (
         <View style={styles.subsectionContainer}>
           {resume.technical_expertise.map((category, index) => (
             <View key={index} style={styles.subsectionRow}>
@@ -57,7 +66,7 @@ const Additional = ({ resume }: { resume: ResumeSchema }) => {
       )}
 
       {/* Soft Skills */}
-      {resume.skills && resume.skills.length > 0 && (
+      {hasSoftSkills && (
         <View style={styles.subsectionRow}>
           <Text style={styles.subsectionLabel}>Soft Skills:</Text>
           <Text style={styles.subsectionContent}>{resume.skills.join(', ')}</Text>
@@ -65,7 +74,7 @@ const Additional = ({ resume }: { resume: ResumeSchema }) => {
       )}
 
       {/* Languages */}
-      {resume.languages && resume.languages.length > 0 && (
+      {hasLanguages && (
         <View style={styles.subsectionRow}>
           <Text style={styles.subsectionLabel}>Languages:</Text>
           <Text style={styles.subsectionContent}>

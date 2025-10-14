@@ -1,11 +1,8 @@
 import React from 'react';
 import { Page, View, StyleSheet } from '@react-pdf/renderer';
 
-import Header from './components/Header';
-import Summary from './components/Summary';
-import Additional from './components/Additional';
-import Education from './components/Education';
-import Experience from './components/Experience';
+// Import section registry utilities
+import { getVisibleResumeSections } from './section-registry';
 
 import { tokens } from '@template-core/design-tokens';
 import type { ResumeSchema, ReactPDFProps } from '@types';
@@ -57,8 +54,11 @@ export function transformSourceToResumeSchema(sourceData: any): ResumeSchema {
   };
 }
 
-// 72 dpi is the default for PDF
-// Ensure A4 page sizing (595.5 × 842.25 points)
+/**
+ * Resume PDF Component with dynamic section rendering
+ * 72 dpi is the default for PDF
+ * Ensure A4 page sizing (595.5 × 842.25 points)
+ */
 export const Resume = ({
   size = 'A4',
   orientation = 'portrait',
@@ -67,27 +67,32 @@ export const Resume = ({
   dpi = 72,
   bookmark,
   data,
-}: ReactPDFProps) => (
-  <Page
-    size={size}
-    orientation={orientation}
-    wrap={wrap}
-    debug={debug}
-    dpi={dpi}
-    bookmark={bookmark}
-    style={styles.page}
-  >
-    <Header resume={data as ResumeSchema} />
+}: ReactPDFProps) => {
+  const resumeData = data as ResumeSchema;
 
-    {/* Single column layout */}
-    <View style={styles.container}>
-      <Summary resume={data as ResumeSchema} />
-      <Education resume={data as ResumeSchema} debug={debug} />
-      <Experience resume={data as ResumeSchema} debug={debug} />
-      <Additional resume={data as ResumeSchema} />
-    </View>
-  </Page>
-);
+  // Get visible sections organized by order
+  const visibleSections = getVisibleResumeSections(resumeData);
+
+  return (
+    <Page
+      size={size}
+      orientation={orientation}
+      wrap={wrap}
+      debug={debug}
+      dpi={dpi}
+      bookmark={bookmark}
+      style={styles.page}
+    >
+      {/* Single column layout with dynamic sections */}
+      <View style={styles.container}>
+        {visibleSections.map((section) => {
+          const Component = section.component;
+          return <Component key={section.id} resume={resumeData} debug={debug} />;
+        })}
+      </View>
+    </Page>
+  );
+};
 
 const styles = StyleSheet.create({
   page: {

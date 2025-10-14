@@ -69,28 +69,62 @@ const styles = StyleSheet.create({
 const Header = ({ resume }: { resume: ResumeSchema }) => {
   const { name, contact } = resume;
 
+  // Build contact items array to conditionally render separators
+  const contactItems: React.ReactNode[] = [];
+
+  // Address - optional
+  if (contact.address) {
+    contactItems.push(
+      <Text key="address" style={styles.contactItem}>
+        {contact.address}
+      </Text>,
+    );
+  }
+
+  // Phone - required
+  contactItems.push(
+    <Text key="phone" style={styles.contactItem}>
+      {contact.phone}
+    </Text>,
+  );
+
+  // Email - required
+  contactItems.push(
+    <Link
+      key="email"
+      src={`mailto:${contact.email}`}
+      style={[styles.contactItem, styles.contactLink]}
+    >
+      {contact.email}
+    </Link>,
+  );
+
+  // LinkedIn - optional
+  if (contact.linkedin) {
+    contactItems.push(
+      <Link key="linkedin" src={contact.linkedin} style={[styles.contactItem, styles.contactLink]}>
+        linkedin.com/in/username
+      </Link>,
+    );
+  }
+
   return (
     <View style={styles.headerContainer}>
       {/* Content area with name and contact */}
       <View style={styles.contentArea}>
         <Text style={styles.name}>{name}</Text>
         <View style={styles.contactLine}>
-          <Text style={styles.contactItem}>{contact.address}</Text>
-          <Text style={styles.contactSeparator}>|</Text>
-          <Text style={styles.contactItem}>{contact.phone}</Text>
-          <Text style={styles.contactSeparator}>|</Text>
-          <Link src={`mailto:${contact.email}`} style={[styles.contactItem, styles.contactLink]}>
-            {contact.email}
-          </Link>
-          <Text style={styles.contactSeparator}>|</Text>
-          <Link src={contact.linkedin} style={[styles.contactItem, styles.contactLink]}>
-            linkedin.com/in/username
-          </Link>
+          {contactItems.map((item, index) => (
+            <React.Fragment key={index}>
+              {item}
+              {index < contactItems.length - 1 && <Text style={styles.contactSeparator}>|</Text>}
+            </React.Fragment>
+          ))}
         </View>
       </View>
 
-      {/* Profile picture in top-right corner - only render if profileImageSize > 0 */}
-      {spacing.profileImageSize > 0 && (
+      {/* Profile picture in top-right corner - conditional */}
+      {spacing.profileImageSize > 0 && resume.profile_picture && (
         <View style={styles.profileArea}>
           <Image src={resume.profile_picture} style={styles.profileImage} />
         </View>
