@@ -24,37 +24,6 @@ export const resumeConfig = {
 };
 
 /**
- * Transform source data format to ResumeSchema when needed
- * Used by the HOC wrapper to normalize data before rendering
- */
-export function transformSourceToResumeSchema(sourceData: any): ResumeSchema {
-  // Convert technical_expertise from object to array format
-  const technicalExpertise = Object.entries(sourceData.technical_expertise).map(
-    ([key, skills]) => ({
-      resume_title: key.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
-      skills: skills as string[],
-    }),
-  );
-
-  // Flatten soft_skills into a simple array
-  const softSkills = Object.values(sourceData.soft_skills).flat() as string[];
-
-  return {
-    name: sourceData.personal_info.name,
-    profile_picture: sourceData.personal_info.profile_picture,
-    title: sourceData.personal_info.titles.frontend_focused, // Default to frontend
-    summary: sourceData.personal_info.summaries.frontend_focused, // Default to frontend
-    contact: sourceData.contact,
-    technical_expertise: technicalExpertise,
-    skills: softSkills,
-    languages: sourceData.languages,
-    professional_experience: sourceData.professional_experience,
-    independent_projects: sourceData.independent_projects,
-    education: sourceData.education,
-  };
-}
-
-/**
  * Resume PDF Component with dynamic section rendering
  * 72 dpi is the default for PDF
  * Ensure A4 page sizing (595.5 × 842.25 points)
@@ -112,6 +81,37 @@ export const Resume = ({
     </Page>
   );
 };
+
+/**
+ * Transform source data format to ResumeSchema when needed
+ * Used by the HOC wrapper to normalize data before rendering
+ */
+export function transformSourceToResumeSchema(sourceData: any): ResumeSchema {
+  // Convert technical_expertise from object to array format
+  const technicalExpertise = Object.entries(sourceData.technical_expertise).map(
+    ([key, skills]) => ({
+      resume_title: key.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
+      skills: skills as string[],
+    }),
+  );
+
+  // Flatten soft_skills into a simple array
+  const softSkills = Object.values(sourceData.soft_skills).flat() as string[];
+
+  return {
+    name: sourceData.personal_info.name,
+    profile_picture: sourceData.personal_info.profile_picture,
+    title: sourceData.personal_info.titles.frontend_focused, // Default to frontend
+    summary: sourceData.personal_info.summaries.frontend_focused, // Default to frontend
+    contact: sourceData.contact,
+    technical_expertise: technicalExpertise,
+    skills: softSkills,
+    languages: sourceData.languages,
+    professional_experience: sourceData.professional_experience,
+    independent_projects: sourceData.independent_projects,
+    education: sourceData.education,
+  };
+}
 
 const styles = StyleSheet.create({
   page: {

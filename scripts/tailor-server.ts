@@ -452,7 +452,7 @@ class EnhancedDevServer {
       const company = this.state.activeCompany || 'all companies';
       const debounce = TIMEOUTS.FILE_WATCH_DEBOUNCE;
       loggers.server.info(
-        `\n🚀 Tailor server ready • Watching: ${company} • Debounce: ${debounce}ms\n`,
+        `🚀 Tailor server ready • Watching: ${company} • Debounce: ${debounce}ms`,
       );
     } else {
       loggers.server.success('Enhanced dev server is running', {
