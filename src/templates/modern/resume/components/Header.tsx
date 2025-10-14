@@ -80,16 +80,20 @@ const Header = ({ resume }: { resume: ResumeSchema }) => (
         <Text style={styles.position}>{resume.title}</Text>
       </View>
 
-      {/* Profile picture in top-right corner */}
-      <View style={styles.profileArea}>
-        <Image src={resume.profile_picture} style={styles.profileImage} />
-      </View>
+      {/* Conditional profile picture rendering */}
+      {resume.profile_picture && (
+        <View style={styles.profileArea}>
+          <Image src={resume.profile_picture} style={styles.profileImage} />
+        </View>
+      )}
     </View>
 
-    {/* Resume summary */}
-    <View style={styles.summaryContainer}>
-      <Text style={styles.summary}>{resume.summary}</Text>
-    </View>
+    {/* Conditional summary rendering */}
+    {resume.summary && (
+      <View style={styles.summaryContainer}>
+        <Text style={styles.summary}>{resume.summary}</Text>
+      </View>
+    )}
   </View>
 );
 

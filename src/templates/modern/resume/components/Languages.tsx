@@ -48,20 +48,27 @@ const styles = StyleSheet.create({
   },
 });
 
-const Languages = ({ resume }: { resume: ResumeSchema }) => (
-  <View style={styles.container}>
-    <Text style={styles.sectionTitle}>Languages</Text>
-    <View style={styles.languagesList}>
-      {resume.languages.map((language, index) => (
-        <View key={index} style={styles.languageItem}>
-          <Text style={styles.bullet}>•</Text>
-          <Text style={styles.languageText}>
-            <Text style={styles.language}>{language.language}</Text> - {language.proficiency}
-          </Text>
-        </View>
-      ))}
+const Languages = ({ resume }: { resume: ResumeSchema }) => {
+  // Don't render if no languages
+  if (!resume.languages || resume.languages.length === 0) {
+    return null;
+  }
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.sectionTitle}>Languages</Text>
+      <View style={styles.languagesList}>
+        {resume.languages.map((language, index) => (
+          <View key={index} style={styles.languageItem}>
+            <Text style={styles.bullet}>•</Text>
+            <Text style={styles.languageText}>
+              <Text style={styles.language}>{language.language}</Text> - {language.proficiency}
+            </Text>
+          </View>
+        ))}
+      </View>
     </View>
-  </View>
-);
+  );
+};
 
 export default Languages;

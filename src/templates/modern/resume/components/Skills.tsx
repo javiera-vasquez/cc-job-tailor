@@ -56,41 +56,69 @@ const styles = StyleSheet.create({
   },
 });
 
-const TechnicalExpertiseSection = ({ resume }: { resume: ResumeSchema }) => (
-  <View>
-    <Text style={styles.sectionTitle}>Technical Expertise</Text>
-    {resume.technical_expertise.map((category, index) => (
-      <View key={index} style={styles.groupBySection}>
-        <Text style={styles.categoryTitle}>{category.resume_title}</Text>
-        <View style={styles.skillsList}>
-          <Text style={styles.skillText}>{category.skills.join(', ')}</Text>
+const TechnicalExpertiseSection = ({ resume }: { resume: ResumeSchema }) => {
+  // Don't render if no technical expertise
+  if (!resume.technical_expertise || resume.technical_expertise.length === 0) {
+    return null;
+  }
+
+  return (
+    <View>
+      <Text style={styles.sectionTitle}>Technical Expertise</Text>
+      {resume.technical_expertise.map((category, index) => (
+        <View key={index} style={styles.groupBySection}>
+          <Text style={styles.categoryTitle}>{category.resume_title}</Text>
+          <View style={styles.skillsList}>
+            <Text style={styles.skillText}>{category.skills.join(', ')}</Text>
+          </View>
         </View>
-      </View>
-    ))}
-  </View>
-);
-
-const SoftSkillsSection = ({ resume }: { resume: ResumeSchema }) => (
-  <View>
-    <Text style={styles.sectionTitle}>Soft Skills</Text>
-    {resume.skills.map((skill, index) => (
-      <View key={index} style={styles.skillItem}>
-        <Text style={styles.bullet}>•</Text>
-        <Text style={styles.skillText}>{skill}</Text>
-      </View>
-    ))}
-  </View>
-);
-
-const Skills = ({ resume }: { resume: ResumeSchema }) => (
-  <>
-    <View style={styles.container}>
-      <TechnicalExpertiseSection resume={resume} />
+      ))}
     </View>
-    <View style={styles.container}>
-      <SoftSkillsSection resume={resume} />
+  );
+};
+
+const SoftSkillsSection = ({ resume }: { resume: ResumeSchema }) => {
+  // Don't render if no soft skills
+  if (!resume.skills || resume.skills.length === 0) {
+    return null;
+  }
+
+  return (
+    <View>
+      <Text style={styles.sectionTitle}>Soft Skills</Text>
+      {resume.skills.map((skill, index) => (
+        <View key={index} style={styles.skillItem}>
+          <Text style={styles.bullet}>•</Text>
+          <Text style={styles.skillText}>{skill}</Text>
+        </View>
+      ))}
     </View>
-  </>
-);
+  );
+};
+
+const Skills = ({ resume }: { resume: ResumeSchema }) => {
+  const hasTechnicalExpertise = resume.technical_expertise?.length > 0;
+  const hasSoftSkills = resume.skills?.length > 0;
+
+  // Don't render container if both sections are empty
+  if (!hasTechnicalExpertise && !hasSoftSkills) {
+    return null;
+  }
+
+  return (
+    <>
+      {hasTechnicalExpertise && (
+        <View style={styles.container}>
+          <TechnicalExpertiseSection resume={resume} />
+        </View>
+      )}
+      {hasSoftSkills && (
+        <View style={styles.container}>
+          <SoftSkillsSection resume={resume} />
+        </View>
+      )}
+    </>
+  );
+};
 
 export default Skills;

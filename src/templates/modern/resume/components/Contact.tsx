@@ -41,24 +41,17 @@ const styles = StyleSheet.create({
 const Contact = ({ resume }: { resume: ResumeSchema }) => {
   const { contact } = resume;
 
-  // Format address for display
-  const formattedAddress = contact.address;
-
-  // Extract display text for LinkedIn and GitHub
-  const linkedinDisplay = 'LinkedIn Profile';
-  const githubDisplay = 'Github Profile';
-
   return (
     <View style={styles.container}>
       <Text style={styles.sectionTitle}>Contact</Text>
 
-      {/* Phone */}
+      {/* Phone - Required, always show */}
       <View style={styles.contactItem}>
         <Text style={styles.bullet}>•</Text>
         <Text style={styles.contactText}>{contact.phone}</Text>
       </View>
 
-      {/* Email */}
+      {/* Email - Required, always show */}
       <View style={styles.contactItem}>
         <Text style={styles.bullet}>•</Text>
         <Text style={styles.contactText}>
@@ -68,31 +61,37 @@ const Contact = ({ resume }: { resume: ResumeSchema }) => {
         </Text>
       </View>
 
-      {/* Address */}
-      <View style={styles.contactItem}>
-        <Text style={styles.bullet}>•</Text>
-        <Text style={styles.contactText}>{formattedAddress}</Text>
-      </View>
+      {/* Address - Optional */}
+      {contact.address && (
+        <View style={styles.contactItem}>
+          <Text style={styles.bullet}>•</Text>
+          <Text style={styles.contactText}>{contact.address}</Text>
+        </View>
+      )}
 
-      {/* LinkedIn */}
-      <View style={styles.contactItem}>
-        <Text style={styles.bullet}>•</Text>
-        <Text style={styles.contactText}>
-          <Link style={styles.contactText} src={contact.linkedin}>
-            {linkedinDisplay}
-          </Link>
-        </Text>
-      </View>
+      {/* LinkedIn - Optional */}
+      {contact.linkedin && (
+        <View style={styles.contactItem}>
+          <Text style={styles.bullet}>•</Text>
+          <Text style={styles.contactText}>
+            <Link style={styles.contactText} src={contact.linkedin}>
+              LinkedIn Profile
+            </Link>
+          </Text>
+        </View>
+      )}
 
-      {/* GitHub */}
-      <View style={styles.contactItem}>
-        <Text style={styles.bullet}>•</Text>
-        <Text style={styles.contactText}>
-          <Link style={styles.contactText} src={contact.github}>
-            {githubDisplay}
-          </Link>
-        </Text>
-      </View>
+      {/* GitHub - Optional */}
+      {contact.github && (
+        <View style={styles.contactItem}>
+          <Text style={styles.bullet}>•</Text>
+          <Text style={styles.contactText}>
+            <Link style={styles.contactText} src={contact.github}>
+              Github Profile
+            </Link>
+          </Text>
+        </View>
+      )}
     </View>
   );
 };

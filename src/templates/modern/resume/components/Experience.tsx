@@ -116,25 +116,41 @@ const ExperienceEntry = ({ experience, debug }: { experience: ExperienceItem; de
   );
 };
 
-const Experience = ({ resume, debug }: { resume: ResumeSchema; debug: boolean }) => (
-  <View style={styles.container} debug={debug}>
-    <Text style={styles.sectionTitle}>Independent Projects</Text>
-    {resume.independent_projects.map((experience, index) => (
-      <ExperienceEntry
-        key={`${experience.name}-${experience.location}-${index}`}
-        experience={experience}
-        debug={debug}
-      />
-    ))}
-    <Text style={styles.sectionTitle}>Professional Experience</Text>
-    {resume.professional_experience.map((experience, index) => (
-      <ExperienceEntry
-        key={`${experience.company}-${experience.position}-${index}`}
-        experience={experience}
-        debug={debug}
-      />
-    ))}
-  </View>
-);
+const Experience = ({ resume, debug }: { resume: ResumeSchema; debug: boolean }) => {
+  const hasIndependentProjects = resume.independent_projects?.length > 0;
+  const hasProfessionalExperience = resume.professional_experience?.length > 0;
+
+  return (
+    <View style={styles.container} debug={debug}>
+      {/* Independent Projects - conditional section */}
+      {hasIndependentProjects && (
+        <>
+          <Text style={styles.sectionTitle}>Independent Projects</Text>
+          {resume.independent_projects.map((experience, index) => (
+            <ExperienceEntry
+              key={`${experience.name}-${experience.location}-${index}`}
+              experience={experience}
+              debug={debug}
+            />
+          ))}
+        </>
+      )}
+
+      {/* Professional Experience - always render (required in schema) */}
+      {hasProfessionalExperience && (
+        <>
+          <Text style={styles.sectionTitle}>Professional Experience</Text>
+          {resume.professional_experience.map((experience, index) => (
+            <ExperienceEntry
+              key={`${experience.company}-${experience.position}-${index}`}
+              experience={experience}
+              debug={debug}
+            />
+          ))}
+        </>
+      )}
+    </View>
+  );
+};
 
 export default Experience;
