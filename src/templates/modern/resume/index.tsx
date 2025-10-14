@@ -1,15 +1,11 @@
 import React from 'react';
 import { Page, View, StyleSheet } from '@react-pdf/renderer';
 
-import Header from './components/Header';
-import Contact from './components/Contact';
-import Skills from './components/Skills';
-import Languages from './components/Languages';
-import Education from './components/Education';
-import Experience from './components/Experience';
-
 import { tokens } from '@template-core/design-tokens';
 import type { ResumeSchema, ReactPDFProps } from '@types';
+
+// Import section registry utilities
+import { getVisibleSectionsByColumn } from './section-registry';
 
 const { colors, spacing, typography } = tokens.modern;
 
@@ -58,8 +54,11 @@ export function transformSourceToResumeSchema(sourceData: any): ResumeSchema {
   };
 }
 
-// 72 dpi is the default for PDF
-// Ensure A4 page sizing (595.5 × 842.25 points)
+/**
+ * Resume PDF Component with dynamic section rendering
+ * 72 dpi is the default for PDF
+ * Ensure A4 page sizing (595.5 × 842.25 points)
+ */
 export const Resume = ({
   size = 'A4',
   orientation = 'portrait',
@@ -68,34 +67,51 @@ export const Resume = ({
   dpi = 72,
   bookmark,
   data,
-}: ReactPDFProps) => (
-  <Page
-    size={size}
-    orientation={orientation}
-    wrap={wrap}
-    debug={debug}
-    dpi={dpi}
-    bookmark={bookmark}
-    style={styles.page}
-  >
-    <Header resume={data as ResumeSchema} />
+}: ReactPDFProps) => {
+  const resumeData = data as ResumeSchema;
 
-    <View style={styles.container}>
-      {/* Left Column - Contact, Education, Skills, Languages */}
-      <View style={styles.leftColumn} debug={debug}>
-        <Contact resume={data as ResumeSchema} />
-        <Skills resume={data as ResumeSchema} />
-        <Languages resume={data as ResumeSchema} />
-      </View>
+  // Get visible sections organized by column
+  const headerSections = getVisibleSectionsByColumn(resumeData, 'header');
+  const leftSections = getVisibleSectionsByColumn(resumeData, 'left');
+  const rightSections = getVisibleSectionsByColumn(resumeData, 'right');
 
-      {/* Right Column - Experience */}
-      <View style={styles.rightColumn}>
-        <Experience resume={data as ResumeSchema} debug={debug} />
-        <Education resume={data as ResumeSchema} debug={debug} />
+  return (
+    <Page
+      size={size}
+      orientation={orientation}
+      wrap={wrap}
+      debug={debug}
+      dpi={dpi}
+      bookmark={bookmark}
+      style={styles.page}
+    >
+      {/* Header sections (name, title, profile, summary) */}
+      {headerSections.map((section) => {
+        const Component = section.component;
+        return <Component key={section.id} resume={resumeData} debug={debug} />;
+      })}
+
+      {/* Two-column layout */}
+      <View style={styles.container}>
+        {/* Left Column - Contact, Skills, Languages */}
+        <View style={styles.leftColumn} debug={debug}>
+          {leftSections.map((section) => {
+            const Component = section.component;
+            return <Component key={section.id} resume={resumeData} debug={debug} />;
+          })}
+        </View>
+
+        {/* Right Column - Experience, Education */}
+        <View style={styles.rightColumn}>
+          {rightSections.map((section) => {
+            const Component = section.component;
+            return <Component key={section.id} resume={resumeData} debug={debug} />;
+          })}
+        </View>
       </View>
-    </View>
-  </Page>
-);
+    </Page>
+  );
+};
 
 const styles = StyleSheet.create({
   page: {

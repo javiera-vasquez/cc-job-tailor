@@ -116,7 +116,7 @@ const ExperienceEntry = ({ experience, debug }: { experience: ExperienceItem; de
   );
 };
 
-const Experience = ({ resume, debug }: { resume: ResumeSchema; debug: boolean }) => {
+const Experience = ({ resume, debug = false }: { resume: ResumeSchema; debug?: boolean }) => {
   const hasIndependentProjects = resume.independent_projects?.length > 0;
   const hasProfessionalExperience = resume.professional_experience?.length > 0;
 

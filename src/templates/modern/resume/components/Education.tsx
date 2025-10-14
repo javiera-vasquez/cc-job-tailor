@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Education = ({ resume, debug }: { resume: ResumeSchema; debug: boolean }) => (
+const Education = ({ resume, debug = false }: { resume: ResumeSchema; debug?: boolean }) => (
   <View style={styles.container} debug={debug}>
     {/* Section title */}
     <Text style={styles.sectionTitle}>Education</Text>
