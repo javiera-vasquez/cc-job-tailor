@@ -1,7 +1,7 @@
 import React from 'react';
 import { Page, StyleSheet } from '@react-pdf/renderer';
 
-import { getVisibleSections } from './section-registry';
+import { getVisibleCoverLetterSections } from './section-registry';
 
 import { tokens } from '@template-core/design-tokens';
 import type { CoverLetterSchema, ReactPDFProps } from '@types';
@@ -30,7 +30,7 @@ export const CoverLetter = ({
   data,
 }: ReactPDFProps) => {
   const coverLetter = data as CoverLetterSchema;
-  const visibleSections = getVisibleSections(coverLetter);
+  const visibleSections = getVisibleCoverLetterSections(coverLetter);
 
   return (
     <Page
