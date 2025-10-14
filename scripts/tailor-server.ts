@@ -1,14 +1,3 @@
-#!/usr/bin/env bun
-/**
- * Enhanced dev server with tailor data watching
- *
- * This TypeScript version provides:
- * - Type safety for file operations and process management
- * - Intelligent company-aware file watching
- * - Automatic data regeneration on YAML changes
- * - Integration with Bun's native hot reload
- */
-
 import { spawn, type ChildProcess } from 'child_process';
 import { watch, existsSync, type FSWatcher } from 'fs';
 import { load } from 'js-yaml';
@@ -28,6 +17,15 @@ interface WatcherState {
   currentFilename?: string | null;
 }
 
+/**
+ * Enhanced dev server with tailor data watching
+ *
+ * This TypeScript version provides:
+ * - Type safety for file operations and process management
+ * - Intelligent company-aware file watching
+ * - Automatic data regeneration on YAML changes
+ * - Integration with Bun's native hot reload
+ */
 class EnhancedDevServer {
   private state: WatcherState;
   private readonly tailorDir = PATHS.TAILOR_BASE;
@@ -261,18 +259,18 @@ class EnhancedDevServer {
           const duration = ((Date.now() - startTime) / 1000).toFixed(1);
 
           if (code === 0) {
-            console.log(`✅ ${displayFilename} → Regenerated (${duration}s)`);
+            loggers.server.info(`✅ ${displayFilename} → Regenerated (${duration}s)`);
             resolve();
           } else {
-            console.log(`❌ ${displayFilename} → Failed (${duration}s)`);
+            loggers.server.info(`❌ ${displayFilename} → Failed (${duration}s)`);
 
             // Display captured error output
             const combinedOutput = (errorOutput + stdoutOutput).trim();
             if (combinedOutput) {
-              console.log(combinedOutput);
+              loggers.server.info(combinedOutput);
             }
 
-            console.log('💡 Fix the errors above and save to retry\n');
+            loggers.server.info('💡 Fix the errors above and save to retry\n');
 
             // Don't reject - keep the watcher running
             resolve();
@@ -281,14 +279,12 @@ class EnhancedDevServer {
 
         generateData.on('error', (error) => {
           const duration = ((Date.now() - startTime) / 1000).toFixed(1);
-          console.log(`❌ ${displayFilename} → Error (${duration}s)`);
-          console.log(error.message);
+          loggers.server.error(`❌ ${displayFilename} → Error (${duration}s)`, error);
           reject(error);
         });
       } catch (error) {
         const duration = ((Date.now() - startTime) / 1000).toFixed(1);
-        console.log(`❌ ${displayFilename} → Error (${duration}s)`);
-        console.log(error instanceof Error ? error.message : String(error));
+        loggers.server.error(`❌ ${displayFilename} → Error (${duration}s)`, error);
         reject(error);
       }
     });
@@ -455,7 +451,9 @@ class EnhancedDevServer {
     if (this.compactMode) {
       const company = this.state.activeCompany || 'all companies';
       const debounce = TIMEOUTS.FILE_WATCH_DEBOUNCE;
-      console.log(`\n🚀 Tailor server ready • Watching: ${company} • Debounce: ${debounce}ms\n`);
+      loggers.server.info(
+        `\n🚀 Tailor server ready • Watching: ${company} • Debounce: ${debounce}ms\n`,
+      );
     } else {
       loggers.server.success('Enhanced dev server is running', {
         features: {
