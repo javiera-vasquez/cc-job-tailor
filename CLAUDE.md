@@ -19,6 +19,9 @@ Dynamic PDF resume generator built with React and `@react-pdf/renderer`. Creates
 # Install dependencies
 bun install
 
+# Generate tailor-context.yaml file for current company
+bun run set-env -C company-name
+
 # Development server with hot reload and file watching
 bun run tailor-server
 
@@ -111,28 +114,11 @@ Company-specific optimization:
 
 ## React-PDF Reference
 
-Local documentation in `rpdf/`:
+Local documentation in `.claude/rpdf-context`:
 
 - `components.md`: Document, Page, View, Text, Image, Link APIs
 - `fonts.md`: Font registration and typography
 - `styling.md`: CSS properties and responsive design
-
-## Quick Reference
-
-### Key Files
-
-- `src/data/application.ts` - Auto-generated data (don't edit directly)
-- `src/templates/design-tokens.ts` - Styling constants
-- `src/zod/schemas.ts` - Data validation rules
-- `resume-data/sources/` - Edit source YAML files here
-- `resume-data/tailor/[company]/` - Company-specific outputs
-
-### Common Tasks
-
-- **Styling changes**: Edit design tokens, not individual components
-- **Data changes**: Modify YAML sources, regenerate with `bun run generate-data`
-- **New company**: Create `resume-data/tailor/[company]/` directory structure
-- **Validation errors**: Check Zod schemas in `src/zod/schemas.ts`
 
 ## Development Notes
 
@@ -140,6 +126,42 @@ Local documentation in `rpdf/`:
 - **No build step**: Bun handles bundling directly
 - **Type safety**: Full TypeScript coverage from YAML to PDF components
 - **Font loading**: Requires internet connection for Google Fonts
+
+### Logging Standards
+
+**MANDATORY**: All code in the `scripts/` folder MUST use the structured logger class instead of `console.log`, `console.error`, `console.warn`, or `console.info`.
+
+```typescript
+// ❌ WRONG - Do not use console methods
+console.log('Processing data...');
+console.error('Error occurred');
+
+// ✅ CORRECT - Use the logger class
+import { loggers } from './shared/logger';
+
+loggers.server.info('Processing data...');
+loggers.server.error('Error occurred', error);
+loggers.server.success('Operation completed');
+loggers.server.warn('Warning message');
+```
+
+**Available loggers:**
+
+- `loggers.server` - For tailor-server operations
+- `loggers.generate` - For generate-data script
+- `loggers.setEnv` - For set-env script
+- `loggers.pdf` - For PDF generation
+- `loggers.watcher` - For file watching operations
+- `loggers.validation` - For validation operations
+- `loggers.loader` - For data loading operations
+
+**Benefits:**
+
+- Consistent timestamp formatting
+- Context-aware logging with colored labels
+- Support for structured data
+- JSON output mode for CI/CD environments
+- Configurable via environment variables (LOG_LEVEL, LOG_FORMAT)
 
 ## Claude Code Guidelines
 
