@@ -101,6 +101,7 @@ describe('WithPDFWrapper Component', () => {
         title: 'Engineer',
         summary: 'Summary',
         contact: {
+          name: 'Test User',
           phone: '+1234567890',
           email: 'test@example.com',
           address: 'Address',
@@ -169,6 +170,7 @@ describe('WithPDFWrapper Component', () => {
         title: 'engineer',
         summary: 'Summary',
         contact: {
+          name: 'Test User',
           phone: '+1234567890',
           email: 'test@example.com',
           address: 'Address',
@@ -248,6 +250,7 @@ describe('WithPDFWrapper Component', () => {
         title: 'Engineer',
         summary: 'Summary',
         contact: {
+          name: 'Test User',
           phone: '+1234567890',
           email: 'test@example.com',
           address: 'Address',
@@ -317,6 +320,7 @@ describe('WithPDFWrapper Component', () => {
         title: 'Engineer',
         summary: 'Summary',
         contact: {
+          name: 'Test User',
           phone: '+1234567890',
           email: 'test@example.com',
           address: 'Address',
@@ -402,6 +406,7 @@ describe('WithPDFWrapper Component', () => {
         title: 'Engineer',
         summary: 'Summary',
         contact: {
+          name: 'Test User',
           phone: '+1234567890',
           email: 'test@example.com',
           address: 'Address',
@@ -474,6 +479,7 @@ describe('WithPDFWrapper Component', () => {
         title: 'Engineer',
         summary: 'Summary',
         contact: {
+          name: 'Test User',
           phone: '+1234567890',
           email: 'test@example.com',
           address: 'Address',
@@ -554,6 +560,7 @@ describe('WithPDFWrapper Component', () => {
         primary_focus: 'Frontend Development',
         date: '2024-01-01',
         personal_info: {
+          name: 'Test User',
           phone: '+1234567890',
           email: 'test@example.com',
           address: 'Test Address',
@@ -616,6 +623,7 @@ describe('WithPDFWrapper Component', () => {
         title: 'Engineer & Developer',
         summary: 'Summary with "quotes" and special chars: @#$%',
         contact: {
+          name: "O'Brien-Smith",
           phone: '+1234567890',
           email: 'test+special@example.com',
           address: "123 St. Mary's Avenue",
@@ -681,6 +689,7 @@ describe('WithPDFWrapper Component', () => {
         title: 'Engineer',
         summary: 'Summary',
         contact: {
+          name: 'Test User',
           phone: '+1234567890',
           email: 'test@example.com',
           address: 'Address',

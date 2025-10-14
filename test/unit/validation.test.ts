@@ -289,6 +289,7 @@ describe('Validation Functions', () => {
         primary_focus: 'Frontend development',
         date: '2024-01-01',
         personal_info: {
+          name: 'John Doe',
           phone: '+1-234-567-8900',
           email: 'test@example.com',
           address: '123 Main St',

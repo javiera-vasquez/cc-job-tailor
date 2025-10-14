@@ -41,47 +41,61 @@ export const EducationSchema = z.object({
 });
 
 export const ContactDetailsSchema = z.object({
-  name: z.string().min(1).optional(),
+  // Required fields
+  name: z.string().min(1),
   phone: z.string().min(1),
   email: z.string().email(),
-  address: z.string().min(1),
-  linkedin: z.string().url(),
-  github: z.string().url(),
+
+  // Optional fields
+  address: z.string().min(1).optional(),
+  linkedin: z.string().url().optional(),
+  github: z.string().url().optional(),
 });
 
 export const ProfessionalExperienceSchema = z.object({
+  // Required fields
   company: z.string().min(1),
   position: z.string().min(1),
   location: z.string().min(1),
   duration: z.string().min(1),
-  company_description: z.string().min(1),
-  linkedin: z.string().url().nullable(),
-  achievements: z.array(z.string().min(1)).min(1),
+
+  // Optional fields
+  company_description: z.string().min(1).optional(),
+  linkedin: z.string().url().nullish(), // Can be null, undefined, or omitted
+  achievements: z.array(z.string().min(1)).optional().default([]),
 });
 
 export const IndependentProjectSchema = z.object({
+  // Required fields
   name: z.string().min(1),
   description: z.string().min(1),
-  location: z.string().min(1),
-  duration: z.string().min(1),
+
+  // Optional fields
+  location: z.string().min(1).optional(),
+  duration: z.string().min(1).optional(),
   url: z.string().url().optional(),
-  achievements: z.array(z.string().min(1)).min(1),
+  achievements: z.array(z.string().min(1)).optional().default([]),
   impact: z.string().optional(),
 });
 
 // Resume schema
 export const ResumeSchema = z.object({
+  // Required fields (no changes)
   name: z.string().min(1),
-  profile_picture: z.string().min(1),
   title: z.string().min(1),
-  summary: z.string().min(1),
   contact: ContactDetailsSchema,
-  technical_expertise: z.array(ExpertiseSchema).min(1),
-  skills: z.array(z.string().min(1)),
-  languages: z.array(LanguageSchema),
-  professional_experience: z.array(ProfessionalExperienceSchema),
-  independent_projects: z.array(IndependentProjectSchema),
+  professional_experience: z.array(ProfessionalExperienceSchema).min(1),
   education: z.array(EducationSchema).min(1),
+
+  // Now optional fields
+  profile_picture: z.string().min(1).optional(),
+  summary: z.string().min(1).optional(),
+
+  // Optional arrays with default empty array
+  technical_expertise: z.array(ExpertiseSchema).optional().default([]),
+  skills: z.array(z.string().min(1)).optional().default([]),
+  languages: z.array(LanguageSchema).optional().default([]),
+  independent_projects: z.array(IndependentProjectSchema).optional().default([]),
 });
 
 // Job analysis enums and schemas
