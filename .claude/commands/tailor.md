@@ -104,49 +104,81 @@ Claude edits files in `resume-data/tailor/tech-corp/`:
 - `job_analysis.yaml` - Job requirements analysis
 - `metadata.yaml` - Company/position details
 
-### Step 3: System Auto-Validates
+### Step 3: System Auto-Validates (with Debouncing)
 
-File watcher triggers automatic pipeline:
+File watcher triggers automatic pipeline after 300ms of inactivity:
 
-Pipeline: File change → YAML parsing → Zod schema validation → TypeScript generation → Hot reload
+Pipeline: File change(s) → Debounce delay → YAML parsing → Zod schema validation → TypeScript generation → Hot reload
 
-The system processes changes silently and shows only the final result (see Step 4 for output examples).
+**Key insight:** Multiple rapid edits are batched together automatically, so you don't need to wait between small changes - just make all related edits and the system will validate once.
 
-### Step 4: Claude Checks Validation Result
+### Step 4: Smart Validation Checking
 
-**CRITICAL:** After each edit, Claude MUST use `BashOutput` to check server logs.
+Use `BashOutput` strategically based on edit risk level:
 
-**Success path:**
+**High-risk edits (ALWAYS check):**
+- Structural changes (adding/removing sections, changing schema fields)
+- First edit after entering tailor mode
+- User explicitly asks "did that work?" or mentions seeing errors
+- Batch of multiple significant changes
 
-```
-✅ resume.yaml → Regenerated (0.2s)
-```
+**Low-risk edits (Trust the system):**
+- Text refinements (rewording, improving clarity)
+- Typo fixes and grammar improvements
+- Changing metrics or dates
+- Single-field updates (e.g., updating one job description)
 
-**Failure path:**
+**How to check:** Use `BashOutput` to read the tailor-server logs. Look for:
+- `✅ [filename] → Regenerated (X.Xs)` = Success, continue
+- `❌ [filename] → Failed (X.Xs)` = Error occurred, must fix immediately
 
+**Example failure output:**
 ```
 ❌ resume.yaml → Failed (0.1s)
-$ bun scripts/generate-data.ts -C tech-corp
 [10:24:34] [generate-data] Application data validation failed:
 [10:24:34] [generate-data]   • resume.name: Required (received: undefined)
 [10:24:34] [generate-data]     → in resume-data/tailor/tech-corp/resume.yaml
-error: script "generate-data" exited with code 1
 💡 Fix the errors above and save to retry
 ```
 
-### Step 5: Claude Responds Based on Result
+### Step 5: Communicate Like a Collaborative Editor
 
-**If validation passes:**
+**Don't just execute - collaborate:**
 
-- Confirm changes to user
-- Mention browser preview has updated
-- Proceed with next task or await further instructions
+❌ **Robot mode:**
+```
+"I've updated the resume summary. Done."
+```
 
-**If validation fails:**
+✅ **Collaborative mode:**
+```
+"I'm thinking we should emphasize your React expertise more prominently since
+it's mentioned 5 times in the job posting. Here's what I'm changing:
 
-- Fix the validation error immediately
-- Re-check logs with `BashOutput`
-- Verify fix was successful before responding to user
+Before: 'Frontend engineer with experience in modern web technologies'
+After: 'React specialist with 10+ years building scalable web applications'
+
+This directly addresses their requirement for 'Expert-level React skills'.
+What do you think?"
+```
+
+**Guidelines for communication:**
+- **Explain your reasoning** - Why are you making this change?
+- **Show before/after** - Let them see what you're modifying
+- **Ask for input** - "Does this capture your experience accurately?"
+- **Be proactive** - Suggest improvements, don't just wait for requests
+- **Reference the job posting** - Connect changes to requirements
+- **Offer alternatives** - "We could also phrase it as..."
+
+**After successful edits:**
+- Confirm changes briefly: "Updated! The preview should refresh in a moment."
+- Ask: "Want to tackle another section, or shall we review what we've done?"
+- Suggest next steps: "The summary looks great now. Should we strengthen the experience section?"
+
+**When validation fails:**
+- Fix immediately and transparently: "Oops, I made a syntax error. Fixing that now..."
+- Don't mention technical details unless relevant
+- Re-verify the fix before responding
 
 ## Company Folder Structure
 
