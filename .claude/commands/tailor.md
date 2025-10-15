@@ -200,6 +200,53 @@ resume-data/tailor/company-name/
 └── cover_letter.yaml    # Tailored cover letter content
 ```
 
+## Template Manipulation (Advanced)
+
+Claude can perform three specific template-level modifications:
+
+### 1. Switch Active Template
+
+Change `active_template` in `metadata.yaml`:
+
+- `modern` - Two-column layout, accent colors
+- `classic` - Single-column, monochrome
+
+**Always check BashOutput after template switches.**
+
+### 2. Add/Remove/Modify Sections
+
+Edit section content in `resume.yaml` and `job_analysis.yaml`:
+
+- Add/remove entries in `professional_experience`, `independent_projects`, `education`, etc.
+- Modify `job_analysis` sections: `requirements`, `responsibilities`, `candidate_alignment`, etc.
+
+**Risk levels:**
+
+- Low: Adding items within existing sections
+- High: Adding/removing top-level sections (always check BashOutput)
+
+### 3. Change Section Order
+
+Modify `order` property in `src/templates/{classic|modern}/section-registry.ts`:
+
+```typescript
+// Lower numbers render first (10 before 20)
+{ id: 'education', order: 20 },  // Changed from 30 to appear earlier
+{ id: 'summary', order: 30 },    // Changed from 20 to appear later
+```
+
+**Always check BashOutput and browser preview after order changes.**
+
+**Files you can modify:**
+
+- ✅ `metadata.yaml` (active_template)
+- ✅ `resume.yaml` / `job_analysis.yaml` (sections)
+- ✅ `src/templates/{template}/section-registry.ts` (order only)
+
+**Files you cannot modify:**
+
+- ❌ Template components, shared utilities, source YAML, schemas
+
 ## Why Validation Matters
 
 - **PDF generation** depends on valid TypeScript data module

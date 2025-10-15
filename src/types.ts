@@ -68,7 +68,6 @@ export type Skills = string;
 // Union type for Experience component that can handle both types
 export type ExperienceItem = ProfessionalExperience | IndependentProject;
 
-
 // ========== DOCUMENT TYPE ==========
 // TYPES FOR A REACT-PDF PAGE - HOC
 export type ReactPDFProps = {
