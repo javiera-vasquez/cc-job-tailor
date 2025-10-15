@@ -7,10 +7,14 @@
 
 AI-powered resume optimization system that analyzes job postings, ranks requirements by importance, and generates tailored PDFs in under 60 seconds. Write your experience once in YAML, then let Claude's agents automatically select your most relevant achievements for each application.
 
-⚡ 60 Second job analysis • 🎯 Weighted skill matching • 🤖 3 specialized AI agents • 🧑‍🎨 Unlimited tailored versions • 🖼️ 2 Available templates
+```
+⚡ 60 Second job analysis • 🎯 Weighted skill matching • 🤖 3 specialized AI agents
+           🖼️ 2 Available templates • 🧑‍🎨 Unlimited tailored versions
+```
+
+**Tailor in action:**
 
 ![Tailor in action!](demo.gif)
-**Watch it work:** Job analysis → Live collaborative editing → Section reordering → PDF generation
 
 **Example Usage:**
 
