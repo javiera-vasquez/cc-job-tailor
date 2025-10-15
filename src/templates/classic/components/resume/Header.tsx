@@ -1,63 +1,69 @@
 import React from 'react';
-import { Text, View, StyleSheet, Image, Link } from '@react-pdf/renderer';
+import { Text, View, StyleSheet, Link, Image } from '@react-pdf/renderer';
 import { tokens } from '@template-core/design-tokens';
 import type { ResumeSchema } from '@types';
 
 const { colors, spacing } = tokens.classic;
 
 const styles = StyleSheet.create({
-  // Main header container
+  // Outer container for profile picture positioning
+  outerContainer: {
+    width: '100%',
+    position: 'relative',
+    marginBottom: spacing.pagePadding,
+  },
+
+  // Profile picture - absolute positioned top-right
+  profileImage: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: spacing.profileImageSize,
+    height: spacing.profileImageSize,
+  },
+
+  // Main header container - centered layout
   headerContainer: {
     width: '100%',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    marginBottom: spacing.pagePadding / 2,
-  },
-
-  // Profile picture area (top-right corner)
-  profileArea: {
-    width: spacing.profileImageSize,
-    height: spacing.profileImageSize,
-    marginLeft: spacing.pagePadding,
-  },
-
-  profileImage: {
-    width: spacing.profileImageSize,
-    height: spacing.profileImageSize,
-    // Square image - no borderRadius
-  },
-
-  // Main content area (name and contact info)
-  contentArea: {
-    flex: 1,
     flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
   },
 
-  // Name styling
+  // Name styling - larger, centered
   name: {
     color: colors.primary,
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: 'Lato Bold',
-    textTransform: 'uppercase',
+    textTransform: 'capitalize',
     marginBottom: 2,
   },
 
-  // Contact line styling
+  // Subtitle/title styling
+  subtitle: {
+    color: colors.darkGray,
+    fontSize: 10,
+    fontFamily: 'Lato',
+    marginBottom: 4,
+  },
+
+  // Contact line styling - centered
   contactLine: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     fontSize: 9,
     fontFamily: 'Lato',
     color: colors.darkGray,
+    justifyContent: 'center',
   },
 
   contactItem: {
-    marginRight: 4,
+    marginHorizontal: 2,
   },
 
   contactSeparator: {
-    marginRight: 4,
+    marginHorizontal: 2,
   },
 
   contactLink: {
@@ -67,26 +73,10 @@ const styles = StyleSheet.create({
 });
 
 const Header = ({ resume }: { resume: ResumeSchema }) => {
-  const { name, contact } = resume;
+  const { name, title, contact } = resume;
 
   // Build contact items array to conditionally render separators
   const contactItems: React.ReactNode[] = [];
-
-  // Address - optional
-  if (contact.address) {
-    contactItems.push(
-      <Text key="address" style={styles.contactItem}>
-        {contact.address}
-      </Text>,
-    );
-  }
-
-  // Phone - required
-  contactItems.push(
-    <Text key="phone" style={styles.contactItem}>
-      {contact.phone}
-    </Text>,
-  );
 
   // Email - required
   contactItems.push(
@@ -99,20 +89,58 @@ const Header = ({ resume }: { resume: ResumeSchema }) => {
     </Link>,
   );
 
+  // Phone - required
+  contactItems.push(
+    <Text key="phone" style={styles.contactItem}>
+      {contact.phone}
+    </Text>,
+  );
+
+  // Address - optional
+  if (contact.address) {
+    contactItems.push(
+      <Text key="address" style={styles.contactItem}>
+        {contact.address}
+      </Text>,
+    );
+  }
+
   // LinkedIn - optional
   if (contact.linkedin) {
+    const linkedinDisplay = contact.linkedin.replace(/^https?:\/\/(www\.)?/, '');
     contactItems.push(
       <Link key="linkedin" src={contact.linkedin} style={[styles.contactItem, styles.contactLink]}>
-        linkedin.com/in/username
+        {linkedinDisplay}
+      </Link>,
+    );
+  }
+
+  // GitHub - optional
+  if (contact.github) {
+    const githubDisplay = contact.github.replace(/^https?:\/\/(www\.)?/, '');
+    contactItems.push(
+      <Link key="github" src={contact.github} style={[styles.contactItem, styles.contactLink]}>
+        {githubDisplay}
       </Link>,
     );
   }
 
   return (
-    <View style={styles.headerContainer}>
-      {/* Content area with name and contact */}
-      <View style={styles.contentArea}>
+    <View style={styles.outerContainer}>
+      {/* Profile picture - top-right corner */}
+      {spacing.profileImageSize > 0 && resume.profile_picture && (
+        <Image src={resume.profile_picture} style={styles.profileImage} />
+      )}
+
+      {/* Centered header content */}
+      <View style={styles.headerContainer}>
+        {/* Name - centered */}
         <Text style={styles.name}>{name}</Text>
+
+        {/* Subtitle/Title - centered */}
+        {title && <Text style={styles.subtitle}>{title}</Text>}
+
+        {/* Contact line - centered */}
         <View style={styles.contactLine}>
           {contactItems.map((item, index) => (
             <React.Fragment key={index}>
@@ -122,13 +150,6 @@ const Header = ({ resume }: { resume: ResumeSchema }) => {
           ))}
         </View>
       </View>
-
-      {/* Profile picture in top-right corner - conditional */}
-      {spacing.profileImageSize > 0 && resume.profile_picture && (
-        <View style={styles.profileArea}>
-          <Image src={resume.profile_picture} style={styles.profileImage} />
-        </View>
-      )}
     </View>
   );
 };

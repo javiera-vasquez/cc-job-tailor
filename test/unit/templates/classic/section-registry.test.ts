@@ -68,7 +68,9 @@ describe('Classic Resume Section Registry', () => {
       expect(sectionIds).toContain('summary');
       expect(sectionIds).toContain('education');
       expect(sectionIds).toContain('experience');
-      expect(sectionIds).toContain('additional');
+      expect(sectionIds).toContain('technical-skills');
+      expect(sectionIds).toContain('languages');
+      expect(sectionIds).toContain('core-competencies');
     });
 
     it('should have unique section IDs', () => {
@@ -145,15 +147,15 @@ describe('Classic Resume Section Registry', () => {
       expect(visibleIds).not.toContain('summary');
     });
 
-    it('should hide additional section when all sub-sections are empty', () => {
+    it('should hide technical-skills section when technical_expertise is empty', () => {
       const data = createMinimalResume();
       const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
-      expect(visibleIds).not.toContain('additional');
+      expect(visibleIds).not.toContain('technical-skills');
     });
 
-    it('should show additional section when technical_expertise has items', () => {
+    it('should show technical-skills section when technical_expertise has items', () => {
       const data: ResumeSchema = {
         ...createMinimalResume(),
         technical_expertise: [{ resume_title: 'Frontend', skills: ['React', 'TypeScript'] }],
@@ -161,10 +163,18 @@ describe('Classic Resume Section Registry', () => {
       const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
-      expect(visibleIds).toContain('additional');
+      expect(visibleIds).toContain('technical-skills');
     });
 
-    it('should show additional section when skills array has items', () => {
+    it('should hide core-competencies section when skills array is empty', () => {
+      const data = createMinimalResume();
+      const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
+      const visibleIds = visible.map((s) => s.id);
+
+      expect(visibleIds).not.toContain('core-competencies');
+    });
+
+    it('should show core-competencies section when skills array has items', () => {
       const data: ResumeSchema = {
         ...createMinimalResume(),
         skills: ['Communication', 'Leadership'],
@@ -172,10 +182,18 @@ describe('Classic Resume Section Registry', () => {
       const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
-      expect(visibleIds).toContain('additional');
+      expect(visibleIds).toContain('core-competencies');
     });
 
-    it('should show additional section when languages array has items', () => {
+    it('should hide languages section when languages array is empty', () => {
+      const data = createMinimalResume();
+      const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
+      const visibleIds = visible.map((s) => s.id);
+
+      expect(visibleIds).not.toContain('languages');
+    });
+
+    it('should show languages section when languages array has items', () => {
       const data: ResumeSchema = {
         ...createMinimalResume(),
         languages: [{ language: 'English', proficiency: 'Native' }],
@@ -183,7 +201,7 @@ describe('Classic Resume Section Registry', () => {
       const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
-      expect(visibleIds).toContain('additional');
+      expect(visibleIds).toContain('languages');
     });
 
     it('should hide experience section when both arrays are empty', () => {
@@ -259,7 +277,9 @@ describe('Classic Resume Section Registry', () => {
       const data = createMinimalResume();
 
       expect(isResumeSectionVisible(RESUME_SECTIONS, 'summary', data)).toBe(false);
-      expect(isResumeSectionVisible(RESUME_SECTIONS, 'additional', data)).toBe(false);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'technical-skills', data)).toBe(false);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'languages', data)).toBe(false);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'core-competencies', data)).toBe(false);
     });
 
     it('should return true for optional sections with data', () => {
@@ -267,10 +287,14 @@ describe('Classic Resume Section Registry', () => {
         ...createMinimalResume(),
         summary: 'Professional summary',
         technical_expertise: [{ resume_title: 'Frontend', skills: ['React'] }],
+        skills: ['Communication'],
+        languages: [{ language: 'English', proficiency: 'Native' }],
       };
 
       expect(isResumeSectionVisible(RESUME_SECTIONS, 'summary', data)).toBe(true);
-      expect(isResumeSectionVisible(RESUME_SECTIONS, 'additional', data)).toBe(true);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'technical-skills', data)).toBe(true);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'core-competencies', data)).toBe(true);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'languages', data)).toBe(true);
     });
 
     it('should return false for non-existent sections', () => {
@@ -290,7 +314,9 @@ describe('Classic Resume Section Registry', () => {
       };
 
       expect(() => getVisibleResumeSections(RESUME_SECTIONS, data)).not.toThrow();
-      expect(isResumeSectionVisible(RESUME_SECTIONS, 'additional', data)).toBe(false);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'technical-skills', data)).toBe(false);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'core-competencies', data)).toBe(false);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'languages', data)).toBe(false);
       expect(isResumeSectionVisible(RESUME_SECTIONS, 'experience', data)).toBe(true); // Still has professional_experience
     });
 

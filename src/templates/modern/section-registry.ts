@@ -67,7 +67,7 @@ export const RESUME_SECTIONS: ModernResumeSectionConfig[] = [
     component: Contact,
     column: 'left',
     isVisible: () => true, // Always visible - phone/email are required
-    order: 10,
+    order: 1,
     description: 'Contact information (phone, email, address, social links)',
   },
   {
@@ -80,7 +80,7 @@ export const RESUME_SECTIONS: ModernResumeSectionConfig[] = [
       const hasSoftSkills = (data.skills?.length ?? 0) > 0;
       return hasTechnicalExpertise || hasSoftSkills;
     },
-    order: 20,
+    order: 2,
     description: 'Technical expertise and soft skills',
   },
   {
@@ -89,7 +89,7 @@ export const RESUME_SECTIONS: ModernResumeSectionConfig[] = [
     component: Languages,
     column: 'left',
     isVisible: (data) => (data.languages?.length ?? 0) > 0,
-    order: 30,
+    order: 3,
     description: 'Language proficiencies',
   },
 
@@ -104,7 +104,7 @@ export const RESUME_SECTIONS: ModernResumeSectionConfig[] = [
       const hasProfessionalExperience = (data.professional_experience?.length ?? 0) > 0;
       return hasIndependentProjects || hasProfessionalExperience;
     },
-    order: 10,
+    order: 4,
     description: 'Professional experience and independent projects',
   },
   {
@@ -113,7 +113,7 @@ export const RESUME_SECTIONS: ModernResumeSectionConfig[] = [
     component: Education,
     column: 'right',
     isVisible: () => true, // Always visible - required field
-    order: 20,
+    order: 5,
     description: 'Educational background',
   },
 ];
@@ -138,7 +138,7 @@ export const COVER_LETTER_SECTIONS: CoverLetterSectionConfig[] = [
     id: 'header',
     component: CoverLetterHeader,
     isVisible: () => true, // Always visible - contains required fields (name, company, email, phone)
-    order: 10,
+    order: 0,
     description: 'Contact information and company name',
   },
   {
@@ -146,7 +146,7 @@ export const COVER_LETTER_SECTIONS: CoverLetterSectionConfig[] = [
     id: 'date',
     component: DateLine,
     isVisible: () => true, // Always visible - date is required
-    order: 20,
+    order: 1,
     description: 'Letter date',
   },
   {
@@ -159,7 +159,7 @@ export const COVER_LETTER_SECTIONS: CoverLetterSectionConfig[] = [
       const hasLetterTitle = (data.content.letter_title?.length ?? 0) > 0;
       return hasPosition || hasLetterTitle;
     },
-    order: 30,
+    order: 2,
     description: 'Cover letter title with position',
   },
   {
@@ -167,7 +167,7 @@ export const COVER_LETTER_SECTIONS: CoverLetterSectionConfig[] = [
     id: 'body',
     component: Body,
     isVisible: () => true, // Always visible - opening_line and body are required
-    order: 40,
+    order: 3,
     description: 'Letter opening and body paragraphs',
   },
   {
@@ -175,7 +175,7 @@ export const COVER_LETTER_SECTIONS: CoverLetterSectionConfig[] = [
     id: 'signature',
     component: Signature,
     isVisible: () => true, // Always visible - signature is required
-    order: 50,
+    order: 4,
     description: 'Closing signature',
   },
 ];

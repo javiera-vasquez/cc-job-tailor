@@ -9,24 +9,26 @@ const { colors, spacing } = tokens.classic;
 const styles = StyleSheet.create({
   container: {
     marginBottom: spacing.pagePadding,
-    paddingBottom: spacing.pagePadding,
-    borderBottom: `1px solid ${colors.separatorGray}`,
   },
   sectionTitle: {
     color: colors.primary,
     fontFamily: 'Lato Bold',
     fontSize: 11,
     textTransform: 'uppercase',
-    marginBottom: spacing.pagePadding / 2,
   },
   educationEntry: {
     marginBottom: spacing.pagePadding / 2,
+  },
+  educationHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 2,
   },
   institution: {
     fontFamily: 'Lato Bold',
     fontSize: 10,
     color: colors.primary,
-    marginBottom: 2,
   },
   program: {
     fontFamily: 'Lato',
@@ -38,6 +40,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Lato',
     fontSize: 10,
     color: colors.mediumGray,
+    textAlign: 'right',
+  },
+  separator: {
+    width: '100%',
+    borderBottom: `1px solid ${colors.separatorGray}`,
+    paddingTop: spacing.pagePadding / 2,
+    marginBottom: spacing.pagePadding / 2,
   },
 });
 
@@ -51,15 +60,17 @@ const Education = ({ resume, debug = false }: { resume: ResumeSchema; debug?: bo
     <View style={styles.container} debug={debug}>
       {/* Section title */}
       <Text style={styles.sectionTitle}>EDUCATION</Text>
-
+      <View style={styles.separator} />
       {/* Education entries */}
       {resume.education.map((edu, index) => (
         <View key={index} style={styles.educationEntry}>
-          <Text style={styles.institution}>{edu.institution}</Text>
+          <View style={styles.educationHeader}>
+            <Text style={styles.institution}>{edu.institution}</Text>
+            <Text style={styles.locationDuration}>
+              {edu.location} | {edu.duration}
+            </Text>
+          </View>
           <Text style={styles.program}>{edu.program}</Text>
-          <Text style={styles.locationDuration}>
-            {edu.location} | {edu.duration}
-          </Text>
         </View>
       ))}
     </View>

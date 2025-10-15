@@ -10,18 +10,26 @@ const styles = StyleSheet.create({
     marginBottom: spacing.pagePadding,
   },
   sectionTitle: {
+    color: colors.primary,
     fontFamily: 'Lato Bold',
     fontSize: 11,
-    color: colors.primary,
     textTransform: 'uppercase',
-    marginBottom: 0,
   },
-  summaryText: {
+  categoryRow: {
+    flexDirection: 'row',
+    marginBottom: 3,
+  },
+  categoryLabel: {
+    fontFamily: 'Lato Bold',
+    fontSize: 10,
+    color: colors.darkGray,
+    marginRight: 4,
+  },
+  categoryContent: {
     fontFamily: 'Lato',
     fontSize: 10,
-    lineHeight: 1.4,
     color: colors.darkGray,
-    marginBottom: spacing.pagePadding / 2,
+    flex: 1,
   },
   separator: {
     width: '100%',
@@ -31,19 +39,23 @@ const styles = StyleSheet.create({
   },
 });
 
-const Summary = ({ resume }: { resume: ResumeSchema }) => {
-  // Only render if summary exists and is not empty
-  if (!resume.summary || resume.summary.trim() === '') {
+const TechnicalSkills = ({ resume }: { resume: ResumeSchema }) => {
+  if (!resume.technical_expertise || resume.technical_expertise.length === 0) {
     return null;
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.sectionTitle}>PROFILE</Text>
+      <Text style={styles.sectionTitle}>TECHNICAL SKILLS</Text>
       <View style={styles.separator} />
-      <Text style={styles.summaryText}>{resume.summary}</Text>
+      {resume.technical_expertise.map((category, index) => (
+        <View key={index} style={styles.categoryRow}>
+          <Text style={styles.categoryLabel}>{category.resume_title}:</Text>
+          <Text style={styles.categoryContent}>{category.skills.join(', ')}</Text>
+        </View>
+      ))}
     </View>
   );
 };
 
-export default Summary;
+export default TechnicalSkills;

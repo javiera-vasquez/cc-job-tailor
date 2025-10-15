@@ -3,9 +3,11 @@ import type { ResumeSectionConfig, CoverLetterSectionConfig } from '@/types';
 // Resume section components
 import Header from './components/resume/Header';
 import Summary from './components/resume/Summary';
-import Additional from './components/resume/Additional';
 import Experience from './components/resume/Experience';
+import TechnicalSkills from './components/resume/TechnicalSkills';
+import CoreCompetencies from './components/resume/CoreCompetencies';
 import Education from './components/resume/Education';
+import Languages from './components/resume/Languages';
 
 // Cover letter section components
 import CoverLetterHeader from './components/cover-letter/Header';
@@ -43,7 +45,7 @@ export const RESUME_SECTIONS: ResumeSectionConfig[] = [
     id: 'header',
     component: Header,
     isVisible: () => true, // Always visible - contains required fields
-    order: 10,
+    order: 0,
     description: 'Name and contact information',
   },
 
@@ -55,8 +57,8 @@ export const RESUME_SECTIONS: ResumeSectionConfig[] = [
     isVisible: (data) => {
       return (data.summary?.trim().length ?? 0) > 0;
     },
-    order: 20,
-    description: 'Professional summary',
+    order: 1,
+    description: 'Professional summary - Profile',
   },
 
   // ========== EDUCATION SECTION ==========
@@ -65,7 +67,7 @@ export const RESUME_SECTIONS: ResumeSectionConfig[] = [
     id: 'education',
     component: Education,
     isVisible: (data) => (data.education?.length ?? 0) > 0,
-    order: 30,
+    order: 2,
     description: 'Educational background',
   },
 
@@ -79,23 +81,38 @@ export const RESUME_SECTIONS: ResumeSectionConfig[] = [
       const hasProfessionalExperience = (data.professional_experience?.length ?? 0) > 0;
       return hasIndependentProjects || hasProfessionalExperience;
     },
-    order: 40,
+    order: 3,
     description: 'Professional experience and independent projects',
   },
 
-  // ========== ADDITIONAL SECTION (Skills + Languages) ==========
+  // ========== TECHNICAL SKILLS SECTION ==========
   {
     documentType: 'resume',
-    id: 'additional',
-    component: Additional,
-    isVisible: (data) => {
-      const hasTechnicalExpertise = (data.technical_expertise?.length ?? 0) > 0;
-      const hasSoftSkills = (data.skills?.length ?? 0) > 0;
-      const hasLanguages = (data.languages?.length ?? 0) > 0;
-      return hasTechnicalExpertise || hasSoftSkills || hasLanguages;
-    },
-    order: 50,
-    description: 'Technical expertise, soft skills, and languages',
+    id: 'technical-skills',
+    component: TechnicalSkills,
+    isVisible: (data) => (data.technical_expertise?.length ?? 0) > 0,
+    order: 4,
+    description: 'Technical expertise and skills',
+  },
+
+  // ========== LANGUAGES SECTION ==========
+  {
+    documentType: 'resume',
+    id: 'languages',
+    component: Languages,
+    isVisible: (data) => (data.languages?.length ?? 0) > 0,
+    order: 5,
+    description: 'Language proficiencies',
+  },
+
+  // ========== CORE COMPETENCIES SECTION ==========
+  {
+    documentType: 'resume',
+    id: 'core-competencies',
+    component: CoreCompetencies,
+    isVisible: (data) => (data.skills?.length ?? 0) > 0,
+    order: 6,
+    description: 'Soft skills and competencies',
   },
 ];
 
@@ -119,7 +136,7 @@ export const COVER_LETTER_SECTIONS: CoverLetterSectionConfig[] = [
     id: 'header',
     component: CoverLetterHeader,
     isVisible: () => true, // Always visible - contains required fields (name, company, email, phone)
-    order: 10,
+    order: 0,
     description: 'Contact information and company name',
   },
   {
@@ -127,7 +144,7 @@ export const COVER_LETTER_SECTIONS: CoverLetterSectionConfig[] = [
     id: 'date',
     component: DateLine,
     isVisible: () => true, // Always visible - date is required
-    order: 20,
+    order: 1,
     description: 'Letter date',
   },
   {
@@ -140,7 +157,7 @@ export const COVER_LETTER_SECTIONS: CoverLetterSectionConfig[] = [
       const hasLetterTitle = (data.content.letter_title?.length ?? 0) > 0;
       return hasPosition || hasLetterTitle;
     },
-    order: 30,
+    order: 2,
     description: 'Cover letter title with position',
   },
   {
@@ -148,7 +165,7 @@ export const COVER_LETTER_SECTIONS: CoverLetterSectionConfig[] = [
     id: 'body',
     component: Body,
     isVisible: () => true, // Always visible - opening_line and body are required
-    order: 40,
+    order: 3,
     description: 'Letter opening and body paragraphs',
   },
   {
@@ -156,7 +173,7 @@ export const COVER_LETTER_SECTIONS: CoverLetterSectionConfig[] = [
     id: 'signature',
     component: Signature,
     isVisible: () => true, // Always visible - signature is required
-    order: 50,
+    order: 4,
     description: 'Closing signature',
   },
 ];

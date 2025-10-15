@@ -14,14 +14,12 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: colors.primary,
     textTransform: 'uppercase',
-    marginBottom: 0,
   },
-  summaryText: {
+  skillsText: {
     fontFamily: 'Lato',
     fontSize: 10,
-    lineHeight: 1.4,
     color: colors.darkGray,
-    marginBottom: spacing.pagePadding / 2,
+    lineHeight: 1.4,
   },
   separator: {
     width: '100%',
@@ -31,19 +29,18 @@ const styles = StyleSheet.create({
   },
 });
 
-const Summary = ({ resume }: { resume: ResumeSchema }) => {
-  // Only render if summary exists and is not empty
-  if (!resume.summary || resume.summary.trim() === '') {
+const CoreCompetencies = ({ resume }: { resume: ResumeSchema }) => {
+  if (!resume.skills || resume.skills.length === 0) {
     return null;
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.sectionTitle}>PROFILE</Text>
+      <Text style={styles.sectionTitle}>CORE COMPETENCIES</Text>
       <View style={styles.separator} />
-      <Text style={styles.summaryText}>{resume.summary}</Text>
+      <Text style={styles.skillsText}>{resume.skills.join(' • ')}</Text>
     </View>
   );
 };
 
-export default Summary;
+export default CoreCompetencies;

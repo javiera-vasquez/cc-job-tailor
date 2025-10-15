@@ -14,13 +14,12 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: colors.primary,
     textTransform: 'uppercase',
-    marginBottom: 0,
   },
-  summaryText: {
+  languagesText: {
     fontFamily: 'Lato',
     fontSize: 10,
-    lineHeight: 1.4,
     color: colors.darkGray,
+    lineHeight: 1.4,
     marginBottom: spacing.pagePadding / 2,
   },
   separator: {
@@ -31,19 +30,20 @@ const styles = StyleSheet.create({
   },
 });
 
-const Summary = ({ resume }: { resume: ResumeSchema }) => {
-  // Only render if summary exists and is not empty
-  if (!resume.summary || resume.summary.trim() === '') {
+const Languages = ({ resume }: { resume: ResumeSchema }) => {
+  if (!resume.languages || resume.languages.length === 0) {
     return null;
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.sectionTitle}>PROFILE</Text>
+      <Text style={styles.sectionTitle}>LANGUAGES</Text>
       <View style={styles.separator} />
-      <Text style={styles.summaryText}>{resume.summary}</Text>
+      <Text style={styles.languagesText}>
+        {resume.languages.map((lang) => `${lang.language} (${lang.proficiency})`).join(' • ')}
+      </Text>
     </View>
   );
 };
 
-export default Summary;
+export default Languages;

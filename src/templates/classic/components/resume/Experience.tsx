@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, Link } from '@react-pdf/renderer';
+import { Text, View, StyleSheet } from '@react-pdf/renderer';
 import { tokens } from '@template-core/design-tokens';
 import type { ExperienceItem, ResumeSchema } from '@types';
 
@@ -7,49 +7,43 @@ const { colors, spacing } = tokens.classic;
 
 const styles = StyleSheet.create({
   container: {
-    // marginBottom: spacing.pagePadding,
-    // paddingBottom: spacing.pagePadding,
-    // borderBottom: `1px solid ${colors.separatorGray}`,
+    marginBottom: spacing.pagePadding,
   },
   sectionTitle: {
     color: colors.primary,
     fontFamily: 'Lato Bold',
     fontSize: 11,
     textTransform: 'uppercase',
-    marginBottom: spacing.pagePadding / 2,
   },
   experienceEntry: {
     marginBottom: spacing.pagePadding,
   },
-  companyHeader: {
-    marginBottom: 2,
-  },
-  companyName: {
+  positionTitle: {
     fontFamily: 'Lato Bold',
     fontSize: 10,
     color: colors.primary,
+    marginBottom: 2,
   },
-  positionTitle: {
+  companyDateRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+    marginBottom: 4,
+  },
+  companyLocation: {
     fontFamily: 'Lato',
     fontSize: 10,
     color: colors.darkGray,
-    marginBottom: 2,
   },
-  dateLocation: {
+  dateRange: {
     fontSize: 10,
     color: colors.mediumGray,
-    marginBottom: 4,
-  },
-  companyDescription: {
-    fontSize: 10,
-    color: colors.darkGray,
-    marginBottom: 6,
-    lineHeight: 1.4,
+    textAlign: 'right',
   },
   achievementItem: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: 0,
+    marginBottom: 1,
   },
   bullet: {
     fontSize: 10,
@@ -58,49 +52,45 @@ const styles = StyleSheet.create({
   },
   achievementText: {
     flex: 1,
+    fontSize: 9,
+    color: colors.darkGray,
+    lineHeight: 1.4,
+  },
+  descriptionText: {
     fontSize: 10,
     color: colors.darkGray,
     lineHeight: 1.4,
+    marginBottom: 4,
+  },
+  separator: {
+    width: '100%',
+    borderBottom: `1px solid ${colors.separatorGray}`,
+    paddingTop: spacing.pagePadding / 2,
+    marginBottom: spacing.pagePadding / 2,
   },
 });
 
 const ExperienceEntry = ({ experience, debug }: { experience: ExperienceItem; debug: boolean }) => {
-  const {
-    company,
-    position,
-    location,
-    duration,
-    description,
-    company_description,
-    achievements,
-    name,
-    linkedin,
-  } = experience as any;
+  const { company, position, location, duration, description, achievements, name } =
+    experience as any;
 
   return (
     <View style={styles.experienceEntry} debug={debug}>
-      <View style={styles.companyHeader}>
-        <Text style={styles.companyName}>
-          {linkedin ? (
-            <Link style={styles.companyName} src={linkedin}>
-              {company || name.split(' - ')[0]}
-            </Link>
-          ) : (
-            company || name.split(' - ')[0]
-          )}
-        </Text>
-      </View>
-
+      {/* Position title (bold, primary color) */}
       <Text style={styles.positionTitle}>{position || name.split(' - ')[1]}</Text>
 
-      <Text style={styles.dateLocation}>
-        {location} | {duration}
-      </Text>
+      {/* Company, Location | Date Range row */}
+      <View style={styles.companyDateRow}>
+        <Text style={styles.companyLocation}>
+          {company || name.split(' - ')[0]}, {location}
+        </Text>
+        <Text style={styles.dateRange}>{duration}</Text>
+      </View>
 
-      {company_description && <Text style={styles.companyDescription}>{company_description}</Text>}
+      {/* Description (for independent projects) */}
+      {description && <Text style={styles.descriptionText}>{description}</Text>}
 
-      {description && <Text style={styles.companyDescription}>{description}</Text>}
-
+      {/* Achievements bullets */}
       {achievements && achievements.length > 0 && (
         <View>
           {achievements.map((achievement: string, index: number) => (
@@ -127,6 +117,7 @@ const Experience = ({ resume, debug = false }: { resume: ResumeSchema; debug?: b
   return (
     <View style={styles.container} debug={debug}>
       <Text style={styles.sectionTitle}>WORK EXPERIENCE</Text>
+      <View style={styles.separator} />
       {/* Render professional experience first */}
       {hasProfessionalExperience &&
         resume.professional_experience.map((experience, index) => (
@@ -137,14 +128,21 @@ const Experience = ({ resume, debug = false }: { resume: ResumeSchema; debug?: b
           />
         ))}
       {/* Then render independent projects */}
-      {hasIndependentProjects &&
-        resume.independent_projects.map((experience, index) => (
-          <ExperienceEntry
-            key={`${experience.name}-${experience.location}-${index}`}
-            experience={experience}
-            debug={debug}
-          />
-        ))}
+
+      {hasIndependentProjects && (
+        <>
+          <Text style={styles.sectionTitle}>INDEPENDENT PROJECTS</Text>
+          <View style={styles.separator} />
+
+          {resume.independent_projects.map((experience, index) => (
+            <ExperienceEntry
+              key={`${experience.name}-${experience.location}-${index}`}
+              experience={experience}
+              debug={debug}
+            />
+          ))}
+        </>
+      )}
     </View>
   );
 };
