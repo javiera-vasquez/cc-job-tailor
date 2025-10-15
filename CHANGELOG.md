@@ -7,6 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.0] - 2025-10-15
+
+### Added
+
+- **Section Registry System**: New architecture for dynamic section rendering in resume and cover letter templates
+- **Component Visibility Logic**: Conditional rendering system based on section data availability
+- **Compact Logging Mode**: `TAILOR_SERVER_COMPACT_LOGS` environment variable for streamlined server output
+- **File Watcher Debouncing**: Configurable debounce delay to prevent excessive regeneration on rapid file changes
+- **Demo GIF**: Visual demonstration of the application workflow added to repository
+- **Environment Configuration**: Comprehensive `.env.example` file with all configuration options
+- **Section Registry Tests**: 804 new tests covering classic and modern theme section registries
+
+### Changed
+
+- **Template Architecture**: Restructured template files from `index.tsx` to theme-specific files (`resume.tsx`, `cover-letter.tsx`)
+- **Component Organization**: Moved components to dedicated directories within each theme (`components/resume/`, `components/cover-letter/`)
+- **Resume Schema**: Enhanced with top-level `name` field and improved section structure
+- **Cover Letter Schema**: Refactored for improved flexibility with top-level `name` field
+- **Tailor Command Documentation**: Comprehensive rewrite with advanced template manipulation guidelines
+- **Section Management**: Dynamic section rendering replaces hardcoded component inclusion
+- **Logging Standards**: Enhanced structured logging with context-aware output formatting
+
+### Improved
+
+- **Type Safety**: Enhanced Zod schemas for better validation and flexibility across resume and cover letter data
+- **Template Components**: All components now support conditional rendering for optional fields
+- **Documentation**: Major improvements to `CLAUDE.md`, `/tailor` command docs, and agent documentation
+- **Development Experience**: Better logging output with timestamps and context labels
+- **Code Organization**: Centralized section management utilities in `shared/section-utils.ts`
+
+### Technical Details
+
+- **Section Registry Pattern**: Each theme now exports `resumeSectionRegistry` and `coverLetterSectionRegistry`
+- **Dynamic Rendering**: Components are registered with visibility checks and render functions
+- **Configuration System**: Expanded `config.ts` with watcher debouncing and logging options
+- **Component Props**: Standardized `ResumeComponentProps` and `CoverLetterComponentProps` interfaces
+- **Mapping Rules**: Updated transformation schemas to support new section structure
+
 ## [0.8.4] - 2025-10-09
 
 ### Added
