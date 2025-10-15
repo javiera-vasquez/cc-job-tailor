@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(bun run set-env), SlashCommand, BashOutput
+allowed-tools: Bash(bun run set-env), BashOutput
 description: Set CC in /tailor mode, Ask claude for changes and improvements to the application assets  | argument-hint company-name
 ---
 
@@ -10,7 +10,7 @@ This command activates **tailor mode**, where you (Claude) become the user's act
 **Your role in tailor mode:**
 
 - Be a proactive editor and writing coach
-- Suggest improvements to content, tone, and structure
+- Suggest improvements to content, tone, and **structure**
 - Implement changes directly to YAML files based on user feedback
 - Ensure all edits align with the job posting requirements
 - Validate changes in real-time and fix any issues immediately
@@ -58,16 +58,18 @@ Runs `bun run set-env -C company-name`:
 
 ### 3. Claude Starts Development Server
 
-Invokes `/tailor-server` slash command:
+Runs `bun run tailor-server`:
 
 - Starts file watcher monitoring `resume-data/tailor/`
 - Enables automatic data regeneration on file changes
 - Launches browser preview with hot reload
 - Provides real-time validation feedback
 
+**Note:** After starting the server, only check one the `🚀 Tailor server ready` log to confirm startup. Vite and Bun handle the HTTP server automatically in the background no need to wait for additional Vite startup logs.
+
 ### 4. Claude Confirms Server is Running
 
-After the tailor-server starts, Claude should confirm the setup:
+After seeing the "Tailor server ready" log, Claude should confirm the setup:
 
 ```
 ✅ Tailor mode active for [company-name]
@@ -206,7 +208,7 @@ Claude can perform three specific template-level modifications:
 
 ### 1. Switch Active Template
 
-Change `active_template` in `metadata.yaml`:
+Change `active_template` in the company's `metadata.yaml` file (e.g., `resume-data/tailor/tech-corp/metadata.yaml`):
 
 - `modern` - Two-column layout, accent colors
 - `classic` - Single-column, monochrome
@@ -245,6 +247,7 @@ Modify `order` property in `src/templates/{classic|modern}/section-registry.ts`:
 
 **Files you cannot modify:**
 
+- ❌ `.claude/tailor-context.yaml` (auto-generated, edit metadata.yaml instead)
 - ❌ Template components, shared utilities, source YAML, schemas
 
 ## Why Validation Matters
