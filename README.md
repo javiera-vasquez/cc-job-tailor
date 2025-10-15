@@ -9,9 +9,8 @@ AI-powered resume optimization system that analyzes job postings, ranks requirem
 
 ⚡ 60 Second job analysis • 🎯 Weighted skill matching • 🤖 3 specialized AI agents • 🧑‍🎨 Unlimited tailored versions • 🖼️ 2 Available templates
 
-**Watch it work:** Job analysis → Live collaborative editing → Section reordering → PDF generation
-
 ![Tailor in action!](demo.gif)
+**Watch it work:** Job analysis → Live collaborative editing → Section reordering → PDF generation
 
 **Example Usage:**
 
