@@ -53,6 +53,24 @@ bun run format:check        # Check formatting without changes
 
 **Core Stack:** Bun runtime, React 19, TypeScript, @react-pdf/renderer, Zod validation
 
+### Path Aliases
+
+The project uses Vite path aliases for cleaner imports:
+
+- `@/` → `./src/` - Root source directory
+- `@ui/` → `./src/ui/` - UI components
+- `@template-core/` → `./src/templates/shared/` - Shared template utilities and components
+- `@types` → `./src/types.ts` - TypeScript type definitions
+- `@utils/` → `./src/utils/` - Utility functions
+
+**Example usage:**
+
+```typescript
+import type { ResumeSchema } from '@types';
+import { getVisibleResumeSections } from '@template-core/section-utils';
+import { tokens } from '@template-core/design-tokens';
+```
+
 ### File Structure
 
 ```

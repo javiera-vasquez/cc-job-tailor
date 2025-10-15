@@ -1,13 +1,12 @@
 import { describe, test as it, expect } from 'bun:test';
 import type { ResumeSchema, CoverLetterSchema } from '@/types';
+import { RESUME_SECTIONS, COVER_LETTER_SECTIONS } from '@/templates/classic/section-registry';
 import {
-  RESUME_SECTIONS,
-  COVER_LETTER_SECTIONS,
   getVisibleResumeSections,
   isResumeSectionVisible,
   getVisibleCoverLetterSections,
   isCoverLetterSectionVisible,
-} from '@/templates/classic/section-registry';
+} from '@template-core/section-utils';
 
 // Helper to create minimal valid resume data
 const createMinimalResume = (): ResumeSchema => ({
@@ -107,7 +106,7 @@ describe('Classic Resume Section Registry', () => {
   describe('getVisibleResumeSections', () => {
     it('should return required sections with minimal data', () => {
       const data = createMinimalResume();
-      const visible = getVisibleResumeSections(data);
+      const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
       // Required sections should always be visible
@@ -118,7 +117,7 @@ describe('Classic Resume Section Registry', () => {
 
     it('should hide summary section when undefined', () => {
       const data = createMinimalResume();
-      const visible = getVisibleResumeSections(data);
+      const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
       expect(visibleIds).not.toContain('summary');
@@ -129,7 +128,7 @@ describe('Classic Resume Section Registry', () => {
         ...createMinimalResume(),
         summary: 'A professional software engineer with 5 years of experience...',
       };
-      const visible = getVisibleResumeSections(data);
+      const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
       expect(visibleIds).toContain('summary');
@@ -140,7 +139,7 @@ describe('Classic Resume Section Registry', () => {
         ...createMinimalResume(),
         summary: '   ',
       };
-      const visible = getVisibleResumeSections(data);
+      const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
       expect(visibleIds).not.toContain('summary');
@@ -148,7 +147,7 @@ describe('Classic Resume Section Registry', () => {
 
     it('should hide additional section when all sub-sections are empty', () => {
       const data = createMinimalResume();
-      const visible = getVisibleResumeSections(data);
+      const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
       expect(visibleIds).not.toContain('additional');
@@ -159,7 +158,7 @@ describe('Classic Resume Section Registry', () => {
         ...createMinimalResume(),
         technical_expertise: [{ resume_title: 'Frontend', skills: ['React', 'TypeScript'] }],
       };
-      const visible = getVisibleResumeSections(data);
+      const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
       expect(visibleIds).toContain('additional');
@@ -170,7 +169,7 @@ describe('Classic Resume Section Registry', () => {
         ...createMinimalResume(),
         skills: ['Communication', 'Leadership'],
       };
-      const visible = getVisibleResumeSections(data);
+      const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
       expect(visibleIds).toContain('additional');
@@ -181,7 +180,7 @@ describe('Classic Resume Section Registry', () => {
         ...createMinimalResume(),
         languages: [{ language: 'English', proficiency: 'Native' }],
       };
-      const visible = getVisibleResumeSections(data);
+      const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
       expect(visibleIds).toContain('additional');
@@ -193,7 +192,7 @@ describe('Classic Resume Section Registry', () => {
         professional_experience: [],
         independent_projects: [],
       };
-      const visible = getVisibleResumeSections(data);
+      const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
       expect(visibleIds).not.toContain('experience');
@@ -211,7 +210,7 @@ describe('Classic Resume Section Registry', () => {
           },
         ],
       };
-      const visible = getVisibleResumeSections(data);
+      const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
       expect(visibleIds).toContain('experience');
@@ -222,7 +221,7 @@ describe('Classic Resume Section Registry', () => {
         ...createMinimalResume(),
         education: [],
       };
-      const visible = getVisibleResumeSections(data);
+      const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
       expect(visibleIds).not.toContain('education');
@@ -234,7 +233,7 @@ describe('Classic Resume Section Registry', () => {
         summary: 'Professional summary',
         technical_expertise: [{ resume_title: 'Frontend', skills: ['React'] }],
       };
-      const visible = getVisibleResumeSections(data);
+      const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
 
       // Verify sections are sorted by order property
       for (let i = 1; i < visible.length; i++) {
@@ -251,16 +250,16 @@ describe('Classic Resume Section Registry', () => {
     it('should return true for always-visible sections', () => {
       const data = createMinimalResume();
 
-      expect(isResumeSectionVisible('header', data)).toBe(true);
-      expect(isResumeSectionVisible('experience', data)).toBe(true);
-      expect(isResumeSectionVisible('education', data)).toBe(true);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'header', data)).toBe(true);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'experience', data)).toBe(true);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'education', data)).toBe(true);
     });
 
     it('should return false for optional sections with no data', () => {
       const data = createMinimalResume();
 
-      expect(isResumeSectionVisible('summary', data)).toBe(false);
-      expect(isResumeSectionVisible('additional', data)).toBe(false);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'summary', data)).toBe(false);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'additional', data)).toBe(false);
     });
 
     it('should return true for optional sections with data', () => {
@@ -270,13 +269,13 @@ describe('Classic Resume Section Registry', () => {
         technical_expertise: [{ resume_title: 'Frontend', skills: ['React'] }],
       };
 
-      expect(isResumeSectionVisible('summary', data)).toBe(true);
-      expect(isResumeSectionVisible('additional', data)).toBe(true);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'summary', data)).toBe(true);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'additional', data)).toBe(true);
     });
 
     it('should return false for non-existent sections', () => {
       const data = createMinimalResume();
-      expect(isResumeSectionVisible('non-existent-section', data)).toBe(false);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'non-existent-section', data)).toBe(false);
     });
   });
 
@@ -290,9 +289,9 @@ describe('Classic Resume Section Registry', () => {
         independent_projects: undefined,
       };
 
-      expect(() => getVisibleResumeSections(data)).not.toThrow();
-      expect(isResumeSectionVisible('additional', data)).toBe(false);
-      expect(isResumeSectionVisible('experience', data)).toBe(true); // Still has professional_experience
+      expect(() => getVisibleResumeSections(RESUME_SECTIONS, data)).not.toThrow();
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'additional', data)).toBe(false);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'experience', data)).toBe(true); // Still has professional_experience
     });
 
     it('should handle resume with all optional fields populated', () => {
@@ -312,7 +311,7 @@ describe('Classic Resume Section Registry', () => {
         ],
       };
 
-      const visible = getVisibleResumeSections(data);
+      const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
       expect(visible.length).toBe(RESUME_SECTIONS.length);
     });
   });
@@ -364,7 +363,7 @@ describe('Classic Cover Letter Section Registry', () => {
   describe('getVisibleCoverLetterSections', () => {
     it('should return all sections with complete data', () => {
       const data = createMinimalCoverLetter();
-      const visible = getVisibleCoverLetterSections(data);
+      const visible = getVisibleCoverLetterSections(COVER_LETTER_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
       expect(visibleIds).toContain('header');
@@ -383,7 +382,7 @@ describe('Classic Cover Letter Section Registry', () => {
           letter_title: '',
         },
       };
-      const visible = getVisibleCoverLetterSections(data);
+      const visible = getVisibleCoverLetterSections(COVER_LETTER_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
       expect(visibleIds).not.toContain('title');
@@ -398,7 +397,7 @@ describe('Classic Cover Letter Section Registry', () => {
           letter_title: 'Application for Software Engineer Position',
         },
       };
-      const visible = getVisibleCoverLetterSections(data);
+      const visible = getVisibleCoverLetterSections(COVER_LETTER_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
       expect(visibleIds).toContain('title');
@@ -406,7 +405,7 @@ describe('Classic Cover Letter Section Registry', () => {
 
     it('should return sections in order', () => {
       const data = createMinimalCoverLetter();
-      const visible = getVisibleCoverLetterSections(data);
+      const visible = getVisibleCoverLetterSections(COVER_LETTER_SECTIONS, data);
 
       // Verify sections are sorted by order property
       for (let i = 1; i < visible.length; i++) {
@@ -423,15 +422,15 @@ describe('Classic Cover Letter Section Registry', () => {
     it('should return true for always-visible sections', () => {
       const data = createMinimalCoverLetter();
 
-      expect(isCoverLetterSectionVisible('header', data)).toBe(true);
-      expect(isCoverLetterSectionVisible('date', data)).toBe(true);
-      expect(isCoverLetterSectionVisible('body', data)).toBe(true);
-      expect(isCoverLetterSectionVisible('signature', data)).toBe(true);
+      expect(isCoverLetterSectionVisible(COVER_LETTER_SECTIONS, 'header', data)).toBe(true);
+      expect(isCoverLetterSectionVisible(COVER_LETTER_SECTIONS, 'date', data)).toBe(true);
+      expect(isCoverLetterSectionVisible(COVER_LETTER_SECTIONS, 'body', data)).toBe(true);
+      expect(isCoverLetterSectionVisible(COVER_LETTER_SECTIONS, 'signature', data)).toBe(true);
     });
 
     it('should return true for title when position exists', () => {
       const data = createMinimalCoverLetter();
-      expect(isCoverLetterSectionVisible('title', data)).toBe(true);
+      expect(isCoverLetterSectionVisible(COVER_LETTER_SECTIONS, 'title', data)).toBe(true);
     });
 
     it('should return false for title when both position and letter_title are empty', () => {
@@ -443,12 +442,14 @@ describe('Classic Cover Letter Section Registry', () => {
           letter_title: '',
         },
       };
-      expect(isCoverLetterSectionVisible('title', data)).toBe(false);
+      expect(isCoverLetterSectionVisible(COVER_LETTER_SECTIONS, 'title', data)).toBe(false);
     });
 
     it('should return false for non-existent sections', () => {
       const data = createMinimalCoverLetter();
-      expect(isCoverLetterSectionVisible('non-existent-section', data)).toBe(false);
+      expect(isCoverLetterSectionVisible(COVER_LETTER_SECTIONS, 'non-existent-section', data)).toBe(
+        false,
+      );
     });
   });
 
@@ -463,8 +464,8 @@ describe('Classic Cover Letter Section Registry', () => {
         },
       };
 
-      expect(() => getVisibleCoverLetterSections(data)).not.toThrow();
-      const visible = getVisibleCoverLetterSections(data);
+      expect(() => getVisibleCoverLetterSections(COVER_LETTER_SECTIONS, data)).not.toThrow();
+      const visible = getVisibleCoverLetterSections(COVER_LETTER_SECTIONS, data);
       expect(visible.length).toBeGreaterThan(0);
     });
 
@@ -482,7 +483,7 @@ describe('Classic Cover Letter Section Registry', () => {
         },
       };
 
-      const visible = getVisibleCoverLetterSections(data);
+      const visible = getVisibleCoverLetterSections(COVER_LETTER_SECTIONS, data);
       expect(visible.length).toBe(COVER_LETTER_SECTIONS.length);
     });
   });

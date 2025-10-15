@@ -1,11 +1,11 @@
 import { describe, test as it, expect } from 'bun:test';
 import type { ResumeSchema } from '@/types';
+import { RESUME_SECTIONS } from '@/templates/modern/section-registry';
 import {
-  RESUME_SECTIONS,
   getVisibleResumeSections,
   getVisibleResumeSectionsByColumn,
   isResumeSectionVisible,
-} from '@/templates/modern/section-registry';
+} from '@template-core/section-utils';
 
 // Helper to create minimal valid resume data
 const createMinimalResume = (): ResumeSchema => ({
@@ -83,7 +83,7 @@ describe('Resume Section Registry', () => {
   describe('getVisibleResumeSections', () => {
     it('should return required sections with minimal data', () => {
       const data = createMinimalResume();
-      const visible = getVisibleResumeSections(data);
+      const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
       // Required sections should always be visible
@@ -95,7 +95,7 @@ describe('Resume Section Registry', () => {
 
     it('should hide skills section when arrays are empty', () => {
       const data = createMinimalResume();
-      const visible = getVisibleResumeSections(data);
+      const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
       expect(visibleIds).not.toContain('skills');
@@ -106,7 +106,7 @@ describe('Resume Section Registry', () => {
         ...createMinimalResume(),
         technical_expertise: [{ resume_title: 'Frontend', skills: ['React', 'TypeScript'] }],
       };
-      const visible = getVisibleResumeSections(data);
+      const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
       expect(visibleIds).toContain('skills');
@@ -117,7 +117,7 @@ describe('Resume Section Registry', () => {
         ...createMinimalResume(),
         skills: ['Communication', 'Leadership'],
       };
-      const visible = getVisibleResumeSections(data);
+      const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
       expect(visibleIds).toContain('skills');
@@ -125,7 +125,7 @@ describe('Resume Section Registry', () => {
 
     it('should hide languages section when array is empty', () => {
       const data = createMinimalResume();
-      const visible = getVisibleResumeSections(data);
+      const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
       expect(visibleIds).not.toContain('languages');
@@ -136,7 +136,7 @@ describe('Resume Section Registry', () => {
         ...createMinimalResume(),
         languages: [{ language: 'English', proficiency: 'Native' }],
       };
-      const visible = getVisibleResumeSections(data);
+      const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
       const visibleIds = visible.map((s) => s.id);
 
       expect(visibleIds).toContain('languages');
@@ -148,7 +148,7 @@ describe('Resume Section Registry', () => {
         technical_expertise: [{ resume_title: 'Frontend', skills: ['React'] }],
         languages: [{ language: 'English', proficiency: 'Native' }],
       };
-      const visible = getVisibleResumeSections(data);
+      const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
 
       // Verify sections are sorted by order property
       for (let i = 1; i < visible.length; i++) {
@@ -160,7 +160,7 @@ describe('Resume Section Registry', () => {
   describe('getVisibleResumeSectionsByColumn', () => {
     it('should return only header sections', () => {
       const data = createMinimalResume();
-      const headerSections = getVisibleResumeSectionsByColumn(data, 'header');
+      const headerSections = getVisibleResumeSectionsByColumn(RESUME_SECTIONS, data, 'header');
 
       expect(headerSections.length).toBeGreaterThan(0);
       headerSections.forEach((section) => {
@@ -174,7 +174,7 @@ describe('Resume Section Registry', () => {
         skills: ['Communication'],
         languages: [{ language: 'English', proficiency: 'Native' }],
       };
-      const leftSections = getVisibleResumeSectionsByColumn(data, 'left');
+      const leftSections = getVisibleResumeSectionsByColumn(RESUME_SECTIONS, data, 'left');
 
       expect(leftSections.length).toBeGreaterThan(0);
       leftSections.forEach((section) => {
@@ -189,7 +189,7 @@ describe('Resume Section Registry', () => {
 
     it('should return only right column sections', () => {
       const data = createMinimalResume();
-      const rightSections = getVisibleResumeSectionsByColumn(data, 'right');
+      const rightSections = getVisibleResumeSectionsByColumn(RESUME_SECTIONS, data, 'right');
 
       expect(rightSections.length).toBeGreaterThan(0);
       rightSections.forEach((section) => {
@@ -207,7 +207,7 @@ describe('Resume Section Registry', () => {
         technical_expertise: [{ resume_title: 'Frontend', skills: ['React'] }],
         languages: [{ language: 'English', proficiency: 'Native' }],
       };
-      const leftSections = getVisibleResumeSectionsByColumn(data, 'left');
+      const leftSections = getVisibleResumeSectionsByColumn(RESUME_SECTIONS, data, 'left');
 
       // Verify order
       for (let i = 1; i < leftSections.length; i++) {
@@ -220,17 +220,17 @@ describe('Resume Section Registry', () => {
     it('should return true for always-visible sections', () => {
       const data = createMinimalResume();
 
-      expect(isResumeSectionVisible('header', data)).toBe(true);
-      expect(isResumeSectionVisible('contact', data)).toBe(true);
-      expect(isResumeSectionVisible('experience', data)).toBe(true);
-      expect(isResumeSectionVisible('education', data)).toBe(true);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'header', data)).toBe(true);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'contact', data)).toBe(true);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'experience', data)).toBe(true);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'education', data)).toBe(true);
     });
 
     it('should return false for optional sections with no data', () => {
       const data = createMinimalResume();
 
-      expect(isResumeSectionVisible('skills', data)).toBe(false);
-      expect(isResumeSectionVisible('languages', data)).toBe(false);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'skills', data)).toBe(false);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'languages', data)).toBe(false);
     });
 
     it('should return true for optional sections with data', () => {
@@ -240,13 +240,13 @@ describe('Resume Section Registry', () => {
         languages: [{ language: 'English', proficiency: 'Native' }],
       };
 
-      expect(isResumeSectionVisible('skills', data)).toBe(true);
-      expect(isResumeSectionVisible('languages', data)).toBe(true);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'skills', data)).toBe(true);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'languages', data)).toBe(true);
     });
 
     it('should return false for non-existent sections', () => {
       const data = createMinimalResume();
-      expect(isResumeSectionVisible('non-existent-section', data)).toBe(false);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'non-existent-section', data)).toBe(false);
     });
   });
 
@@ -259,9 +259,9 @@ describe('Resume Section Registry', () => {
         languages: undefined,
       };
 
-      expect(() => getVisibleResumeSections(data)).not.toThrow();
-      expect(isResumeSectionVisible('skills', data)).toBe(false);
-      expect(isResumeSectionVisible('languages', data)).toBe(false);
+      expect(() => getVisibleResumeSections(RESUME_SECTIONS, data)).not.toThrow();
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'skills', data)).toBe(false);
+      expect(isResumeSectionVisible(RESUME_SECTIONS, 'languages', data)).toBe(false);
     });
 
     it('should handle resume with all optional fields populated', () => {
@@ -281,7 +281,7 @@ describe('Resume Section Registry', () => {
         ],
       };
 
-      const visible = getVisibleResumeSections(data);
+      const visible = getVisibleResumeSections(RESUME_SECTIONS, data);
       expect(visible.length).toBe(RESUME_SECTIONS.length);
     });
   });

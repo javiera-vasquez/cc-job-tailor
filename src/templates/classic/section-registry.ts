@@ -1,5 +1,4 @@
-import React from 'react';
-import type { ResumeSchema, CoverLetterSchema } from '@/types';
+import type { ResumeSectionConfig, CoverLetterSectionConfig } from '@/types';
 
 // Resume section components
 import Header from './components/resume/Header';
@@ -15,56 +14,13 @@ import Title from './components/cover-letter/Title';
 import Body from './components/cover-letter/Body';
 import Signature from './components/cover-letter/Signature';
 
-/**
- * Configuration for a resume section
- */
-export type ResumeSectionConfig = {
-  /** Document type discriminator */
-  documentType: 'resume';
-
-  /** Unique identifier for the section */
-  id: string;
-
-  /** React component to render */
-  component: React.ComponentType<{ resume: ResumeSchema; debug?: boolean }>;
-
-  /** Function to determine if section should be visible */
-  isVisible: (data: ResumeSchema) => boolean;
-
-  /** Render order (lower numbers render first) */
-  order: number;
-
-  /** Optional description for debugging/documentation */
-  description?: string;
-};
-
-/**
- * Configuration for a cover letter section
- */
-export type CoverLetterSectionConfig = {
-  /** Document type discriminator */
-  documentType: 'cover-letter';
-
-  /** Unique identifier for the section */
-  id: string;
-
-  /** React component to render */
-  component: React.ComponentType<{ data: CoverLetterSchema; debug?: boolean }>;
-
-  /** Function to determine if section should be visible */
-  isVisible: (data: CoverLetterSchema) => boolean;
-
-  /** Render order (lower numbers render first) */
-  order: number;
-
-  /** Optional description for debugging/documentation */
-  description?: string;
-};
-
-/**
- * Union type for all section configurations
- */
-export type SectionConfig = ResumeSectionConfig | CoverLetterSectionConfig;
+// Utility functions
+export {
+  getVisibleResumeSections,
+  isResumeSectionVisible,
+  getVisibleCoverLetterSections,
+  isCoverLetterSectionVisible,
+} from '@template-core/section-utils';
 
 /**
  * Registry of all available resume sections
@@ -204,37 +160,3 @@ export const COVER_LETTER_SECTIONS: CoverLetterSectionConfig[] = [
     description: 'Closing signature',
   },
 ];
-
-/**
- * Get all visible resume sections for the given data
- */
-export function getVisibleResumeSections(data: ResumeSchema): ResumeSectionConfig[] {
-  return RESUME_SECTIONS.filter((section) => section.isVisible(data)).sort(
-    (a, b) => a.order - b.order,
-  );
-}
-
-/**
- * Check if a specific resume section should be visible
- */
-export function isResumeSectionVisible(sectionId: string, data: ResumeSchema): boolean {
-  const section = RESUME_SECTIONS.find((s) => s.id === sectionId);
-  return section ? section.isVisible(data) : false;
-}
-
-/**
- * Get all visible cover letter sections for the given data
- */
-export function getVisibleCoverLetterSections(data: CoverLetterSchema): CoverLetterSectionConfig[] {
-  return COVER_LETTER_SECTIONS.filter((section) => section.isVisible(data)).sort(
-    (a, b) => a.order - b.order,
-  );
-}
-
-/**
- * Check if a specific cover letter section should be visible
- */
-export function isCoverLetterSectionVisible(sectionId: string, data: CoverLetterSchema): boolean {
-  const section = COVER_LETTER_SECTIONS.find((s) => s.id === sectionId);
-  return section ? section.isVisible(data) : false;
-}

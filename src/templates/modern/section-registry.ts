@@ -1,5 +1,4 @@
-import React from 'react';
-import type { ResumeSchema, CoverLetterSchema } from '@/types';
+import type { ResumeSectionConfig, CoverLetterSectionConfig } from '@/types';
 
 // Resume section components
 import Header from './components/resume/Header';
@@ -16,59 +15,23 @@ import Title from './components/cover-letter/Title';
 import Body from './components/cover-letter/Body';
 import Signature from './components/cover-letter/Signature';
 
+// Utility functions
+export {
+  getVisibleResumeSections,
+  getVisibleResumeSectionsByColumn,
+  isResumeSectionVisible,
+  getVisibleCoverLetterSections,
+  isCoverLetterSectionVisible,
+} from '@template-core/section-utils';
+
 /**
- * Configuration for a resume section
+ * Modern template resume section configuration
+ * Extends base ResumeSectionConfig with required column property
  */
-export type ResumeSectionConfig = {
-  /** Document type discriminator */
-  documentType: 'resume';
-
-  /** Unique identifier for the section */
-  id: string;
-
-  /** React component to render */
-  component: React.ComponentType<{ resume: ResumeSchema; debug?: boolean }>;
-
-  /** Column placement in the resume layout */
+export type ModernResumeSectionConfig = ResumeSectionConfig & {
+  /** Column placement is required for modern template */
   column: 'left' | 'right' | 'header';
-
-  /** Function to determine if section should be visible */
-  isVisible: (data: ResumeSchema) => boolean;
-
-  /** Render order within the column (lower numbers render first) */
-  order: number;
-
-  /** Optional description for debugging/documentation */
-  description?: string;
 };
-
-/**
- * Configuration for a cover letter section
- */
-export type CoverLetterSectionConfig = {
-  /** Document type discriminator */
-  documentType: 'cover-letter';
-
-  /** Unique identifier for the section */
-  id: string;
-
-  /** React component to render */
-  component: React.ComponentType<{ data: CoverLetterSchema; debug?: boolean }>;
-
-  /** Function to determine if section should be visible */
-  isVisible: (data: CoverLetterSchema) => boolean;
-
-  /** Render order (lower numbers render first) */
-  order: number;
-
-  /** Optional description for debugging/documentation */
-  description?: string;
-};
-
-/**
- * Union type for all section configurations
- */
-export type SectionConfig = ResumeSectionConfig | CoverLetterSectionConfig;
 
 /**
  * Registry of all available resume sections
@@ -85,7 +48,7 @@ export type SectionConfig = ResumeSectionConfig | CoverLetterSectionConfig;
  *    - Order number (determines render position)
  * 4. Add unit tests for visibility logic
  */
-export const RESUME_SECTIONS: ResumeSectionConfig[] = [
+export const RESUME_SECTIONS: ModernResumeSectionConfig[] = [
   // ========== HEADER SECTION ==========
   {
     documentType: 'resume',
@@ -216,47 +179,3 @@ export const COVER_LETTER_SECTIONS: CoverLetterSectionConfig[] = [
     description: 'Closing signature',
   },
 ];
-
-/**
- * Get all visible resume sections for the given data
- */
-export function getVisibleResumeSections(data: ResumeSchema): ResumeSectionConfig[] {
-  return RESUME_SECTIONS.filter((section) => section.isVisible(data)).sort(
-    (a, b) => a.order - b.order,
-  );
-}
-
-/**
- * Get visible resume sections filtered by column
- */
-export function getVisibleResumeSectionsByColumn(
-  data: ResumeSchema,
-  column: 'left' | 'right' | 'header',
-): ResumeSectionConfig[] {
-  return getVisibleResumeSections(data).filter((section) => section.column === column);
-}
-
-/**
- * Check if a specific resume section should be visible
- */
-export function isResumeSectionVisible(sectionId: string, data: ResumeSchema): boolean {
-  const section = RESUME_SECTIONS.find((s) => s.id === sectionId);
-  return section ? section.isVisible(data) : false;
-}
-
-/**
- * Get all visible cover letter sections for the given data
- */
-export function getVisibleCoverLetterSections(data: CoverLetterSchema): CoverLetterSectionConfig[] {
-  return COVER_LETTER_SECTIONS.filter((section) => section.isVisible(data)).sort(
-    (a, b) => a.order - b.order,
-  );
-}
-
-/**
- * Check if a specific cover letter section should be visible
- */
-export function isCoverLetterSectionVisible(sectionId: string, data: CoverLetterSchema): boolean {
-  const section = COVER_LETTER_SECTIONS.find((s) => s.id === sectionId);
-  return section ? section.isVisible(data) : false;
-}

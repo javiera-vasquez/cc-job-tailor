@@ -68,7 +68,9 @@ export type Skills = string;
 // Union type for Experience component that can handle both types
 export type ExperienceItem = ProfessionalExperience | IndependentProject;
 
-// TYPES FOR A REACT-PDF PAGE
+
+// ========== DOCUMENT TYPE ==========
+// TYPES FOR A REACT-PDF PAGE - HOC
 export type ReactPDFProps = {
   size?: PageSize;
   orientation?: Orientation;
@@ -94,6 +96,9 @@ export type ThemeComponents = {
   coverLetter: React.ComponentType<CoverLetterComponentProps>;
 };
 
+/**
+ * Document types supported by the application
+ */
 export type DocumentType = 'resume' | 'cover-letter';
 
 export type TailorThemeProps = {
@@ -111,3 +116,74 @@ export type Schemas = {
   job_analysis: JobAnalysisSchema;
   cover_letter: CoverLetterSchema;
 };
+
+// ========== SECTION REGISTRY TYPES ==========
+
+/**
+ * Generic base configuration for document sections
+ *
+ * @template TDocType - The document type discriminator (e.g., 'resume' | 'cover-letter')
+ * @template TData - The data schema type for this document
+ * @template TComponentProps - Additional props for the component (optional)
+ *
+ * @example
+ * ```typescript
+ * // Creating a new document section config
+ * type InvoiceSectionConfig = SectionConfigBase<
+ *   Extract<DocumentType, 'invoice'>,
+ *   InvoiceSchema,
+ *   { currency?: string }
+ * >;
+ * ```
+ */
+export type SectionConfigBase<
+  TDocType extends DocumentType,
+  TData,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  TComponentProps extends Record<string, any> = Record<string, never>,
+> = {
+  /** Document type discriminator */
+  documentType: TDocType;
+
+  /** Unique identifier for the section */
+  id: string;
+
+  /** React component to render */
+  component: React.ComponentType<{ debug?: boolean } & TComponentProps>;
+
+  /** Function to determine if section should be visible */
+  isVisible: (data: TData) => boolean;
+
+  /** Render order (lower numbers render first) */
+  order: number;
+
+  /** Optional description for debugging/documentation */
+  description?: string;
+};
+
+/**
+ * Configuration for a resume section
+ * Extends base with resume-specific properties
+ */
+export type ResumeSectionConfig = SectionConfigBase<
+  Extract<DocumentType, 'resume'>,
+  ResumeSchema,
+  { resume: ResumeSchema }
+> & {
+  /** Column placement in the resume layout (optional - only for templates that use columns) */
+  column?: 'left' | 'right' | 'header';
+};
+
+/**
+ * Configuration for a cover letter section
+ */
+export type CoverLetterSectionConfig = SectionConfigBase<
+  Extract<DocumentType, 'cover-letter'>,
+  CoverLetterSchema,
+  { data: CoverLetterSchema }
+>;
+
+/**
+ * Union type for all section configurations
+ */
+export type SectionConfig = ResumeSectionConfig | CoverLetterSectionConfig;

@@ -4,8 +4,9 @@ import { Page, View, StyleSheet } from '@react-pdf/renderer';
 import { tokens } from '@template-core/design-tokens';
 import type { ResumeSchema, ReactPDFProps } from '@types';
 
-// Import section registry utilities
-import { getVisibleResumeSectionsByColumn } from './section-registry';
+// Import section registry and utilities
+import { RESUME_SECTIONS } from './section-registry';
+import { getVisibleResumeSectionsByColumn } from '@template-core/section-utils';
 
 const { colors, spacing, typography } = tokens.modern;
 
@@ -40,9 +41,9 @@ export const Resume = ({
   const resumeData = data as ResumeSchema;
 
   // Get visible sections organized by column
-  const headerSections = getVisibleResumeSectionsByColumn(resumeData, 'header');
-  const leftSections = getVisibleResumeSectionsByColumn(resumeData, 'left');
-  const rightSections = getVisibleResumeSectionsByColumn(resumeData, 'right');
+  const headerSections = getVisibleResumeSectionsByColumn(RESUME_SECTIONS, resumeData, 'header');
+  const leftSections = getVisibleResumeSectionsByColumn(RESUME_SECTIONS, resumeData, 'left');
+  const rightSections = getVisibleResumeSectionsByColumn(RESUME_SECTIONS, resumeData, 'right');
 
   return (
     <Page
