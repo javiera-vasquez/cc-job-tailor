@@ -36,8 +36,23 @@ if (!companyName) {
 const result = setTailorContext(companyName);
 
 if (result.success) {
-  // Success: use logger (respects LOG_FORMAT for JSON/human output)
-  loggers.setEnv.info('Tailor context set successfully', result.data);
+  // Format output similar to tailor-server style
+  const data = result.data;
+  const fileCount = data.availableFiles?.length || 0;
+  const filesList = data.availableFiles?.join(', ') || 'none';
+
+  // Success header with emoji and key info
+  loggers.setEnv.success(`Context set • ${data.company} • ${fileCount} file(s)`);
+
+  // Display key details in a compact, scannable format
+  loggers.setEnv.info(`   -Path: ${data.path}`);
+  loggers.setEnv.info(`   -Position: ${data.position || 'Not specified'}`);
+  loggers.setEnv.info(`   -Focus: ${data.primaryFocus || 'Not specified'}`);
+  loggers.setEnv.info(`   -Files: ${filesList}`);
+
+  // Display next action
+  loggers.setEnv.info('🚀 All good, please start the tailor-server');
+
   process.exit(0);
 } else {
   // Failure: log error with details

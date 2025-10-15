@@ -25,10 +25,12 @@ transformation_rules:
   direct_mapping:
     - source: 'personal_info.name'
       target: 'resume.name'
+      description: 'Copy name to top-level resume field (not in contact)'
     - source: 'personal_info.profile_picture'
       target: 'resume.profile_picture'
     - source: 'contact'
       target: 'resume.contact'
+      description: 'Copy contact details (phone, email, address, linkedin, github) - name is at resume top level'
     - source: 'languages'
       target: 'resume.languages'
     - source: 'education'
@@ -237,11 +239,16 @@ example_usage: |
 # Output template structure
 output_template: |
   resume:
-    name: "{{ personal_info.name }}"
+    name: "{{ personal_info.name }}"  # Top-level field, not in contact
     profile_picture: "{{ personal_info.profile_picture }}"
     title: "{{ selected_title_based_on_highest_weighted_job_focus }}"
     summary: "{{ selected_summary_based_on_highest_weighted_job_focus }}"
-    contact: "{{ contact }}"
+    contact:  # ContactDetails without name field
+      phone: "{{ contact.phone }}"
+      email: "{{ contact.email }}"
+      address: "{{ contact.address }}"
+      linkedin: "{{ contact.linkedin }}"
+      github: "{{ contact.github }}"
     technical_expertise:
       - resume_title: "{{ category_title_1 }}"
         skills: ["{{ specialty_matched_skills_1 }}"]

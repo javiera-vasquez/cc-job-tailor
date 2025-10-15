@@ -6,31 +6,31 @@ schema_version: '1.0'
 # Target output schema for tailored cover letters
 target_schema:
   version: 'string' # Schema version
-  job_focus: # Array of job focuses from analysis
+  job_focus: # Array of job focuses from analysis (OPTIONAL)
     - primary_area: 'string' # senior_engineer, tech_lead, etc.
       specialties: ['string'] # [ai, ml, react, typescript]
       weight: 'number' # 0.0-1.0
   analysis_date: 'string' # Date of job analysis
 
   cover_letter:
-    company: 'string' # Target company name
-    position: 'string' # Target job position
-    primary_focus: 'string' # highest weighted primary_area from job_focus array
-    date: 'string' # Application date
+    name: 'string' # Full name (REQUIRED)
+    company: 'string' # Target company name (REQUIRED)
+    position: 'string' # Target job position (OPTIONAL)
+    primary_focus: 'string' # highest weighted primary_area from job_focus array (OPTIONAL)
+    date: 'string' # Application date (REQUIRED)
 
     personal_info:
-      name: 'string' # Full name
-      address: 'string' # Physical address
-      email: 'string' # Email address
-      phone: 'string' # Phone number
-      linkedin: 'string' # LinkedIn profile URL
-      github: 'string' # GitHub profile URL
+      address: 'string' # Physical address (OPTIONAL)
+      email: 'string' # Email address (REQUIRED)
+      phone: 'string' # Phone number (REQUIRED)
+      linkedin: 'string' # LinkedIn profile URL (OPTIONAL)
+      github: 'string' # GitHub profile URL (OPTIONAL)
 
     content:
-      letter_title: 'string' # Cover letter title
-      opening_line: 'string' # Personalized opening line
-      body: ['array'] # Array of paragraph strings
-      signature: 'string' # Professional signature block
+      letter_title: 'string' # Cover letter title (REQUIRED - used as fallback if position is missing)
+      opening_line: 'string' # Personalized opening line (REQUIRED)
+      body: ['array'] # Array of paragraph strings (REQUIRED)
+      signature: 'string' # Professional signature block (REQUIRED)
 
 # Transformation rules
 transformation_rules:
@@ -71,12 +71,29 @@ length_constraints:
 
 # Required fields
 required_fields:
-  - 'job_analysis.company'
-  - 'job_analysis.position'
-  - 'job_analysis.job_focus'
+  - 'cover_letter.name'
+  - 'cover_letter.company'
+  - 'cover_letter.date'
+  - 'cover_letter.personal_info.email'
+  - 'cover_letter.personal_info.phone'
+  - 'cover_letter.content.letter_title'
+  - 'cover_letter.content.opening_line'
+  - 'cover_letter.content.body'
+  - 'cover_letter.content.signature'
+
+# Optional fields
+optional_fields:
+  - 'cover_letter.position'
+  - 'cover_letter.job_focus'
+  - 'cover_letter.primary_focus'
+  - 'cover_letter.personal_info.address'
+  - 'cover_letter.personal_info.linkedin'
+  - 'cover_letter.personal_info.github'
+
 validation_rules:
-  - 'job_analysis.job_focus must be non-empty array'
-  - 'job_focus weights must sum to 1.0'
+  - 'If job_focus is provided, it must be non-empty array'
+  - 'If job_focus is provided, weights must sum to 1.0'
+  - 'At least one of position or letter_title must be provided for Title section'
 
 # Output template structure
 output_template: |
@@ -90,8 +107,8 @@ output_template: |
     primary_focus: "{{ job_analysis.job_focus[0].primary_area }}"  # Highest weighted focus
     date: "{{ current_date }}"
 
+    name: "{{ personal_info.name }}"
     personal_info:
-      name: "{{ personal_info.name }}"
       address: "{{ personal_info.address }}"
       email: "{{ personal_info.email }}"
       phone: "{{ personal_info.phone }}"

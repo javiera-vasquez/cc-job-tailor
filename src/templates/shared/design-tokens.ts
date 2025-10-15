@@ -93,9 +93,9 @@ const classicTokens = {
   },
   spacing: {
     columnWidth: 0, // Single column layout
-    documentPadding: 32,
-    pagePadding: 6,
-    profileImageSize: 40, // Square profile image (60x60) - set to 0 to disable
+    documentPadding: 42,
+    pagePadding: 8,
+    profileImageSize: 48, // Square profile image (48x48)
     listItemSpacing: 3,
   },
 };

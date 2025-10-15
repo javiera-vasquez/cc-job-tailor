@@ -542,6 +542,7 @@ describe('WithPDFWrapper Component', () => {
   describe('Cover Letter Data Handling', () => {
     test('handles cover letter data correctly', () => {
       const coverLetterData: CoverLetterSchema = {
+        name: 'Test User',
         company: 'Test Company',
         position: 'Software Engineer',
         job_focus: [

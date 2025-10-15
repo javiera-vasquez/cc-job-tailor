@@ -1,7 +1,7 @@
 // @ts-nocheck
 // Auto-generated application data - TypeScript validation disabled
 // Company: tech-corp
-// Generated at: 2025-10-08T16:17:39.155Z
+// Generated at: 2025-10-15T16:36:50.977Z
 
 import type { ApplicationData } from '@types';
 
@@ -326,6 +326,7 @@ const applicationData: ApplicationData = {
   },
   cover_letter: {
     company: 'Tech-Corp',
+    name: 'John Doe',
     position: 'Senior Frontend Engineer - Web',
     primary_focus: 'senior_engineer',
     date: '2025-10-01',

@@ -120,8 +120,8 @@ export const PATTERNS = {
  * Timeouts and timing-related configuration
  */
 export const TIMEOUTS = {
-  /** Debounce period for file watching (ms) */
-  FILE_WATCH_DEBOUNCE: 300,
+  /** Debounce period for file watching (ms) - set to 0 to disable */
+  FILE_WATCH_DEBOUNCE: parseInt(process.env.FILE_WATCH_DEBOUNCE_MS || '300', 10),
 
   /** Cooldown before process restart (ms) */
   PROCESS_RESTART_COOLDOWN: 5000,
@@ -143,6 +143,27 @@ export const LIMITS = {
 
   /** Maximum pending file changes before batch processing */
   MAX_PENDING_CHANGES: 10,
+} as const;
+
+// ============================================================================
+// Logging Configuration
+// ============================================================================
+
+/**
+ * Helper function to parse boolean environment variables
+ */
+const parseBoolean = (value?: string, defaultValue: boolean = false): boolean => {
+  if (!value) return defaultValue;
+  return value.toLowerCase() === 'true';
+};
+
+/**
+ * Compact mode configuration for tailor-server
+ * When enabled, reduces log output to minimal essential information
+ */
+export const COMPACT_MODE = {
+  /** Enable compact logging mode (minimal output) */
+  ENABLED: parseBoolean(process.env.TAILOR_SERVER_COMPACT_LOGS, false),
 } as const;
 
 // ============================================================================

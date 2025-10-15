@@ -56,7 +56,7 @@ This sub-agent specializes in analyzing job applications and creating tailored r
 - Technical expertise must include `resume_title` and prioritized `skills` arrays (max 4 categories)
 - Flatten soft skills into single array (max 12 skills)
 - Generate metadata.yaml from job_analysis using transformation rules in `resume-data/mapping-rules/metadata.yaml`
-- Metadata must include all required fields: company, folder_path, available_files, position, primary_focus, job_summary, job_details (nested), last_updated
+- Metadata must include all required fields: company, folder_path, available_files, position, primary_focus, job_summary, job_details (nested), active_template, last_updated
 - Format job_details with: company, location, experience_level, employment_type, must_have_skills (top 5), nice_to_have_skills, team_context, user_scale
 - Job summary must be concise (max 100 characters)
 - Preserve data integrity - no fabricated content, only selection and emphasis
@@ -176,6 +176,7 @@ job_details:
   nice_to_have_skills: ['Vector databases', 'AWS', 'Docker']
   team_context: 'AI team of 50+ engineers, cross-functional collaboration'
   user_scale: '10 million users globally'
+active_template: 'modern'
 last_updated: '2025-09-30T12:00:00Z'
 ```
 
@@ -269,7 +270,7 @@ job_analysis:
 
 **Metadata** (from `resume-data/mapping-rules/metadata.yaml`):
 
-- **Required Fields**: company, folder_path, available_files, position, primary_focus, job_summary, job_details, last_updated
+- **Required Fields**: company, folder_path, available_files, position, primary_focus, job_summary, job_details, active_template, last_updated
 - **Job Summary**: Max 100 characters
 - **Must-Have Skills in job_details**: Max 5 items (top priority from job_analysis)
 - **Nice-to-Have Skills in job_details**: Max 5 items

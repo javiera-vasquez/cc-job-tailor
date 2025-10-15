@@ -1,4 +1,22 @@
-#!/usr/bin/env bun
+import { spawn, type ChildProcess } from 'child_process';
+import { watch, existsSync, type FSWatcher } from 'fs';
+import { load } from 'js-yaml';
+import { sep } from 'path';
+import { validateTailorContext, type TailorContext } from '../src/zod/tailor-context-schema';
+import { validateApplicationData } from '../src/zod/validation';
+import { getCompanyFolderPath, loadTailoredData } from './shared/company-loader';
+import { handleValidationError } from './shared/validation-error-handler';
+import { PATHS, PATTERNS, SCRIPTS, TIMEOUTS, COMPACT_MODE } from './shared/config';
+import { loggers } from './shared/logger';
+
+interface WatcherState {
+  devServer: ChildProcess;
+  fileWatcher?: FSWatcher;
+  activeCompany: string | null;
+  debounceTimer?: NodeJS.Timeout;
+  currentFilename?: string | null;
+}
+
 /**
  * Enhanced dev server with tailor data watching
  *
@@ -8,28 +26,11 @@
  * - Automatic data regeneration on YAML changes
  * - Integration with Bun's native hot reload
  */
-
-import { spawn, type ChildProcess } from 'child_process';
-import { watch, existsSync, type FSWatcher } from 'fs';
-import { load } from 'js-yaml';
-import { sep } from 'path';
-import { validateTailorContext, type TailorContext } from '../src/zod/tailor-context-schema';
-import { validateApplicationData } from '../src/zod/validation';
-import { getCompanyFolderPath, loadTailoredData } from './shared/company-loader';
-import { handleValidationError } from './shared/validation-error-handler';
-import { PATHS, PATTERNS, SCRIPTS } from './shared/config';
-import { loggers } from './shared/logger';
-
-interface WatcherState {
-  devServer: ChildProcess;
-  fileWatcher?: FSWatcher;
-  activeCompany: string | null;
-}
-
 class EnhancedDevServer {
   private state: WatcherState;
   private readonly tailorDir = PATHS.TAILOR_BASE;
   private readonly contextPath = PATHS.CONTEXT_FILE;
+  private readonly compactMode = COMPACT_MODE.ENABLED;
 
   constructor() {
     this.state = {
@@ -43,7 +44,9 @@ class EnhancedDevServer {
    */
   private async getActiveCompany(): Promise<string | null> {
     if (!existsSync(this.contextPath)) {
-      loggers.server.warn('No tailor context found - watching all companies');
+      if (!this.compactMode) {
+        loggers.server.warn('No tailor context found - watching all companies');
+      }
       return null;
     }
 
@@ -59,11 +62,13 @@ class EnhancedDevServer {
         loggers.server.error('Invalid tailor context', null, {
           errors: validation.errors,
         });
-        loggers.server.warn('Watching all companies due to validation errors');
+        if (!this.compactMode) {
+          loggers.server.warn('Watching all companies due to validation errors');
+        }
         return null;
       }
 
-      // Show warnings if any
+      // Show warnings if any (always show warnings, even in compact mode)
       if (validation.warnings && validation.warnings.length > 0) {
         loggers.server.warn('Tailor context warnings', {
           warnings: validation.warnings,
@@ -71,17 +76,21 @@ class EnhancedDevServer {
       }
 
       if (!validation.data?.active_company) {
-        loggers.server.warn('No active company in tailor context');
+        if (!this.compactMode) {
+          loggers.server.warn('No active company in tailor context');
+        }
         return null;
       }
 
       return validation.data.active_company;
     } catch (error) {
       const err = error instanceof Error ? error : new Error(String(error));
-      loggers.server.warn('Could not read tailor context', {
-        error: err.message,
-        stack: err.stack,
-      });
+      if (!this.compactMode) {
+        loggers.server.warn('Could not read tailor context', {
+          error: err.message,
+          stack: err.stack,
+        });
+      }
       return null;
     }
   }
@@ -90,7 +99,9 @@ class EnhancedDevServer {
    * Validate company data before starting the server
    */
   private async validateCompanyData(companyName: string): Promise<void> {
-    loggers.server.info(`Validating data for company: ${companyName}`);
+    if (!this.compactMode) {
+      loggers.server.info(`Validating data for company: ${companyName}`);
+    }
 
     try {
       const companyPath = getCompanyFolderPath(companyName);
@@ -107,7 +118,9 @@ class EnhancedDevServer {
       const applicationData = await loadTailoredData(companyPath);
       validateApplicationData(applicationData);
 
-      loggers.server.success('Application data validation passed');
+      if (!this.compactMode) {
+        loggers.server.success('Application data validation passed');
+      }
     } catch (error) {
       handleValidationError(error, {
         context: 'tailor-server',
@@ -168,9 +181,9 @@ class EnhancedDevServer {
   }
 
   /**
-   * Regenerate data for the specified company
+   * Regenerate data (verbose mode - shows all subprocess output)
    */
-  private async regenerateData(companyName: string): Promise<void> {
+  private async regenerateDataVerbose(companyName: string): Promise<void> {
     loggers.server.loading(`Regenerating data for company: ${companyName}`);
 
     return new Promise((resolve, reject) => {
@@ -212,9 +225,75 @@ class EnhancedDevServer {
   }
 
   /**
-   * Handle file system change events
+   * Regenerate data (compact mode - minimal output with subprocess capture)
    */
-  private async handleFileChange(eventType: string, filename: string | null): Promise<void> {
+  private async regenerateDataCompact(companyName: string, filename: string | null): Promise<void> {
+    const startTime = Date.now();
+    const displayFilename = filename ? filename.split(sep).pop() || filename : 'file';
+
+    return new Promise((resolve, reject) => {
+      try {
+        const generateData = spawn('bun', ['run', SCRIPTS.GENERATE_DATA, '-C', companyName], {
+          stdio: ['ignore', 'pipe', 'pipe'], // Capture stdout and stderr
+          cwd: process.cwd(),
+          env: {
+            ...process.env,
+            LOG_LEVEL: 'error', // Suppress subprocess info logs
+          },
+        });
+
+        let errorOutput = '';
+        let stdoutOutput = '';
+
+        // Capture stderr for errors
+        generateData.stderr?.on('data', (data: Buffer) => {
+          errorOutput += data.toString();
+        });
+
+        // Capture stdout (in case there are errors logged to stdout)
+        generateData.stdout?.on('data', (data: Buffer) => {
+          stdoutOutput += data.toString();
+        });
+
+        generateData.on('close', (code) => {
+          const duration = ((Date.now() - startTime) / 1000).toFixed(1);
+
+          if (code === 0) {
+            loggers.server.info(`✅ ${displayFilename} → Regenerated (${duration}s)`);
+            resolve();
+          } else {
+            loggers.server.info(`❌ ${displayFilename} → Failed (${duration}s)`);
+
+            // Display captured error output
+            const combinedOutput = (errorOutput + stdoutOutput).trim();
+            if (combinedOutput) {
+              loggers.server.info(combinedOutput);
+            }
+
+            loggers.server.info('💡 Fix the errors above and save to retry\n');
+
+            // Don't reject - keep the watcher running
+            resolve();
+          }
+        });
+
+        generateData.on('error', (error) => {
+          const duration = ((Date.now() - startTime) / 1000).toFixed(1);
+          loggers.server.error(`❌ ${displayFilename} → Error (${duration}s)`, error);
+          reject(error);
+        });
+      } catch (error) {
+        const duration = ((Date.now() - startTime) / 1000).toFixed(1);
+        loggers.server.error(`❌ ${displayFilename} → Error (${duration}s)`, error);
+        reject(error);
+      }
+    });
+  }
+
+  /**
+   * Handle file system change events with debouncing
+   */
+  private handleFileChange(eventType: string, filename: string | null): void {
     const companyFromPath = filename ? this.extractCompanyFromPath(filename) : null;
 
     if (!this.shouldProcessChange(filename, companyFromPath)) {
@@ -226,14 +305,56 @@ class EnhancedDevServer {
       return; // This should never happen due to shouldProcessChange logic, but satisfies TypeScript
     }
 
-    loggers.watcher.info(`Tailor data changed: ${filename}`);
+    // Store filename for compact mode logging
+    this.state.currentFilename = filename;
 
+    // Clear existing debounce timer
+    if (this.state.debounceTimer) {
+      clearTimeout(this.state.debounceTimer);
+    }
+
+    const debounceDelay = TIMEOUTS.FILE_WATCH_DEBOUNCE;
+
+    // If debouncing is disabled (0ms), process immediately
+    if (debounceDelay === 0) {
+      if (!this.compactMode) {
+        loggers.watcher.info(`Tailor data changed: ${filename} (no debounce)`);
+      }
+      this.processFileChange(companyFromPath, filename);
+      return;
+    }
+
+    // Otherwise, debounce the change
+    if (!this.compactMode) {
+      loggers.watcher.debug(
+        `File change detected: ${filename} (debouncing for ${debounceDelay}ms)`,
+      );
+    }
+
+    this.state.debounceTimer = setTimeout(() => {
+      if (!this.compactMode) {
+        loggers.watcher.info(`Tailor data changed: ${filename}`);
+      }
+      this.processFileChange(companyFromPath, filename);
+    }, debounceDelay);
+  }
+
+  /**
+   * Process file change and regenerate data
+   */
+  private async processFileChange(companyName: string, filename: string | null): Promise<void> {
     try {
-      await this.regenerateData(companyFromPath);
+      if (this.compactMode) {
+        await this.regenerateDataCompact(companyName, filename);
+      } else {
+        await this.regenerateDataVerbose(companyName);
+      }
     } catch {
       // Error already logged in regenerateData method
       // File watcher continues running regardless of validation failures
-      loggers.watcher.info('File watcher remains active for continued development');
+      if (!this.compactMode) {
+        loggers.watcher.info('File watcher remains active for continued development');
+      }
     }
   }
 
@@ -242,7 +363,9 @@ class EnhancedDevServer {
    */
   private setupFileWatcher(): void {
     if (!existsSync(this.tailorDir)) {
-      loggers.watcher.warn('Tailor directory not found - only basic hot reload active');
+      if (!this.compactMode) {
+        loggers.watcher.warn('Tailor directory not found - only basic hot reload active');
+      }
       return;
     }
 
@@ -253,8 +376,10 @@ class EnhancedDevServer {
         this.handleFileChange.bind(this),
       );
 
-      loggers.watcher.info('File watcher active for resume-data/tailor/');
-      loggers.watcher.info('Edit any YAML file in tailor folders to trigger auto-regeneration');
+      if (!this.compactMode) {
+        loggers.watcher.info('File watcher active for resume-data/tailor/');
+        loggers.watcher.info('Edit any YAML file in tailor folders to trigger auto-regeneration');
+      }
     } catch (error) {
       const err = error instanceof Error ? error : new Error(String(error));
       loggers.watcher.warn('Could not set up file watcher', {
@@ -270,6 +395,11 @@ class EnhancedDevServer {
   private setupShutdownHandlers(): void {
     const shutdown = () => {
       loggers.server.info('Shutting down dev server and file watcher...');
+
+      // Clear any pending debounce timer
+      if (this.state.debounceTimer) {
+        clearTimeout(this.state.debounceTimer);
+      }
 
       if (this.state.fileWatcher) {
         this.state.fileWatcher.close();
@@ -290,19 +420,25 @@ class EnhancedDevServer {
    * Start the enhanced development server
    */
   public async start(): Promise<void> {
-    loggers.server.info('Starting enhanced dev server with tailor data watching');
+    if (!this.compactMode) {
+      loggers.server.info('Starting enhanced dev server with tailor data watching');
+    }
 
     // Get active company context
     this.state.activeCompany = await this.getActiveCompany();
 
     if (this.state.activeCompany) {
-      loggers.server.info(`Watching tailor data for active company: ${this.state.activeCompany}`);
+      if (!this.compactMode) {
+        loggers.server.info(`Watching tailor data for active company: ${this.state.activeCompany}`);
+      }
 
       // Validate company data before starting the server
       await this.validateCompanyData(this.state.activeCompany);
     } else {
-      loggers.server.info('Watching all tailor data changes');
-      loggers.server.warn('Skipping initial validation - no active company specified');
+      if (!this.compactMode) {
+        loggers.server.info('Watching all tailor data changes');
+        loggers.server.warn('Skipping initial validation - no active company specified');
+      }
     }
 
     // Set up file watcher
@@ -311,13 +447,22 @@ class EnhancedDevServer {
     // Set up shutdown handlers
     this.setupShutdownHandlers();
 
-    loggers.server.success('Enhanced dev server is running', {
-      features: {
-        bunHotReload: true,
-        tailorDataWatching: true,
-        autoDataRegeneration: true,
-      },
-    });
+    // Display appropriate startup message
+    if (this.compactMode) {
+      const company = this.state.activeCompany || 'all companies';
+      const debounce = TIMEOUTS.FILE_WATCH_DEBOUNCE;
+      loggers.server.info(
+        `🚀 Tailor server ready • Watching: ${company} • Debounce: ${debounce}ms`,
+      );
+    } else {
+      loggers.server.success('Enhanced dev server is running', {
+        features: {
+          bunHotReload: true,
+          tailorDataWatching: true,
+          autoDataRegeneration: true,
+        },
+      });
+    }
   }
 }
 

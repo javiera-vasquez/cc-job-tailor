@@ -50,7 +50,6 @@ export function createValidApplicationData(): ApplicationData {
       title: 'Software Engineer',
       summary: 'Experienced software engineer',
       contact: {
-        name: 'John Doe',
         phone: '+1-234-567-8900',
         email: 'john@example.com',
         address: '123 Main St, City, State',

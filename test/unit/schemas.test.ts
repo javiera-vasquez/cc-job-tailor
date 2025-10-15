@@ -147,7 +147,6 @@ describe('Zod Schema Validation', () => {
   describe('ContactDetailsSchema', () => {
     test('validates correct email format', () => {
       const validContact = {
-        name: 'John Doe',
         phone: '+1-234-567-8900',
         email: 'valid@example.com',
         address: '123 Main St',
@@ -161,7 +160,6 @@ describe('Zod Schema Validation', () => {
 
     test('rejects invalid email format', () => {
       const invalidContact = {
-        name: 'John Doe',
         phone: '+1-234-567-8900',
         email: 'invalid-email-format',
         address: '123 Main St',
@@ -209,17 +207,20 @@ describe('Zod Schema Validation', () => {
       }
     });
 
-    test('requires minimum array lengths for critical sections', () => {
+    test('allows empty arrays for optional sections', () => {
       const validData = createValidApplicationData();
       if (validData.resume) {
-        // Test empty technical_expertise array
+        // Test empty technical_expertise array - now allowed
         const resumeWithEmptyExpertise = {
           ...validData.resume,
           technical_expertise: [],
+          skills: [],
+          languages: [],
+          independent_projects: [],
         };
 
         const result = ResumeSchema.safeParse(resumeWithEmptyExpertise);
-        expect(result.success).toBe(false);
+        expect(result.success).toBe(true);
       }
     });
 

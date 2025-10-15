@@ -218,12 +218,14 @@ resume:
   independent_projects: # Projects scored by technology relevance
     - name: 'AI Chat Application'
       description: 'React/TypeScript chat app with GPT integration'
-      technologies: ['React', 'TypeScript', 'LangChain', 'GPT-4']
       url: 'https://github.com/johndoe/ai-chat'
+      achievements:
+        - 'Built with React, TypeScript, LangChain, and GPT-4'
+        - 'Implemented real-time chat with AI-powered responses'
 
   education:
     - institution: 'Stanford University'
-      degree: 'BS Computer Science'
+      program: 'BS Computer Science'
       location: 'Stanford, CA'
       duration: '2010 - 2014'
 ```
@@ -235,6 +237,7 @@ version: '2.0.0'
 analysis_date: '2025-09-19'
 
 cover_letter:
+  name: 'John Doe' # Top-level required field
   company: 'TechCorp' # From metadata
   position: 'Senior AI Engineer' # From metadata
   job_focus: # REQUIRED: copied from job_analysis.yaml
@@ -248,7 +251,6 @@ cover_letter:
   date: '2025-09-30'
 
   personal_info:
-    name: 'John Doe'
     address: '456 Innovation Drive, San Francisco, CA'
     email: 'john.doe@example.com'
     phone: '+1 (555) 555-5555'
@@ -282,6 +284,7 @@ cover_letter:
 - job_focus array is REQUIRED (copy from job_analysis.yaml)
 - job_focus weights must sum to 1.0
 - Body must be array of strings (200-400 words total)
-- Required fields: company, position, job_focus, primary_focus, date, personal_info, content
+- Required fields: name, company, date, personal_info, content
+- Optional fields: position, job_focus, primary_focus
 
 When you receive a company name, first validate prerequisites exist, load all required data, apply specialty-based scoring for content selection, transform data following mapping rules, generate both files, **validate both files and fix any errors**, and ensure all content is truthful and optimized for the specific job requirements.
