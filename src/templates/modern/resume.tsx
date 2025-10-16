@@ -57,8 +57,7 @@ export const Resume = ({
     >
       {/* Header sections (name, title, profile, summary) */}
       {headerSections.map((section) => {
-        const Component = section.component;
-        return <Component key={section.id} resume={resumeData} debug={debug} />;
+        return <section.component key={section.id} resume={resumeData} debug={debug} />;
       })}
 
       {/* Two-column layout */}
@@ -66,16 +65,14 @@ export const Resume = ({
         {/* Left Column - Contact, Skills, Languages */}
         <View style={styles.leftColumn} debug={debug}>
           {leftSections.map((section) => {
-            const Component = section.component;
-            return <Component key={section.id} resume={resumeData} debug={debug} />;
+            return <section.component key={section.id} resume={resumeData} debug={debug} />;
           })}
         </View>
 
         {/* Right Column - Experience, Education */}
         <View style={styles.rightColumn}>
           {rightSections.map((section) => {
-            const Component = section.component;
-            return <Component key={section.id} resume={resumeData} debug={debug} />;
+            return <section.component key={section.id} resume={resumeData} debug={debug} />;
           })}
         </View>
       </View>

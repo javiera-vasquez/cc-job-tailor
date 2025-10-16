@@ -87,8 +87,7 @@ export const Resume = ({
       {/* Single column layout with dynamic sections */}
       <View style={styles.container}>
         {visibleSections.map((section) => {
-          const Component = section.component;
-          return <Component key={section.id} resume={resumeData} debug={debug} />;
+          return <section.component key={section.id} resume={resumeData} debug={debug} />;
         })}
       </View>
     </Page>
