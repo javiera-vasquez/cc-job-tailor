@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **File Watcher Debouncing**: Configurable debounce delay to prevent excessive regeneration on rapid file changes
 - **Demo GIF**: Visual demonstration of the application workflow added to repository
 - **Environment Configuration**: Comprehensive `.env.example` file with all configuration options
-- **Section Registry Tests**: 804 new tests covering classic and modern theme section registries
+- **Section Registry Tests**: 62 new tests covering classic and modern theme section registries
 
 ### Changed
 
