@@ -5,6 +5,7 @@ node_modules
 out
 dist
 tmp/
+docs/
 *.tgz
 
 # generated CSS

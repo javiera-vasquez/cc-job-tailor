@@ -98,33 +98,16 @@ export const ResumeSchema = z.object({
 });
 
 // Job analysis enums and schemas
-export const PrimaryAreaSchema = z.enum([
-  'junior_engineer',
-  'engineer',
-  'senior_engineer',
-  'staff_engineer',
-  'principal_engineer',
-  'tech_lead',
-  'engineering_manager',
-]);
+// Common primary area examples (not exhaustive):
+// 'junior_engineer', 'engineer', 'senior_engineer', 'staff_engineer',
+// 'principal_engineer', 'tech_lead', 'engineering_manager'
+export const PrimaryAreaSchema = z.string().min(1);
 
-export const SpecialtySchema = z.enum([
-  'ai',
-  'ml',
-  'data',
-  'react',
-  'typescript',
-  'node',
-  'python',
-  'aws',
-  'testing',
-  'architecture',
-  'devops',
-  'frontend',
-  'backend',
-  'mobile',
-  'security',
-]);
+// Common specialty examples (not exhaustive):
+// 'ai', 'ml', 'data', 'react', 'typescript', 'node', 'python',
+// 'aws', 'testing', 'architecture', 'devops', 'frontend', 'backend',
+// 'mobile', 'security'
+export const SpecialtySchema = z.string().min(1);
 
 export const JobFocusItemSchema = z.object({
   primary_area: PrimaryAreaSchema,

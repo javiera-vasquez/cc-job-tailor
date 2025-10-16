@@ -33,7 +33,7 @@ AI-powered resume optimization system that analyzes job postings, ranks requirem
 
 ## Built-in Commands & Agents
 
-**3 specialized AI agents** handle different stages of the workflow (analysis, tailoring, editing). **5 slash commands** give you direct control:
+**3 specialized AI agents** handle different stages of the workflow (analysis, tailoring, editing). **4 slash commands** give you direct control:
 
 | Command/Agent                                             | Type    | Purpose                                                                                                               |
 | --------------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------- |
@@ -44,7 +44,8 @@ AI-powered resume optimization system that analyzes job postings, ranks requirem
 | `@agent-job-analysis`                                     | Agent   | Analyze job postings and extract structured metadata and job analysis for tailored applications                       |
 | `@agent-job-tailor`                                       | Agent   | Complete workflow: analyze job postings and create customized job analysis and tailored resumes                       |
 | `@agent-tailor-resume-and-cover`                          | Agent   | Generate tailored resume and cover letter using existing job analysis data (requires metadata and job_analysis files) |
-| `bun run tailor-server`                                   | Script  | Start live preview development server with file watching                                                              |
+| `bun run set-env -C company-name`                         | Script  | Set the active environment for claude to work job offer (Claude trigger)                                              |
+| `bun run tailor-server`                                   | Script  | Start live preview development server with file watching (Claude trigger)                                             |
 | `bun run save-to-pdf -C company-name`                     | Script  | Generate PDF to `tmp/` (automatically generates data first)                                                           |
 | `bun run generate-data -C company-name`                   | Script  | Convert YAML data to TypeScript module for specific company                                                           |
 
@@ -52,7 +53,7 @@ AI-powered resume optimization system that analyzes job postings, ranks requirem
 
 **The problem:** Manually customizing resumes is slow and subjective. Which achievements should you highlight? Which skills matter most? You're guessing based on gut feel.
 
-**The solution:** AI agents analyze job postings and extract weighted requirements (React: priority 10, Python: priority 7). Then they use specialty-based scoring to automatically select your most relevant content. The `/tailor` command lets you collaborate with Claude in real-time to refine the output while watching changes in your browser.
+**The solution:** AI agents analyze job postings and extract weighted requirements (React: priority 10, Python: priority 7). Then they use specialty-based scoring to automatically select your most relevant experience. The `/tailor` command lets you collaborate with Claude in real-time to refine the output while watching changes in your browser.
 
 **The result:** Data-driven optimization that takes 60 seconds instead of 2 hours, and actually matches what the job requires.
 
@@ -74,7 +75,7 @@ These files demonstrate the default styling using the design tokens system in `s
 ## How It Works
 
 ```
-📝 Your Experience (YAML) → 🤖 AI Agents (Analyze + Optimize) → 📄 React-PDF → ✅ Tailored Resume
+📝 Your Experience (YAML) → 🤖 AI Optimization → 📋 Auto-Validation → 📄 PDF Export → ✅ Ship Resume
 ```
 
 **Behind the scenes:**
@@ -83,8 +84,6 @@ These files demonstrate the default styling using the design tokens system in `s
 - **Specialty matching** scores your achievements against job focus areas (React, TypeScript, AI, etc.)
 - **Content selection** automatically picks the highest-scoring items for each company
 - **Validation** ensures schema compliance before PDF generation
-
-**What you do:** Paste job posting → Start `/tailor` mode → Collaborate with Claude → Generate PDF
 
 ### What Gets Generated (Per Company)
 
@@ -140,7 +139,7 @@ You can see the resume generator in action without using any of your own data.
     /tailor "tech-corp" Which are the top 5 skills to emphasize for this role?
     ```
 
-This will generate a tailor job and cover letter application for the position.
+This will start the `tailor` experience for a job position at `tech-corp`.
 
 ## Using Your Own Data
 

@@ -100,14 +100,14 @@ User: "Update the cover letter opening paragraph"
 
 ### Step 2: Claude Edits YAML Files
 
-Claude edits files in `resume-data/tailor/tech-corp/`:
+Claude edits files in `resume-data/tailor/company-name/`:
 
 - `resume.yaml` - Professional experience, skills, summary
 - `cover_letter.yaml` - Cover letter content
 - `job_analysis.yaml` - Job requirements analysis
 - `metadata.yaml` - Company/position details
 
-### Step 3: System Auto-Validates (with Debouncing)
+### Step 3: System Auto-Validates
 
 File watcher triggers automatic pipeline after 300ms of inactivity:
 
