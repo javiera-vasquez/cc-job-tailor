@@ -35,7 +35,7 @@ This sub-agent specializes in analyzing job postings and creating structured ana
 ## Output Requirements
 
 - Generate metadata.yaml with all required fields extracted from job_analysis
-- Metadata must include: company, folder_path, available_files, position, primary_focus, job_summary, job_details, last_updated
+- Metadata must include: company, folder_path, active_template, available_files, position, primary_focus, job_summary, job_details, last_updated
 - Job summary must be concise (max 100 characters)
 - Job details must include top 5 must-have skills by priority
 - Job analysis must follow v2.0 schema with job_focus array, weights summing to 1.0
@@ -119,6 +119,7 @@ Create company-specific folder `resume-data/tailor/[company-name]/` with two fil
 ```yaml
 company: 'tech-corp'
 folder_path: 'resume-data/tailor/tech-corp'
+active_template: 'modern'
 available_files: ['metadata.yaml', 'job_analysis.yaml']
 position: 'Senior AI Engineer'
 primary_focus: 'senior_engineer + [ai, ml, react, typescript]'
@@ -254,7 +255,8 @@ job_analysis:
 
 **Metadata** (from `resume-data/mapping-rules/metadata.yaml`):
 
-- **Required Fields**: company, folder_path, available_files, position, primary_focus, job_summary, job_details, last_updated
+- **Required Fields**: company, folder_path, active_template, available_files, position, primary_focus, job_summary, job_details, last_updated
+- **Active Template**: Default template name for PDF generation (typically 'modern')
 - **Job Summary**: Max 100 characters
 - **Must-Have Skills in job_details**: Max 5 items (top priority from job_analysis)
 - **Nice-to-Have Skills in job_details**: Max 5 items
