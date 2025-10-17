@@ -65,10 +65,10 @@ Two professional templates included: **modern** (two-column with accent colors) 
 
 ![Available templates](/public/images/templates.png)
 
-| File                                                       | Description                                                     | Expected Data                                                                                                                                                                                |
-| ---------------------------------------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`resume-modern.pdf`](public/pdf-examples/resume-modern.pdf) [`resume-classic.pdf`](public/pdf-examples/resume-classic.pdf)             | Example tailored resume for a Senior Frontend Engineer position | [`ResumeSchema`](src/types.ts#L43): name, title, summary, contact details, technical expertise categories, skills array, languages, professional experience, independent projects, education |
-| [`cover-letter.pdf`](public/pdf-examples/cover-letter.pdf) | Example personalized cover letter                               | [`CoverLetterSchema`](src/types.ts#L59): company, position, job focus array, primary focus, date, personal info, content with opening/body/signature                                         |
+| File                                                                                                                        | Description                                                     | Expected Data                                                                                                                                                                                |
+| --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`resume-modern.pdf`](public/pdf-examples/resume-modern.pdf) [`resume-classic.pdf`](public/pdf-examples/resume-classic.pdf) | Example tailored resume for a Senior Frontend Engineer position | [`ResumeSchema`](src/types.ts#L43): name, title, summary, contact details, technical expertise categories, skills array, languages, professional experience, independent projects, education |
+| [`cover-letter.pdf`](public/pdf-examples/cover-letter.pdf)                                                                  | Example personalized cover letter                               | [`CoverLetterSchema`](src/types.ts#L59): company, position, job focus array, primary focus, date, personal info, content with opening/body/signature                                         |
 
 ## Why This Exists
 
@@ -122,8 +122,6 @@ You can see the resume generator in action without using any of your own data.
     cp .env.example .env
     ```
 
-    The defaults work fine for most users. Adjust if you need different logging or file watcher behavior.
-
 4.  **Start Claude Code session:**
 
     ```bash
@@ -131,14 +129,9 @@ You can see the resume generator in action without using any of your own data.
     ```
 
 5.  **Start tailoring your resume:**
-
-    In Claude Code, use the job-tailor agent to analyze job postings:
-
     ```
-    /tailor "tech-corp" Which are the top 5 skills to emphasize for this role?
+    /tailor "tech-corp"
     ```
-
-This will start the `tailor` experience for a job position at `tech-corp`.
 
 ## Using Your Own Data
 
