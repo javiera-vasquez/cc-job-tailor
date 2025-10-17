@@ -237,7 +237,16 @@ Modify `order` property in `src/templates/{classic|modern}/section-registry.ts`:
 { id: 'summary', order: 30 },    // Changed from 20 to appear later
 ```
 
-**Always check BashOutput and browser preview after order changes.**
+**Always check BashOutput after order changes.**
+
+### 4. Toggle Profile Picture Visibility
+
+When user requests to hide/show the profile picture, modify the `profile-picture` element's `isVisible` function in the header section of `src/templates/{classic|modern}/section-registry.ts`:
+
+- **Hide**: Change to `isVisible: (data) => false`
+- **Show**: Restore original conditional logic
+
+**Applies only to active template. Always check BashOutput after changes.**
 
 **Files you can modify:**
 

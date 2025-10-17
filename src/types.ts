@@ -119,6 +119,19 @@ export type Schemas = {
 // ========== SECTION REGISTRY TYPES ==========
 
 /**
+ * Configuration for element-level visibility within a section
+ * Allows granular control over individual elements (e.g., profile picture, summary)
+ * without hiding the entire section
+ */
+export type SectionElementConfig = {
+  /** Unique identifier for the element within the section */
+  id: string;
+
+  /** Function to determine if element should be visible */
+  isVisible: (data: ResumeSchema | CoverLetterSchema) => boolean;
+};
+
+/**
  * Generic base configuration for document sections
  *
  * @template TDocType - The document type discriminator (e.g., 'resume' | 'cover-letter')
@@ -158,6 +171,9 @@ export type SectionConfigBase<
 
   /** Optional description for debugging/documentation */
   description?: string;
+
+  /** Optional element-level visibility configuration for granular control within section */
+  elements?: SectionElementConfig[];
 };
 
 /**
@@ -167,7 +183,7 @@ export type SectionConfigBase<
 export type ResumeSectionConfig = SectionConfigBase<
   Extract<DocumentType, 'resume'>,
   ResumeSchema,
-  { resume: ResumeSchema }
+  { resume: ResumeSchema; section?: ResumeSectionConfig }
 > & {
   /** Column placement in the resume layout (optional - only for templates that use columns) */
   column?: 'left' | 'right' | 'header';

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Text, View, StyleSheet, Link, Image } from '@react-pdf/renderer';
 import { tokens } from '@template-core/design-tokens';
-import type { ResumeSchema } from '@types';
+import { getElementVisibility } from '@template-core/section-utils';
+import type { ResumeSchema, ResumeSectionConfig } from '@types';
 
 const { colors, spacing } = tokens.classic;
 
@@ -72,8 +73,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const Header = ({ resume }: { resume: ResumeSchema }) => {
+const Header = ({ resume, section }: { resume: ResumeSchema; section?: ResumeSectionConfig }) => {
   const { name, title, contact } = resume;
+
+  // Check element-level visibility for profile picture
+  const showProfilePicture =
+    section &&
+    getElementVisibility(section, 'profile-picture', resume) &&
+    spacing.profileImageSize > 0 &&
+    resume.profile_picture;
 
   // Build contact items array to conditionally render separators
   const contactItems: React.ReactNode[] = [];
@@ -127,10 +135,8 @@ const Header = ({ resume }: { resume: ResumeSchema }) => {
 
   return (
     <View style={styles.outerContainer}>
-      {/* Profile picture - top-right corner */}
-      {spacing.profileImageSize > 0 && resume.profile_picture && (
-        <Image src={resume.profile_picture} style={styles.profileImage} />
-      )}
+      {/* Profile picture - top-right corner with element-level visibility */}
+      {showProfilePicture && <Image src={resume.profile_picture} style={styles.profileImage} />}
 
       {/* Centered header content */}
       <View style={styles.headerContainer}>

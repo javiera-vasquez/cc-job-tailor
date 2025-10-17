@@ -57,7 +57,9 @@ export const Resume = ({
     >
       {/* Header sections (name, title, profile, summary) */}
       {headerSections.map((section) => {
-        return <section.component key={section.id} resume={resumeData} debug={debug} />;
+        return (
+          <section.component key={section.id} resume={resumeData} debug={debug} section={section} />
+        );
       })}
 
       {/* Two-column layout */}
