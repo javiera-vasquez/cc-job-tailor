@@ -5,12 +5,14 @@
 ### User Interaction Flow
 
 **Step 1: Initial Command**
+
 ```
 /flow-chart @src/utils/tailor-context.ts
 ```
 
 **Step 2: Claude presents options**
 Claude displays available visualization options:
+
 - Option 1: Basic CFD (logical paths only, ~15 nodes max)
 - Option 2: Detailed CFD (all decision points, operations, ~25 nodes)
 - Option 3: Error Handling Focus CFD (emphasizes error paths)
@@ -49,6 +51,7 @@ Claude generates the selected diagram and saves to file
 ### File: `.claude/commands/flow-chart.md`
 
 **Frontmatter:**
+
 ```yaml
 allowed-tools: Read, Write, Task(subagent_type=Explore)
 description: Generate interactive Control Flow Diagram for any file
@@ -56,6 +59,7 @@ argument-hint: @filename [optional-line-range]
 ```
 
 **Purpose:**
+
 1. User provides file path
 2. Claude reads and analyzes file
 3. Claude presents 4 diagram options
@@ -68,6 +72,7 @@ argument-hint: @filename [optional-line-range]
 ## Diagram Option Details
 
 ### Option 1: Basic CFD (Logical Paths)
+
 - **Best for**: Quick understanding
 - **Node count**: ~10-15 nodes max
 - **Includes**: Decision points only, major operations, exit points
@@ -75,6 +80,7 @@ argument-hint: @filename [optional-line-range]
 - **Use case**: Function overview, simple flows
 
 ### Option 2: Detailed CFD
+
 - **Best for**: Complete analysis
 - **Node count**: ~20-30 nodes
 - **Includes**: All conditions, all operations, error paths, validations
@@ -82,6 +88,7 @@ argument-hint: @filename [optional-line-range]
 - **Use case**: Complex functions, error handling
 
 ### Option 3: Error Handling Focus
+
 - **Best for**: Understanding failure paths
 - **Node count**: ~15-25 nodes
 - **Includes**: All validations, error paths, try-catch blocks
@@ -89,6 +96,7 @@ argument-hint: @filename [optional-line-range]
 - **Use case**: Error-prone functions, validation logic
 
 ### Option 4: Logical Flow Only
+
 - **Best for**: Simplest view
 - **Node count**: ~8-12 nodes
 - **Includes**: Only if/else branches, entry/exit
@@ -100,18 +108,22 @@ argument-hint: @filename [optional-line-range]
 ## Implementation Details
 
 ### File Analysis
+
 1. Read target file
 2. Identify functions/main flow
 3. Analyze complexity
 4. Suggest best option
 
 ### Output Format
+
 - **File created**: `[filename].cfd.md`
 - **Contains**: Mermaid code block + optional documentation
 - **Styling**: Color-coded (blue entry, green success, red error)
 
 ### User Interaction Pattern
+
 Claude should:
+
 1. Analyze file silently
 2. Present options with brief descriptions
 3. Ask user to choose (1-4)
@@ -124,11 +136,13 @@ Claude should:
 ## Example Interaction
 
 **User Input:**
+
 ```
 /flow-chart @scripts/set-env.ts
 ```
 
 **Claude Response:**
+
 ```
 I'll analyze the file and present diagram options.
 
@@ -155,6 +169,7 @@ Which option would you like? (Enter 1-4)
 ```
 
 **User Response:**
+
 ```
 2
 ```
@@ -166,16 +181,19 @@ Which option would you like? (Enter 1-4)
 ## Technical Implementation
 
 ### Tool Usage
+
 - **Read**: Analyze file content
 - **Task(Explore)**: Identify functions and patterns
 - **Write**: Save generated diagram to disk
 
 ### Error Handling
+
 - File not found → suggest available files
 - Multiple functions → ask which to analyze
 - Too complex → suggest breaking down
 
 ### Output Files
+
 - Location: Same directory as source file
 - Naming: `{filename}.cfd.md`
 - Format: Markdown with Mermaid code block
