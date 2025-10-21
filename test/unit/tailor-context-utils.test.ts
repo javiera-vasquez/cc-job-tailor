@@ -2,7 +2,74 @@ import { test, expect, describe, beforeAll, afterAll, beforeEach } from 'bun:tes
 import { mkdirSync, rmSync, existsSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { load, dump } from 'js-yaml';
-import { setTailorContext } from '../../scripts/utils/tailor-context';
+import { pipe } from 'remeda';
+import {
+  validateCompanyPath,
+  validateFilePathsExists,
+  loadYamlFilesFromPath,
+  validateYamlFileAgainstZodSchema,
+  extractMetadata,
+  generateAndWriteInitialTailorContext,
+  chain,
+  type FileToValidate,
+} from '../../scripts/utils/tailor-context';
+import { COMPANY_FILES, PathHelpers } from '../../scripts/shared/config';
+import {
+  MetadataSchema,
+  JobAnalysisSchema,
+  ResumeSchema,
+  CoverLetterSchema,
+} from '../../src/zod/schemas';
+
+// Helper to compose the function
+const setTailorContext = (companyName: string) => {
+  const pathsToValidate: FileToValidate[] = [
+    {
+      fileName: COMPANY_FILES.METADATA,
+      path: PathHelpers.getCompanyFile(companyName, 'METADATA'),
+      type: MetadataSchema,
+      wrapperKey: null,
+    },
+    {
+      fileName: COMPANY_FILES.JOB_ANALYSIS,
+      path: PathHelpers.getCompanyFile(companyName, 'JOB_ANALYSIS'),
+      type: JobAnalysisSchema,
+      wrapperKey: 'job_analysis',
+    },
+    {
+      fileName: COMPANY_FILES.RESUME,
+      path: PathHelpers.getCompanyFile(companyName, 'RESUME'),
+      type: ResumeSchema,
+      wrapperKey: 'resume',
+    },
+    {
+      fileName: COMPANY_FILES.COVER_LETTER,
+      path: PathHelpers.getCompanyFile(companyName, 'COVER_LETTER'),
+      type: CoverLetterSchema,
+      wrapperKey: 'cover_letter',
+    },
+  ];
+
+  const contextPath = '.claude/tailor-context.yaml';
+
+  return pipe(validateCompanyPath(PathHelpers.getCompanyPath(companyName)), (r) =>
+    chain(r, () =>
+      pipe(
+        validateFilePathsExists(pathsToValidate),
+        (r) => chain(r, (validPaths) => loadYamlFilesFromPath(validPaths)),
+        (r) => chain(r, validateYamlFileAgainstZodSchema),
+        (r) =>
+          chain(r, (files) =>
+            pipe(extractMetadata(files, COMPANY_FILES.METADATA), (r) =>
+              chain(r, (metadata) =>
+                generateAndWriteInitialTailorContext(companyName, metadata, contextPath),
+              ),
+            ),
+          ),
+      ),
+    ),
+  );
+};
 
 // Test directories
 const testBase = 'test/fixtures/tailor-context-test';
@@ -152,6 +219,199 @@ describe('Tailor Context Utilities', () => {
         expect(typeof result.data.position).toBe('string');
         expect(typeof result.data.primaryFocus).toBe('string');
         expect(typeof result.data.timestamp).toBe('string');
+      }
+    });
+  });
+
+  describe('loadYamlFilesFromPath', () => {
+    beforeEach(() => {
+      // Write test files before each test
+      writeFileSync(join(testCompanyPath, 'metadata.yaml'), dump(mockMetadata), 'utf-8');
+      writeFileSync(join(testCompanyPath, 'job_analysis.yaml'), dump(mockJobAnalysis), 'utf-8');
+    });
+
+    test('successfully loads YAML files from paths', () => {
+      const pathsToLoad: FileToValidate[] = [
+        {
+          fileName: COMPANY_FILES.METADATA,
+          path: join(testCompanyPath, 'metadata.yaml'),
+          type: MetadataSchema,
+          wrapperKey: null,
+        },
+        {
+          fileName: COMPANY_FILES.JOB_ANALYSIS,
+          path: join(testCompanyPath, 'job_analysis.yaml'),
+          type: JobAnalysisSchema,
+          wrapperKey: 'job_analysis',
+        },
+      ];
+
+      const result = loadYamlFilesFromPath(pathsToLoad);
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data).toHaveLength(2);
+        expect(result.data[0]!.fileName).toBe(COMPANY_FILES.METADATA);
+        expect(result.data[0]!.data).toEqual(mockMetadata);
+        expect(result.data[1]!.fileName).toBe(COMPANY_FILES.JOB_ANALYSIS);
+        expect(result.data[1]!.data).toEqual(mockJobAnalysis.job_analysis);
+      }
+    });
+
+    test('extracts nested data from job_analysis.yaml', () => {
+      const pathsToLoad: FileToValidate[] = [
+        {
+          fileName: COMPANY_FILES.JOB_ANALYSIS,
+          path: join(testCompanyPath, 'job_analysis.yaml'),
+          type: JobAnalysisSchema,
+          wrapperKey: 'job_analysis',
+        },
+      ];
+
+      const result = loadYamlFilesFromPath(pathsToLoad);
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        // Should extract nested job_analysis key
+        expect(result.data[0]!.data).toEqual(mockJobAnalysis.job_analysis);
+        expect(result.data[0]!.data).not.toEqual(mockJobAnalysis);
+      }
+    });
+
+    test('returns error when file does not exist', () => {
+      const pathsToLoad: FileToValidate[] = [
+        {
+          fileName: COMPANY_FILES.METADATA,
+          path: join(testCompanyPath, 'non-existent.yaml'),
+          type: MetadataSchema,
+          wrapperKey: null,
+        },
+      ];
+
+      const result = loadYamlFilesFromPath(pathsToLoad);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error).toContain('Failed to read');
+      }
+    });
+
+    test('returns error when YAML is malformed', () => {
+      const malformedPath = join(testCompanyPath, 'malformed.yaml');
+      writeFileSync(malformedPath, 'invalid: yaml: : syntax', 'utf-8');
+
+      const pathsToLoad: FileToValidate[] = [
+        {
+          fileName: COMPANY_FILES.METADATA,
+          path: malformedPath,
+          type: MetadataSchema,
+          wrapperKey: null,
+        },
+      ];
+
+      const result = loadYamlFilesFromPath(pathsToLoad);
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error).toContain('Invalid YAML');
+      }
+    });
+  });
+
+  describe('validateYamlFileAgainstZodSchema', () => {
+    beforeEach(() => {
+      // Write test files before each test
+      writeFileSync(join(testCompanyPath, 'metadata.yaml'), dump(mockMetadata), 'utf-8');
+      writeFileSync(join(testCompanyPath, 'job_analysis.yaml'), dump(mockJobAnalysis), 'utf-8');
+    });
+
+    test('successfully validates YAML files against schema', () => {
+      const pathsToLoad: FileToValidate[] = [
+        {
+          fileName: COMPANY_FILES.METADATA,
+          path: join(testCompanyPath, 'metadata.yaml'),
+          type: MetadataSchema,
+          wrapperKey: null,
+        },
+      ];
+
+      const loadResult = loadYamlFilesFromPath(pathsToLoad);
+
+      if (loadResult.success) {
+        const validationResult = validateYamlFileAgainstZodSchema(loadResult.data);
+
+        expect(validationResult.success).toBe(true);
+        if (validationResult.success) {
+          expect(validationResult.data[0]!.data).toEqual(mockMetadata);
+        }
+      }
+    });
+
+    test('returns error when validation fails', () => {
+      const invalidMetadata = {
+        company: '', // Invalid: empty string
+        folder_path: 'some-path',
+        available_files: [],
+        position: 'Engineer',
+        primary_focus: 'test',
+        job_summary: 'test',
+        job_details: {
+          company: 'test',
+          location: 'test',
+          experience_level: 'Mid-level',
+          employment_type: 'Full-time',
+          must_have_skills: [],
+          nice_to_have_skills: [],
+          team_context: 'test',
+          user_scale: 'test',
+        },
+      };
+
+      const invalidPath = join(testCompanyPath, 'invalid-metadata.yaml');
+      writeFileSync(invalidPath, dump(invalidMetadata), 'utf-8');
+
+      const pathsToLoad: FileToValidate[] = [
+        {
+          fileName: COMPANY_FILES.METADATA,
+          path: invalidPath,
+          type: MetadataSchema,
+          wrapperKey: null,
+        },
+      ];
+
+      const loadResult = loadYamlFilesFromPath(pathsToLoad);
+
+      if (loadResult.success) {
+        const validationResult = validateYamlFileAgainstZodSchema(loadResult.data);
+
+        expect(validationResult.success).toBe(false);
+        if (!validationResult.success) {
+          expect(validationResult.error).toContain('validation failed');
+        }
+      }
+    });
+
+    test('preserves file metadata during validation', () => {
+      const pathsToLoad: FileToValidate[] = [
+        {
+          fileName: COMPANY_FILES.METADATA,
+          path: join(testCompanyPath, 'metadata.yaml'),
+          type: MetadataSchema,
+          wrapperKey: null,
+        },
+      ];
+
+      const loadResult = loadYamlFilesFromPath(pathsToLoad);
+
+      if (loadResult.success) {
+        const validationResult = validateYamlFileAgainstZodSchema(loadResult.data);
+
+        expect(validationResult.success).toBe(true);
+        if (validationResult.success) {
+          expect(validationResult.data[0]!.fileName).toBe(COMPANY_FILES.METADATA);
+          expect(validationResult.data[0]!.path).toBe(join(testCompanyPath, 'metadata.yaml'));
+          expect(validationResult.data[0]!.type).toBe(MetadataSchema);
+        }
       }
     });
   });
