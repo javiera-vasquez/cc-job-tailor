@@ -9,6 +9,7 @@ import {
   validateYamlFileAgainstZodSchema,
   extractMetadata,
   generateAndWriteInitialTailorContext,
+  generateApplicationData,
   chain,
   chainPipe,
   type FileToValidate,
@@ -105,6 +106,7 @@ const setTailorContextPipeline = () => {
       chain(r, (data) =>
         chainPipe(
           data,
+          (files) => generateApplicationData(companyName, files),
           (files) => extractMetadata(files, COMPANY_FILES.METADATA),
           (metadata) => generateAndWriteInitialTailorContext(companyName, metadata, contextPath),
         ),

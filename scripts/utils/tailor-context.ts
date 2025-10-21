@@ -5,7 +5,14 @@ import { match } from 'ts-pattern';
 import { MetadataSchema } from '../../src/zod/schemas';
 import { TailorContextSchema, type TailorContext } from '../../src/zod/tailor-context-schema';
 import { PATHS, type CompanyFileValue } from '../shared/config';
+import { validateApplicationData } from '../../src/zod/validation';
+import {
+  transformFilesToApplicationData,
+  generateTypeScriptModule,
+} from './application-data-generator';
+import { loggers } from '../shared/logger';
 import type { z } from 'zod';
+import type { ApplicationData } from '../../src/types';
 
 // Result type for functional error handling
 export type Result<T, E = { error: string; details?: string }> =
@@ -19,7 +26,7 @@ export interface FileToValidate {
   wrapperKey: string | null; // Key to extract nested data from YAML (e.g., 'job_analysis', 'resume'), or null if no wrapper
 }
 
-type FileToValidateWithYamlData = FileToValidate & { data: unknown };
+export type FileToValidateWithYamlData = FileToValidate & { data: unknown };
 
 export interface SetContextSuccess {
   success: true;
@@ -125,6 +132,94 @@ export const validateYamlFileAgainstZodSchema = (
         data: { ...file, data: validatedData },
       })),
     ),
+  );
+};
+
+// ============================================================================
+// Application Data Generation
+// ============================================================================
+
+/**
+ * Transforms validated files to ApplicationData using fileName mapping
+ */
+const transformToApplicationData = (
+  files: FileToValidateWithYamlData[],
+): Result<ApplicationData> => {
+  loggers.generate.info('Generating application data module');
+  return transformFilesToApplicationData(files);
+};
+
+/**
+ * Validates ApplicationData against Zod schema
+ */
+const validateApplicationDataSchema = (
+  applicationData: ApplicationData,
+): Result<ApplicationData> => {
+  const result = tryCatch(
+    () => validateApplicationData(applicationData),
+    'Application data validation failed',
+  );
+
+  if (result.success) {
+    loggers.generate.success('Application data validation passed');
+  }
+
+  return result.success ? { success: true, data: applicationData } : result;
+};
+
+/**
+ * Generates TypeScript module content from ApplicationData
+ */
+const generateTypeScriptContent = (
+  companyName: string,
+): ((data: ApplicationData) => Result<string>) => {
+  return (applicationData) => {
+    const tsContent = generateTypeScriptModule(applicationData, companyName);
+    return { success: true, data: tsContent };
+  };
+};
+
+/**
+ * Writes TypeScript module to disk
+ */
+const writeTypeScriptModule = (tsContent: string): Result<string> => {
+  const writeResult = tryCatch(
+    () => Bun.write(PATHS.GENERATED_DATA, tsContent),
+    'Failed to write application data',
+  );
+
+  if (writeResult.success) {
+    loggers.generate.success(`Application data written to ${PATHS.GENERATED_DATA}`);
+  }
+
+  return writeResult.success ? { success: true, data: tsContent } : writeResult;
+};
+
+/**
+ * Generates ApplicationData TypeScript module from validated files
+ * Pure functional approach - uses fileName as single source of truth
+ *
+ * @param companyName - Name of the company for the generated module
+ * @param files - Validated YAML files with extracted data
+ * @returns Result containing the same files (for pipeline continuation)
+ */
+export const generateApplicationData = (
+  companyName: string,
+  files: FileToValidateWithYamlData[],
+): Result<FileToValidateWithYamlData[]> => {
+  return pipe(
+    chainPipe(
+      files,
+      transformToApplicationData,
+      validateApplicationDataSchema,
+      generateTypeScriptContent(companyName),
+      writeTypeScriptModule,
+    ),
+    (result) =>
+      chain(result, () => ({
+        success: true as const,
+        data: files, // Return files unchanged for pipeline continuation
+      })),
   );
 };
 
