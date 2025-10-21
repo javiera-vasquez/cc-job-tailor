@@ -1,8 +1,28 @@
 #!/usr/bin/env bun
 
-import { parseArgs } from 'util';
-import { setTailorContext } from './utils/tailor-context';
+import { pipe } from 'remeda';
+import { match } from 'ts-pattern';
+import {
+  validateCompanyPath,
+  validateFilePathsExists,
+  loadYamlFilesFromPath,
+  validateYamlFileAgainstZodSchema,
+  extractMetadata,
+  generateAndWriteInitialTailorContext,
+  chain,
+  chainPipe,
+  type FileToValidate,
+} from './utils/tailor-context';
+import { parseCliArgs, validateRequiredArg } from './shared/cli-args';
+import {
+  MetadataSchema,
+  JobAnalysisSchema,
+  ResumeSchema,
+  CoverLetterSchema,
+} from '../src/zod/schemas';
+
 import { loggers } from './shared/logger';
+import { PathHelpers, PATHS, COMPANY_FILES } from './shared/config';
 
 /**
  * CLI script to set tailor environment context
@@ -13,31 +33,102 @@ import { loggers } from './shared/logger';
  * 1 - Failure (stderr contains error message)
  */
 
-// Parse command-line arguments
-const { values } = parseArgs({
-  options: {
-    C: {
-      type: 'string',
-      short: 'C',
+const USAGE_MESSAGE = 'Usage: bun run set-env -C company-name';
+
+// Parse and validate command-line arguments
+const values = parseCliArgs(
+  {
+    options: {
+      C: {
+        type: 'string',
+        short: 'C',
+        required: true,
+      },
     },
   },
-});
+  loggers.setEnv,
+  USAGE_MESSAGE,
+);
 
-const companyName = values.C;
+const companyName = validateRequiredArg(values.C, 'Company name', loggers.setEnv, USAGE_MESSAGE);
 
-// Validate company name argument
-if (!companyName) {
-  loggers.setEnv.error('Company name required');
-  loggers.setEnv.info('Usage: bun run set-env -C company-name');
-  process.exit(1);
-}
+// ============================================================================
+// Initialize Paths to Validate
+// ============================================================================
 
-// Execute context setup
-const result = setTailorContext(companyName);
+const pathsAndSchemaToValidate: FileToValidate[] = [
+  {
+    fileName: COMPANY_FILES.METADATA,
+    path: PathHelpers.getCompanyFile(companyName, 'METADATA'),
+    type: MetadataSchema,
+    wrapperKey: null, // No wrapper for metadata
+  },
+  {
+    fileName: COMPANY_FILES.JOB_ANALYSIS,
+    path: PathHelpers.getCompanyFile(companyName, 'JOB_ANALYSIS'),
+    type: JobAnalysisSchema,
+    wrapperKey: 'job_analysis', // Extract from { job_analysis: {...} }
+  },
+  {
+    fileName: COMPANY_FILES.RESUME,
+    path: PathHelpers.getCompanyFile(companyName, 'RESUME'),
+    type: ResumeSchema,
+    wrapperKey: 'resume', // Extract from { resume: {...} }
+  },
+  {
+    fileName: COMPANY_FILES.COVER_LETTER,
+    path: PathHelpers.getCompanyFile(companyName, 'COVER_LETTER'),
+    type: CoverLetterSchema,
+    wrapperKey: 'cover_letter', // Extract from { cover_letter: {...} }
+  },
+];
 
-if (result.success) {
-  // Format output similar to tailor-server style
-  const data = result.data;
+const contextPath = PATHS.CONTEXT_FILE;
+
+// ============================================================================
+// Execute context setup using functional pipe composition
+// ============================================================================
+
+const setTailorContextPipeline = () => {
+  return pipe(
+    validateCompanyPath(PathHelpers.getCompanyPath(companyName)),
+    (r) =>
+      chain(r, () =>
+        chainPipe(
+          pathsAndSchemaToValidate,
+          validateFilePathsExists,
+          loadYamlFilesFromPath,
+          validateYamlFileAgainstZodSchema,
+        ),
+      ),
+    (r) =>
+      chain(r, (data) =>
+        chainPipe(
+          data,
+          (files) => extractMetadata(files, COMPANY_FILES.METADATA),
+          (metadata) => generateAndWriteInitialTailorContext(companyName, metadata, contextPath),
+        ),
+      ),
+    (result) =>
+      match(result)
+        .with({ success: true }, ({ data }) => onSuccess(data))
+        .with({ success: false }, ({ error, details }) => onError(error, details))
+        .exhaustive(),
+  );
+};
+
+// ============================================================================
+// Success/Error Handler
+// ============================================================================
+
+const onSuccess = (data: {
+  company: string;
+  path: string;
+  availableFiles: string[];
+  position: string;
+  primaryFocus: string;
+  timestamp: string;
+}): void => {
   const fileCount = data.availableFiles?.length || 0;
   const filesList = data.availableFiles?.join(', ') || 'none';
 
@@ -54,12 +145,12 @@ if (result.success) {
   loggers.setEnv.info('🚀 All good, please start the tailor-server');
 
   process.exit(0);
-} else {
-  // Failure: log error with details
-  loggers.setEnv.error(
-    result.error,
-    null,
-    result.details ? { details: result.details } : undefined,
-  );
+};
+
+const onError = (error: string, details?: string): void => {
+  loggers.setEnv.error(error, null, details ? { details } : undefined);
   process.exit(1);
-}
+};
+
+// Run pipeline
+setTailorContextPipeline();

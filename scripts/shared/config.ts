@@ -238,6 +238,7 @@ export const PathHelpers = {
  * Type-safe exports for TypeScript consumers
  */
 export type CompanyFileName = keyof typeof COMPANY_FILES;
+export type CompanyFileValue = (typeof COMPANY_FILES)[keyof typeof COMPANY_FILES];
 export type ScriptName = (typeof SCRIPTS)[keyof typeof SCRIPTS];
 export type PathName = (typeof PATHS)[keyof typeof PATHS];
 export type DocumentType = (typeof DOCUMENT_TYPES)[keyof typeof DOCUMENT_TYPES];

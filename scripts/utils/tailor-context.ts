@@ -1,16 +1,25 @@
 import { existsSync, readFileSync, writeFileSync, readdirSync } from 'fs';
 import yaml from 'js-yaml';
 import { pipe } from 'remeda';
-import { match, P } from 'ts-pattern';
-import { MetadataSchema, JobAnalysisSchema } from '../../src/zod/schemas';
+import { match } from 'ts-pattern';
+import { MetadataSchema } from '../../src/zod/schemas';
 import { TailorContextSchema, type TailorContext } from '../../src/zod/tailor-context-schema';
-import { PATHS, COMPANY_FILES, PathHelpers } from '../shared/config';
+import { PATHS, type CompanyFileValue } from '../shared/config';
 import type { z } from 'zod';
 
 // Result type for functional error handling
 export type Result<T, E = { error: string; details?: string }> =
   | { success: true; data: T }
   | ({ success: false } & E);
+
+export interface FileToValidate {
+  fileName: CompanyFileValue;
+  path: string;
+  type: z.ZodSchema<unknown>;
+  wrapperKey: string | null; // Key to extract nested data from YAML (e.g., 'job_analysis', 'resume'), or null if no wrapper
+}
+
+type FileToValidateWithYamlData = FileToValidate & { data: unknown };
 
 export interface SetContextSuccess {
   success: true;
@@ -33,42 +42,152 @@ export interface SetContextError {
 export type SetContextResult = SetContextSuccess | SetContextError;
 
 // ============================================================================
-// Functional Helpers
+// Path Validation
+// ============================================================================
+export const validateCompanyPath = (companyPath: string): Result<void> => {
+  return existsSync(companyPath)
+    ? { success: true, data: void 0 }
+    : {
+        success: false,
+        error: `Company folder not found: ${companyPath}`,
+        details: `Available companies: ${getAvailableCompanies(PATHS.TAILOR_BASE).join(', ') || 'none'}`,
+      };
+};
+
+export const validateFilePathsExists = (
+  pathsToValidate: FileToValidate[],
+): Result<FileToValidate[]> => {
+  return pathsToValidate.reduce<Result<FileToValidate[]>>(
+    (acc, item) => {
+      if (!acc.success) {
+        return acc;
+      }
+
+      if (!existsSync(item.path)) {
+        return {
+          success: false,
+          error: `${item.fileName} not found: ${item.path}`,
+        };
+      }
+
+      return acc;
+    },
+    { success: true, data: pathsToValidate },
+  );
+};
+
+// ============================================================================
+// File Reading
 // ============================================================================
 
-const tryCatch = <T>(fn: () => T, errorMsg: string): Result<T> => {
+/**
+ * Loads YAML files from the given paths and extracts nested data based on wrapperKey.
+ * Handles files that have a wrapper structure (e.g., { job_analysis: {...} }).
+ *
+ * @param pathsToValidate - Array of files to load with their metadata and optional wrapperKey
+ * @returns Result containing files with loaded YAML data, or first error encountered
+ */
+export const loadYamlFilesFromPath = (
+  pathsToValidate: FileToValidate[],
+): Result<FileToValidateWithYamlData[]> => {
+  return mapResults(pathsToValidate, (file) =>
+    pipe(readYaml(file.path), (r) =>
+      chain(r, (rawData) => {
+        // Extract data from wrapper if wrapperKey is specified
+        const extractedData = file.wrapperKey
+          ? (rawData as Record<string, unknown>)?.[file.wrapperKey] || rawData
+          : rawData;
+
+        // Return the file with extracted data (not yet validated)
+        return {
+          success: true as const,
+          data: { ...file, data: extractedData },
+        };
+      }),
+    ),
+  );
+};
+
+/**
+ * Validates loaded YAML files against their associated Zod schemas.
+ * Preserves the file metadata while validating the data.
+ *
+ * @param filesToValidate - Array of files with loaded YAML data to validate
+ * @returns Result containing validated files or first validation error
+ */
+export const validateYamlFileAgainstZodSchema = (
+  filesToValidate: FileToValidateWithYamlData[],
+): Result<FileToValidateWithYamlData[]> => {
+  return mapResults(filesToValidate, (file) =>
+    pipe(validateSchema(file.type as z.ZodSchema<unknown>, file.data, file.fileName), (r) =>
+      chain(r, (validatedData) => ({
+        success: true as const,
+        data: { ...file, data: validatedData },
+      })),
+    ),
+  );
+};
+
+// ============================================================================
+// Context Generation and Writing
+// ============================================================================
+export const extractMetadata = (
+  files: FileToValidateWithYamlData[],
+  fileName: CompanyFileValue,
+): Result<z.infer<typeof MetadataSchema>> => {
+  const metadataFile = files.find((f) => f.fileName === fileName);
+  return metadataFile
+    ? { success: true, data: metadataFile.data as z.infer<typeof MetadataSchema> }
+    : { success: false, error: 'Metadata file not found in validated files' };
+};
+
+export const generateAndWriteInitialTailorContext = (
+  companyName: string,
+  metadata: z.infer<typeof MetadataSchema>,
+  contextPath: string,
+): Result<SetContextSuccess['data']> => {
+  const ts = new Date().toISOString();
+  const metaWithTemplate = {
+    ...metadata,
+    active_template: metadata.active_template ?? ('modern' as const),
+  };
+
+  const yaml = generateContextYaml(companyName, metaWithTemplate, ts);
+  const write = tryCatch(
+    () => writeFileSync(contextPath, yaml, 'utf-8'),
+    'Failed to write context',
+  );
+
+  return write.success
+    ? {
+        success: true as const,
+        data: {
+          company: metadata.company,
+          path: metadata.folder_path,
+          availableFiles: metadata.available_files,
+          position: metadata.position,
+          primaryFocus: metadata.primary_focus,
+          timestamp: ts,
+        },
+      }
+    : write;
+};
+
+const getAvailableCompanies = (base: string): string[] => {
+  if (!existsSync(base)) return [];
   try {
-    return { success: true, data: fn() };
-  } catch (error) {
-    return {
-      success: false,
-      error: errorMsg,
-      details: error instanceof Error ? error.message : String(error),
-    };
+    return readdirSync(base, { withFileTypes: true })
+      .filter((d) => d.isDirectory())
+      .map((d) => d.name);
+  } catch {
+    return [];
   }
 };
 
-const chain = <A, B>(result: Result<A>, f: (data: A) => Result<B>): Result<B> =>
-  match(result)
-    .with({ success: true }, ({ data }) => f(data))
-    .otherwise((error) => error);
-
-const readYaml = (path: string): Result<unknown> =>
-  pipe(
-    tryCatch(() => readFileSync(path, 'utf-8'), `Failed to read ${path}`),
-    (r) => chain(r, (content) => tryCatch(() => yaml.load(content), 'Invalid YAML')),
-  );
-
-const validateSchema = <T>(schema: z.ZodSchema<T>, data: unknown, name: string): Result<T> => {
-  const validation = schema.safeParse(data);
-  return validation.success
-    ? { success: true, data: validation.data }
-    : {
-        success: false,
-        error: `${name} validation failed`,
-        details: formatZodError(validation.error),
-      };
-};
+const formatZodError = (error: z.ZodError): string =>
+  error.issues
+    .map((i) => `  - ${i.path.length > 0 ? i.path.join('.') : 'root'}: ${i.message}`)
+    .join('\n');
 
 /**
  * Generate YAML content for tailor context using schema-driven approach
@@ -120,89 +239,90 @@ const generateContextYaml = (
   );
 };
 
-/**
- * Validates and sets the tailor context for a specific company
- */
-export function setTailorContext(companyName: string): SetContextResult {
-  const companyPath = PathHelpers.getCompanyPath(companyName);
-  const paths = {
-    metadata: PathHelpers.getCompanyFile(companyName, 'METADATA'),
-    jobAnalysis: PathHelpers.getCompanyFile(companyName, 'JOB_ANALYSIS'),
-    context: PATHS.CONTEXT_FILE,
-  };
+// ============================================================================
+// Functional Helpers
+// ============================================================================
 
-  // Validate paths
-  if (!existsSync(companyPath)) {
+const tryCatch = <T>(fn: () => T, errorMsg: string): Result<T> => {
+  try {
+    return { success: true, data: fn() };
+  } catch (error) {
     return {
       success: false,
-      error: `Company folder not found: ${companyPath}`,
-      details: `Available companies: ${getAvailableCompanies(PATHS.TAILOR_BASE).join(', ') || 'none'}`,
+      error: errorMsg,
+      details: error instanceof Error ? error.message : String(error),
     };
-  }
-  if (!existsSync(paths.metadata)) {
-    return { success: false, error: `${COMPANY_FILES.METADATA} not found in ${companyPath}` };
-  }
-  if (!existsSync(paths.jobAnalysis)) {
-    return { success: false, error: `${COMPANY_FILES.JOB_ANALYSIS} not found in ${companyPath}` };
-  }
-
-  // Read and validate
-  const metadata = pipe(readYaml(paths.metadata), (r) =>
-    chain(r, (d) => validateSchema(MetadataSchema, d, 'metadata.yaml')),
-  );
-
-  const jobAnalysis = pipe(readYaml(paths.jobAnalysis), (r) =>
-    chain(r, (d) =>
-      validateSchema(JobAnalysisSchema, (d as any)?.job_analysis || d, 'job_analysis.yaml'),
-    ),
-  );
-
-  // Combine and write
-  return match([metadata, jobAnalysis] as const)
-    .with([{ success: true }, { success: true }], ([{ data: meta }]) => {
-      const ts = new Date().toISOString();
-      // Ensure active_template has its default value applied
-      const metaWithTemplate = {
-        ...meta,
-        active_template: meta.active_template ?? ('modern' as const),
-      };
-      const yaml = generateContextYaml(companyName, metaWithTemplate, ts);
-      const write = tryCatch(
-        () => writeFileSync(paths.context, yaml, 'utf-8'),
-        'Failed to write context',
-      );
-
-      return write.success
-        ? {
-            success: true as const,
-            data: {
-              company: meta.company,
-              path: meta.folder_path,
-              availableFiles: meta.available_files,
-              position: meta.position,
-              primaryFocus: meta.primary_focus,
-              timestamp: ts,
-            },
-          }
-        : write;
-    })
-    .with([{ success: false }, P._], ([err]) => err)
-    .with([P._, { success: false }], ([, err]) => err)
-    .exhaustive();
-}
-
-const getAvailableCompanies = (base: string): string[] => {
-  if (!existsSync(base)) return [];
-  try {
-    return readdirSync(base, { withFileTypes: true })
-      .filter((d) => d.isDirectory())
-      .map((d) => d.name);
-  } catch {
-    return [];
   }
 };
 
-const formatZodError = (error: z.ZodError): string =>
-  error.issues
-    .map((i) => `  - ${i.path.length > 0 ? i.path.join('.') : 'root'}: ${i.message}`)
-    .join('\n');
+export const chain = <A, B>(result: Result<A>, f: (data: A) => Result<B>): Result<B> =>
+  match(result)
+    .with({ success: true }, ({ data }) => f(data))
+    .otherwise((error) => error);
+
+/**
+ * Chains multiple functions together in a pipeline, where each function
+ * takes the success data from the previous Result and returns a new Result.
+ * Stops at the first error encountered.
+ *
+ * @example
+ * chainPipe(
+ *   initialData,
+ *   validateData,
+ *   transformData,
+ *   saveData
+ * )
+ */
+export const chainPipe = <T>(
+  initial: T,
+  ...fns: Array<(data: any) => Result<any>>
+): Result<any> => {
+  return fns.reduce<Result<any>>((result, fn) => chain(result, fn), {
+    success: true,
+    data: initial,
+  });
+};
+
+/**
+ * Maps over an array, applying a transformation that returns a Result.
+ * Returns the first error encountered, or all successful results.
+ * Uses reduce for functional composition with early exit on error.
+ */
+const mapResults = <T, U>(items: T[], transform: (item: T) => Result<U>): Result<U[]> => {
+  return items.reduce<Result<U[]>>(
+    (acc, item) => {
+      if (!acc.success) {
+        return acc; // Short-circuit on first error
+      }
+
+      const result = transform(item);
+      if (!result.success) {
+        return result as Result<U[]>; // Cast error to expected return type
+      }
+
+      // Accumulate successful result
+      return {
+        success: true,
+        data: [...acc.data, result.data],
+      };
+    },
+    { success: true, data: [] }, // Start with empty array
+  );
+};
+
+const readYaml = (path: string): Result<unknown> =>
+  pipe(
+    tryCatch(() => readFileSync(path, 'utf-8'), `Failed to read ${path}`),
+    (r) => chain(r, (content) => tryCatch(() => yaml.load(content), 'Invalid YAML')),
+  );
+
+const validateSchema = <T>(schema: z.ZodSchema<T>, data: unknown, name: string): Result<T> => {
+  const validation = schema.safeParse(data);
+  return validation.success
+    ? { success: true, data: validation.data }
+    : {
+        success: false,
+        error: `${name} validation failed`,
+        details: formatZodError(validation.error),
+      };
+};
