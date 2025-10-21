@@ -30,9 +30,12 @@ import { z } from 'zod';
  * CLI script to set tailor environment context
  * Usage: bun run set-env -C company-name
  *
+ * This script validates company files, generates application data, and writes
+ * the tailor context configuration for PDF generation.
+ *
  * Exit codes:
- * 0 - Success (stdout contains JSON data)
- * 1 - Failure (stderr contains error message)
+ * - 0: Success (context set successfully)
+ * - 1: Failure (validation or processing error)
  */
 
 const USAGE_MESSAGE = 'Usage: bun run set-env -C company-name';
@@ -54,10 +57,7 @@ const values = parseCliArgs(
 
 const companyName = validateRequiredArg(values.C, 'Company name', loggers.setEnv, USAGE_MESSAGE);
 
-// ============================================================================
-// Initialize Paths to Validate
-// ============================================================================
-
+// Initialize ref to yaml data and schema to validate
 const pathsAndSchemaToValidate: FileToValidate[] = [
   {
     fileName: COMPANY_FILES.METADATA,
@@ -87,11 +87,21 @@ const pathsAndSchemaToValidate: FileToValidate[] = [
 
 const contextPath = PATHS.CONTEXT_FILE;
 
-// ============================================================================
-// Execute context setup using functional pipe composition
-// ============================================================================
-
-const setTailorContextPipeline = () => {
+/**
+ * Executes the complete tailor context setup pipeline using functional composition.
+ *
+ * Pipeline flow:
+ * 1. Validates company directory exists
+ * 2. Validates all required files exist
+ * 3. Loads YAML files with wrapper extraction
+ * 4. Validates YAML data against Zod schemas
+ * 5. Generates TypeScript application data module
+ * 6. Extracts metadata from validated files
+ * 7. Generates and writes tailor-context.yaml
+ *
+ * @returns {void} Exits process with code 0 on success, 1 on failure
+ */
+const initTailorContext = () => {
   return pipe(
     validateCompanyPath(PathHelpers.getCompanyPath(companyName)),
     (r) =>
@@ -122,10 +132,21 @@ const setTailorContextPipeline = () => {
   );
 };
 
-// ============================================================================
-// Success/Error Handler
-// ============================================================================
-
+/**
+ * Handles successful context setup by logging results and exiting with success code.
+ *
+ * Displays a formatted summary including company name, file count, position,
+ * primary focus, and available files. Prompts user to start the tailor-server.
+ *
+ * @param {Object} data - Success data from context generation
+ * @param {string} data.company - Company name
+ * @param {string} data.path - Company folder path
+ * @param {string[]} data.availableFiles - List of available files
+ * @param {string} data.position - Job position
+ * @param {string} data.primaryFocus - Primary focus area
+ * @param {string} data.timestamp - ISO timestamp of context creation
+ * @returns {void} Exits process with code 0
+ */
 const onSuccess = (data: {
   company: string;
   path: string;
@@ -137,21 +158,28 @@ const onSuccess = (data: {
   const fileCount = data.availableFiles?.length || 0;
   const filesList = data.availableFiles?.join(', ') || 'none';
 
-  // Success header with emoji and key info
   loggers.setEnv.success(`Context set • ${data.company} • ${fileCount} file(s)`);
-
-  // Display key details in a compact, scannable format
   loggers.setEnv.info(`   -Path: ${data.path}`);
   loggers.setEnv.info(`   -Position: ${data.position || 'Not specified'}`);
   loggers.setEnv.info(`   -Focus: ${data.primaryFocus || 'Not specified'}`);
   loggers.setEnv.info(`   -Files: ${filesList}`);
-
-  // Display next action
   loggers.setEnv.info('🚀 All good, please start the tailor-server');
 
   process.exit(0);
 };
 
+/**
+ * Handles pipeline errors by formatting and logging error details, then exits with error code.
+ *
+ * Provides specialized formatting for Zod validation errors with field paths and received values.
+ * Falls back to generic error formatting for other error types.
+ *
+ * @param {string} error - Primary error message
+ * @param {string} [details] - Additional error details
+ * @param {unknown} [originalError] - Original error object (checked for ZodError)
+ * @param {string} [filePath] - Path to file where error occurred
+ * @returns {void} Exits process with code 1
+ */
 const onError = (
   error: string,
   details?: string,
@@ -162,7 +190,6 @@ const onError = (
     .when(
       (err): err is z.ZodError => err instanceof z.ZodError,
       (zodError) => {
-        // Format Zod validation errors with detailed output
         loggers.setEnv.error('Application data validation failed:');
 
         zodError.issues.forEach((err) => {
@@ -170,41 +197,34 @@ const onError = (
           const received = 'received' in err ? String(err.received) : undefined;
           const receivedStr = received ? ` (received: ${received})` : '';
 
-          // Display field error
           loggers.setEnv.error(`  • ${path}: ${err.message}${receivedStr}`);
 
-          // Display file location if available
           if (filePath) {
             loggers.setEnv.error(`    → in ${filePath}`);
           }
         });
 
-        // Show help hint
         loggers.setEnv.info('💡 Fix the data issues in the tailor files and try again');
         process.exit(1);
       },
     )
     .otherwise(() => {
-      // Fallback for other error types
       loggers.setEnv.error(error);
 
-      // Display details if available (formatted like Zod errors)
       if (details) {
         details.split('\n').forEach((line) => {
           loggers.setEnv.error(`  ${line}`);
         });
       }
 
-      // Display file location if available
       if (filePath) {
         loggers.setEnv.error(`    → in ${filePath}`);
       }
 
-      // Show help hint for consistency
       loggers.setEnv.info('💡 Check the error details above and try again');
       process.exit(1);
     });
 };
 
 // Run pipeline
-setTailorContextPipeline();
+initTailorContext();

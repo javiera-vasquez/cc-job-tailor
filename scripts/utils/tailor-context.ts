@@ -54,6 +54,17 @@ export type SetContextResult = SetContextSuccess | SetContextError;
 // ============================================================================
 // Path Validation
 // ============================================================================
+
+/**
+ * Validates that the company directory exists in the tailor base path.
+ *
+ * @param {string} companyPath - Absolute path to the company folder
+ * @returns {Result<void>} Success if directory exists, error with available companies list if not
+ *
+ * @example
+ * validateCompanyPath('/path/to/resume-data/tailor/acme-corp')
+ * // => { success: true, data: undefined }
+ */
 export const validateCompanyPath = (companyPath: string): Result<void> => {
   return existsSync(companyPath)
     ? { success: true, data: void 0 }
@@ -64,10 +75,24 @@ export const validateCompanyPath = (companyPath: string): Result<void> => {
       };
 };
 
+/**
+ * Validates that all required company files exist on the filesystem.
+ *
+ * Checks each file path and returns a detailed error message listing all missing files
+ * if any are not found. Returns the original array on success for pipeline continuation.
+ *
+ * @param {FileToValidate[]} pathsToValidate - Array of file metadata with paths to validate
+ * @returns {Result<FileToValidate[]>} Success with files array, or error with missing files details
+ *
+ * @example
+ * validateFilePathsExists([
+ *   { fileName: 'metadata.yaml', path: '/path/to/metadata.yaml', type: MetadataSchema, wrapperKey: null }
+ * ])
+ * // => { success: true, data: [...] }
+ */
 export const validateFilePathsExists = (
   pathsToValidate: FileToValidate[],
 ): Result<FileToValidate[]> => {
-  // First, collect all missing files
   const missingFiles = pathsToValidate.filter((item) => !existsSync(item.path));
 
   if (missingFiles.length > 0) {
@@ -75,7 +100,6 @@ export const validateFilePathsExists = (
     const foundFiles = pathsToValidate.filter((f) => existsSync(f.path)).map((f) => f.fileName);
     const missingFileNames = missingFiles.map((f) => f.fileName);
 
-    // Build detailed error message
     const errorLines = [
       `Missing ${missingFiles.length} required file(s):`,
       ...missingFileNames.map((name) => `  - ${name}`),
@@ -99,10 +123,18 @@ export const validateFilePathsExists = (
 
 /**
  * Loads YAML files from the given paths and extracts nested data based on wrapperKey.
- * Handles files that have a wrapper structure (e.g., { job_analysis: {...} }).
  *
- * @param pathsToValidate - Array of files to load with their metadata and optional wrapperKey
- * @returns Result containing files with loaded YAML data, or first error encountered
+ * Handles files with wrapper structures (e.g., `{ job_analysis: {...} }`) by extracting
+ * the nested data when wrapperKey is specified. Data is loaded but not yet validated.
+ *
+ * @param {FileToValidate[]} pathsToValidate - Array of files to load with their metadata and optional wrapperKey
+ * @returns {Result<FileToValidateWithYamlData[]>} Result containing files with loaded YAML data, or first error encountered
+ *
+ * @example
+ * loadYamlFilesFromPath([
+ *   { fileName: 'job-analysis.yaml', path: '/path/to/file.yaml', type: JobAnalysisSchema, wrapperKey: 'job_analysis' }
+ * ])
+ * // Extracts data from { job_analysis: { ... } } structure
  */
 export const loadYamlFilesFromPath = (
   pathsToValidate: FileToValidate[],
@@ -110,12 +142,10 @@ export const loadYamlFilesFromPath = (
   return mapResults(pathsToValidate, (file) =>
     pipe(readYaml(file.path), (r) =>
       chain(r, (rawData) => {
-        // Extract data from wrapper if wrapperKey is specified
         const extractedData = file.wrapperKey
           ? (rawData as Record<string, unknown>)?.[file.wrapperKey] || rawData
           : rawData;
 
-        // Return the file with extracted data (not yet validated)
         return {
           success: true as const,
           data: { ...file, data: extractedData },
@@ -127,10 +157,19 @@ export const loadYamlFilesFromPath = (
 
 /**
  * Validates loaded YAML files against their associated Zod schemas.
- * Preserves the file metadata while validating the data.
  *
- * @param filesToValidate - Array of files with loaded YAML data to validate
- * @returns Result containing validated files or first validation error
+ * Preserves the file metadata while validating the data. Returns detailed validation
+ * errors including field paths and file locations on failure.
+ *
+ * @param {FileToValidateWithYamlData[]} filesToValidate - Array of files with loaded YAML data to validate
+ * @returns {Result<FileToValidateWithYamlData[]>} Result containing validated files or first validation error
+ *
+ * @example
+ * validateYamlFileAgainstZodSchema([
+ *   { fileName: 'metadata.yaml', path: '/path/to/file.yaml', type: MetadataSchema, wrapperKey: null, data: {...} }
+ * ])
+ * // => { success: true, data: [...] } if valid
+ * // => { success: false, error: '...', details: '...', filePath: '...' } if invalid
  */
 export const validateYamlFileAgainstZodSchema = (
   filesToValidate: FileToValidateWithYamlData[],
@@ -152,7 +191,13 @@ export const validateYamlFileAgainstZodSchema = (
 // ============================================================================
 
 /**
- * Transforms validated files to ApplicationData using fileName mapping
+ * Transforms validated YAML files to ApplicationData using fileName mapping.
+ *
+ * Maps each file's fileName to the corresponding ApplicationData property
+ * (metadata, job_analysis, resume, cover_letter) using the transformation utility.
+ *
+ * @param {FileToValidateWithYamlData[]} files - Validated YAML files with extracted data
+ * @returns {Result<ApplicationData>} Result containing ApplicationData object or transformation error
  */
 const transformToApplicationData = (
   files: FileToValidateWithYamlData[],
@@ -162,7 +207,13 @@ const transformToApplicationData = (
 };
 
 /**
- * Validates ApplicationData against Zod schema
+ * Validates ApplicationData against the complete Zod schema.
+ *
+ * Ensures all required fields are present and properly typed before generating
+ * the TypeScript module. Logs success or returns detailed validation errors.
+ *
+ * @param {ApplicationData} applicationData - Complete application data to validate
+ * @returns {Result<ApplicationData>} Result containing validated data or Zod validation errors
  */
 const validateApplicationDataSchema = (
   applicationData: ApplicationData,
@@ -180,7 +231,13 @@ const validateApplicationDataSchema = (
 };
 
 /**
- * Generates TypeScript module content from ApplicationData
+ * Generates TypeScript module content from ApplicationData.
+ *
+ * Returns a curried function that transforms ApplicationData into a TypeScript module
+ * string with proper imports, types, and exports.
+ *
+ * @param {string} companyName - Company name for module comments and metadata
+ * @returns {Function} Function that accepts ApplicationData and returns Result with TypeScript module string
  */
 const generateTypeScriptContent = (
   companyName: string,
@@ -192,7 +249,13 @@ const generateTypeScriptContent = (
 };
 
 /**
- * Writes TypeScript module to disk
+ * Writes TypeScript module to disk at the configured path.
+ *
+ * Uses Bun.write for efficient file writing and logs success with file path.
+ * Returns the TypeScript content on success for pipeline continuation.
+ *
+ * @param {string} tsContent - TypeScript module content to write
+ * @returns {Result<string>} Result containing the TypeScript content or write error
  */
 const writeTypeScriptModule = (tsContent: string): Result<string> => {
   const writeResult = tryCatch(
@@ -208,12 +271,19 @@ const writeTypeScriptModule = (tsContent: string): Result<string> => {
 };
 
 /**
- * Generates ApplicationData TypeScript module from validated files
- * Pure functional approach - uses fileName as single source of truth
+ * Generates ApplicationData TypeScript module from validated files using a pure functional pipeline.
  *
- * @param companyName - Name of the company for the generated module
- * @param files - Validated YAML files with extracted data
- * @returns Result containing the same files (for pipeline continuation)
+ * Orchestrates the complete data generation flow:
+ * 1. Transforms validated files to ApplicationData object
+ * 2. Validates the complete ApplicationData against Zod schema
+ * 3. Generates TypeScript module content
+ * 4. Writes module to disk at configured path
+ *
+ * Returns the original files unchanged for pipeline continuation.
+ *
+ * @param {string} companyName - Name of the company for module comments and metadata
+ * @param {FileToValidateWithYamlData[]} files - Validated YAML files with extracted data
+ * @returns {Result<FileToValidateWithYamlData[]>} Result containing the same files for pipeline continuation
  */
 export const generateApplicationData = (
   companyName: string,
@@ -230,7 +300,7 @@ export const generateApplicationData = (
     (result) =>
       chain(result, () => ({
         success: true as const,
-        data: files, // Return files unchanged for pipeline continuation
+        data: files,
       })),
   );
 };
@@ -238,6 +308,16 @@ export const generateApplicationData = (
 // ============================================================================
 // Context Generation and Writing
 // ============================================================================
+
+/**
+ * Extracts metadata from the validated files array by fileName.
+ *
+ * Searches the files array for the metadata file and returns its validated data.
+ *
+ * @param {FileToValidateWithYamlData[]} files - Array of validated files with data
+ * @param {CompanyFileValue} fileName - File name to search for (typically COMPANY_FILES.METADATA)
+ * @returns {Result<MetadataSchema>} Result containing metadata or error if not found
+ */
 export const extractMetadata = (
   files: FileToValidateWithYamlData[],
   fileName: CompanyFileValue,
@@ -248,6 +328,17 @@ export const extractMetadata = (
     : { success: false, error: 'Metadata file not found in validated files' };
 };
 
+/**
+ * Generates and writes the tailor-context.yaml file with company metadata.
+ *
+ * Creates the YAML context configuration with schema validation, header comments,
+ * and timestamp. Ensures active_template has a default value if not specified.
+ *
+ * @param {string} companyName - Company name for context
+ * @param {MetadataSchema} metadata - Validated metadata from company files
+ * @param {string} contextPath - Absolute path to write tailor-context.yaml
+ * @returns {Result<SetContextSuccess['data']>} Result containing context summary or write error
+ */
 export const generateAndWriteTailorContext = (
   companyName: string,
   metadata: z.infer<typeof MetadataSchema>,
@@ -280,6 +371,12 @@ export const generateAndWriteTailorContext = (
     : write;
 };
 
+/**
+ * Gets list of available company directories in the tailor base path.
+ *
+ * @param {string} base - Base path containing company directories
+ * @returns {string[]} Array of company directory names, or empty array if path doesn't exist or on error
+ */
 const getAvailableCompanies = (base: string): string[] => {
   if (!existsSync(base)) return [];
   try {
@@ -291,28 +388,43 @@ const getAvailableCompanies = (base: string): string[] => {
   }
 };
 
+/**
+ * Formats Zod validation error into human-readable string.
+ *
+ * Converts Zod error issues into formatted list with field paths and messages.
+ *
+ * @param {z.ZodError} error - Zod validation error
+ * @returns {string} Formatted error string with one issue per line
+ */
 const formatZodError = (error: z.ZodError): string =>
   error.issues
     .map((i) => `  - ${i.path.length > 0 ? i.path.join('.') : 'root'}: ${i.message}`)
     .join('\n');
 
 /**
- * Generate YAML content for tailor context using schema-driven approach
- * This is the single source of truth - all YAML generation flows through this function
+ * Generates YAML content for tailor-context.yaml using schema-driven approach.
+ *
+ * Creates TailorContext object from metadata, validates against TailorContextSchema,
+ * and serializes to YAML with header comments. This is the single source of truth
+ * for YAML generation.
+ *
+ * @param {string} companyName - Company name for active_company field
+ * @param {MetadataSchema} meta - Validated metadata with active_template default
+ * @param {string} timestamp - ISO timestamp for last_updated field
+ * @returns {string} YAML string with header comments
+ * @throws {Error} If context data fails TailorContextSchema validation
  */
 const generateContextYaml = (
   companyName: string,
   meta: z.infer<typeof MetadataSchema>,
   timestamp: string,
 ): string => {
-  // Construct data object from schema
-  // Note: active_template has a default value in MetadataSchema, so it's always defined after parsing
   const contextData: TailorContext = {
     active_company: companyName,
     company: meta.company,
     folder_path: meta.folder_path,
     available_files: meta.available_files,
-    active_template: meta.active_template ?? 'modern', // Fallback to 'modern' if somehow undefined
+    active_template: meta.active_template ?? 'modern',
     position: meta.position,
     primary_focus: meta.primary_focus,
     job_summary: meta.job_summary,
@@ -320,14 +432,12 @@ const generateContextYaml = (
     last_updated: timestamp,
   };
 
-  // Validate against schema before serialization
   const validation = TailorContextSchema.safeParse(contextData);
   if (!validation.success) {
     const errorDetails = formatZodError(validation.error);
     throw new Error(`Context data validation failed:\n${errorDetails}`);
   }
 
-  // Generate YAML with header comments
   const header = [
     '# Auto-generated by /tailor command',
     `# Last updated: ${timestamp}`,
@@ -350,6 +460,17 @@ const generateContextYaml = (
 // Functional Helpers
 // ============================================================================
 
+/**
+ * Wraps a function in try-catch and returns a Result type.
+ *
+ * Executes the function and returns success Result on completion, or error Result
+ * with message and details on exception.
+ *
+ * @template T - Return type of the wrapped function
+ * @param {() => T} fn - Function to execute
+ * @param {string} errorMsg - Error message to use if function throws
+ * @returns {Result<T>} Success with function result or error with details
+ */
 const tryCatch = <T>(fn: () => T, errorMsg: string): Result<T> => {
   try {
     return { success: true, data: fn() };
@@ -362,15 +483,35 @@ const tryCatch = <T>(fn: () => T, errorMsg: string): Result<T> => {
   }
 };
 
+/**
+ * Monadic chain operation for Result type (flatMap/bind).
+ *
+ * If result is success, applies function to the data and returns the new Result.
+ * If result is error, propagates the error without calling the function.
+ * Enables functional composition of operations that may fail.
+ *
+ * @template A - Type of the input Result's data
+ * @template B - Type of the output Result's data
+ * @param {Result<A>} result - Input Result to chain from
+ * @param {(data: A) => Result<B>} f - Function to apply if result is success
+ * @returns {Result<B>} New Result from function, or propagated error
+ */
 export const chain = <A, B>(result: Result<A>, f: (data: A) => Result<B>): Result<B> =>
   match(result)
     .with({ success: true }, ({ data }) => f(data))
     .otherwise((error) => error);
 
 /**
- * Chains multiple functions together in a pipeline, where each function
- * takes the success data from the previous Result and returns a new Result.
- * Stops at the first error encountered.
+ * Chains multiple functions together in a pipeline using left-to-right composition.
+ *
+ * Each function takes the success data from the previous Result and returns a new Result.
+ * The pipeline stops at the first error encountered and propagates it through.
+ * Wraps initial value in success Result before applying functions.
+ *
+ * @template T - Type of the initial data
+ * @param {T} initial - Initial data to start the pipeline
+ * @param {...Array<(data: any) => Result<any>>} fns - Functions to chain together
+ * @returns {Result<any>} Final Result from pipeline, or first error encountered
  *
  * @example
  * chainPipe(
@@ -391,38 +532,66 @@ export const chainPipe = <T>(
 };
 
 /**
- * Maps over an array, applying a transformation that returns a Result.
- * Returns the first error encountered, or all successful results.
- * Uses reduce for functional composition with early exit on error.
+ * Maps over an array applying a transformation that returns a Result.
+ *
+ * Accumulates all successful results into an array. Returns the first error encountered,
+ * short-circuiting remaining items. Uses reduce for functional composition with early exit.
+ *
+ * @template T - Type of input array items
+ * @template U - Type of transformed items
+ * @param {T[]} items - Array of items to transform
+ * @param {(item: T) => Result<U>} transform - Transformation function returning Result
+ * @returns {Result<U[]>} Success with array of transformed items, or first error encountered
  */
 const mapResults = <T, U>(items: T[], transform: (item: T) => Result<U>): Result<U[]> => {
   return items.reduce<Result<U[]>>(
     (acc, item) => {
       if (!acc.success) {
-        return acc; // Short-circuit on first error
+        return acc;
       }
 
       const result = transform(item);
       if (!result.success) {
-        return result as Result<U[]>; // Cast error to expected return type
+        return result as Result<U[]>;
       }
 
-      // Accumulate successful result
       return {
         success: true,
         data: [...acc.data, result.data],
       };
     },
-    { success: true, data: [] }, // Start with empty array
+    { success: true, data: [] },
   );
 };
 
+/**
+ * Reads and parses a YAML file from the filesystem.
+ *
+ * Combines file reading and YAML parsing in a functional pipeline.
+ * Returns detailed errors for both file reading and YAML parsing failures.
+ *
+ * @param {string} path - Absolute path to YAML file
+ * @returns {Result<unknown>} Success with parsed YAML data, or error with details
+ */
 const readYaml = (path: string): Result<unknown> =>
   pipe(
     tryCatch(() => readFileSync(path, 'utf-8'), `Failed to read ${path}`),
     (r) => chain(r, (content) => tryCatch(() => yaml.load(content), 'Invalid YAML')),
   );
 
+/**
+ * Validates data against a Zod schema with detailed error reporting.
+ *
+ * Performs Zod schema validation and returns formatted errors including field paths,
+ * messages, and file location for debugging.
+ *
+ * @template T - Type of the validated data
+ * @param {z.ZodSchema<T>} schema - Zod schema to validate against
+ * @param {unknown} data - Data to validate
+ * @param {string} name - Display name for error messages
+ * @param {string} filePath - File path for error context
+ * @returns {Result<T>} Success with validated data, or error with formatted details and original ZodError
+ */
 const validateSchema = <T>(
   schema: z.ZodSchema<T>,
   data: unknown,
@@ -437,6 +606,6 @@ const validateSchema = <T>(
         error: `${name} validation failed`,
         details: formatZodError(validation.error),
         originalError: validation.error,
-        filePath, // Add filePath to the error result
+        filePath,
       };
 };
