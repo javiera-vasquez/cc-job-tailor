@@ -15,9 +15,10 @@ import type { z } from 'zod';
 import type { ApplicationData } from '../../src/types';
 
 // Result type for functional error handling
-export type Result<T, E = { error: string; details?: string }> =
-  | { success: true; data: T }
-  | ({ success: false } & E);
+export type Result<
+  T,
+  E = { error: string; details?: string; originalError?: unknown; filePath?: string },
+> = { success: true; data: T } | ({ success: false } & E);
 
 export interface FileToValidate {
   fileName: CompanyFileValue;
@@ -44,6 +45,8 @@ export interface SetContextError {
   success: false;
   error: string;
   details?: string;
+  originalError?: unknown;
+  filePath?: string;
 }
 
 export type SetContextResult = SetContextSuccess | SetContextError;
@@ -64,23 +67,30 @@ export const validateCompanyPath = (companyPath: string): Result<void> => {
 export const validateFilePathsExists = (
   pathsToValidate: FileToValidate[],
 ): Result<FileToValidate[]> => {
-  return pathsToValidate.reduce<Result<FileToValidate[]>>(
-    (acc, item) => {
-      if (!acc.success) {
-        return acc;
-      }
+  // First, collect all missing files
+  const missingFiles = pathsToValidate.filter((item) => !existsSync(item.path));
 
-      if (!existsSync(item.path)) {
-        return {
-          success: false,
-          error: `${item.fileName} not found: ${item.path}`,
-        };
-      }
+  if (missingFiles.length > 0) {
+    const expectedFiles = pathsToValidate.map((f) => f.fileName);
+    const foundFiles = pathsToValidate.filter((f) => existsSync(f.path)).map((f) => f.fileName);
+    const missingFileNames = missingFiles.map((f) => f.fileName);
 
-      return acc;
-    },
-    { success: true, data: pathsToValidate },
-  );
+    // Build detailed error message
+    const errorLines = [
+      `Missing ${missingFiles.length} required file(s):`,
+      ...missingFileNames.map((name) => `  - ${name}`),
+      `Expected files: ${expectedFiles.join(', ')}`,
+      `Found files: ${foundFiles.length > 0 ? foundFiles.join(', ') : 'none'}`,
+    ];
+
+    return {
+      success: false,
+      error: errorLines[0] || 'Missing required files',
+      details: errorLines.slice(1).join('\n'),
+    };
+  }
+
+  return { success: true, data: pathsToValidate };
 };
 
 // ============================================================================
@@ -126,11 +136,13 @@ export const validateYamlFileAgainstZodSchema = (
   filesToValidate: FileToValidateWithYamlData[],
 ): Result<FileToValidateWithYamlData[]> => {
   return mapResults(filesToValidate, (file) =>
-    pipe(validateSchema(file.type as z.ZodSchema<unknown>, file.data, file.fileName), (r) =>
-      chain(r, (validatedData) => ({
-        success: true as const,
-        data: { ...file, data: validatedData },
-      })),
+    pipe(
+      validateSchema(file.type as z.ZodSchema<unknown>, file.data, file.fileName, file.path),
+      (r) =>
+        chain(r, (validatedData) => ({
+          success: true as const,
+          data: { ...file, data: validatedData },
+        })),
     ),
   );
 };
@@ -236,7 +248,7 @@ export const extractMetadata = (
     : { success: false, error: 'Metadata file not found in validated files' };
 };
 
-export const generateAndWriteInitialTailorContext = (
+export const generateAndWriteTailorContext = (
   companyName: string,
   metadata: z.infer<typeof MetadataSchema>,
   contextPath: string,
@@ -411,7 +423,12 @@ const readYaml = (path: string): Result<unknown> =>
     (r) => chain(r, (content) => tryCatch(() => yaml.load(content), 'Invalid YAML')),
   );
 
-const validateSchema = <T>(schema: z.ZodSchema<T>, data: unknown, name: string): Result<T> => {
+const validateSchema = <T>(
+  schema: z.ZodSchema<T>,
+  data: unknown,
+  name: string,
+  filePath: string,
+): Result<T> => {
   const validation = schema.safeParse(data);
   return validation.success
     ? { success: true, data: validation.data }
@@ -419,5 +436,7 @@ const validateSchema = <T>(schema: z.ZodSchema<T>, data: unknown, name: string):
         success: false,
         error: `${name} validation failed`,
         details: formatZodError(validation.error),
+        originalError: validation.error,
+        filePath, // Add filePath to the error result
       };
 };

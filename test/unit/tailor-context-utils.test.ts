@@ -9,7 +9,7 @@ import {
   loadYamlFilesFromPath,
   validateYamlFileAgainstZodSchema,
   extractMetadata,
-  generateAndWriteInitialTailorContext,
+  generateAndWriteTailorContext,
   chain,
   type FileToValidate,
 } from '../../scripts/utils/tailor-context';
@@ -62,7 +62,7 @@ const setTailorContext = (companyName: string) => {
           chain(r, (files) =>
             pipe(extractMetadata(files, COMPANY_FILES.METADATA), (r) =>
               chain(r, (metadata) =>
-                generateAndWriteInitialTailorContext(companyName, metadata, contextPath),
+                generateAndWriteTailorContext(companyName, metadata, contextPath),
               ),
             ),
           ),
