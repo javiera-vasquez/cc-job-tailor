@@ -2,18 +2,12 @@
 
 import { pipe } from 'remeda';
 import { match } from 'ts-pattern';
-import {
-  validateCompanyPath,
-  validateFilePathsExists,
-  loadYamlFilesFromPath,
-  validateYamlFileAgainstZodSchema,
-  extractMetadata,
-  generateAndWriteTailorContext,
-  generateApplicationData,
-  chain,
-  chainPipe,
-  type FileToValidate,
-} from './utils/tailor-context';
+import { chain, chainPipe } from './shared/functional-utils';
+import type { FileToValidate } from './shared/validation-pipeline';
+import { validateCompanyPath, validateFilePathsExists } from './shared/company-validation';
+import { loadYamlFilesFromPath, validateYamlFileAgainstZodSchema } from './shared/yaml-operations';
+import { generateApplicationData } from './shared/data-generation';
+import { extractMetadata, generateAndWriteTailorContext } from './shared/context-operations';
 import { parseCliArgs, validateRequiredArg } from './shared/cli-args';
 import {
   MetadataSchema,

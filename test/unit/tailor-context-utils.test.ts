@@ -3,16 +3,11 @@ import { mkdirSync, rmSync, existsSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { load, dump } from 'js-yaml';
 import { pipe } from 'remeda';
-import {
-  validateCompanyPath,
-  validateFilePathsExists,
-  loadYamlFilesFromPath,
-  validateYamlFileAgainstZodSchema,
-  extractMetadata,
-  generateAndWriteTailorContext,
-  chain,
-  type FileToValidate,
-} from '../../scripts/utils/tailor-context';
+import { chain } from '../../scripts/shared/functional-utils';
+import type { FileToValidate } from '../../scripts/shared/validation-pipeline';
+import { validateCompanyPath, validateFilePathsExists } from '../../scripts/shared/company-validation';
+import { loadYamlFilesFromPath, validateYamlFileAgainstZodSchema } from '../../scripts/shared/yaml-operations';
+import { extractMetadata, generateAndWriteTailorContext } from '../../scripts/shared/context-operations';
 import { COMPANY_FILES, PathHelpers } from '../../scripts/shared/config';
 import {
   MetadataSchema,
