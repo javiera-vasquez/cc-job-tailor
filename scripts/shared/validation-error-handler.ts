@@ -2,7 +2,7 @@
  * Centralized validation error handler
  *
  * Provides consistent error formatting and handling for Zod validation errors
- * across all scripts (generate-data, generate-pdf, tailor-server).
+ * across all scripts (generate-pdf, tailor-server).
  *
  * Benefits:
  * - Single source of truth for error formatting
@@ -15,7 +15,7 @@ import { z } from 'zod';
 import { loggers } from './logger';
 import { formatErrorWithFile } from './field-to-file-mapper';
 
-export type ErrorContext = 'generate-data' | 'generate-pdf' | 'tailor-server';
+export type ErrorContext = 'generate-pdf' | 'tailor-server';
 
 export interface ValidationErrorOptions {
   /** Context/script where the error occurred */
@@ -46,7 +46,7 @@ export interface ValidationErrorOptions {
  *   validateApplicationData(data);
  * } catch (error) {
  *   handleValidationError(error, {
- *     context: 'generate-data',
+ *     context: 'generate-pdf',
  *     companyName: 'tech-corp',
  *     exitOnError: true,
  *     showHelpHint: true,
@@ -103,8 +103,6 @@ export function handleValidationError(error: unknown, options: ValidationErrorOp
  */
 function getLoggerForContext(context: ErrorContext) {
   switch (context) {
-    case 'generate-data':
-      return loggers.generate;
     case 'generate-pdf':
       return loggers.pdf;
     case 'tailor-server':

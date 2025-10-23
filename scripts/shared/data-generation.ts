@@ -22,7 +22,7 @@ import { PATHS } from './config';
 const transformToApplicationData = (
   files: FileToValidateWithYamlData[],
 ): Result<ApplicationData> => {
-  loggers.generate.info('Generating application data module');
+  loggers.validation.info('Generating application data module');
   return transformFilesToApplicationData(files);
 };
 
@@ -44,7 +44,7 @@ const validateApplicationDataSchema = (
   );
 
   if (result.success) {
-    loggers.generate.success('Application data validation passed');
+    loggers.validation.success('Application data validation passed');
   }
 
   return result.success ? { success: true, data: applicationData } : result;
@@ -84,10 +84,26 @@ const writeTypeScriptModule = (tsContent: string): Result<string> => {
   );
 
   if (writeResult.success) {
-    loggers.generate.success(`Application data written to ${PATHS.GENERATED_DATA}`);
+    loggers.validation.success(`Application data written to ${PATHS.GENERATED_DATA}`);
   }
 
   return writeResult.success ? { success: true, data: tsContent } : writeResult;
+};
+
+/**
+ * Generates ApplicationData in-memory from validated files without writing to disk.
+ *
+ * Lightweight pipeline for scenarios that only need the data (e.g., PDF generation):
+ * 1. Transforms validated files to ApplicationData object
+ * 2. Validates the complete ApplicationData against Zod schema
+ *
+ * @param {FileToValidateWithYamlData[]} files - Validated YAML files with extracted data
+ * @returns {Result<ApplicationData>} Result containing validated ApplicationData
+ */
+export const generateApplicationDataInMemory = (
+  files: FileToValidateWithYamlData[],
+): Result<ApplicationData> => {
+  return chainPipe(files, transformToApplicationData, validateApplicationDataSchema);
 };
 
 /**

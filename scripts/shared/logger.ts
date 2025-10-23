@@ -354,7 +354,6 @@ export function createLogger(context: string, options?: Partial<LoggerOptions>):
  */
 export const loggers = {
   server: createLogger('tailor-server'),
-  generate: createLogger('generate-data'),
   setEnv: createLogger('set-env'),
   watcher: createLogger('file-watcher'),
   validation: createLogger('validation'),

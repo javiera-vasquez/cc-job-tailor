@@ -393,13 +393,6 @@ describe('Logger', () => {
       expect(output).toContain('[tailor-server]');
     });
 
-    it('should provide generate logger', () => {
-      expect(loggers.generate).toBeDefined();
-      loggers.generate.info('test');
-      const output = consoleLogSpy.mock.calls[0][0];
-      expect(output).toContain('[generate-data]');
-    });
-
     it('should provide setEnv logger', () => {
       expect(loggers.setEnv).toBeDefined();
       loggers.setEnv.info('test');

@@ -39,8 +39,5 @@ jobs:
       - name: Run unit tests
         run: bun test
 
-      - name: Test generate-data command
-        run: bun run generate-data -C tech-corp
-
-      - name: Test generate-pdf command
-        run: bun run generate-pdf -C tech-corp
+      - name: Test PDF generation pipeline
+        run: bun run save-to-pdf -C tech-corp -D resume

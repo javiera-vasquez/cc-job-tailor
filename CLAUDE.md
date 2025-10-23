@@ -28,9 +28,6 @@ bun run tailor-server
 # Generate PDF to disk with company-specific data
 bun run save-to-pdf -C company-name
 
-# Generate TypeScript data from YAML
-bun run generate-data -C company-name
-
 # Run all (generate data + start server)
 bun run start
 
@@ -77,8 +74,7 @@ import { tokens } from '@template-core/design-tokens';
 ├── index.tsx                      # Development server entry point
 ├── scripts/
 │   ├── tailor-server.ts           # Development server with file watching
-│   ├── generate-data.ts           # YAML to TypeScript converter with Zod validation
-│   └── generate-pdf.ts            # Server-side PDF generation
+│   └── generate-pdf.ts            # Server-side PDF generation with validation pipeline
 ├── src/
 │   ├── data/application.ts        # Auto-generated from YAML sources
 │   ├── ui/                        # UI components
@@ -166,7 +162,6 @@ loggers.server.warn('Warning message');
 **Available loggers:**
 
 - `loggers.server` - For tailor-server operations
-- `loggers.generate` - For generate-data script
 - `loggers.setEnv` - For set-env script
 - `loggers.pdf` - For PDF generation
 - `loggers.watcher` - For file watching operations

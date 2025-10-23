@@ -20,6 +20,35 @@ export const tryCatch = <T>(fn: () => T, errorMsg: string): Result<T> => {
       success: false,
       error: errorMsg,
       details: error instanceof Error ? error.message : String(error),
+      originalError: error,
+    };
+  }
+};
+
+/**
+ * Wraps an async function in try-catch and returns a Promise of Result type.
+ *
+ * Executes the async function and returns success Result on completion, or error Result
+ * with message and details on exception. Async version of tryCatch.
+ *
+ * @template T - Return type of the wrapped async function
+ * @param {() => Promise<T>} fn - Async function to execute
+ * @param {string} errorMsg - Error message to use if function throws
+ * @returns {Promise<Result<T>>} Promise of success with function result or error with details
+ */
+export const tryCatchAsync = async <T>(
+  fn: () => Promise<T>,
+  errorMsg: string,
+): Promise<Result<T>> => {
+  try {
+    const data = await fn();
+    return { success: true, data };
+  } catch (error) {
+    return {
+      success: false,
+      error: errorMsg,
+      details: error instanceof Error ? error.message : String(error),
+      originalError: error,
     };
   }
 };
@@ -103,4 +132,30 @@ export const mapResults = <T, U>(items: T[], transform: (item: T) => Result<U>):
     },
     { success: true, data: [] },
   );
+};
+
+/**
+ * Executes a side effect on successful Result without modifying the data.
+ *
+ * If result is success, runs the side effect function with the data and returns the original result.
+ * If result is error, returns the error unchanged without running the side effect.
+ * Useful for logging, analytics, or other side effects in functional pipelines.
+ *
+ * @template T - Type of the Result's data
+ * @param {Result<T>} result - Input Result to tap into
+ * @param {(data: T) => void} sideEffect - Side effect function to run on success
+ * @returns {Result<T>} Original Result unchanged
+ *
+ * @example
+ * pipe(
+ *   validateData(input),
+ *   (r) => tap(r, (data) => logger.info('Validation passed')),
+ *   (r) => chain(r, transformData)
+ * )
+ */
+export const tap = <T>(result: Result<T>, sideEffect: (data: T) => void): Result<T> => {
+  if (result.success) {
+    sideEffect(result.data);
+  }
+  return result;
 };
