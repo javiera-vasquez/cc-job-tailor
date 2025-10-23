@@ -13,6 +13,7 @@ You are helping the user create a Control Flow Diagram (CFD) for a specific file
 Read and analyze the file: `$1`
 
 Identify:
+
 - Main function(s) or entry point
 - Decision points and branches
 - Number of exit points
@@ -24,6 +25,7 @@ Identify:
 Based on your analysis, present these 4 options to the user (use clear formatting):
 
 ### Option 1: Basic CFD (Logical Paths Only)
+
 - **Best for**: Quick overview
 - **Nodes**: ~10-15
 - **Shows**: Decision points, major operations, exit points
@@ -31,6 +33,7 @@ Based on your analysis, present these 4 options to the user (use clear formattin
 - **Mermaid style**: Simple graph with color coding
 
 ### Option 2: Detailed CFD (Complete Analysis)
+
 - **Best for**: Full understanding
 - **Nodes**: ~20-30
 - **Shows**: All conditions, operations, error paths, validations
@@ -38,6 +41,7 @@ Based on your analysis, present these 4 options to the user (use clear formattin
 - **Mermaid style**: Comprehensive graph with labeled branches
 
 ### Option 3: Error Handling Focus
+
 - **Best for**: Understanding failure scenarios
 - **Nodes**: ~15-25
 - **Shows**: All validations, error paths, try-catch blocks
@@ -45,6 +49,7 @@ Based on your analysis, present these 4 options to the user (use clear formattin
 - **Mermaid style**: Color-coded (green success, red errors)
 
 ### Option 4: Logical Flow Only
+
 - **Best for**: Simplest view
 - **Nodes**: ~8-12
 - **Shows**: Only if/else branches and main flow
@@ -65,6 +70,7 @@ Ask the user to choose one option by entering 1, 2, 3, or 4.
 Once the user selects an option (1-4), generate the appropriate Mermaid Control Flow Diagram using the corresponding template:
 
 ### Generation Template - Option 1 (Basic CFD)
+
 ```
 Use the Basic CFD Prompt Template:
 - Show only decision nodes for key validations
@@ -76,6 +82,7 @@ Use the Basic CFD Prompt Template:
 ```
 
 ### Generation Template - Option 2 (Detailed CFD)
+
 ```
 Use the Detailed CFD Prompt Template:
 - Map all logical decision points
@@ -89,6 +96,7 @@ Use the Detailed CFD Prompt Template:
 ```
 
 ### Generation Template - Option 3 (Error Handling Focus)
+
 ```
 Analyze error handling patterns:
 - Try-catch blocks and error flows
@@ -102,6 +110,7 @@ Analyze error handling patterns:
 ```
 
 ### Generation Template - Option 4 (Logical Flow Only)
+
 ```
 Create simplified diagram:
 - Only if/else conditions
@@ -121,6 +130,7 @@ After generating the diagram, create a Markdown file with:
 **File name**: `${1}.cfd.md` (or extract filename if path provided)
 
 **File contents**:
+
 ```markdown
 # Control Flow Diagram: [Filename]
 
@@ -148,12 +158,13 @@ After generating the diagram, create a Markdown file with:
 
 - **Success**: [Describe success condition]
 - **Error**: [Describe error condition]
-[Add more as applicable]
+  [Add more as applicable]
 ```
 
 ## Step 6: Confirmation
 
 Save the file and report:
+
 - ✅ Diagram type generated
 - ✅ File saved location
 - ✅ Node count and complexity summary
@@ -163,19 +174,23 @@ Save the file and report:
 ## Error Handling
 
 **If file not found:**
+
 - Report the issue
 - Suggest checking the file path
 
 **If file has multiple functions:**
+
 - Ask user which function to focus on
 - Or analyze the main entry point
 
 **If complexity is very high:**
+
 - Suggest breaking into smaller pieces
 - Recommend Option 1 or 4 for simplicity
 - Offer to create multiple diagrams
 
 **If user doesn't respond:**
+
 - Remind options available (1-4)
 - Wait for selection before proceeding to Step 4
 
