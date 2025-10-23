@@ -100,33 +100,36 @@ class EnhancedDevServer {
   }
 
   public start(): void {
-    pipe(
-      validateAndSetTailorEnvPipeline(this.state.activeCompany, this.filesToWatch),
-      (r) =>
-        chain(r, (data) => {
-          this.createFileWatcher(PathHelpers.getCompanyPath(this.state.activeCompany));
-          return { success: true as const, data };
-        }),
-      (r) =>
-        chain(r, (data) => {
-          this.setupShutdownHandlers();
-          return { success: true as const, data };
-        }),
-      (r) =>
-        match(r)
-          .with({ success: true }, ({ data }) => this.onServerReady(data))
-          .with({ success: false }, ({ error, details, originalError, filePath }) =>
-            this.onValidationError(error, details, originalError, filePath),
-          )
-          .exhaustive(),
-    );
+    // Validate environment using functional pipeline
+    const result = validateAndSetTailorEnvPipeline(this.state.activeCompany, this.filesToWatch);
+
+    // Early exit for validation errors
+    if (!result.success) {
+      this.onValidationError(result.error, result.details, result.originalError, result.filePath);
+      return;
+    }
+
+    // Initialize services with sequential side effects
+    this.createFileWatcher(PathHelpers.getCompanyPath(this.state.activeCompany));
+    this.setupShutdownHandlers();
+    this.onServerReady(result.data);
   }
 
   private createFileWatcher(directoryPath: string): void {
-    tryCatch(() => {
+    const result = tryCatch(() => {
       const handler = this.createFileChangeHandler(this.state.activeCompany);
       return watch(directoryPath, { recursive: true }, handler);
     }, 'Could not set up file watcher');
+
+    match(result)
+      .with({ success: true }, (r) => {
+        this.state.fileWatcher = r.data;
+        if (!this.compactMode) loggers.server.info('File watcher initialized successfully');
+      })
+      .with({ success: false }, (e) => {
+        loggers.server.error('Failed to create file watcher', e.error);
+      })
+      .exhaustive();
   }
 
   /**
@@ -157,46 +160,43 @@ class EnhancedDevServer {
   }
 
   /**
-   * Creates composed file change handler with unified pipeline.
+   * Creates file change handler with validation and debouncing.
    *
-   * Returns event handler function that composes:
-   * 1. Validates file change event (pure)
+   * Returns event handler function that:
+   * 1. Validates file change event
    * 2. Updates state with current filename
    * 3. Clears existing debounce timer
    * 4. Triggers immediate or debounced regeneration
-   *
-   * All steps unified in single pipe with chain for automatic error propagation.
    *
    * @param {string} companyName - Company name for regeneration context
    * @returns {(eventType: string, filename: string | null) => void} Handler function
    */
   private createFileChangeHandler(companyName: string) {
     return (eventType: string, filename: string | null) => {
-      pipe(this.validateFileChangeEvent(eventType, filename), (r) =>
-        chain(r, (validFilename) => {
-          // Store for logging
-          this.state.currentFilename = validFilename;
+      // Validate early and return if invalid
+      const validation = this.validateFileChangeEvent(eventType, filename);
+      if (!validation.success) {
+        return;
+      }
 
-          // Clear existing debounce timer
-          if (this.state.debounceTimer) {
-            clearTimeout(this.state.debounceTimer);
-          }
+      const validFilename = validation.data;
 
-          // Execute based on debounce configuration
-          match(this.debounceDelay === 0)
-            .with(true, () => {
-              this.regenerateDataWithPipeline(companyName, validFilename);
-            })
-            .with(false, () => {
-              this.state.debounceTimer = setTimeout(() => {
-                this.regenerateDataWithPipeline(companyName, validFilename);
-              }, this.debounceDelay);
-            })
-            .exhaustive();
+      // Store for logging
+      this.state.currentFilename = validFilename;
 
-          return { success: true as const, data: validFilename };
-        }),
-      );
+      // Clear existing debounce timer
+      if (this.state.debounceTimer) {
+        clearTimeout(this.state.debounceTimer);
+      }
+
+      // Execute based on debounce configuration
+      if (this.debounceDelay === 0) {
+        this.regenerateDataWithPipeline(companyName, validFilename);
+      } else {
+        this.state.debounceTimer = setTimeout(() => {
+          this.regenerateDataWithPipeline(companyName, validFilename);
+        }, this.debounceDelay);
+      }
     };
   }
 
