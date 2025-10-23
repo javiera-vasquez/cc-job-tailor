@@ -1,5 +1,12 @@
 import type { z } from 'zod';
-import type { CompanyFileValue } from './config';
+import { pipe } from 'remeda';
+import { COMPANY_FILES, PathHelpers, PATHS, type CompanyFileValue } from './config';
+import { validateCompanyPath, validateFilePathsExists } from './company-validation';
+import { loadYamlFilesFromPath, validateYamlFileAgainstZodSchema } from './yaml-operations';
+import { chain, chainPipe } from './functional-utils';
+
+import { generateApplicationData } from './data-generation';
+import { extractMetadata, generateAndWriteTailorContext } from './context-operations';
 
 // Result type for functional error handling
 export type Result<
@@ -15,6 +22,10 @@ export interface FileToValidate {
 }
 
 export type FileToValidateWithYamlData = FileToValidate & { data: unknown };
+export type YamlFilesAndSchemasToWatch = Pick<
+  FileToValidate,
+  'fileName' | 'type' | 'wrapperKey'
+> & { key: keyof typeof COMPANY_FILES };
 
 export interface SetContextSuccess {
   success: true;
@@ -27,7 +38,6 @@ export interface SetContextSuccess {
     timestamp: string;
   };
 }
-
 export interface SetContextError {
   success: false;
   error: string;
@@ -37,6 +47,59 @@ export interface SetContextError {
 }
 
 export type SetContextResult = SetContextSuccess | SetContextError;
+
+/**
+ * Executes the complete tailor context setup pipeline using functional composition.
+ *
+ * Pipeline flow:
+ * 1. Validates company directory exists
+ * 2. Validates all required files exist
+ * 3. Loads YAML files with wrapper extraction
+ * 4. Validates YAML data against Zod schemas
+ * 5. Generates TypeScript application data module
+ * 6. Extracts metadata from validated files
+ * 7. Generates and writes tailor-context.yaml
+ *
+ * @returns {void} Exits process with code 0 on success, 1 on failure
+ */
+export const validateAndSetTailorEnvPipeline = (
+  environmentName: string,
+  yamlDocumentsToValidate: YamlFilesAndSchemasToWatch[],
+): SetContextResult => {
+  return pipe(
+    validateCompanyPath(PathHelpers.getCompanyPath(environmentName)),
+    (r) =>
+      chain(r, () =>
+        validateYamlFilesAgainstSchemasPipeline(environmentName, yamlDocumentsToValidate),
+      ),
+    (r) =>
+      chain(r, (yamlFiles) =>
+        chainPipe(
+          yamlFiles,
+          (files) => generateApplicationData(environmentName, files),
+          (files) => extractMetadata(files, COMPANY_FILES.METADATA),
+          (metadata) =>
+            generateAndWriteTailorContext(environmentName, metadata, PATHS.CONTEXT_FILE),
+        ),
+      ),
+  );
+};
+
+export const validateYamlFilesAgainstSchemasPipeline = (
+  companyName: string,
+  filesAndSchemas: YamlFilesAndSchemasToWatch[],
+): Result<FileToValidateWithYamlData[]> =>
+  chainPipe(
+    filesAndSchemas.map(({ key, fileName, type, wrapperKey }) => ({
+      fileName,
+      path: PathHelpers.getCompanyFile(companyName, key),
+      type,
+      wrapperKey,
+    })),
+    validateFilePathsExists,
+    loadYamlFilesFromPath,
+    validateYamlFileAgainstZodSchema,
+  );
 
 /**
  * Formats Zod validation error into human-readable string.

@@ -1,24 +1,15 @@
-#!/usr/bin/env bun
-
 import { pipe } from 'remeda';
 import { match } from 'ts-pattern';
-import { chain, chainPipe } from './shared/functional-utils';
-import type { FileToValidate } from './shared/validation-pipeline';
-import { validateCompanyPath, validateFilePathsExists } from './shared/company-validation';
-import { loadYamlFilesFromPath, validateYamlFileAgainstZodSchema } from './shared/yaml-operations';
-import { generateApplicationData } from './shared/data-generation';
-import { extractMetadata, generateAndWriteTailorContext } from './shared/context-operations';
-import { parseCliArgs, validateRequiredArg } from './shared/cli-args';
-import {
-  MetadataSchema,
-  JobAnalysisSchema,
-  ResumeSchema,
-  CoverLetterSchema,
-} from '../src/zod/schemas';
 
+import {
+  validateAndSetTailorEnvPipeline,
+  type YamlFilesAndSchemasToWatch,
+} from './shared/validation-pipeline';
+import { parseCliArgs, validateRequiredArg } from './shared/cli-args';
 import { loggers } from './shared/logger';
-import { PathHelpers, PATHS, COMPANY_FILES } from './shared/config';
-import { z } from 'zod';
+import { TAILOR_YAML_FILES_AND_SCHEMAS } from './shared/config';
+import { handlePipelineError } from './shared/error-handlers';
+import { handleContextSuccess } from './shared/success-handlers';
 
 /**
  * CLI script to set tailor environment context
@@ -51,36 +42,6 @@ const values = parseCliArgs(
 
 const companyName = validateRequiredArg(values.C, 'Company name', loggers.setEnv, USAGE_MESSAGE);
 
-// Initialize ref to yaml data and schema to validate
-const pathsAndSchemaToValidate: FileToValidate[] = [
-  {
-    fileName: COMPANY_FILES.METADATA,
-    path: PathHelpers.getCompanyFile(companyName, 'METADATA'),
-    type: MetadataSchema,
-    wrapperKey: null,
-  },
-  {
-    fileName: COMPANY_FILES.JOB_ANALYSIS,
-    path: PathHelpers.getCompanyFile(companyName, 'JOB_ANALYSIS'),
-    type: JobAnalysisSchema,
-    wrapperKey: 'job_analysis',
-  },
-  {
-    fileName: COMPANY_FILES.RESUME,
-    path: PathHelpers.getCompanyFile(companyName, 'RESUME'),
-    type: ResumeSchema,
-    wrapperKey: 'resume',
-  },
-  {
-    fileName: COMPANY_FILES.COVER_LETTER,
-    path: PathHelpers.getCompanyFile(companyName, 'COVER_LETTER'),
-    type: CoverLetterSchema,
-    wrapperKey: 'cover_letter',
-  },
-];
-
-const contextPath = PATHS.CONTEXT_FILE;
-
 /**
  * Executes the complete tailor context setup pipeline using functional composition.
  *
@@ -95,42 +56,25 @@ const contextPath = PATHS.CONTEXT_FILE;
  *
  * @returns {void} Exits process with code 0 on success, 1 on failure
  */
-const initTailorContext = () => {
-  return pipe(
-    validateCompanyPath(PathHelpers.getCompanyPath(companyName)),
-    (r) =>
-      chain(r, () =>
-        chainPipe(
-          pathsAndSchemaToValidate,
-          validateFilePathsExists,
-          loadYamlFilesFromPath,
-          validateYamlFileAgainstZodSchema,
-        ),
-      ),
-    (r) =>
-      chain(r, (yamlFiles) =>
-        chainPipe(
-          yamlFiles,
-          (data) => generateApplicationData(companyName, data),
-          (data) => extractMetadata(data, COMPANY_FILES.METADATA),
-          (metadata) => generateAndWriteTailorContext(companyName, metadata, contextPath),
-        ),
-      ),
-    (result) =>
-      match(result)
-        .with({ success: true }, ({ data }) => onSuccess(data))
-        .with({ success: false }, ({ error, details, originalError, filePath }) =>
-          onError(error, details, originalError, filePath),
-        )
-        .exhaustive(),
+const initTailorContext = (
+  environmentName: string,
+  yamlDocumentsToValidate: YamlFilesAndSchemasToWatch[],
+): void => {
+  return pipe(validateAndSetTailorEnvPipeline(environmentName, yamlDocumentsToValidate), (r) =>
+    match(r)
+      .with({ success: true }, ({ data }) => onSuccess(data))
+      .with({ success: false }, ({ error, details, originalError, filePath }) =>
+        onError(error, details, originalError, filePath),
+      )
+      .exhaustive(),
   );
 };
 
 /**
- * Handles successful context setup by logging results and exiting with success code.
+ * Handles successful context setup by delegating to shared success handler.
  *
- * Displays a formatted summary including company name, file count, position,
- * primary focus, and available files. Prompts user to start the tailor-server.
+ * Uses shared success handler for consistent formatting with detailed
+ * context information. Process exits with code 0 after logging.
  *
  * @param {Object} data - Success data from context generation
  * @param {string} data.company - Company name
@@ -149,24 +93,17 @@ const onSuccess = (data: {
   primaryFocus: string;
   timestamp: string;
 }): void => {
-  const fileCount = data.availableFiles?.length || 0;
-  const filesList = data.availableFiles?.join(', ') || 'none';
-
-  loggers.setEnv.success(`Context set • ${data.company} • ${fileCount} file(s)`);
-  loggers.setEnv.info(`   -Path: ${data.path}`);
-  loggers.setEnv.info(`   -Position: ${data.position || 'Not specified'}`);
-  loggers.setEnv.info(`   -Focus: ${data.primaryFocus || 'Not specified'}`);
-  loggers.setEnv.info(`   -Files: ${filesList}`);
-  loggers.setEnv.info('🚀 All good, please start the tailor-server');
-
-  process.exit(0);
+  handleContextSuccess(data, {
+    logger: loggers.setEnv,
+    shouldExit: true,
+  });
 };
 
 /**
- * Handles pipeline errors by formatting and logging error details, then exits with error code.
+ * Handles pipeline errors by delegating to shared error handler.
  *
- * Provides specialized formatting for Zod validation errors with field paths and received values.
- * Falls back to generic error formatting for other error types.
+ * Uses shared error handler for consistent formatting with specialized
+ * ZodError handling. Process exits with code 1 after logging.
  *
  * @param {string} error - Primary error message
  * @param {string} [details] - Additional error details
@@ -180,45 +117,14 @@ const onError = (
   originalError?: unknown,
   filePath?: string,
 ): void => {
-  match(originalError)
-    .when(
-      (err): err is z.ZodError => err instanceof z.ZodError,
-      (zodError) => {
-        loggers.setEnv.error('Application data validation failed:');
-
-        zodError.issues.forEach((err) => {
-          const path = err.path.join('.');
-          const received = 'received' in err ? String(err.received) : undefined;
-          const receivedStr = received ? ` (received: ${received})` : '';
-
-          loggers.setEnv.error(`  • ${path}: ${err.message}${receivedStr}`);
-
-          if (filePath) {
-            loggers.setEnv.error(`    → in ${filePath}`);
-          }
-        });
-
-        loggers.setEnv.info('💡 Fix the data issues in the tailor files and try again');
-        process.exit(1);
-      },
-    )
-    .otherwise(() => {
-      loggers.setEnv.error(error);
-
-      if (details) {
-        details.split('\n').forEach((line) => {
-          loggers.setEnv.error(`  ${line}`);
-        });
-      }
-
-      if (filePath) {
-        loggers.setEnv.error(`    → in ${filePath}`);
-      }
-
-      loggers.setEnv.info('💡 Check the error details above and try again');
-      process.exit(1);
-    });
+  handlePipelineError(
+    { success: false, error, details, originalError, filePath },
+    {
+      logger: loggers.setEnv,
+      shouldExit: true,
+    },
+  );
 };
 
 // Run pipeline
-initTailorContext();
+initTailorContext(companyName, TAILOR_YAML_FILES_AND_SCHEMAS);

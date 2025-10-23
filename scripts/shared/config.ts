@@ -1,3 +1,6 @@
+import { CoverLetterSchema, JobAnalysisSchema, MetadataSchema, ResumeSchema } from '@/zod/schemas';
+import type { YamlFilesAndSchemasToWatch } from './validation-pipeline';
+
 /**
  * Centralized configuration for tailor system
  *
@@ -15,7 +18,6 @@
 // ============================================================================
 // Directory Paths
 // ============================================================================
-
 /**
  * Core directory paths used throughout the application
  */
@@ -49,6 +51,36 @@ export const COMPANY_FILES = {
   JOB_ANALYSIS: 'job_analysis.yaml',
   COVER_LETTER: 'cover_letter.yaml',
 } as const;
+
+// ============================================================================
+// List of supported YAML and Zod Schemas on tailor server
+// ============================================================================
+export const TAILOR_YAML_FILES_AND_SCHEMAS: Array<YamlFilesAndSchemasToWatch> = [
+  {
+    key: 'METADATA',
+    fileName: COMPANY_FILES.METADATA,
+    type: MetadataSchema,
+    wrapperKey: null,
+  },
+  {
+    key: 'JOB_ANALYSIS',
+    fileName: COMPANY_FILES.JOB_ANALYSIS,
+    type: JobAnalysisSchema,
+    wrapperKey: 'job_analysis',
+  },
+  {
+    key: 'RESUME',
+    fileName: COMPANY_FILES.RESUME,
+    type: ResumeSchema,
+    wrapperKey: 'resume',
+  },
+  {
+    key: 'COVER_LETTER',
+    fileName: COMPANY_FILES.COVER_LETTER,
+    type: CoverLetterSchema,
+    wrapperKey: 'cover_letter',
+  },
+];
 
 // ============================================================================
 // Script Names
