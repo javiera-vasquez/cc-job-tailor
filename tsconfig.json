@@ -21,7 +21,13 @@
       "@ui/*": ["./src/ui/*"],
       "@template-core/*": ["./src/templates/shared/*"],
       "@types": ["./src/types.ts"],
-      "@utils/*": ["./src/utils/*"]
+      "@utils/*": ["./src/utils/*"],
+      "@shared/core/*": ["./scripts/shared/core/*"],
+      "@shared/cli/*": ["./scripts/shared/cli/*"],
+      "@shared/validation/*": ["./scripts/shared/validation/*"],
+      "@shared/data/*": ["./scripts/shared/data/*"],
+      "@shared/document/*": ["./scripts/shared/document/*"],
+      "@shared/handlers/*": ["./scripts/shared/handlers/*"]
     },
 
     // Best practices

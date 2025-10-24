@@ -2,9 +2,9 @@ import { pipe } from 'remeda';
 import { existsSync } from 'fs';
 import type { Result, YamlFilesAndSchemasToWatch } from './validation-pipeline';
 import { validateYamlFilesAgainstSchemasPipeline } from './validation-pipeline';
-import { TAILOR_YAML_FILES_AND_SCHEMAS, COMPANY_FILES } from './config';
-import { PathHelpers } from './path-helpers';
-import { chain, tryCatch } from './functional-utils';
+import { TAILOR_YAML_FILES_AND_SCHEMAS, COMPANY_FILES } from '../core/config';
+import { PathHelpers } from '../core/path-helpers';
+import { chain, tryCatch } from '../core/functional-utils';
 
 // ============================================================================
 // Types

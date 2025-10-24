@@ -3,25 +3,25 @@ import { watch, type FSWatcher } from 'fs';
 import { basename } from 'path';
 import { pipe } from 'remeda';
 import { match } from 'ts-pattern';
-import { generateApplicationData } from './shared/data-generation';
-import { chain, tryCatch } from './shared/functional-utils';
+import { generateApplicationData } from '@shared/data/data-generation';
+import { chain, tryCatch } from '@shared/core/functional-utils';
 import {
   validateAndSetTailorEnvPipeline,
   validateYamlFilesAgainstSchemasPipeline,
   type Result,
   type SetContextSuccess,
-} from './shared/validation-pipeline';
-import { parseCliArgs, validateRequiredArg } from './shared/cli-args';
+} from '@shared/validation/validation-pipeline';
+import { parseCliArgs, validateRequiredArg } from '@shared/cli/cli-args';
 import {
   PATTERNS,
   SCRIPTS,
   TIMEOUTS,
   COMPACT_MODE,
   TAILOR_YAML_FILES_AND_SCHEMAS,
-} from './shared/config';
-import { PathHelpers } from './shared/path-helpers';
-import { loggers } from './shared/logger';
-import { handlePipelineError, handlePipelineSuccess } from './shared/result-handlers';
+} from '@shared/core/config';
+import { PathHelpers } from '@shared/core/path-helpers';
+import { loggers } from '@shared/core/logger';
+import { handlePipelineError, handlePipelineSuccess } from '@shared/handlers/result-handlers';
 
 /**
  * Enhanced dev server with tailor data watching

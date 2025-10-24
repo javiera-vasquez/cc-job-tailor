@@ -1,6 +1,6 @@
 import { parseArgs as utilParseArgs } from 'util';
 import type { ParseArgsConfig } from 'util';
-import type { Logger } from './logger';
+import type { Logger } from '../core/logger';
 
 export interface CompanyCliArgs {
   company?: string;

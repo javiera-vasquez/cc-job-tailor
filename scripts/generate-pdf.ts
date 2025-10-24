@@ -1,27 +1,27 @@
 import path from 'path';
 import { pipe } from 'remeda';
 import { match } from 'ts-pattern';
-import { parseCliArgs, validateRequiredArg } from './shared/cli-args';
-import { DOCUMENT_TYPES, PATHS, TAILOR_YAML_FILES_AND_SCHEMAS } from './shared/config';
-import { PathHelpers } from './shared/path-helpers';
-import { validateCompanyPath } from './shared/company-validation';
-import { loggers } from './shared/logger';
+import { parseCliArgs, validateRequiredArg } from '@shared/cli/cli-args';
+import { DOCUMENT_TYPES, PATHS, TAILOR_YAML_FILES_AND_SCHEMAS } from '@shared/core/config';
+import { PathHelpers } from '@shared/core/path-helpers';
+import { validateCompanyPath } from '@shared/validation/company-validation';
+import { loggers } from '@shared/core/logger';
 import {
   validateYamlFilesAgainstSchemasPipeline,
   type YamlFilesAndSchemasToWatch,
   type PdfGenerationResult,
   type SuccessResult,
-} from './shared/validation-pipeline';
-import { generateApplicationDataInMemory } from './shared/data-generation';
-import { handlePipelineError } from './shared/result-handlers';
-import { chain, tap } from './shared/functional-utils';
+} from '@shared/validation/validation-pipeline';
+import { generateApplicationDataInMemory } from '@shared/data/data-generation';
+import { handlePipelineError } from '@shared/handlers/result-handlers';
+import { chain, tap } from '@shared/core/functional-utils';
 import {
   selectThemeFromMetadata,
   ensureOutputDirectory,
   generateDocument,
   type OutputDirectoryContext,
   type GeneratedDocument,
-} from './shared/document-generation';
+} from '@shared/document/document-generation';
 
 const USAGE_MESSAGE = 'Usage: bun run save-to-pdf -C company-name [-D resume|cover-letter|both]';
 

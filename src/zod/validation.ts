@@ -11,7 +11,7 @@ import type {
   JobAnalysisSchema as JobAnalysisType,
   CoverLetterSchema as CoverLetterType,
 } from '@types';
-import { loggers } from '../../scripts/shared/logger';
+import { loggers } from '@shared/core/logger';
 
 // Validation functions with detailed error reporting
 // Note: Error formatting is handled by the centralized validation-error-handler

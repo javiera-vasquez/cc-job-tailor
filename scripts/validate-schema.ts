@@ -4,10 +4,10 @@ import {
   validateTailorFilesPipeline,
   type ValidationType,
   type PathResolutionInput,
-} from './shared/validation-only-pipeline';
-import { loggers } from './shared/logger';
-import { parseCliArgs } from './shared/cli-args';
-import { handlePipelineError, handleValidationSuccess } from './shared/result-handlers';
+} from '@shared/validation/validation-only-pipeline';
+import { loggers } from '@shared/core/logger';
+import { parseCliArgs } from '@shared/cli/cli-args';
+import { handlePipelineError, handleValidationSuccess } from '@shared/handlers/result-handlers';
 
 // ============================================================================
 // CLI Configuration

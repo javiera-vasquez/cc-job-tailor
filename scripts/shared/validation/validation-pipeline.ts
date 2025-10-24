@@ -1,13 +1,13 @@
 import type { z } from 'zod';
 import { pipe } from 'remeda';
-import { COMPANY_FILES, PATHS, type CompanyFileValue } from './config';
-import { PathHelpers } from './path-helpers';
+import { COMPANY_FILES, PATHS, type CompanyFileValue } from '../core/config';
+import { PathHelpers } from '../core/path-helpers';
 import { validateCompanyPath, validateFilePathsExists } from './company-validation';
 import { loadYamlFilesFromPath, validateYamlFileAgainstZodSchema } from './yaml-operations';
-import { chain, chainPipe } from './functional-utils';
+import { chain, chainPipe } from '../core/functional-utils';
 
-import { generateApplicationData } from './data-generation';
-import { extractMetadata, generateAndWriteTailorContext } from './context-operations';
+import { generateApplicationData } from '../data/data-generation';
+import { extractMetadata, generateAndWriteTailorContext } from '../data/context-operations';
 
 // Result type for functional error handling
 export type Result<

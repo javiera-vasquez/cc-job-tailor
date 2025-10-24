@@ -3,22 +3,22 @@ import { mkdirSync, rmSync, existsSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { load, dump } from 'js-yaml';
 import { pipe } from 'remeda';
-import { chain } from '../../scripts/shared/functional-utils';
-import type { FileToValidate } from '../../scripts/shared/validation-pipeline';
+import { chain } from '@shared/core/functional-utils';
+import type { FileToValidate } from '@shared/validation/validation-pipeline';
 import {
   validateCompanyPath,
   validateFilePathsExists,
-} from '../../scripts/shared/company-validation';
+} from '@shared/validation/company-validation';
 import {
   loadYamlFilesFromPath,
   validateYamlFileAgainstZodSchema,
-} from '../../scripts/shared/yaml-operations';
+} from '@shared/validation/yaml-operations';
 import {
   extractMetadata,
   generateAndWriteTailorContext,
-} from '../../scripts/shared/context-operations';
-import { COMPANY_FILES } from '../../scripts/shared/config';
-import { PathHelpers } from '../../scripts/shared/path-helpers';
+} from '@shared/data/context-operations';
+import { COMPANY_FILES } from '@shared/core/config';
+import { PathHelpers } from '@shared/core/path-helpers';
 import {
   MetadataSchema,
   JobAnalysisSchema,

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, spyOn } from 'bun:test';
-import { Logger, LoggerConfig, createLogger, loggers } from '../../scripts/shared/logger';
+import { Logger, LoggerConfig, createLogger, loggers } from '@shared/core/logger';
 
 describe('Logger', () => {
   let consoleLogSpy: ReturnType<typeof spyOn>;

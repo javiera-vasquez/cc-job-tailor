@@ -1,6 +1,6 @@
 import path from 'path';
 import { CoverLetterSchema, JobAnalysisSchema, MetadataSchema, ResumeSchema } from '@/zod/schemas';
-import type { YamlFilesAndSchemasToWatch } from './validation-pipeline';
+import type { YamlFilesAndSchemasToWatch } from '../validation/validation-pipeline';
 
 /**
  * Centralized configuration for tailor system
@@ -19,12 +19,25 @@ import type { YamlFilesAndSchemasToWatch } from './validation-pipeline';
 // ============================================================================
 // Directory Paths
 // ============================================================================
+
+/**
+ * Relative path from config.ts location to project root
+ *
+ * Directory structure:
+ * - config.ts is at: scripts/shared/core/
+ * - project root is at: ./
+ *
+ * Path traversal: scripts/shared/core -> scripts/shared -> scripts -> ./
+ * Therefore we need to go up 3 directory levels
+ */
+const PROJECT_ROOT_RELATIVE_PATH = '../../..' as const;
+
 /**
  * Core directory paths used throughout the application
  */
 export const PATHS = {
-  /** Project root directory (absolute path from scripts/shared/) */
-  PROJECT_ROOT: path.join(import.meta.dir, '../..'),
+  /** Project root directory (absolute path from scripts/shared/core/) */
+  PROJECT_ROOT: path.join(import.meta.dir, PROJECT_ROOT_RELATIVE_PATH),
 
   /** Base directory for company-specific tailor data */
   TAILOR_BASE: 'resume-data/tailor',

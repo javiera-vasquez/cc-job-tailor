@@ -1,6 +1,6 @@
 import { existsSync, readdirSync } from 'fs';
 import type { Result, FileToValidate } from './validation-pipeline';
-import { PATHS } from './config';
+import { PATHS } from '../core/config';
 
 /**
  * Gets list of available company directories in the tailor base path.

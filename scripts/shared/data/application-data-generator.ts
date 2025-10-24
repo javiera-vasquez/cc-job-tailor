@@ -1,6 +1,6 @@
-import type { ApplicationData } from '../../src/types';
-import type { CompanyFileValue } from '../shared/config';
-import type { FileToValidateWithYamlData, Result } from '../shared/validation-pipeline';
+import type { ApplicationData } from '../../../src/types';
+import type { CompanyFileValue } from '../core/config';
+import type { FileToValidateWithYamlData, Result } from '../validation/validation-pipeline';
 
 /**
  * Derives the ApplicationData key from a YAML file name

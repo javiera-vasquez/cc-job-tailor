@@ -1,5 +1,5 @@
 import { match } from 'ts-pattern';
-import type { Result } from './validation-pipeline';
+import type { Result } from '../validation/validation-pipeline';
 
 /**
  * Wraps a function in try-catch and returns a Result type.

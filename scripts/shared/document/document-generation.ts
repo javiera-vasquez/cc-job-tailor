@@ -2,11 +2,11 @@ import React from 'react';
 import { renderToFile } from '@react-pdf/renderer';
 import { mkdir } from 'fs/promises';
 import path from 'path';
-import { themes } from '../../src/templates';
-import { DOCUMENT_TYPES } from './config';
-import { loggers } from './logger';
-import { tryCatchAsync } from './functional-utils';
-import type { SuccessResult, ErrorResult } from './validation-pipeline';
+import { themes } from '../../../src/templates';
+import { DOCUMENT_TYPES } from '../core/config';
+import { loggers } from '../core/logger';
+import { tryCatchAsync } from '../core/functional-utils';
+import type { SuccessResult, ErrorResult } from '../validation/validation-pipeline';
 
 export interface GenerateDocumentParams {
   docTypes: (typeof DOCUMENT_TYPES.RESUME | typeof DOCUMENT_TYPES.COVER_LETTER)[];

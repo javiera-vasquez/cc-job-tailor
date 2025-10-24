@@ -4,11 +4,11 @@ import { match } from 'ts-pattern';
 import {
   validateAndSetTailorEnvPipeline,
   type YamlFilesAndSchemasToWatch,
-} from './shared/validation-pipeline';
-import { parseCliArgs, validateRequiredArg } from './shared/cli-args';
-import { loggers } from './shared/logger';
-import { TAILOR_YAML_FILES_AND_SCHEMAS } from './shared/config';
-import { handlePipelineError, handlePipelineSuccess } from './shared/result-handlers';
+} from '@shared/validation/validation-pipeline';
+import { parseCliArgs, validateRequiredArg } from '@shared/cli/cli-args';
+import { loggers } from '@shared/core/logger';
+import { TAILOR_YAML_FILES_AND_SCHEMAS } from '@shared/core/config';
+import { handlePipelineError, handlePipelineSuccess } from '@shared/handlers/result-handlers';
 
 /**
  * CLI script to set tailor environment context
