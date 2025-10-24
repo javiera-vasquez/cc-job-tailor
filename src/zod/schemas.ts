@@ -1,10 +1,9 @@
 import { z } from 'zod';
 
-// Theme validation schemas
 export const DocumentTypeSchema = z.enum(['resume', 'cover-letter']);
 
 export const ThemeComponentsSchema = z.object({
-  resume: z.any(), // React.ComponentType cannot be validated by Zod at runtime
+  resume: z.any(), 
   coverLetter: z.any(),
 });
 
@@ -19,10 +18,8 @@ export const TailorThemeSchema = z.object({
 
 export const ThemeRegistrySchema = z.record(z.string(), TailorThemeSchema);
 
-// Template theme enum for active_template selection
 export const TemplateThemeEnum = z.enum(['modern', 'classic']).default('modern');
 
-// Basic component schemas
 export const ExpertiseSchema = z.object({
   resume_title: z.string().min(1),
   skills: z.array(z.string().min(1)).min(1),
@@ -41,35 +38,26 @@ export const EducationSchema = z.object({
 });
 
 export const ContactDetailsSchema = z.object({
-  // Required fields
   phone: z.string().min(1),
   email: z.string().email(),
-
-  // Optional fields
   address: z.string().min(1).optional(),
   linkedin: z.string().url().optional(),
   github: z.string().url().optional(),
 });
 
 export const ProfessionalExperienceSchema = z.object({
-  // Required fields
   company: z.string().min(1),
   position: z.string().min(1),
   location: z.string().min(1),
   duration: z.string().min(1),
-
-  // Optional fields
   company_description: z.string().min(1).optional(),
-  linkedin: z.string().url().nullish(), // Can be null, undefined, or omitted
+  linkedin: z.string().url().nullish(),
   achievements: z.array(z.string().min(1)).optional().default([]),
 });
 
 export const IndependentProjectSchema = z.object({
-  // Required fields
   name: z.string().min(1),
   description: z.string().min(1),
-
-  // Optional fields
   location: z.string().min(1).optional(),
   duration: z.string().min(1).optional(),
   url: z.string().url().optional(),
@@ -77,27 +65,20 @@ export const IndependentProjectSchema = z.object({
   impact: z.string().optional(),
 });
 
-// Resume schema
 export const ResumeSchema = z.object({
-  // Required fields (no changes)
   name: z.string().min(1),
   title: z.string().min(1),
   contact: ContactDetailsSchema,
   professional_experience: z.array(ProfessionalExperienceSchema).min(1),
   education: z.array(EducationSchema).min(1),
-
-  // Now optional fields
   profile_picture: z.string().min(1).optional(),
   summary: z.string().min(1).optional(),
-
-  // Optional arrays with default empty array
   technical_expertise: z.array(ExpertiseSchema).optional().default([]),
   skills: z.array(z.string().min(1)).optional().default([]),
   languages: z.array(LanguageSchema).optional().default([]),
   independent_projects: z.array(IndependentProjectSchema).optional().default([]),
 });
 
-// Job analysis enums and schemas
 // Common primary area examples (not exhaustive):
 // 'junior_engineer', 'engineer', 'senior_engineer', 'staff_engineer',
 // 'principal_engineer', 'tech_lead', 'engineering_manager'
@@ -201,7 +182,6 @@ export const JobAnalysisSchema = z.object({
   ats_analysis: ATSAnalysisSchema,
 });
 
-// Cover letter schemas
 export const CoverLetterContentSchema = z.object({
   letter_title: z.string().min(1),
   opening_line: z.string().min(1),
@@ -220,7 +200,6 @@ export const CoverLetterSchema = z.object({
   content: CoverLetterContentSchema,
 });
 
-// Metadata schema (maps to metadata.yaml structure)
 export const JobDetailsSchema = z.object({
   company: z.string().min(1),
   location: z.string().min(1),

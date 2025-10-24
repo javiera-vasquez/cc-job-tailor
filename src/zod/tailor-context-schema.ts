@@ -1,9 +1,6 @@
 import { z } from 'zod';
 
-// This is the single source of truth for TailorContext
-// All types and YAML generation should derive from this schema
 export const TailorContextSchema = z.object({
-  // Core required fields for tailor operation
   active_company: z.string().min(1, 'Company name is required'),
   company: z.string().min(1, 'Display company name is required'),
   active_template: z.string().min(1, 'Template name is required'),
