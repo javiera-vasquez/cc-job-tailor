@@ -16,13 +16,13 @@ import type { CompanyFileValue } from '@shared/core/config';
  * Generates YAML content for tailor-context.yaml using schema-driven approach.
  *
  * Creates TailorContext object from metadata, validates against TailorContextSchema,
- * and serializes to YAML with header comments. This is the single source of truth
- * for YAML generation.
+ * and serializes to YAML with auto-generated header comments including timestamp.
+ * Defaults active_template to 'modern' if not specified in metadata.
  *
  * @param {string} companyName - Company name for active_company field
- * @param {MetadataSchema} meta - Validated metadata with active_template default
+ * @param {z.infer<typeof MetadataSchema>} meta - Validated metadata with optional active_template
  * @param {string} timestamp - ISO timestamp for last_updated field
- * @returns {string} YAML string with header comments
+ * @returns {string} YAML string with header comments and validated data
  * @throws {Error} If context data fails TailorContextSchema validation
  */
 export const generateContextYaml = (

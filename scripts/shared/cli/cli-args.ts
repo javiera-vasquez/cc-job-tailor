@@ -11,8 +11,11 @@ export interface PdfCliArgs extends CompanyCliArgs {
 }
 
 /**
- * Parse CLI arguments for company name (-C flag)
- * Used by generate-data, generate-pdf, and validation scripts
+ * Parse CLI arguments for company name (-C flag).
+ * Used by generate-data, generate-pdf, and validation scripts.
+ *
+ * @returns {CompanyCliArgs} Parsed arguments with optional company name
+ * @example parseCompanyArgs() → { company: 'acme-corp' }
  */
 export function parseCompanyArgs(): CompanyCliArgs {
   const { values } = utilParseArgs({
@@ -34,7 +37,10 @@ export function parseCompanyArgs(): CompanyCliArgs {
 }
 
 /**
- * Parse CLI arguments for PDF generation (-C company, -D document type)
+ * Parse CLI arguments for PDF generation (-C company, -D document type).
+ *
+ * @returns {PdfCliArgs} Parsed arguments with optional company and document type
+ * @example parsePdfArgs() → { company: 'acme-corp', document: 'resume' }
  */
 export function parsePdfArgs(): PdfCliArgs {
   const { values } = utilParseArgs({

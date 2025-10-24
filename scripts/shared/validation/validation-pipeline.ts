@@ -15,14 +15,24 @@ export type Result<
   E = { error: string; details?: string; originalError?: unknown; filePath?: string },
 > = { success: true; data: T } | ({ success: false } & E);
 
+/**
+ * File metadata for validation, including schema and optional wrapper extraction
+ */
 export interface FileToValidate {
+  /** YAML filename (e.g., 'metadata.yaml') */
   fileName: CompanyFileValue;
+  /** Absolute path to the YAML file */
   path: string;
+  /** Zod schema to validate the file data against */
   type: z.ZodSchema<unknown>;
-  wrapperKey: string | null; // Key to extract nested data from YAML (e.g., 'job_analysis', 'resume'), or null if no wrapper
+  /** Key to extract nested data from YAML wrapper, or null if file is not wrapped */
+  wrapperKey: string | null;
 }
 
+/** File metadata with loaded YAML data ready for validation */
 export type FileToValidateWithYamlData = FileToValidate & { data: unknown };
+
+/** Configuration for YAML files and schemas watched by the tailor server */
 export type YamlFilesAndSchemasToWatch = Pick<
   FileToValidate,
   'fileName' | 'type' | 'wrapperKey'
@@ -64,7 +74,7 @@ export type PdfGenerationResult = PdfGenerationSuccess | ErrorResult;
 /**
  * Executes the complete tailor context setup pipeline using functional composition.
  *
- * Pipeline flow:
+ * Pipeline flow (with short-circuit on error):
  * 1. Validates company directory exists
  * 2. Validates all required files exist
  * 3. Loads YAML files with wrapper extraction
@@ -73,7 +83,9 @@ export type PdfGenerationResult = PdfGenerationSuccess | ErrorResult;
  * 6. Extracts metadata from validated files
  * 7. Generates and writes tailor-context.yaml
  *
- * @returns {void} Exits process with code 0 on success, 1 on failure
+ * @param {string} environmentName - Company name for context setup
+ * @param {YamlFilesAndSchemasToWatch[]} yamlDocumentsToValidate - Files and schemas to validate
+ * @returns {SetContextResult} Success with context metadata or error with details
  */
 export const validateAndSetTailorEnvPipeline = (
   environmentName: string,
@@ -98,6 +110,19 @@ export const validateAndSetTailorEnvPipeline = (
   );
 };
 
+/**
+ * Validates YAML files against their associated Zod schemas using functional pipeline.
+ *
+ * Pipeline flow:
+ * 1. Build file metadata with resolved paths
+ * 2. Validate all file paths exist on filesystem
+ * 3. Load YAML files with wrapper extraction
+ * 4. Validate loaded data against Zod schemas
+ *
+ * @param {string} companyName - Company name for path resolution
+ * @param {YamlFilesAndSchemasToWatch[]} filesAndSchemas - Files and schemas to validate
+ * @returns {Result<FileToValidateWithYamlData[]>} Validated files or first error encountered
+ */
 export const validateYamlFilesAgainstSchemasPipeline = (
   companyName: string,
   filesAndSchemas: YamlFilesAndSchemasToWatch[],
@@ -115,12 +140,16 @@ export const validateYamlFilesAgainstSchemasPipeline = (
   );
 
 /**
- * Formats Zod validation error into human-readable string.
+ * Formats Zod validation error into human-readable multi-line string.
  *
- * Converts Zod error issues into formatted list with field paths and messages.
+ * Converts each Zod issue into a line with field path and error message.
+ * Root-level errors display as 'root' instead of empty path.
  *
- * @param {z.ZodError} error - Zod validation error
- * @returns {string} Formatted error string with one issue per line
+ * @param {z.ZodError} error - Zod validation error with issues array
+ * @returns {string} Multi-line formatted error string (one issue per line with "  - " prefix)
+ * @example
+ * formatZodError(zodError)
+ * // Returns: "  - name: Required\n  - age: Expected number"
  */
 export const formatZodError = (error: z.ZodError): string =>
   error.issues

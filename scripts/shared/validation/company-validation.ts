@@ -5,8 +5,11 @@ import { PATHS } from '@shared/core/config';
 /**
  * Gets list of available company directories in the tailor base path.
  *
+ * Reads directory contents and filters for directories only.
+ * Returns empty array gracefully if path doesn't exist or on read error.
+ *
  * @param {string} base - Base path containing company directories
- * @returns {string[]} Array of company directory names, or empty array if path doesn't exist or on error
+ * @returns {string[]} Array of company directory names (empty array if path missing or error)
  */
 const getAvailableCompanies = (base: string): string[] => {
   if (!existsSync(base)) return [];
@@ -21,13 +24,13 @@ const getAvailableCompanies = (base: string): string[] => {
 
 /**
  * Validates that the company directory exists in the tailor base path.
+ * Returns error with list of available companies if path is not found.
  *
  * @param {string} companyPath - Absolute path to the company folder
- * @returns {Result<void>} Success if directory exists, error with available companies list if not
- *
+ * @returns {Result<void>} Success if directory exists, error with available companies if not found
  * @example
  * validateCompanyPath('/path/to/resume-data/tailor/acme-corp')
- * // => { success: true, data: undefined }
+ * → { success: true, data: undefined }
  */
 export const validateCompanyPath = (companyPath: string): Result<void> => {
   return existsSync(companyPath)
@@ -41,18 +44,15 @@ export const validateCompanyPath = (companyPath: string): Result<void> => {
 
 /**
  * Validates that all required company files exist on the filesystem.
- *
- * Checks each file path and returns a detailed error message listing all missing files
- * if any are not found. Returns the original array on success for pipeline continuation.
+ * Returns detailed error message listing missing files if any not found.
  *
  * @param {FileToValidate[]} pathsToValidate - Array of file metadata with paths to validate
- * @returns {Result<FileToValidate[]>} Success with files array, or error with missing files details
- *
+ * @returns {Result<FileToValidate[]>} Files array if all exist, error with missing file list otherwise
  * @example
  * validateFilePathsExists([
  *   { fileName: 'metadata.yaml', path: '/path/to/metadata.yaml', type: MetadataSchema, wrapperKey: null }
  * ])
- * // => { success: true, data: [...] }
+ * → { success: true, data: [...] }
  */
 export const validateFilePathsExists = (
   pathsToValidate: FileToValidate[],

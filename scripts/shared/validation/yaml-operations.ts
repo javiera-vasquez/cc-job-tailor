@@ -24,14 +24,14 @@ export const readYaml = (path: string): Result<unknown> =>
 /**
  * Validates data against a Zod schema with detailed error reporting.
  *
- * Performs Zod schema validation and returns formatted errors including field paths,
- * messages, and file location for debugging.
+ * Performs schema validation using safeParse and returns formatted errors with field paths,
+ * messages, and file location. Preserves original ZodError for advanced error handling.
  *
  * @template T - Type of the validated data
  * @param {z.ZodSchema<T>} schema - Zod schema to validate against
  * @param {unknown} data - Data to validate
- * @param {string} name - Display name for error messages
- * @param {string} filePath - File path for error context
+ * @param {string} name - Display name for error messages (used in error header)
+ * @param {string} filePath - File path for error context (included in result)
  * @returns {Result<T>} Success with validated data, or error with formatted details and original ZodError
  */
 export const validateSchema = <T>(
@@ -53,19 +53,20 @@ export const validateSchema = <T>(
 };
 
 /**
- * Loads YAML files from the given paths and extracts nested data based on wrapperKey.
+ * Loads YAML files and extracts nested data based on optional wrapperKey.
  *
- * Handles files with wrapper structures (e.g., `{ job_analysis: {...} }`) by extracting
- * the nested data when wrapperKey is specified. Data is loaded but not yet validated.
+ * Reads each YAML file and extracts the relevant data. If wrapperKey is specified,
+ * extracts the nested value from that key (e.g., { job_analysis: {...} } → {...}).
+ * Falls back to full YAML data if wrapper key is not found or not needed.
  *
- * @param {FileToValidate[]} pathsToValidate - Array of files to load with their metadata and optional wrapperKey
- * @returns {Result<FileToValidateWithYamlData[]>} Result containing files with loaded YAML data, or first error encountered
+ * @param {FileToValidate[]} pathsToValidate - Array of files to load with their metadata
+ * @returns {Result<FileToValidateWithYamlData[]>} Files with loaded data, or first read/parse error
  *
  * @example
  * loadYamlFilesFromPath([
- *   { fileName: 'job-analysis.yaml', path: '/path/to/file.yaml', type: JobAnalysisSchema, wrapperKey: 'job_analysis' }
+ *   { fileName: 'job_analysis.yaml', path: '/path/to/file.yaml', wrapperKey: 'job_analysis', ... }
  * ])
- * // Extracts data from { job_analysis: { ... } } structure
+ * // Extracts data from { job_analysis: { ... } } wrapper structure
  */
 export const loadYamlFilesFromPath = (
   pathsToValidate: FileToValidate[],
@@ -89,18 +90,18 @@ export const loadYamlFilesFromPath = (
 /**
  * Validates loaded YAML files against their associated Zod schemas.
  *
- * Preserves the file metadata while validating the data. Returns detailed validation
- * errors including field paths and file locations on failure.
+ * Applies each file's schema validation while preserving metadata. Returns detailed errors
+ * with field paths and file locations. Short-circuits on first validation failure.
  *
  * @param {FileToValidateWithYamlData[]} filesToValidate - Array of files with loaded YAML data to validate
- * @returns {Result<FileToValidateWithYamlData[]>} Result containing validated files or first validation error
+ * @returns {Result<FileToValidateWithYamlData[]>} Validated files or first validation error with context
  *
  * @example
  * validateYamlFileAgainstZodSchema([
- *   { fileName: 'metadata.yaml', path: '/path/to/file.yaml', type: MetadataSchema, wrapperKey: null, data: {...} }
+ *   { fileName: 'metadata.yaml', path: '/path/to/file.yaml', type: MetadataSchema, data: {...} }
  * ])
- * // => { success: true, data: [...] } if valid
- * // => { success: false, error: '...', details: '...', filePath: '...' } if invalid
+ * // Returns: { success: true, data: [...] } on success
+ * // Returns: { success: false, error: 'validation failed', details: '...', filePath: '...' } on error
  */
 export const validateYamlFileAgainstZodSchema = (
   filesToValidate: FileToValidateWithYamlData[],

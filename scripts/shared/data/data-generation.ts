@@ -26,6 +26,12 @@ const transformToApplicationData = (
   return transformFilesToApplicationData(files);
 };
 
+/**
+ * Parses and validates data structure against ApplicationData schema
+ * @param {unknown} data - Data to validate
+ * @returns {ApplicationData} Validated application data
+ * @throws {z.ZodError} If validation fails
+ */
 export function validateApplicationData(data: unknown): ApplicationData {
   return ApplicationDataSchema.parse(data);
 }
@@ -54,10 +60,10 @@ const validateApplicationDataSchema = (
 };
 
 /**
- * Generates TypeScript module content from ApplicationData.
+ * Creates a curried function to generate TypeScript module content from ApplicationData.
  *
- * Returns a curried function that transforms ApplicationData into a TypeScript module
- * string with proper imports, types, and exports.
+ * Returns a function that transforms ApplicationData into a TypeScript module string
+ * with proper imports, types, and exports. Company name is baked into the closure.
  *
  * @param {string} companyName - Company name for module comments and metadata
  * @returns {Function} Function that accepts ApplicationData and returns Result with TypeScript module string

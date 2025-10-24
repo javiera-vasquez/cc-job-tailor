@@ -74,21 +74,21 @@ export const chain = <A, B>(result: Result<A>, f: (data: A) => Result<B>): Resul
 /**
  * Chains multiple functions together in a pipeline using left-to-right composition.
  *
- * Each function takes the success data from the previous Result and returns a new Result.
- * The pipeline stops at the first error encountered and propagates it through.
- * Wraps initial value in success Result before applying functions.
+ * Functional pipeline that threads a Result through a series of functions, short-circuiting on first error.
+ * Pipeline flow: initial → fn1 → fn2 → fn3... Each function receives the data from the previous step.
  *
  * @template T - Type of the initial data
- * @param {T} initial - Initial data to start the pipeline
- * @param {...Array<(data: any) => Result<any>>} fns - Functions to chain together
- * @returns {Result<any>} Final Result from pipeline, or first error encountered
+ * @param {T} initial - Initial value to start the pipeline
+ * @param {...Array<(data: any) => Result<any>>} fns - Functions to chain left-to-right
+ * @returns {Result<any>} Final Result from last function or first error encountered
  *
  * @example
  * chainPipe(
- *   initialData,
- *   validateData,
- *   transformData,
- *   saveData
+ *   companyData,
+ *   validateCompany,
+ *   loadYamlFiles,
+ *   validateSchemas,
+ *   generateOutput
  * )
  */
 export const chainPipe = <T>(

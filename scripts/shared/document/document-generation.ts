@@ -32,10 +32,14 @@ export interface OutputDirectoryContext extends ThemeSelectionContext {
 }
 
 /**
- * Selects and validates theme from application metadata
+ * Selects and validates theme from application metadata.
+ * Extracts active_template from metadata with 'modern' as default fallback.
  *
- * @param {any} applicationData - Validated application data
- * @returns {SuccessResult<ThemeSelectionContext> | ErrorResult} Result with selected theme or error
+ * @param {any} applicationData - Validated application data with metadata field
+ * @returns {SuccessResult<ThemeSelectionContext> | ErrorResult} Theme context if found, error if unavailable
+ * @example
+ * selectThemeFromMetadata(appData)
+ * → { success: true, data: { applicationData, theme: {...}, themeName: 'modern' } }
  */
 export const selectThemeFromMetadata = (
   applicationData: any,
@@ -64,11 +68,15 @@ export const selectThemeFromMetadata = (
 };
 
 /**
- * Ensures output directory exists for PDF generation
+ * Ensures output directory exists for PDF generation.
+ * Creates directory with recursive flag if missing.
  *
  * @param {ThemeSelectionContext} context - Context with application data and theme
- * @param {string} tmpDir - Absolute path to the output directory
- * @returns {Promise<SuccessResult<OutputDirectoryContext> | ErrorResult>} Result with context and output directory path
+ * @param {string} outputDir - Absolute path to the output directory
+ * @returns {Promise<SuccessResult<OutputDirectoryContext> | ErrorResult>} Context with output path if successful, error if mkdir fails
+ * @example
+ * ensureOutputDirectory(themeContext, '/tmp/pdfs')
+ * → { success: true, data: { ...context, outputDir: '/tmp/pdfs' } }
  */
 export const ensureOutputDirectory = async (
   context: ThemeSelectionContext,
@@ -83,11 +91,18 @@ export const ensureOutputDirectory = async (
 };
 
 /**
- * Generates a single PDF document (resume or cover letter)
- * IMPORTANT: Add proper types for template and data management
+ * Generates a single PDF document (resume or cover letter) asynchronously.
  *
- * @param {Object} params - Generation parameters for a single document
- * @returns {Promise<GeneratedDocument>} Promise resolving to generated document metadata
+ * Renders the appropriate React component (resume or cover letter) from theme
+ * and writes the PDF to the specified output directory with company-specific filename.
+ *
+ * @param {Object} params - Generation parameters
+ * @param {typeof DOCUMENT_TYPES.RESUME | typeof DOCUMENT_TYPES.COVER_LETTER} params.docType - Document type to generate
+ * @param {any} params.theme - Theme object with resume/coverLetter React components
+ * @param {any} params.applicationData - Application data with resume/cover_letter content
+ * @param {string} params.outputDir - Output directory for PDF file
+ * @param {string} params.companyName - Company name for PDF filename
+ * @returns {Promise<GeneratedDocument>} Generated document with filePath and docType
  */
 const generateSingleDoc = async ({
   docType,
@@ -121,10 +136,19 @@ const generateSingleDoc = async ({
 };
 
 /**
- * Generates multiple PDF documents in parallel using Promise.all
+ * Generates multiple PDF documents in parallel using Promise.all.
+ * Validates required theme components before rendering.
  *
- * @param {GenerateDocumentParams} params - Generation parameters with array of document types
- * @returns {Promise<SuccessResult<GeneratedDocument[]> | ErrorResult>} Result with array of generated documents or error
+ * @param {GenerateDocumentParams} params - Parameters for PDF generation
+ * @param {(typeof DOCUMENT_TYPES.RESUME | typeof DOCUMENT_TYPES.COVER_LETTER)[]} params.docTypes - Document types to generate
+ * @param {any} params.theme - Theme object with resume/coverLetter React components
+ * @param {any} params.applicationData - Application data with resume/cover_letter content
+ * @param {string} params.outputDir - Output directory for PDF files
+ * @param {string} params.companyName - Company name for PDF filenames
+ * @returns {Promise<SuccessResult<GeneratedDocument[]> | ErrorResult>} Array of generated files with paths, or error
+ * @example
+ * generateDocument({ docTypes: ['resume'], theme, applicationData, outputDir: '/tmp', companyName: 'acme' })
+ * → { success: true, data: [{ filePath: '/tmp/resume-acme.pdf', docType: 'resume' }] }
  */
 export const generateDocument = async ({
   docTypes,

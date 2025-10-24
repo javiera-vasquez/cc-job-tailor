@@ -71,11 +71,12 @@ const formatZodErrorIssues = (
  * Logs ZodError issues with consistent formatting.
  *
  * Displays each validation error with field path, message, and optional received value.
- * Includes file path context when available.
+ * Includes file path context when available. Each error is prefixed with bullet point.
  *
  * @param {z.ZodError} zodError - Zod validation error
  * @param {Logger} logger - Logger instance
  * @param {string} [filePath] - Optional file path where error occurred
+ * @returns {void}
  */
 const logZodErrorIssues = (zodError: z.ZodError, logger: Logger, filePath?: string): void => {
   const issues = formatZodErrorIssues(zodError, filePath);
@@ -91,9 +92,11 @@ const logZodErrorIssues = (zodError: z.ZodError, logger: Logger, filePath?: stri
  * Logs generic error with details and file context.
  *
  * Displays error message, optional multi-line details, and file path when available.
+ * Used as fallback for non-ZodError validation failures.
  *
  * @param {Extract<Result<unknown>, { success: false }>} error - Failed result with error details
  * @param {Logger} logger - Logger instance
+ * @returns {void}
  */
 const logGenericError = (
   error: Extract<Result<unknown>, { success: false }>,
@@ -113,14 +116,15 @@ const logGenericError = (
 /**
  * Logs error in compact format for hot reload scenarios.
  *
- * Shows emoji indicator, filename, stage, and duration on first line,
- * followed by error message and optional details.
+ * Single-line format for file watching: shows emoji indicator, filename, stage, and duration.
+ * Followed by error message and optional details. Reduces visual noise for repeated failures.
  *
  * @param {Extract<Result<unknown>, { success: false }>} error - Failed result with error details
  * @param {Logger} logger - Logger instance
  * @param {string} displayFilename - Filename for display
- * @param {string} duration - Operation duration
+ * @param {string} duration - Operation duration in seconds
  * @param {'Validation' | 'Generation'} stage - Pipeline stage that failed
+ * @returns {void}
  */
 const logCompactError = (
   error: Extract<Result<unknown>, { success: false }>,
@@ -140,12 +144,13 @@ const logCompactError = (
 /**
  * Logs error in verbose format for startup scenarios.
  *
- * Provides specialized formatting for ZodError with detailed field information.
- * Falls back to generic error formatting for other error types.
+ * Multi-line format with specialized handling for ZodError (detailed field paths)
+ * and fallback for generic errors. Used when verbose output is appropriate.
  *
  * @param {Extract<Result<unknown>, { success: false }>} error - Failed result with error details
  * @param {Logger} logger - Logger instance
  * @param {string} headerMessage - Header message to display before errors
+ * @returns {void}
  */
 const logVerboseError = (
   error: Extract<Result<unknown>, { success: false }>,
@@ -168,13 +173,14 @@ const logVerboseError = (
 /**
  * Logs success message in compact format.
  *
- * Shows emoji indicator, company name, and file count on first line,
- * with optional additional context (e.g., debounce settings).
+ * Single-line format showing emoji indicator, company name, and file count.
+ * Includes optional additional context like debounce settings for server mode.
  *
  * @param {SetContextSuccess['data']} data - Context setup success data
  * @param {Logger} logger - Logger instance
  * @param {boolean} isServerMode - Whether running in server mode
  * @param {string} [additionalInfo] - Additional context to display
+ * @returns {void}
  */
 const oneLineContextLog = (
   data: SetContextSuccess['data'],
@@ -192,11 +198,12 @@ const oneLineContextLog = (
 /**
  * Logs success message in verbose format.
  *
- * Displays detailed context information including company, path,
- * position, focus area, and available files.
+ * Multi-line format displaying detailed context: company, path, position, focus area, and files.
+ * Used during initial setup to provide complete context information.
  *
  * @param {SetContextSuccess['data']} data - Context setup success data
  * @param {Logger} logger - Logger instance
+ * @returns {void}
  */
 const provideTailorEnvLogs = (data: SetContextSuccess['data'], logger: Logger): void => {
   const filesList = data.availableFiles.join(', ') || 'none';
@@ -329,10 +336,14 @@ export const handlePipelineSuccess = (
 };
 
 /**
- * Handles successful validation by logging validated files.
+ * Handles successful validation by logging validated files and metadata.
  *
- * @param data - Validation success data
- * @param options - Handler options
+ * Displays count and list of validated files with their display names.
+ * Optionally exits process after logging (for CLI usage).
+ *
+ * @param {ValidationOnlySuccess['data']} data - Validation success data with validated files list
+ * @param {ValidationSuccessOptions} options - Handler configuration options
+ * @returns {void}
  */
 export const handleValidationSuccess = (
   data: ValidationOnlySuccess['data'],

@@ -17,18 +17,21 @@ const fileNameToDataKey = (fileName: CompanyFileValue): keyof ApplicationData =>
 };
 
 /**
- * Transforms validated YAML files into ApplicationData structure
- * Pure function - uses fileName as single source of truth
+ * Transforms validated YAML files into ApplicationData structure.
  *
- * @param files - Array of validated files with loaded YAML data
- * @returns Result containing ApplicationData object
+ * Maps each file's fileName to ApplicationData property using fileNameToDataKey.
+ * fileName 'metadata.yaml' → 'metadata', 'resume.yaml' → 'resume', etc.
+ * Pure function - no side effects.
+ *
+ * @param {FileToValidateWithYamlData[]} files - Array of validated files with loaded YAML data
+ * @returns {Result<ApplicationData>} Result containing ApplicationData object
  *
  * @example
  * transformFilesToApplicationData([
  *   { fileName: 'metadata.yaml', data: {...}, ... },
  *   { fileName: 'resume.yaml', data: {...}, ... },
  * ])
- * → { success: true, data: { metadata: {...}, resume: {...}, ... } }
+ * // Returns: { success: true, data: { metadata: {...}, resume: {...}, ... } }
  */
 export const transformFilesToApplicationData = (
   files: FileToValidateWithYamlData[],
@@ -43,12 +46,15 @@ export const transformFilesToApplicationData = (
 };
 
 /**
- * Generates TypeScript module content with ApplicationData
- * Pure function - no side effects
+ * Generates TypeScript module content with ApplicationData.
  *
- * @param data - Validated ApplicationData object
- * @param companyName - Company name for comments
- * @returns TypeScript module content as string
+ * Creates a valid TypeScript module string with imports, typed export, and metadata comments.
+ * Disables TypeScript checking (@ts-nocheck) since data is JSON serialized.
+ * Pure function - no side effects.
+ *
+ * @param {ApplicationData} data - Validated ApplicationData object
+ * @param {string} companyName - Company name for metadata comment
+ * @returns {string} TypeScript module content with ApplicationData export
  */
 export const generateTypeScriptModule = (data: ApplicationData, companyName: string): string => {
   return `// @ts-nocheck

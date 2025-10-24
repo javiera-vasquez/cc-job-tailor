@@ -176,21 +176,42 @@ export class Logger {
   }
 
   /**
-   * Public logging methods
+   * Logs a debug message with optional structured data
+   * @param {string} message - Debug message
+   * @param {Record<string, unknown>} [data] - Optional structured data
+   * @returns {void}
    */
-
   debug(message: string, data?: Record<string, unknown>): void {
     this.log('debug', message, data);
   }
 
+  /**
+   * Logs an info message with optional structured data
+   * @param {string} message - Info message
+   * @param {Record<string, unknown>} [data] - Optional structured data
+   * @returns {void}
+   */
   info(message: string, data?: Record<string, unknown>): void {
     this.log('info', message, data);
   }
 
+  /**
+   * Logs a warning message with optional structured data
+   * @param {string} message - Warning message
+   * @param {Record<string, unknown>} [data] - Optional structured data
+   * @returns {void}
+   */
   warn(message: string, data?: Record<string, unknown>): void {
     this.log('warn', message, data);
   }
 
+  /**
+   * Logs an error message with Error object and optional structured data
+   * @param {string} message - Error message
+   * @param {Error | unknown} [error] - Error object or error value
+   * @param {Record<string, unknown>} [data] - Optional additional data
+   * @returns {void}
+   */
   error(message: string, error?: Error | unknown, data?: Record<string, unknown>): void {
     const errorData =
       error instanceof Error
@@ -203,13 +224,21 @@ export class Logger {
   }
 
   /**
-   * Convenience methods with semantic meaning
+   * Logs a success message with green checkmark emoji prefix
+   * @param {string} message - Success message
+   * @param {Record<string, unknown>} [data] - Optional structured data
+   * @returns {void}
    */
-
   success(message: string, data?: Record<string, unknown>): void {
     this.info(`✅ ${message}`, data);
   }
 
+  /**
+   * Logs a loading message with loading emoji prefix
+   * @param {string} message - Loading message
+   * @param {Record<string, unknown>} [data] - Optional structured data
+   * @returns {void}
+   */
   loading(message: string, data?: Record<string, unknown>): void {
     this.info(`🔄 ${message}`, data);
   }
@@ -274,40 +303,77 @@ export class LoggerConfig {
     return value.toLowerCase() === 'true';
   }
 
+  /**
+   * Sets the global minimum log level for all loggers
+   * @param {LogLevel} level - Log level to set (debug, info, warn, error)
+   * @returns {void}
+   */
   static setGlobalLevel(level: LogLevel): void {
     this.globalMinLevel = level;
   }
 
+  /**
+   * Gets the current global minimum log level
+   * @returns {LogLevel} Current global log level
+   */
   static getGlobalLevel(): LogLevel {
     return this.globalMinLevel;
   }
 
+  /**
+   * Sets the global output format for all loggers
+   * @param {LogFormat} format - Output format (human or json)
+   * @returns {void}
+   */
   static setGlobalFormat(format: LogFormat): void {
     this.globalFormat = format;
   }
 
+  /**
+   * Gets the current global output format
+   * @returns {LogFormat} Current output format
+   */
   static getGlobalFormat(): LogFormat {
     return this.globalFormat;
   }
 
+  /**
+   * Enables or disables timestamps in all loggers
+   * @param {boolean} enabled - True to include timestamps, false to exclude
+   * @returns {void}
+   */
   static setGlobalTimestamps(enabled: boolean): void {
     this.globalTimestamps = enabled;
   }
 
+  /**
+   * Gets the current timestamp setting
+   * @returns {boolean} True if timestamps are enabled, false otherwise
+   */
   static getGlobalTimestamps(): boolean {
     return this.globalTimestamps;
   }
 
+  /**
+   * Enables or disables emoji indicators in all loggers
+   * @param {boolean} enabled - True to include emojis, false to exclude
+   * @returns {void}
+   */
   static setGlobalEmoji(enabled: boolean): void {
     this.globalEmoji = enabled;
   }
 
+  /**
+   * Gets the current emoji indicator setting
+   * @returns {boolean} True if emojis are enabled, false otherwise
+   */
   static getGlobalEmoji(): boolean {
     return this.globalEmoji;
   }
 
   /**
-   * Get current configuration summary (useful for debugging)
+   * Gets current configuration summary
+   * @returns {Object} Configuration object with level, format, timestamps, and emoji settings
    */
   static getConfig(): {
     level: LogLevel;
@@ -329,12 +395,14 @@ export class LoggerConfig {
 // ============================================================================
 
 /**
- * Factory function for creating loggers
+ * Creates a new Logger instance with the given context and optional configuration
+ * @param {string} context - Context/module name for logger identification
+ * @param {Partial<LoggerOptions>} [options] - Optional configuration overrides
+ * @returns {Logger} Configured logger instance
  * @example
- * const logger = createLogger('my-module');
- * logger.info('Hello world');
+ * const logger = createLogger('tailor-server');
+ * logger.info('Server started');
  *
- * // With custom options
  * const debugLogger = createLogger('debug-module', { minLevel: 'debug' });
  */
 export function createLogger(context: string, options?: Partial<LoggerOptions>): Logger {

@@ -81,8 +81,11 @@ const FILE_DISPLAY_NAMES: Record<keyof typeof COMPANY_FILES, string> = {
 /**
  * Validates that exactly one of companyName or customPath is provided.
  *
- * @param input - Path resolution input from CLI
- * @returns Result with input or error
+ * Ensures -C and -P flags are mutually exclusive (XOR logic).
+ * Returns error if both, neither, or conflicts are detected.
+ *
+ * @param {PathResolutionInput} input - Path resolution input from CLI
+ * @returns {Result<PathResolutionInput>} Input if valid, or error describing the conflict
  */
 const validateMutuallyExclusiveOptions = (
   input: PathResolutionInput,
@@ -105,8 +108,11 @@ const validateMutuallyExclusiveOptions = (
 /**
  * Resolves path string from company name or custom path.
  *
- * @param input - Validated path resolution input
- * @returns Result with resolved path and company name
+ * If companyName provided, builds path using getCompanyPath helper.
+ * If customPath provided, extracts company name from last directory segment.
+ *
+ * @param {PathResolutionInput} input - Validated path resolution input
+ * @returns {Result<ResolvedPath>} Resolved path and company name, or resolution error
  */
 const resolvePathString = (input: PathResolutionInput): Result<ResolvedPath> => {
   return tryCatch(() => {
@@ -133,8 +139,10 @@ const resolvePathString = (input: PathResolutionInput): Result<ResolvedPath> => 
 /**
  * Validates that the resolved path exists on filesystem.
  *
- * @param resolved - Resolved path object
- * @returns Result with resolved path or error
+ * Uses existsSync to check for directory presence. Returns error if path not found.
+ *
+ * @param {ResolvedPath} resolved - Resolved path object with path and company name
+ * @returns {Result<ResolvedPath>} Resolved path if exists, error with helpful message if not
  */
 const validatePathExists = (resolved: ResolvedPath): Result<ResolvedPath> => {
   return existsSync(resolved.path)
@@ -149,13 +157,13 @@ const validatePathExists = (resolved: ResolvedPath): Result<ResolvedPath> => {
 /**
  * Complete path resolution pipeline using functional composition.
  *
- * Pipeline flow:
+ * Pipeline flow (with short-circuit on error):
  * 1. Validate mutually exclusive options (-C xor -P)
  * 2. Resolve path string from option
  * 3. Validate path exists on filesystem
  *
- * @param input - Path resolution input from CLI
- * @returns Result with resolved path and company name
+ * @param {PathResolutionInput} input - Path resolution input from CLI
+ * @returns {Result<ResolvedPath>} Resolved path and company name, or first error encountered
  */
 const resolveAndValidatePath = (input: PathResolutionInput): Result<ResolvedPath> => {
   return pipe(
@@ -172,8 +180,11 @@ const resolveAndValidatePath = (input: PathResolutionInput): Result<ResolvedPath
 /**
  * Selects schema configurations based on validation type.
  *
- * @param type - Validation type to filter by
- * @returns Result with filtered schema array
+ * Filters schema array by validation type: 'all' returns all, others filter by key.
+ * Validates selected schemas are not empty.
+ *
+ * @param {ValidationType} type - Validation type to filter by ('all', 'metadata', 'resume', 'job-analysis', 'cover-letter')
+ * @returns {Result<YamlFilesAndSchemasToWatch[]>} Filtered schema configurations or error if type invalid
  */
 const selectSchemasForValidationType = (
   type: ValidationType,
@@ -196,9 +207,12 @@ const selectSchemasForValidationType = (
 /**
  * Formats validation result into success response data.
  *
- * @param resolved - Resolved path information
- * @param validatedFiles - Successfully validated files with YAML data
- * @returns Success data structure (not wrapped in Result)
+ * Maps fileName to displayName for each validated file using COMPANY_FILES lookup.
+ * Returns final success data structure (not wrapped in Result).
+ *
+ * @param {ResolvedPath} resolved - Resolved path information
+ * @param {Array<{ fileName: string }>} validatedFiles - Successfully validated files with YAML data
+ * @returns {ValidationOnlySuccess['data']} Formatted success data with path, files, and display names
  */
 const formatValidationSuccess = (
   resolved: ResolvedPath,
