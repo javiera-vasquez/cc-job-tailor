@@ -12,7 +12,7 @@ import {
   type SuccessResult,
 } from './shared/validation-pipeline';
 import { generateApplicationDataInMemory } from './shared/data-generation';
-import { handlePipelineError } from './shared/error-handlers';
+import { handlePipelineError } from './shared/result-handlers';
 import { chain, tap } from './shared/functional-utils';
 import {
   selectThemeFromMetadata,

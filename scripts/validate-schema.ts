@@ -7,8 +7,7 @@ import {
 } from './shared/validation-only-pipeline';
 import { loggers } from './shared/logger';
 import { parseCliArgs } from './shared/cli-args';
-import { handlePipelineError } from './shared/error-handlers';
-import { handleValidationSuccess } from './shared/validation-handlers';
+import { handlePipelineError, handleValidationSuccess } from './shared/result-handlers';
 
 // ============================================================================
 // CLI Configuration

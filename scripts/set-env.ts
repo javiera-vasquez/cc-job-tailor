@@ -8,8 +8,7 @@ import {
 import { parseCliArgs, validateRequiredArg } from './shared/cli-args';
 import { loggers } from './shared/logger';
 import { TAILOR_YAML_FILES_AND_SCHEMAS } from './shared/config';
-import { handlePipelineError } from './shared/error-handlers';
-import { handleContextSuccess } from './shared/success-handlers';
+import { handlePipelineError, handlePipelineSuccess } from './shared/result-handlers';
 
 /**
  * CLI script to set tailor environment context
@@ -93,7 +92,7 @@ const onSuccess = (data: {
   primaryFocus: string;
   timestamp: string;
 }): void => {
-  handleContextSuccess(data, {
+  handlePipelineSuccess(data, {
     logger: loggers.setEnv,
     shouldExit: true,
   });

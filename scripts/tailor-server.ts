@@ -21,8 +21,7 @@ import {
   PathHelpers,
 } from './shared/config';
 import { loggers } from './shared/logger';
-import { handlePipelineError } from './shared/error-handlers';
-import { handleContextSuccess } from './shared/success-handlers';
+import { handlePipelineError, handlePipelineSuccess } from './shared/result-handlers';
 
 /**
  * Enhanced dev server with tailor data watching
@@ -344,7 +343,7 @@ class EnhancedDevServer {
    * @returns {void}
    */
   private onServerReady(data: SetContextSuccess['data']): void {
-    handleContextSuccess(data, {
+    handlePipelineSuccess(data, {
       logger: loggers.server,
       shouldExit: false,
       withContextMode: true,
