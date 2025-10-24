@@ -12,7 +12,6 @@ import applicationData from '../data/application';
 
 import '@ui/styles/globals.css';
 
-
 const SIDEBAR_WIDGETS = getSidebarWidgets(applicationData);
 
 const App = () => {

@@ -1,7 +1,7 @@
-import type { ApplicationData } from "@/types";
+import type { ApplicationData } from '@/types';
 import { WidgetType, type WidgetConfig } from '@ui/components/widgets/types';
 
-export const getSidebarWidgets = (data: ApplicationData): WidgetConfig[]  => ( [
+export const getSidebarWidgets = (data: ApplicationData): WidgetConfig[] => [
   {
     type: WidgetType.HEADER,
     title: 'Company',
@@ -64,8 +64,7 @@ export const getSidebarWidgets = (data: ApplicationData): WidgetConfig[]  => ( [
     type: WidgetType.BADGE_GROUP,
     title: 'Soft Skills',
     data: {
-      badges:
-        data.job_analysis?.requirements.soft_skills.map((skill) => ({ skill })) || [],
+      badges: data.job_analysis?.requirements.soft_skills.map((skill) => ({ skill })) || [],
     },
   },
   {
@@ -97,4 +96,4 @@ export const getSidebarWidgets = (data: ApplicationData): WidgetConfig[]  => ( [
       ],
     },
   },
-]);
+];
