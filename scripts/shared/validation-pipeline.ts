@@ -27,18 +27,18 @@ export type YamlFilesAndSchemasToWatch = Pick<
   'fileName' | 'type' | 'wrapperKey'
 > & { key: keyof typeof COMPANY_FILES };
 
-export interface SetContextSuccess {
+/**
+ * Generic success result type used across all pipelines
+ */
+export interface SuccessResult<T> {
   success: true;
-  data: {
-    company: string;
-    path: string;
-    availableFiles: string[];
-    position: string;
-    primaryFocus: string;
-    timestamp: string;
-  };
+  data: T;
 }
-export interface SetContextError {
+
+/**
+ * Generic error result type used across all pipelines
+ */
+export interface ErrorResult {
   success: false;
   error: string;
   details?: string;
@@ -46,7 +46,19 @@ export interface SetContextError {
   filePath?: string;
 }
 
-export type SetContextResult = SetContextSuccess | SetContextError;
+export type SetContextSuccess = SuccessResult<{
+  company: string;
+  path: string;
+  availableFiles: string[];
+  position: string;
+  primaryFocus: string;
+  timestamp: string;
+}>;
+
+export type PdfGenerationSuccess = SuccessResult<{ files: readonly string[] }>;
+
+export type SetContextResult = SetContextSuccess | ErrorResult;
+export type PdfGenerationResult = PdfGenerationSuccess | ErrorResult;
 
 /**
  * Executes the complete tailor context setup pipeline using functional composition.

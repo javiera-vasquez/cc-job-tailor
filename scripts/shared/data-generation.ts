@@ -22,7 +22,7 @@ import { PATHS } from './config';
 const transformToApplicationData = (
   files: FileToValidateWithYamlData[],
 ): Result<ApplicationData> => {
-  loggers.validation.info('Generating application data module');
+  loggers.validation.debug('Generating application data module');
   return transformFilesToApplicationData(files);
 };
 
@@ -44,7 +44,7 @@ const validateApplicationDataSchema = (
   );
 
   if (result.success) {
-    loggers.validation.success('Application data validation passed');
+    loggers.validation.debug('Application data validation passed');
   }
 
   return result.success ? { success: true, data: applicationData } : result;

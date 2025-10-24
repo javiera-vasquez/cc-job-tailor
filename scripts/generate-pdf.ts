@@ -1,27 +1,26 @@
-import React from 'react';
-import { renderToFile } from '@react-pdf/renderer';
+import path from 'path';
 import { pipe } from 'remeda';
 import { match } from 'ts-pattern';
-import { themes } from '../src/templates';
-import path from 'path';
-import { mkdir } from 'fs/promises';
 import { parseCliArgs, validateRequiredArg } from './shared/cli-args';
-import { throwInvalidDocumentTypeError } from './shared/error-messages';
-import {
-  PATHS,
-  DOCUMENT_TYPES,
-  TAILOR_YAML_FILES_AND_SCHEMAS,
-  PathHelpers,
-} from './shared/config';
+import { DOCUMENT_TYPES, PATHS, TAILOR_YAML_FILES_AND_SCHEMAS, PathHelpers } from './shared/config';
 import { validateCompanyPath } from './shared/company-validation';
 import { loggers } from './shared/logger';
 import {
   validateYamlFilesAgainstSchemasPipeline,
   type YamlFilesAndSchemasToWatch,
+  type PdfGenerationResult,
+  type SuccessResult,
 } from './shared/validation-pipeline';
 import { generateApplicationDataInMemory } from './shared/data-generation';
 import { handlePipelineError } from './shared/error-handlers';
-import { chain, tap, tryCatchAsync } from './shared/functional-utils';
+import { chain, tap } from './shared/functional-utils';
+import {
+  selectThemeFromMetadata,
+  ensureOutputDirectory,
+  generateDocument,
+  type OutputDirectoryContext,
+  type GeneratedDocument,
+} from './shared/document-generation';
 
 const USAGE_MESSAGE = 'Usage: bun run save-to-pdf -C company-name [-D resume|cover-letter|both]';
 
@@ -70,7 +69,7 @@ const initPdfGeneration = async (
   companyName: string,
   yamlDocumentsToValidate: YamlFilesAndSchemasToWatch[],
 ): Promise<void> => {
-  const result = await executePdfGenerationPipeline(companyName, yamlDocumentsToValidate);
+  const result = await executePdfGeneration(companyName, yamlDocumentsToValidate);
 
   return match(result)
     .with({ success: true }, ({ data }) => onSuccess(data))
@@ -95,31 +94,18 @@ const initPdfGeneration = async (
  * @param {YamlFilesAndSchemasToWatch[]} yamlDocumentsToValidate - Files and schemas to validate
  * @returns {Promise<Result>} Final result with generated files or error
  */
-const executePdfGenerationPipeline = async (
+const executePdfGeneration = async (
   companyName: string,
   yamlDocumentsToValidate: YamlFilesAndSchemasToWatch[],
-): Promise<
-  | { success: true; data: { files: readonly string[] } }
-  | {
-      success: false;
-      error: string;
-      details?: string;
-      originalError?: unknown;
-      filePath?: string;
-    }
-> => {
+): Promise<PdfGenerationResult> => {
   // Step 1-3: Validation and data generation (synchronous)
-  const dataResult = pipe(
-    validateAndGenerateDataPipeline(companyName, yamlDocumentsToValidate),
-    (r) => tap(r, () => loggers.pdf.loading('Data generation completed')),
-  );
+  const dataResult = validateAndGenerateDataPipeline(companyName, yamlDocumentsToValidate);
 
   if (!dataResult.success) {
     return dataResult;
   }
 
   // Step 4: Theme selection (synchronous)
-  loggers.pdf.loading('Selecting theme...');
   const themeResult = selectThemeFromMetadata(dataResult.data);
 
   if (!themeResult.success) {
@@ -127,15 +113,14 @@ const executePdfGenerationPipeline = async (
   }
 
   // Step 5: Directory creation (async)
-  loggers.pdf.loading('Preparing output directory...');
-  const dirResult = await ensureOutputDirectory(themeResult.data);
+  const outputDir = path.join(PathHelpers.getProjectRoot(), PATHS.TEMP_PDF);
+  const dirResult = await ensureOutputDirectory(themeResult.data, outputDir);
 
   if (!dirResult.success) {
     return dirResult;
   }
 
   // Step 6: PDF generation (async)
-  loggers.pdf.loading('Generating PDF documents...');
   const pdfResult = await generatePdfDocuments(documentType, companyName)(dirResult.data);
 
   return pdfResult;
@@ -162,126 +147,37 @@ const validateAndGenerateDataPipeline = (
 ) => {
   return pipe(
     validateCompanyPath(PathHelpers.getCompanyPath(companyName)),
-    (r) => tap(r, () => loggers.pdf.loading(`Validating YAML files for ${companyName}...`)),
     (r) =>
       chain(r, () => validateYamlFilesAgainstSchemasPipeline(companyName, yamlFilesAndSchemas)),
-    (r) => tap(r, () => loggers.pdf.loading(`Generating application data for ${companyName}...`)),
     (r) => chain(r, generateApplicationDataInMemory),
-    (r) => tap(r, () => loggers.pdf.success(`Data generation completed for ${companyName}`)),
+    (r) => tap(r, () => loggers.pdf.success('✓ Data validated & generated')),
   );
 };
-
 /**
- * Selects and validates theme from application metadata
+ * Transforms generated documents array into file paths result
  *
- * @param {ApplicationData} applicationData - Validated application data
- * @returns {Result} Result with application data and selected theme
+ * @param {GeneratedDocument[]} documents - Array of generated documents
+ * @param {string} theme - Theme name used for generation
+ * @returns {SuccessResult} Success result with file paths and theme
  */
-const selectThemeFromMetadata = (applicationData: any) => {
-  const activeTemplate = applicationData.metadata?.active_template || 'modern';
-  loggers.pdf.info(`Using template: ${activeTemplate}`);
-
-  const selectedTheme = themes[activeTemplate];
-
-  if (!selectedTheme) {
-    return {
-      success: false,
-      error: `Theme '${activeTemplate}' not found`,
-      details: `Available themes: ${Object.keys(themes).join(', ')}`,
-    } as const;
-  }
-
-  return {
+const extractFilePaths = (
+  documents: GeneratedDocument[],
+  theme: string,
+): SuccessResult<{ files: readonly string[]; theme: string }> =>
+  ({
     success: true,
     data: {
-      applicationData,
-      theme: selectedTheme,
-      themeName: activeTemplate,
+      files: documents.map((doc) => doc.filePath),
+      theme,
     },
-  } as const;
-};
+  }) as const;
 
 /**
- * Ensures output directory exists for PDF generation
+ * Generates PDF documents based on document type specification
  *
- * @param {Object} context - Context with application data and theme
- * @returns {Promise<Result>} Result with context and output directory path
- */
-const ensureOutputDirectory = async (context: {
-  applicationData: any;
-  theme: any;
-  themeName: string;
-}) => {
-  const tmpDir = path.join(import.meta.dir, '..', PATHS.TEMP_PDF);
-
-  const result = await tryCatchAsync(async () => {
-    await mkdir(tmpDir, { recursive: true });
-    loggers.pdf.debug(`Output directory ready: ${tmpDir}`);
-
-    return {
-      ...context,
-      outputDir: tmpDir,
-    };
-  }, 'Failed to create output directory');
-
-  return result;
-};
-
-/**
- * Generates a single PDF document
- *
- * @param {Object} params - Generation parameters
- * @returns {Promise<Result>} Result with generated file path
- */
-const generateSingleDocument = async ({
-  docType,
-  theme,
-  applicationData,
-  outputDir,
-  companyName,
-}: {
-  docType: typeof DOCUMENT_TYPES.RESUME | typeof DOCUMENT_TYPES.COVER_LETTER;
-  theme: any;
-  applicationData: any;
-  outputDir: string;
-  companyName: string;
-}) => {
-  const ResumeDocument = theme.components.resume;
-  const CoverLetterDocument = theme.components.coverLetter;
-
-  if (!ResumeDocument || !CoverLetterDocument) {
-    return {
-      success: false,
-      error: 'Theme components not properly loaded',
-      details: `Missing resume or cover letter component in theme`,
-    } as const;
-  }
-
-  const result = await tryCatchAsync(async () => {
-    const component =
-      docType === DOCUMENT_TYPES.RESUME
-        ? React.createElement(ResumeDocument, { data: applicationData.resume ?? undefined })
-        : React.createElement(CoverLetterDocument, {
-            data: applicationData.cover_letter ?? undefined,
-          });
-
-    const filePath = path.join(outputDir, `${docType}-${companyName}.pdf`);
-
-    loggers.pdf.loading(`Generating ${docType} PDF for ${companyName}`);
-    loggers.pdf.debug(`Output path: ${filePath}`);
-
-    await renderToFile(component as any, filePath);
-
-    loggers.pdf.success(`${docType} PDF generated successfully for ${companyName}`);
-
-    return { filePath, docType };
-  }, `Failed to generate ${docType} PDF`);
-
-  return result;
-};
-
-/**
- * Generates PDF documents based on document type
+ * Determines which documents to generate (resume, cover letter, or both)
+ * and delegates to generateDocument with appropriate docTypes array.
+ * Uses functional composition (pipe + chain) to transform results.
  *
  * @param {string} documentType - Type of document to generate
  * @param {string} companyName - Company name for file naming
@@ -289,83 +185,55 @@ const generateSingleDocument = async ({
  */
 const generatePdfDocuments =
   (documentType: string, companyName: string) =>
-  async (context: { applicationData: any; theme: any; themeName: string; outputDir: string }) => {
-    const { applicationData, theme, outputDir } = context;
+  async (context: OutputDirectoryContext): Promise<PdfGenerationResult> => {
+    const { applicationData, theme, themeName, outputDir } = context;
 
-    const generateParams = {
-      theme,
-      applicationData,
-      outputDir,
-      companyName,
+    // Map document type to docTypes array
+    const docTypesMap: Record<
+      string,
+      (typeof DOCUMENT_TYPES.RESUME | typeof DOCUMENT_TYPES.COVER_LETTER)[]
+    > = {
+      [DOCUMENT_TYPES.BOTH]: [DOCUMENT_TYPES.RESUME, DOCUMENT_TYPES.COVER_LETTER],
+      [DOCUMENT_TYPES.RESUME]: [DOCUMENT_TYPES.RESUME],
+      [DOCUMENT_TYPES.COVER_LETTER]: [DOCUMENT_TYPES.COVER_LETTER],
     };
 
-    // Generate documents based on specified type
-    const result = await match(documentType)
-      .with(DOCUMENT_TYPES.BOTH, async () => {
-        const resumeResult = await generateSingleDocument({
-          ...generateParams,
-          docType: DOCUMENT_TYPES.RESUME,
-        });
+    const docTypes = docTypesMap[documentType as keyof typeof docTypesMap];
 
-        if (!resumeResult.success) {
-          return resumeResult;
-        }
+    if (!docTypes) {
+      return {
+        success: false,
+        error: 'Invalid document type',
+        details: `Received unexpected document type: ${documentType}`,
+      } as const;
+    }
 
-        const coverLetterResult = await generateSingleDocument({
-          ...generateParams,
-          docType: DOCUMENT_TYPES.COVER_LETTER,
-        });
-
-        if (!coverLetterResult.success) {
-          return coverLetterResult;
-        }
-
-        return {
-          success: true,
-          data: {
-            files: [resumeResult.data.filePath, coverLetterResult.data.filePath],
-          },
-        } as const;
-      })
-      .with(DOCUMENT_TYPES.RESUME, async () => {
-        const result = await generateSingleDocument({
-          ...generateParams,
-          docType: DOCUMENT_TYPES.RESUME,
-        });
-        return result.success
-          ? ({ success: true, data: { files: [result.data.filePath] } } as const)
-          : result;
-      })
-      .with(DOCUMENT_TYPES.COVER_LETTER, async () => {
-        const result = await generateSingleDocument({
-          ...generateParams,
-          docType: DOCUMENT_TYPES.COVER_LETTER,
-        });
-        return result.success
-          ? ({ success: true, data: { files: [result.data.filePath] } } as const)
-          : result;
-      })
-      .otherwise((_type) => {
-        // This should never happen with proper validation, but provide a safe fallback
-        return {
-          success: false,
-          error: 'Invalid document type',
-          details: `Received unexpected document type`,
-        } as const;
-      });
-
-    return result;
+    return pipe(
+      await generateDocument({
+        docTypes,
+        theme,
+        applicationData,
+        outputDir,
+        companyName,
+      }),
+      (r) => chain(r, (docs) => extractFilePaths(docs, themeName)),
+    );
   };
 
 /**
  * Handles successful PDF generation
  *
- * @param {Object} result - Result with generated file paths
+ * @param {Object} result - Result with generated file paths and theme
  * @returns {void} Exits process with code 0
  */
-const onSuccess = (result: { files: readonly string[] }): void => {
-  loggers.pdf.success(`All PDFs generated successfully`);
-  loggers.pdf.info(`Generated files: ${result.files.join(', ')}`);
+const onSuccess = (result: { files: readonly string[]; theme: string }): void => {
+  const projectRoot = PathHelpers.getProjectRoot();
+
+  loggers.pdf.success(`✅ PDFs created (${result.theme} theme)`);
+  result.files.forEach((file) => {
+    const relativePath = file.replace(projectRoot + '/', '');
+    loggers.pdf.info(`→ ${relativePath}`);
+  });
   process.exit(0);
 };
 
@@ -395,8 +263,6 @@ const onError = (
     },
   );
 };
-
-
 
 // Run pipeline
 await initPdfGeneration(companyName, TAILOR_YAML_FILES_AND_SCHEMAS);

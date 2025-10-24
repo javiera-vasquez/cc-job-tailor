@@ -1,3 +1,4 @@
+import path from 'path';
 import { CoverLetterSchema, JobAnalysisSchema, MetadataSchema, ResumeSchema } from '@/zod/schemas';
 import type { YamlFilesAndSchemasToWatch } from './validation-pipeline';
 
@@ -22,6 +23,9 @@ import type { YamlFilesAndSchemasToWatch } from './validation-pipeline';
  * Core directory paths used throughout the application
  */
 export const PATHS = {
+  /** Project root directory (absolute path from scripts/shared/) */
+  PROJECT_ROOT: path.join(import.meta.dir, '../..'),
+
   /** Base directory for company-specific tailor data */
   TAILOR_BASE: 'resume-data/tailor',
 
@@ -206,6 +210,14 @@ export const COMPACT_MODE = {
  * Utility functions for path manipulation and validation
  */
 export const PathHelpers = {
+  /**
+   * Get project root directory (absolute path)
+   * @example getProjectRoot() → '/Users/javi/Develop/cc-resume-manager'
+   */
+  getProjectRoot: (): string => {
+    return PATHS.PROJECT_ROOT;
+  },
+
   /**
    * Get full path to company folder
    * @example getCompanyPath('tech-corp') → 'resume-data/tailor/tech-corp'
