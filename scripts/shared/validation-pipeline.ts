@@ -55,7 +55,7 @@ export type SetContextSuccess = SuccessResult<{
   timestamp: string;
 }>;
 
-export type PdfGenerationSuccess = SuccessResult<{ files: readonly string[] }>;
+export type PdfGenerationSuccess = SuccessResult<{ files: readonly string[]; theme: string }>;
 
 export type SetContextResult = SetContextSuccess | ErrorResult;
 export type PdfGenerationResult = PdfGenerationSuccess | ErrorResult;
