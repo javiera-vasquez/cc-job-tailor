@@ -3,7 +3,7 @@ import yaml from 'js-yaml';
 import { pipe } from 'remeda';
 import type { z } from 'zod';
 import type { Result, FileToValidate, FileToValidateWithYamlData } from './types';
-import { formatZodError } from './validation-pipeline';
+import { formatZodError } from './yaml-validation';
 import { chain, tryCatch, mapResults } from '@shared/core/functional-utils';
 
 /**

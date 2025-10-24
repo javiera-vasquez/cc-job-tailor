@@ -5,10 +5,8 @@ import { pipe } from 'remeda';
 import { match } from 'ts-pattern';
 import { generateApplicationData } from '@shared/data/data-generation';
 import { chain, tryCatch } from '@shared/core/functional-utils';
-import {
-  validateAndSetTailorEnvPipeline,
-  validateYamlFilesAgainstSchemasPipeline,
-} from '@shared/validation/validation-pipeline';
+import { validateAndSetTailorEnvPipeline } from '@shared/validation/tailor-setup-pipeline';
+import { validateYamlFilesAgainstSchemasPipeline } from '@shared/validation/yaml-validation';
 import type { Result, SetContextSuccess } from '@shared/validation/types';
 import { parseCliArgs, validateRequiredArg } from '@shared/cli/cli-args';
 import {

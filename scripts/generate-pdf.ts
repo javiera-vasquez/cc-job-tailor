@@ -6,7 +6,7 @@ import { DOCUMENT_TYPES, PATHS, TAILOR_YAML_FILES_AND_SCHEMAS } from '@shared/co
 import { PathHelpers } from '@shared/core/path-helpers';
 import { validateCompanyPath } from '@shared/validation/company-validation';
 import { loggers } from '@shared/core/logger';
-import { validateYamlFilesAgainstSchemasPipeline } from '@shared/validation/validation-pipeline';
+import { validateYamlFilesAgainstSchemasPipeline } from '@shared/validation/yaml-validation';
 import type {
   YamlFilesAndSchemasToWatch,
   PdfGenerationResult,

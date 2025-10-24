@@ -1,7 +1,7 @@
 import { pipe } from 'remeda';
 import { match } from 'ts-pattern';
 
-import { validateAndSetTailorEnvPipeline } from '@shared/validation/validation-pipeline';
+import { validateAndSetTailorEnvPipeline } from '@shared/validation/tailor-setup-pipeline';
 import type { YamlFilesAndSchemasToWatch } from '@shared/validation/types';
 import { parseCliArgs, validateRequiredArg } from '@shared/cli/cli-args';
 import { loggers } from '@shared/core/logger';
