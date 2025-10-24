@@ -1,6 +1,7 @@
 import type { z } from 'zod';
 import { pipe } from 'remeda';
-import { COMPANY_FILES, PathHelpers, PATHS, type CompanyFileValue } from './config';
+import { COMPANY_FILES, PATHS, type CompanyFileValue } from './config';
+import { PathHelpers } from './path-helpers';
 import { validateCompanyPath, validateFilePathsExists } from './company-validation';
 import { loadYamlFilesFromPath, validateYamlFileAgainstZodSchema } from './yaml-operations';
 import { chain, chainPipe } from './functional-utils';

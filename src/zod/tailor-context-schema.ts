@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { existsSync } from 'fs';
 import { themes } from '../templates';
-import { PathHelpers } from '../../scripts/shared/config';
+import { PathHelpers } from '../../scripts/shared/path-helpers';
 
 // This is the single source of truth for TailorContext
 // All types and YAML generation should derive from this schema

@@ -18,8 +18,8 @@ import {
   TIMEOUTS,
   COMPACT_MODE,
   TAILOR_YAML_FILES_AND_SCHEMAS,
-  PathHelpers,
 } from './shared/config';
+import { PathHelpers } from './shared/path-helpers';
 import { loggers } from './shared/logger';
 import { handlePipelineError, handlePipelineSuccess } from './shared/result-handlers';
 

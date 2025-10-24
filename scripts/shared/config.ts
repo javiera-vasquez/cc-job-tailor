@@ -116,21 +116,6 @@ export const DOCUMENT_TYPES = {
 } as const;
 
 // ============================================================================
-// Default Values
-// ============================================================================
-
-/**
- * Default values used across the system
- */
-export const DEFAULTS = {
-  /** Default document type for PDF generation */
-  DOCUMENT_TYPE: 'both' as const,
-
-  /** Default template/theme name */
-  TEMPLATE: 'modern' as const,
-} as const;
-
-// ============================================================================
 // File Patterns and Regex
 // ============================================================================
 
@@ -186,92 +171,12 @@ export const LIMITS = {
 // ============================================================================
 
 /**
- * Helper function to parse boolean environment variables
- */
-const parseBoolean = (value?: string, defaultValue: boolean = false): boolean => {
-  if (!value) return defaultValue;
-  return value.toLowerCase() === 'true';
-};
-
-/**
  * Compact mode configuration for tailor-server
  * When enabled, reduces log output to minimal essential information
  */
 export const COMPACT_MODE = {
   /** Enable compact logging mode (minimal output) */
-  ENABLED: parseBoolean(process.env.TAILOR_SERVER_COMPACT_LOGS, false),
-} as const;
-
-// ============================================================================
-// Path Helper Functions
-// ============================================================================
-
-/**
- * Utility functions for path manipulation and validation
- */
-export const PathHelpers = {
-  /**
-   * Get project root directory (absolute path)
-   * @example getProjectRoot() → '/Users/javi/Develop/cc-resume-manager'
-   */
-  getProjectRoot: (): string => {
-    return PATHS.PROJECT_ROOT;
-  },
-
-  /**
-   * Get full path to company folder
-   * @example getCompanyPath('tech-corp') → 'resume-data/tailor/tech-corp'
-   */
-  getCompanyPath: (companyName: string): string => {
-    return `${PATHS.TAILOR_BASE}/${companyName}`;
-  },
-
-  /**
-   * Get path to specific company file
-   * @example getCompanyFile('tech-corp', 'METADATA') → 'resume-data/tailor/tech-corp/metadata.yaml'
-   */
-  getCompanyFile: (companyName: string, fileName: keyof typeof COMPANY_FILES): string => {
-    return `${PATHS.TAILOR_BASE}/${companyName}/${COMPANY_FILES[fileName]}`;
-  },
-
-  /**
-   * Extract company name from file path
-   * @example extractCompany('tech-corp/metadata.yaml') → 'tech-corp'
-   * @example extractCompany('invalid') → null
-   */
-  extractCompany: (filePath: string): string | null => {
-    const match = filePath.match(PATTERNS.COMPANY_FROM_PATH);
-    return match?.[1] ?? null;
-  },
-
-  /**
-   * Validate company name format
-   * Company names must be lowercase, alphanumeric with hyphens only
-   * @example isValidCompanyName('tech-corp') → true
-   * @example isValidCompanyName('Tech Corp') → false
-   */
-  isValidCompanyName: (name: string): boolean => {
-    return PATTERNS.VALID_COMPANY_NAME.test(name);
-  },
-
-  /**
-   * Normalize company name to standard format
-   * Converts to lowercase and replaces spaces with hyphens
-   * @example normalizeCompanyName('Tech Corp') → 'tech-corp'
-   * @example normalizeCompanyName('ACME Inc.') → 'acme-inc.'
-   */
-  normalizeCompanyName: (name: string): string => {
-    return name.toLowerCase().replace(/\s+/g, '-');
-  },
-
-  /**
-   * Build expected folder path for a company
-   * Used for validation in schemas
-   * @example getExpectedPath('Tech Corp') → 'resume-data/tailor/tech-corp'
-   */
-  getExpectedPath: (companyName: string): string => {
-    return `${PATHS.TAILOR_BASE}/${PathHelpers.normalizeCompanyName(companyName)}`;
-  },
+  ENABLED: (process.env.TAILOR_SERVER_COMPACT_LOGS || '').toLowerCase() === 'true',
 } as const;
 
 // ============================================================================
@@ -286,47 +191,3 @@ export type CompanyFileValue = (typeof COMPANY_FILES)[keyof typeof COMPANY_FILES
 export type ScriptName = (typeof SCRIPTS)[keyof typeof SCRIPTS];
 export type PathName = (typeof PATHS)[keyof typeof PATHS];
 export type DocumentType = (typeof DOCUMENT_TYPES)[keyof typeof DOCUMENT_TYPES];
-
-// ============================================================================
-// Environment-Specific Overrides (Future Enhancement)
-// ============================================================================
-
-/**
- * Environment variable configuration
- * Can be used to override defaults based on NODE_ENV
- */
-export const getEnvConfig = () => {
-  const env = process.env.NODE_ENV || 'development';
-
-  // Base configuration (current values)
-  const baseConfig = {
-    PATHS,
-    COMPANY_FILES,
-    SCRIPTS,
-    DOCUMENT_TYPES,
-    DEFAULTS,
-    PATTERNS,
-    TIMEOUTS,
-    LIMITS,
-  };
-
-  // Environment-specific overrides
-  const envOverrides: Record<string, Partial<typeof baseConfig>> = {
-    test: {
-      // Test environment could use different paths
-      // PATHS: {
-      //   ...PATHS,
-      //   TAILOR_BASE: 'test/fixtures/tailor',
-      //   CONTEXT_FILE: '.test/tailor-context.yaml',
-      // },
-    },
-    production: {
-      // Production environment overrides
-    },
-  };
-
-  return {
-    ...baseConfig,
-    ...envOverrides[env],
-  };
-};

@@ -17,7 +17,8 @@ import {
   extractMetadata,
   generateAndWriteTailorContext,
 } from '../../scripts/shared/context-operations';
-import { COMPANY_FILES, PathHelpers } from '../../scripts/shared/config';
+import { COMPANY_FILES } from '../../scripts/shared/config';
+import { PathHelpers } from '../../scripts/shared/path-helpers';
 import {
   MetadataSchema,
   JobAnalysisSchema,

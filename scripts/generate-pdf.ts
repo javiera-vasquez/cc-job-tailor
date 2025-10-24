@@ -2,7 +2,8 @@ import path from 'path';
 import { pipe } from 'remeda';
 import { match } from 'ts-pattern';
 import { parseCliArgs, validateRequiredArg } from './shared/cli-args';
-import { DOCUMENT_TYPES, PATHS, TAILOR_YAML_FILES_AND_SCHEMAS, PathHelpers } from './shared/config';
+import { DOCUMENT_TYPES, PATHS, TAILOR_YAML_FILES_AND_SCHEMAS } from './shared/config';
+import { PathHelpers } from './shared/path-helpers';
 import { validateCompanyPath } from './shared/company-validation';
 import { loggers } from './shared/logger';
 import {
