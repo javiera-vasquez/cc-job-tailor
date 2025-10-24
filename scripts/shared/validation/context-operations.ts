@@ -5,8 +5,8 @@ import type {
   Result,
   FileToValidateWithYamlData,
   SetContextSuccess,
-} from '@shared/validation/validation-pipeline';
-import { formatZodError } from '@shared/validation/validation-pipeline';
+} from '@shared/validation/types';
+import { validateSchema } from '@shared/validation/yaml-operations';
 import { tryCatch } from '@shared/core/functional-utils';
 import { MetadataSchema } from '@zod/schemas';
 import { TailorContextSchema, type TailorContext } from '@zod/tailor-context-schema';
@@ -43,10 +43,15 @@ export const generateContextYaml = (
     last_updated: timestamp,
   };
 
-  const validation = TailorContextSchema.safeParse(contextData);
+  // Use standardized validation utility
+  const validation = validateSchema(
+    TailorContextSchema,
+    contextData,
+    'Tailor context',
+    'tailor-context.yaml',
+  );
   if (!validation.success) {
-    const errorDetails = formatZodError(validation.error);
-    throw new Error(`Context data validation failed:\n${errorDetails}`);
+    throw new Error(`${validation.error}\n${validation.details || ''}`);
   }
 
   const header = [

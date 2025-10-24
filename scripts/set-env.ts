@@ -1,10 +1,8 @@
 import { pipe } from 'remeda';
 import { match } from 'ts-pattern';
 
-import {
-  validateAndSetTailorEnvPipeline,
-  type YamlFilesAndSchemasToWatch,
-} from '@shared/validation/validation-pipeline';
+import { validateAndSetTailorEnvPipeline } from '@shared/validation/validation-pipeline';
+import type { YamlFilesAndSchemasToWatch } from '@shared/validation/types';
 import { parseCliArgs, validateRequiredArg } from '@shared/cli/cli-args';
 import { loggers } from '@shared/core/logger';
 import { TAILOR_YAML_FILES_AND_SCHEMAS } from '@shared/core/config';

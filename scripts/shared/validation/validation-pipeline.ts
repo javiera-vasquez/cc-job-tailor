@@ -1,75 +1,20 @@
 import type { z } from 'zod';
 import { pipe } from 'remeda';
-import { COMPANY_FILES, PATHS, type CompanyFileValue } from '@shared/core/config';
+import { COMPANY_FILES, PATHS } from '@shared/core/config';
 import { PathHelpers } from '@shared/core/path-helpers';
 import { validateCompanyPath, validateFilePathsExists } from './company-validation';
 import { loadYamlFilesFromPath, validateYamlFileAgainstZodSchema } from './yaml-operations';
 import { chain, chainPipe } from '@shared/core/functional-utils';
-
 import { generateApplicationData } from '@shared/data/data-generation';
-import { extractMetadata, generateAndWriteTailorContext } from '@shared/data/context-operations';
+import { extractMetadata, generateAndWriteTailorContext } from './context-operations';
 
-// Result type for functional error handling
-export type Result<
-  T,
-  E = { error: string; details?: string; originalError?: unknown; filePath?: string },
-> = { success: true; data: T } | ({ success: false } & E);
-
-/**
- * File metadata for validation, including schema and optional wrapper extraction
- */
-export interface FileToValidate {
-  /** YAML filename (e.g., 'metadata.yaml') */
-  fileName: CompanyFileValue;
-  /** Absolute path to the YAML file */
-  path: string;
-  /** Zod schema to validate the file data against */
-  type: z.ZodSchema<unknown>;
-  /** Key to extract nested data from YAML wrapper, or null if file is not wrapped */
-  wrapperKey: string | null;
-}
-
-/** File metadata with loaded YAML data ready for validation */
-export type FileToValidateWithYamlData = FileToValidate & { data: unknown };
-
-/** Configuration for YAML files and schemas watched by the tailor server */
-export type YamlFilesAndSchemasToWatch = Pick<
-  FileToValidate,
-  'fileName' | 'type' | 'wrapperKey'
-> & { key: keyof typeof COMPANY_FILES };
-
-/**
- * Generic success result type used across all pipelines
- */
-export interface SuccessResult<T> {
-  success: true;
-  data: T;
-}
-
-/**
- * Generic error result type used across all pipelines
- */
-export interface ErrorResult {
-  success: false;
-  error: string;
-  details?: string;
-  originalError?: unknown;
-  filePath?: string;
-}
-
-export type SetContextSuccess = SuccessResult<{
-  company: string;
-  path: string;
-  availableFiles: string[];
-  position: string;
-  primaryFocus: string;
-  timestamp: string;
-}>;
-
-export type PdfGenerationSuccess = SuccessResult<{ files: readonly string[]; theme: string }>;
-
-export type SetContextResult = SetContextSuccess | ErrorResult;
-export type PdfGenerationResult = PdfGenerationSuccess | ErrorResult;
+// Import centralized types
+import type {
+  Result,
+  FileToValidateWithYamlData,
+  YamlFilesAndSchemasToWatch,
+  SetContextResult,
+} from './types';
 
 /**
  * Executes the complete tailor context setup pipeline using functional composition.

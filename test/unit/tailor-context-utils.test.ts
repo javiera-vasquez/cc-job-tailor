@@ -4,7 +4,7 @@ import { join } from 'path';
 import { load, dump } from 'js-yaml';
 import { pipe } from 'remeda';
 import { chain } from '@shared/core/functional-utils';
-import type { FileToValidate } from '@shared/validation/validation-pipeline';
+import type { FileToValidate } from '@shared/validation/types';
 import {
   validateCompanyPath,
   validateFilePathsExists,
@@ -13,7 +13,10 @@ import {
   loadYamlFilesFromPath,
   validateYamlFileAgainstZodSchema,
 } from '@shared/validation/yaml-operations';
-import { extractMetadata, generateAndWriteTailorContext } from '@shared/data/context-operations';
+import {
+  extractMetadata,
+  generateAndWriteTailorContext,
+} from '@shared/validation/context-operations';
 import { COMPANY_FILES } from '@shared/core/config';
 import { PathHelpers } from '@shared/core/path-helpers';
 import {

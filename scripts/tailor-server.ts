@@ -8,9 +8,8 @@ import { chain, tryCatch } from '@shared/core/functional-utils';
 import {
   validateAndSetTailorEnvPipeline,
   validateYamlFilesAgainstSchemasPipeline,
-  type Result,
-  type SetContextSuccess,
 } from '@shared/validation/validation-pipeline';
+import type { Result, SetContextSuccess } from '@shared/validation/types';
 import { parseCliArgs, validateRequiredArg } from '@shared/cli/cli-args';
 import {
   PATTERNS,

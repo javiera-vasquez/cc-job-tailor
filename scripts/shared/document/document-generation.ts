@@ -6,7 +6,7 @@ import { themes } from '@templates/index';
 import { DOCUMENT_TYPES } from '@shared/core/config';
 import { loggers } from '@shared/core/logger';
 import { tryCatchAsync } from '@shared/core/functional-utils';
-import type { SuccessResult, ErrorResult } from '@shared/validation/validation-pipeline';
+import type { SuccessResult, ErrorResult } from '@shared/validation/types';
 
 export interface GenerateDocumentParams {
   docTypes: (typeof DOCUMENT_TYPES.RESUME | typeof DOCUMENT_TYPES.COVER_LETTER)[];

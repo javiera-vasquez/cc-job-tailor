@@ -1,6 +1,6 @@
 import path from 'path';
 import { CoverLetterSchema, JobAnalysisSchema, MetadataSchema, ResumeSchema } from '@/zod/schemas';
-import type { YamlFilesAndSchemasToWatch } from '@shared/validation/validation-pipeline';
+import type { YamlFilesAndSchemasToWatch } from '@shared/validation/types';
 
 /**
  * Centralized configuration for tailor system

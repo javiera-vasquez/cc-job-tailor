@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const DocumentTypeSchema = z.enum(['resume', 'cover-letter']);
 
 export const ThemeComponentsSchema = z.object({
-  resume: z.any(), 
+  resume: z.any(),
   coverLetter: z.any(),
 });
 

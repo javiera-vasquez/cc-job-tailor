@@ -1,8 +1,6 @@
 import { z } from 'zod';
 import { match } from 'ts-pattern';
-import type { Result } from '@shared/validation/validation-pipeline';
-import type { SetContextSuccess } from '@shared/validation/validation-pipeline';
-import type { ValidationOnlySuccess } from '@shared/validation/validation-only-pipeline';
+import type { Result, SetContextSuccess, ValidationOnlySuccess } from '@shared/validation/types';
 import type { Logger } from '@shared/core/logger';
 
 /**

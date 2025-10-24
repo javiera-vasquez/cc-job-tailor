@@ -1,10 +1,7 @@
 import { pipe } from 'remeda';
 import { match } from 'ts-pattern';
-import {
-  validateTailorFilesPipeline,
-  type ValidationType,
-  type PathResolutionInput,
-} from '@shared/validation/validation-only-pipeline';
+import { validateTailorFilesPipeline } from '@shared/validation/validation-only-pipeline';
+import type { ValidationType, PathResolutionInput } from '@shared/validation/types';
 import { loggers } from '@shared/core/logger';
 import { parseCliArgs } from '@shared/cli/cli-args';
 import { handlePipelineError, handleValidationSuccess } from '@shared/handlers/result-handlers';

@@ -1,53 +1,18 @@
 import { pipe } from 'remeda';
 import { existsSync } from 'fs';
-import type { Result, YamlFilesAndSchemasToWatch } from './validation-pipeline';
+import type {
+  Result,
+  YamlFilesAndSchemasToWatch,
+  ValidationType,
+  PathResolutionInput,
+  ResolvedPath,
+  ValidationOnlySuccess,
+  ValidationOnlyResult,
+} from './types';
 import { validateYamlFilesAgainstSchemasPipeline } from './validation-pipeline';
 import { TAILOR_YAML_FILES_AND_SCHEMAS, COMPANY_FILES } from '@shared/core/config';
 import { PathHelpers } from '@shared/core/path-helpers';
 import { chain, tryCatch } from '@shared/core/functional-utils';
-
-// ============================================================================
-// Types
-// ============================================================================
-
-/**
- * Validation type options
- */
-export type ValidationType = 'all' | 'metadata' | 'resume' | 'job-analysis' | 'cover-letter';
-
-/**
- * Path resolution input from CLI args
- */
-export interface PathResolutionInput {
-  companyName?: string;
-  customPath?: string;
-}
-
-/**
- * Resolved path with metadata
- */
-interface ResolvedPath {
-  path: string;
-  companyName: string; // Either from -C flag or extracted from path
-}
-
-/**
- * Success result for validation-only pipeline
- */
-export interface ValidationOnlySuccess {
-  success: true;
-  data: {
-    path: string;
-    validatedFiles: Array<{
-      fileName: string;
-      displayName: string;
-    }>;
-  };
-}
-
-export type ValidationOnlyResult =
-  | ValidationOnlySuccess
-  | Extract<Result<unknown>, { success: false }>;
 
 // ============================================================================
 // Schema Selection

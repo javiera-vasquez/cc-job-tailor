@@ -1,5 +1,5 @@
 import { existsSync, readdirSync } from 'fs';
-import type { Result, FileToValidate } from './validation-pipeline';
+import type { Result, FileToValidate } from './types';
 import { PATHS } from '@shared/core/config';
 
 /**
@@ -7,9 +7,11 @@ import { PATHS } from '@shared/core/config';
  *
  * Reads directory contents and filters for directories only.
  * Returns empty array gracefully if path doesn't exist or on read error.
+ * Private helper function used only by validateCompanyPath.
  *
  * @param {string} base - Base path containing company directories
  * @returns {string[]} Array of company directory names (empty array if path missing or error)
+ * @private
  */
 const getAvailableCompanies = (base: string): string[] => {
   if (!existsSync(base)) return [];

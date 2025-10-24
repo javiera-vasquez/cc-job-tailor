@@ -6,12 +6,12 @@ import { DOCUMENT_TYPES, PATHS, TAILOR_YAML_FILES_AND_SCHEMAS } from '@shared/co
 import { PathHelpers } from '@shared/core/path-helpers';
 import { validateCompanyPath } from '@shared/validation/company-validation';
 import { loggers } from '@shared/core/logger';
-import {
-  validateYamlFilesAgainstSchemasPipeline,
-  type YamlFilesAndSchemasToWatch,
-  type PdfGenerationResult,
-  type SuccessResult,
-} from '@shared/validation/validation-pipeline';
+import { validateYamlFilesAgainstSchemasPipeline } from '@shared/validation/validation-pipeline';
+import type {
+  YamlFilesAndSchemasToWatch,
+  PdfGenerationResult,
+  SuccessResult,
+} from '@shared/validation/types';
 import { generateApplicationDataInMemory } from '@shared/data/data-generation';
 import { handlePipelineError } from '@shared/handlers/result-handlers';
 import { chain, tap } from '@shared/core/functional-utils';
