@@ -1,7 +1,6 @@
 import { pipe } from 'remeda';
 import type { Result, FileToValidateWithYamlData } from '@shared/validation/validation-pipeline';
 import { chain, chainPipe, tryCatch } from '@shared/core/functional-utils';
-import { validateApplicationData } from '@zod/validation';
 import {
   transformFilesToApplicationData,
   generateTypeScriptModule,
@@ -9,6 +8,7 @@ import {
 import type { ApplicationData } from '@types';
 import { loggers } from '@shared/core/logger';
 import { PATHS } from '@shared/core/config';
+import { ApplicationDataSchema } from '@/zod/schemas';
 
 /**
  * Transforms validated YAML files to ApplicationData using fileName mapping.
@@ -26,6 +26,9 @@ const transformToApplicationData = (
   return transformFilesToApplicationData(files);
 };
 
+export function validateApplicationData(data: unknown): ApplicationData {
+  return ApplicationDataSchema.parse(data);
+}
 /**
  * Validates ApplicationData against the complete Zod schema.
  *
