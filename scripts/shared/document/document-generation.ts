@@ -3,10 +3,10 @@ import { renderToFile } from '@react-pdf/renderer';
 import { mkdir } from 'fs/promises';
 import path from 'path';
 import { themes } from '../../../src/templates';
-import { DOCUMENT_TYPES } from '../core/config';
-import { loggers } from '../core/logger';
-import { tryCatchAsync } from '../core/functional-utils';
-import type { SuccessResult, ErrorResult } from '../validation/validation-pipeline';
+import { DOCUMENT_TYPES } from '@shared/core/config';
+import { loggers } from '@shared/core/logger';
+import { tryCatchAsync } from '@shared/core/functional-utils';
+import type { SuccessResult, ErrorResult } from '@shared/validation/validation-pipeline';
 
 export interface GenerateDocumentParams {
   docTypes: (typeof DOCUMENT_TYPES.RESUME | typeof DOCUMENT_TYPES.COVER_LETTER)[];

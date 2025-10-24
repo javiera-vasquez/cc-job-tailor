@@ -1,14 +1,14 @@
 import { pipe } from 'remeda';
-import type { Result, FileToValidateWithYamlData } from '../validation/validation-pipeline';
-import { chain, chainPipe, tryCatch } from '../core/functional-utils';
+import type { Result, FileToValidateWithYamlData } from '@shared/validation/validation-pipeline';
+import { chain, chainPipe, tryCatch } from '@shared/core/functional-utils';
 import { validateApplicationData } from '../../../src/zod/validation';
 import {
   transformFilesToApplicationData,
   generateTypeScriptModule,
 } from './application-data-generator';
 import type { ApplicationData } from '../../../src/types';
-import { loggers } from '../core/logger';
-import { PATHS } from '../core/config';
+import { loggers } from '@shared/core/logger';
+import { PATHS } from '@shared/core/config';
 
 /**
  * Transforms validated YAML files to ApplicationData using fileName mapping.

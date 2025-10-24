@@ -4,7 +4,7 @@ import { pipe } from 'remeda';
 import type { z } from 'zod';
 import type { Result, FileToValidate, FileToValidateWithYamlData } from './validation-pipeline';
 import { formatZodError } from './validation-pipeline';
-import { chain, tryCatch, mapResults } from '../core/functional-utils';
+import { chain, tryCatch, mapResults } from '@shared/core/functional-utils';
 
 /**
  * Reads and parses a YAML file from the filesystem.

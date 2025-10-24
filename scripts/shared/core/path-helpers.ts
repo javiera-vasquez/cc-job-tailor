@@ -1,4 +1,4 @@
-import { COMPANY_FILES, PATHS, PATTERNS } from './config';
+import { COMPANY_FILES, PATHS, PATTERNS } from '@shared/core/config';
 
 /**
  * Utility functions for path manipulation and validation
