@@ -1,11 +1,15 @@
 import { writeFileSync } from 'fs';
 import yaml from 'js-yaml';
 import type { z } from 'zod';
-import type { Result, FileToValidateWithYamlData, SetContextSuccess } from '@shared/validation/validation-pipeline';
+import type {
+  Result,
+  FileToValidateWithYamlData,
+  SetContextSuccess,
+} from '@shared/validation/validation-pipeline';
 import { formatZodError } from '@shared/validation/validation-pipeline';
 import { tryCatch } from '@shared/core/functional-utils';
-import { MetadataSchema } from '../../../src/zod/schemas';
-import { TailorContextSchema, type TailorContext } from '../../../src/zod/tailor-context-schema';
+import { MetadataSchema } from '@zod/schemas';
+import { TailorContextSchema, type TailorContext } from '@zod/tailor-context-schema';
 import type { CompanyFileValue } from '@shared/core/config';
 
 /**

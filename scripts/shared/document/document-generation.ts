@@ -2,7 +2,7 @@ import React from 'react';
 import { renderToFile } from '@react-pdf/renderer';
 import { mkdir } from 'fs/promises';
 import path from 'path';
-import { themes } from '../../../src/templates';
+import { themes } from '@templates/index';
 import { DOCUMENT_TYPES } from '@shared/core/config';
 import { loggers } from '@shared/core/logger';
 import { tryCatchAsync } from '@shared/core/functional-utils';

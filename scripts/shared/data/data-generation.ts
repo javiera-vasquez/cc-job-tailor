@@ -1,12 +1,12 @@
 import { pipe } from 'remeda';
 import type { Result, FileToValidateWithYamlData } from '@shared/validation/validation-pipeline';
 import { chain, chainPipe, tryCatch } from '@shared/core/functional-utils';
-import { validateApplicationData } from '../../../src/zod/validation';
+import { validateApplicationData } from '@zod/validation';
 import {
   transformFilesToApplicationData,
   generateTypeScriptModule,
 } from './application-data-generator';
-import type { ApplicationData } from '../../../src/types';
+import type { ApplicationData } from '@types';
 import { loggers } from '@shared/core/logger';
 import { PATHS } from '@shared/core/config';
 
