@@ -150,7 +150,7 @@ const validateAndGenerateDataPipeline = (
     (r) =>
       chain(r, () => validateYamlFilesAgainstSchemasPipeline(companyName, yamlFilesAndSchemas)),
     (r) => chain(r, generateApplicationDataInMemory),
-    (r) => tap(r, () => loggers.pdf.success('✓ Data validated & generated')),
+    (r) => tap(r, () => loggers.pdf.success('Data validated & generated')),
   );
 };
 /**
@@ -229,7 +229,7 @@ const generatePdfDocuments =
 const onSuccess = (result: { files: readonly string[]; theme: string }): void => {
   const projectRoot = PathHelpers.getProjectRoot();
 
-  loggers.pdf.success(`✅ PDFs created (${result.theme} theme)`);
+  loggers.pdf.success(`PDFs created (${result.theme} theme)`);
   result.files.forEach((file) => {
     const relativePath = file.replace(projectRoot + '/', '');
     loggers.pdf.info(`→ ${relativePath}`);
