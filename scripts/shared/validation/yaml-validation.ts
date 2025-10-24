@@ -5,11 +5,7 @@ import { loadYamlFilesFromPath, validateYamlFileAgainstZodSchema } from './yaml-
 import { chainPipe } from '@shared/core/functional-utils';
 
 // Import centralized types
-import type {
-  Result,
-  FileToValidateWithYamlData,
-  YamlFilesAndSchemasToWatch,
-} from './types';
+import type { Result, FileToValidateWithYamlData, YamlFilesAndSchemasToWatch } from './types';
 
 /**
  * Validates YAML files against their associated Zod schemas using functional pipeline.
