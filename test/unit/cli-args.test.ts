@@ -82,7 +82,7 @@ describe('CLI Arguments', () => {
 
     test('returns empty object when no arguments', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (Bun as any).argv =['bun', 'script.ts'];
+      (Bun as any).argv = ['bun', 'script.ts'];
       const result = parseCompanyArgs();
 
       expect(result).toEqual({ company: undefined });
@@ -92,7 +92,7 @@ describe('CLI Arguments', () => {
   describe('parsePdfArgs', () => {
     test('parses both -C and -D flags', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (Bun as any).argv =['bun', 'script.ts', '-C', 'test-company', '-D', 'resume'];
+      (Bun as any).argv = ['bun', 'script.ts', '-C', 'test-company', '-D', 'resume'];
       const result = parsePdfArgs();
 
       expect(result.company).toBe('test-company');
@@ -101,7 +101,7 @@ describe('CLI Arguments', () => {
 
     test('defaults document type to "both" when -D not provided', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (Bun as any).argv =['bun', 'script.ts', '-C', 'test-company'];
+      (Bun as any).argv = ['bun', 'script.ts', '-C', 'test-company'];
       const result = parsePdfArgs();
 
       expect(result.company).toBe('test-company');
@@ -110,7 +110,7 @@ describe('CLI Arguments', () => {
 
     test('supports "resume" document type', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (Bun as any).argv =['bun', 'script.ts', '-C', 'test-company', '-D', 'resume'];
+      (Bun as any).argv = ['bun', 'script.ts', '-C', 'test-company', '-D', 'resume'];
       const result = parsePdfArgs();
 
       expect(result.document).toBe('resume');
@@ -118,7 +118,7 @@ describe('CLI Arguments', () => {
 
     test('supports "cover-letter" document type', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (Bun as any).argv =['bun', 'script.ts', '-C', 'test-company', '-D', 'cover-letter'];
+      (Bun as any).argv = ['bun', 'script.ts', '-C', 'test-company', '-D', 'cover-letter'];
       const result = parsePdfArgs();
 
       expect(result.document).toBe('cover-letter');
@@ -126,7 +126,7 @@ describe('CLI Arguments', () => {
 
     test('supports "both" document type explicitly', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (Bun as any).argv =['bun', 'script.ts', '-C', 'test-company', '-D', 'both'];
+      (Bun as any).argv = ['bun', 'script.ts', '-C', 'test-company', '-D', 'both'];
       const result = parsePdfArgs();
 
       expect(result.document).toBe('both');
@@ -134,7 +134,7 @@ describe('CLI Arguments', () => {
 
     test('returns undefined for company when not provided', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (Bun as any).argv =['bun', 'script.ts', '-D', 'resume'];
+      (Bun as any).argv = ['bun', 'script.ts', '-D', 'resume'];
       const result = parsePdfArgs();
 
       expect(result.company).toBeUndefined();
@@ -143,7 +143,7 @@ describe('CLI Arguments', () => {
 
     test('handles long form flags', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (Bun as any).argv =['bun', 'script.ts', '--company', 'test-company', '--document', 'resume'];
+      (Bun as any).argv = ['bun', 'script.ts', '--company', 'test-company', '--document', 'resume'];
       const result = parsePdfArgs();
 
       expect(result.company).toBe('test-company');
@@ -165,7 +165,7 @@ describe('CLI Arguments', () => {
       };
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (Bun as any).argv =['bun', 'script.ts', '-C', 'test-company'];
+      (Bun as any).argv = ['bun', 'script.ts', '-C', 'test-company'];
       const logger = new Logger({ context: 'test' });
       const result = parseCliArgs(config, logger, 'Usage: test');
 
@@ -186,7 +186,7 @@ describe('CLI Arguments', () => {
       };
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (Bun as any).argv =['bun', 'script.ts', '-t', 'value'];
+      (Bun as any).argv = ['bun', 'script.ts', '-t', 'value'];
       const logger = new Logger({ context: 'test' });
 
       // Verify function executes with proper parameters
