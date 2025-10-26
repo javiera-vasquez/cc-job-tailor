@@ -4,7 +4,7 @@ import {
   ThemeComponentsSchema,
   TailorThemeSchema,
   ThemeRegistrySchema,
-} from '../../src/zod/schemas';
+} from '../../src/zod/tailor-context-schema';
 import type { TailorThemeProps, DocumentType } from '../../src/types';
 import React from 'react';
 

@@ -11,8 +11,8 @@ import {
   JobDetailsSchema,
   MetadataSchema as MetadataSchemaZod,
   ApplicationDataSchema,
-  TemplateThemeEnum,
 } from './zod/schemas';
+import { TemplateThemeEnum } from './zod/tailor-context-schema';
 import type { TailorContext as TailorContextType } from './zod/tailor-context-schema';
 
 // Inferred types from Zod schemas

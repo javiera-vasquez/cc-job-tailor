@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { PDFViewer } from '@react-pdf/renderer';
 import { Card } from '@ui/components/ui/card';
 
@@ -12,22 +12,24 @@ import applicationData from '../data/application';
 
 import '@ui/styles/globals.css';
 
-const SIDEBAR_WIDGETS = getSidebarWidgets(applicationData);
-
 const App = () => {
   const [activeDocument, setActiveDocument] = useState<'resume' | 'cover-letter'>('resume');
   // Initialize theme from metadata.active_template, fallback to 'modern'
   const [activeTheme, setActiveTheme] = useState<ThemeName>(
-    (applicationData.metadata?.active_template as ThemeName) || 'modern',
+    (applicationData.metadata.active_template as ThemeName) || 'modern',
+  );
+  const SIDEBAR_WIDGETS = useMemo(
+    () => getSidebarWidgets(applicationData.metadata, applicationData.job_analysis),
+    [applicationData.metadata, applicationData.job_analysis],
   );
 
-  // Sync activeTheme with applicationData.metadata?.active_template
+  // Sync activeTheme with applicationData.metadata.active_template
   useEffect(() => {
-    const metadataTheme = applicationData.metadata?.active_template as ThemeName;
+    const metadataTheme = applicationData.metadata.active_template as ThemeName;
     if (metadataTheme && metadataTheme !== activeTheme) {
       setActiveTheme(metadataTheme);
     }
-  }, [applicationData.metadata?.active_template]);
+  }, [applicationData.metadata.active_template]);
 
   const theme = themes[activeTheme];
   const ResumeComponent = theme?.components.resume;
@@ -52,7 +54,7 @@ const App = () => {
                 showToolbar={true}
                 key={`${Date.now()}-${activeTheme}-${activeDocument}`}
               >
-                {ResumeComponent && <ResumeComponent data={applicationData.resume ?? undefined} />}
+                {ResumeComponent && <ResumeComponent data={applicationData.resume} />}
               </PDFViewer>
             ) : (
               <PDFViewer
@@ -61,7 +63,7 @@ const App = () => {
                 key={`${Date.now()}-${activeTheme}-${activeDocument}`}
               >
                 {CoverLetterComponent && (
-                  <CoverLetterComponent data={applicationData.cover_letter ?? undefined} />
+                  <CoverLetterComponent data={applicationData.cover_letter} />
                 )}
               </PDFViewer>
             )}

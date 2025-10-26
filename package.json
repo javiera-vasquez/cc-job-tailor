@@ -23,11 +23,10 @@
   "private": false,
   "license": "CC-BY-NC-4.0",
   "scripts": {
-    "dev": "bun run tailor-server",
-    "tailor-server": "bun scripts/tailor-server.ts",
     "dev:vite": "vite",
     "set-env": "bun scripts/set-env.ts",
     "generate-pdf": "bun scripts/generate-pdf.ts",
+    "tailor-server": "bun scripts/tailor-server.ts",
     "validate:all": "bun scripts/validate-schema.ts all",
     "validate:metadata": "bun scripts/validate-schema.ts metadata",
     "validate:resume": "bun scripts/validate-schema.ts resume",

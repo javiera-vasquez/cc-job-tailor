@@ -1,20 +1,23 @@
-import type { ApplicationData } from '@/types';
+import type { JobAnalysisSchema, MetadataSchema } from '@/types';
 import { WidgetType, type WidgetConfig } from '@ui/components/widgets/types';
 
-export const getSidebarWidgets = (data: ApplicationData): WidgetConfig[] => [
+export const getSidebarWidgets = (
+  metadata: MetadataSchema,
+  jobAnalysis: JobAnalysisSchema,
+): WidgetConfig[] => [
   {
     type: WidgetType.HEADER,
     title: 'Company',
     data: {
-      primary: data.metadata?.company || '',
-      secondary: data.metadata?.position || '',
+      primary: metadata.company || '',
+      secondary: metadata.position || '',
     },
   },
   {
     type: WidgetType.TEXT,
     title: 'Summary',
     data: {
-      content: data.metadata?.job_summary || '',
+      content: metadata.job_summary || '',
     },
   },
   {
@@ -22,13 +25,13 @@ export const getSidebarWidgets = (data: ApplicationData): WidgetConfig[] => [
     title: 'Details',
     data: {
       fields: [
-        { label: 'Location', value: data.metadata?.job_details.location || '' },
+        { label: 'Location', value: metadata.job_details.location || '' },
         {
           label: 'Experience Level',
-          value: data.metadata?.job_details.experience_level || '',
+          value: metadata.job_details.experience_level || '',
         },
-        { label: 'Team Context', value: data.metadata?.job_details.team_context || '' },
-        { label: 'User Scale', value: data.metadata?.job_details.user_scale || '' },
+        { label: 'Team Context', value: metadata.job_details.team_context || '' },
+        { label: 'User Scale', value: metadata.job_details.user_scale || '' },
       ],
     },
   },
@@ -36,49 +39,49 @@ export const getSidebarWidgets = (data: ApplicationData): WidgetConfig[] => [
     type: WidgetType.LIST,
     title: 'Primary Responsibilities',
     data: {
-      items: data.job_analysis?.responsibilities.primary || [],
+      items: jobAnalysis.responsibilities.primary || [],
     },
   },
   {
     type: WidgetType.LIST,
     title: 'Secondary Responsibilities',
     data: {
-      items: data.job_analysis?.responsibilities.secondary || [],
+      items: jobAnalysis.responsibilities.secondary || [],
     },
   },
   {
     type: WidgetType.BADGE_GROUP,
     title: 'Must Have Skills',
     data: {
-      badges: data.job_analysis?.requirements.must_have_skills || [],
+      badges: jobAnalysis.requirements.must_have_skills || [],
     },
   },
   {
     type: WidgetType.BADGE_GROUP,
     title: 'Nice to Have',
     data: {
-      badges: data.job_analysis?.requirements.nice_to_have_skills || [],
+      badges: jobAnalysis.requirements.nice_to_have_skills || [],
     },
   },
   {
     type: WidgetType.BADGE_GROUP,
     title: 'Soft Skills',
     data: {
-      badges: data.job_analysis?.requirements.soft_skills.map((skill) => ({ skill })) || [],
+      badges: jobAnalysis.requirements.soft_skills.map((skill) => ({ skill })) || [],
     },
   },
   {
     type: WidgetType.LIST,
     title: 'Key Role Context',
     data: {
-      items: data.job_analysis?.role_context.key_points || [],
+      items: jobAnalysis.role_context.key_points || [],
     },
   },
   {
     type: WidgetType.LIST,
     title: 'Strong Matches',
     data: {
-      items: data.job_analysis?.candidate_alignment.strong_matches || [],
+      items: jobAnalysis.candidate_alignment.strong_matches || [],
     },
   },
   {
@@ -89,10 +92,10 @@ export const getSidebarWidgets = (data: ApplicationData): WidgetConfig[] => [
       fields: [
         {
           label: 'Posting Date',
-          value: data.job_analysis?.application_info.posting_date || '',
+          value: jobAnalysis.application_info.posting_date || '',
         },
-        { label: 'Deadline', value: data.job_analysis?.application_info.deadline || '' },
-        { label: 'Employment Type', value: data.job_analysis?.employment_type || '' },
+        { label: 'Deadline', value: jobAnalysis.application_info.deadline || '' },
+        { label: 'Employment Type', value: jobAnalysis.employment_type || '' },
       ],
     },
   },

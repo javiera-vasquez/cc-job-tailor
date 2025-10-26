@@ -26,35 +26,6 @@ const fileNameToDataKey = (fileName: CompanyFileValue): keyof ApplicationData =>
 };
 
 /**
- * Transforms validated YAML files into ApplicationData structure.
- *
- * Maps each file's fileName to ApplicationData property using fileNameToDataKey.
- * fileName 'metadata.yaml' → 'metadata', 'resume.yaml' → 'resume', etc.
- * Pure function - no side effects.
- *
- * @param {FileToValidateWithYamlData[]} files - Array of validated files with loaded YAML data
- * @returns {Result<ApplicationData>} Result containing ApplicationData object
- *
- * @example
- * transformFilesToApplicationData([
- *   { fileName: 'metadata.yaml', data: {...}, ... },
- *   { fileName: 'resume.yaml', data: {...}, ... },
- * ])
- * // Returns: { success: true, data: { metadata: {...}, resume: {...}, ... } }
- */
-const transformFilesToApplicationData = (
-  files: FileToValidateWithYamlData[],
-): Result<ApplicationData> => {
-  // Build ApplicationData from files using fileName as the mapping key
-  const applicationData = files.reduce((acc, file) => {
-    const key = fileNameToDataKey(file.fileName);
-    return { ...acc, [key]: file.data };
-  }, {} as ApplicationData);
-
-  return { success: true, data: applicationData };
-};
-
-/**
  * Generates TypeScript module content with ApplicationData.
  *
  * Creates a valid TypeScript module string with imports, typed export, and metadata comments.
@@ -96,7 +67,13 @@ const transformToApplicationData = (
   files: FileToValidateWithYamlData[],
 ): Result<ApplicationData> => {
   loggers.validation.debug('Generating application data module');
-  return transformFilesToApplicationData(files);
+  // Build ApplicationData from files using fileName as the mapping key
+  const applicationData = files.reduce((acc, file) => {
+    const key = fileNameToDataKey(file.fileName);
+    return { ...acc, [key]: file.data };
+  }, {} as ApplicationData);
+
+  return { success: true, data: applicationData };
 };
 
 /**
@@ -104,8 +81,11 @@ const transformToApplicationData = (
  * @param {unknown} data - Data to validate
  * @returns {ApplicationData} Validated application data
  * @throws {z.ZodError} If validation fails
+ * TODO: IMPROVE -> instead of validate against the entire schema we need to:
+ *  - Only take schemas required for PDF conversion: resume, cv,
+ *  - Then we need to define a universal template language => metadata? || custom template schema?
  */
-export function validateApplicationData(data: unknown): ApplicationData {
+export function validateApplicationData(data: ApplicationData): ApplicationData {
   return ApplicationDataSchema.parse(data);
 }
 /**

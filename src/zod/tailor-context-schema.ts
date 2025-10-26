@@ -46,3 +46,23 @@ export const TailorContextSchema = z.object({
 });
 
 export type TailorContext = z.infer<typeof TailorContextSchema>;
+
+export const DocumentTypeSchema = z.enum(['resume', 'cover-letter']);
+
+export const ThemeComponentsSchema = z.object({
+  resume: z.any(),
+  coverLetter: z.any(),
+});
+
+export const TailorThemeSchema = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  description: z.string().min(1),
+  documents: z.array(DocumentTypeSchema).readonly(),
+  components: ThemeComponentsSchema,
+  initialize: z.function().optional(),
+});
+
+export const ThemeRegistrySchema = z.record(z.string(), TailorThemeSchema);
+
+export const TemplateThemeEnum = z.enum(['modern', 'classic']).default('modern');

@@ -1,24 +1,5 @@
 import { z } from 'zod';
-
-export const DocumentTypeSchema = z.enum(['resume', 'cover-letter']);
-
-export const ThemeComponentsSchema = z.object({
-  resume: z.any(),
-  coverLetter: z.any(),
-});
-
-export const TailorThemeSchema = z.object({
-  id: z.string().min(1),
-  name: z.string().min(1),
-  description: z.string().min(1),
-  documents: z.array(DocumentTypeSchema).readonly(),
-  components: ThemeComponentsSchema,
-  initialize: z.function().optional(),
-});
-
-export const ThemeRegistrySchema = z.record(z.string(), TailorThemeSchema);
-
-export const TemplateThemeEnum = z.enum(['modern', 'classic']).default('modern');
+import { TemplateThemeEnum } from './tailor-context-schema';
 
 export const ExpertiseSchema = z.object({
   resume_title: z.string().min(1),
@@ -225,8 +206,8 @@ export const MetadataSchema = z.object({
 
 // Main application data schema
 export const ApplicationDataSchema = z.object({
-  metadata: MetadataSchema.nullable(),
-  resume: ResumeSchema.nullable(),
-  job_analysis: JobAnalysisSchema.nullable(),
-  cover_letter: CoverLetterSchema.nullable(),
+  metadata: MetadataSchema,
+  resume: ResumeSchema,
+  job_analysis: JobAnalysisSchema,
+  cover_letter: CoverLetterSchema,
 });

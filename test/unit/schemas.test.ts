@@ -32,7 +32,7 @@ describe('Zod Schema Validation', () => {
       expect(result.success).toBe(true);
     });
 
-    test('accepts null values for all optional sections', () => {
+    test('rejects null values for all sections', () => {
       const dataWithNulls = {
         metadata: null,
         resume: null,
@@ -41,7 +41,7 @@ describe('Zod Schema Validation', () => {
       };
 
       const result = ApplicationDataSchema.safeParse(dataWithNulls);
-      expect(result.success).toBe(true);
+      expect(result.success).toBe(false);
     });
 
     test('rejects when missing required top-level properties', () => {

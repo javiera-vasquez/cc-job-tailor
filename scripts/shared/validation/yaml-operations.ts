@@ -115,5 +115,5 @@ export const validateYamlFileAgainstZodSchema = (
           data: { ...file, data: validatedData },
         })),
     ),
-  );
+    );
 };
