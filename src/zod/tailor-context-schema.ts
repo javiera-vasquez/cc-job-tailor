@@ -22,27 +22,6 @@ export const TailorContextSchema = z.object({
     user_scale: z.string(),
   }),
   last_updated: z.string().datetime('Must be valid ISO datetime'),
-
-  // Optional display cache (deprecated - fields moved to top level)
-  _display_cache: z
-    .object({
-      position: z.string().optional(),
-      primary_focus: z.string().optional(),
-      job_summary: z.string().max(100).optional(),
-      job_details: z
-        .object({
-          company: z.string(),
-          location: z.string(),
-          experience_level: z.string(),
-          employment_type: z.string(),
-          must_have_skills: z.array(z.string()),
-          nice_to_have_skills: z.array(z.string()),
-          team_context: z.string(),
-          user_scale: z.string(),
-        })
-        .optional(),
-    })
-    .optional(),
 });
 
 export type TailorContext = z.infer<typeof TailorContextSchema>;

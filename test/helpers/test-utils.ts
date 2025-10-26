@@ -563,21 +563,6 @@ export function createValidTailorContext(overrides?: Partial<any>) {
       user_scale: '10,000 users',
     },
     last_updated: '2025-10-07T00:00:00Z',
-    _display_cache: {
-      position: 'Software Engineer',
-      primary_focus: 'engineer + [react, typescript]',
-      job_summary: 'Test company building modern applications',
-      job_details: {
-        company: 'Test Company',
-        location: 'Remote',
-        experience_level: 'Mid-level',
-        employment_type: 'Full-time',
-        must_have_skills: ['JavaScript', 'React', 'TypeScript'],
-        nice_to_have_skills: ['Node.js', 'GraphQL'],
-        team_context: 'Small agile team',
-        user_scale: '10,000 users',
-      },
-    },
     ...overrides,
   };
 }
