@@ -16,6 +16,12 @@ export interface PdfCliArgs extends CompanyCliArgs {
  *
  * @returns {CompanyCliArgs} Parsed arguments with optional company name
  * @example parseCompanyArgs() → { company: 'acme-corp' }
+ *
+ * @todo REFACTOR: This function reads from global readonly Bun.argv, making it hard to test
+ * without type casting. Consider refactoring to accept argv as optional parameter:
+ * `export function parseCompanyArgs(argv: string[] = Bun.argv): CompanyCliArgs`
+ * This would improve testability, remove need for (Bun as any) casts in tests,
+ * and follow dependency injection principles. See test/unit/cli-args.test.ts for details.
  */
 export function parseCompanyArgs(): CompanyCliArgs {
   const { values } = utilParseArgs({
@@ -41,6 +47,9 @@ export function parseCompanyArgs(): CompanyCliArgs {
  *
  * @returns {PdfCliArgs} Parsed arguments with optional company and document type
  * @example parsePdfArgs() → { company: 'acme-corp', document: 'resume' }
+ *
+ * @todo REFACTOR: Like parseCompanyArgs(), this reads from readonly Bun.argv.
+ * Should accept argv as optional parameter for better testability and type safety.
  */
 export function parsePdfArgs(): PdfCliArgs {
   const { values } = utilParseArgs({
@@ -87,6 +96,11 @@ export function parsePdfArgs(): PdfCliArgs {
  *   'Usage: bun run set-env -C company-name'
  * );
  * ```
+ *
+ * @todo REFACTOR: This function's config parameter relies on implicit default argv handling.
+ * Consider making argv explicit: accept it as optional parameter in config or as separate param
+ * `export function parseCliArgs<T extends ParseArgsConfig>(config: T, logger: Logger, usageMessage: string, argv?: string[])`
+ * This would improve testability and make argv source explicit rather than relying on default.
  */
 export function parseCliArgs<T extends ParseArgsConfig>(
   config: T,
