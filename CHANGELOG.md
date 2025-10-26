@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.9.0] - 2025-10-15
+## [0.9.0] - 2025-10-15 ([5c2bd98](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/5c2bd98))
 
 ### Added
 
@@ -45,7 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Component Props**: Standardized `ResumeComponentProps` and `CoverLetterComponentProps` interfaces
 - **Mapping Rules**: Updated transformation schemas to support new section structure
 
-## [0.8.4] - 2025-10-09
+## [0.8.4] - 2025-10-09 ([b297ae7](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/b297ae7))
 
 ### Added
 
@@ -83,7 +83,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Context Management**: Strict validation modes for different contexts (PDF generation vs. general use)
 - **Logging Architecture**: Structured logging with dual output formats for development and production
 
-## [0.8.3] - 2025-10-07
+## [0.8.3] - 2025-10-07 ([faa79f6](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/faa79f6))
 
 ### Added
 
@@ -113,7 +113,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Unused Logic**: Cleaned up contact formatting code from Header component
 - **UI Elements**: Removed manual theme selector in favor of metadata-driven theme selection
 
-## [0.8.2] - 2025-10-07
+## [0.8.2] - 2025-10-07 ([fb48427](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/fb48427))
 
 ### Added
 
@@ -140,7 +140,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Font Registration**: Updated fonts-register module location and imports
 - **Template Organization**: Improved template component structure and design token access
 
-## [0.8.1] - 2025-10-06
+## [0.8.1] - 2025-10-06 ([6cf6684](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/6cf6684))
 
 ### Added
 
@@ -175,7 +175,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Module Organization**: `/src/templates/[theme-name]/[document-type]/components/`
 - **Radix UI Integration**: Added `@radix-ui/react-select` for enhanced UI components
 
-## [0.8.0] - 2025-10-02
+## [0.8.0] - 2025-10-02 ([3bd06cc](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/3bd06cc))
 
 ### Added
 
@@ -190,7 +190,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Document Selection**: Easy toggle between Resume and Cover Letter views with icon indicators
 - **Component Architecture**: Modular design with reusable UI components (Header, Sidebar, Navigation)
 
-## [0.7.0] - 2025-10-01
+## [0.7.0] - 2025-10-01 ([6dbad84](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/6dbad84))
 
 ### Added
 
@@ -226,7 +226,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **CLAUDE.md**: Updated with pull request and commit message policies
 - **Transformation Rules**: Enhanced mapping rules with metadata generation specifications
 
-## [0.6.2] - 2025-09-26
+## [0.6.2] - 2025-09-26 ([1c4aa10](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/1c4aa10))
 
 ### Added
 
@@ -248,7 +248,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **CI Integration**: Automated quality checks before testing pipeline
 - **Ignore Patterns**: Comprehensive exclusion of generated files and build artifacts
 
-## [0.6.1] - 2025-09-25
+## [0.6.1] - 2025-09-25 ([9dd2322](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/9dd2322))
 
 ### Added
 
@@ -275,7 +275,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Test Structure**: Option 2 architecture with centralized test utilities and fixtures
 - **Coverage Tools**: Built-in Bun coverage reporting with detailed file-by-file analysis
 
-## [0.6.0] - 2025-09-24
+## [0.6.0] - 2025-09-24 ([3c8fc1d](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/3c8fc1d))
 
 ### Added
 
@@ -302,7 +302,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Outdated Assets**: Cleaned up old mockup images from template directories
 - **Redundant Code**: Simplified type definitions leveraging Zod inference
 
-## [0.5.0] - 2025-09-23
+## [0.5.0] - 2025-09-23 ([23e8053](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/23e8053))
 
 ### Added
 
