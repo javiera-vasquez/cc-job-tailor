@@ -49,7 +49,7 @@ jobs:
         run: bun run validate:metadata -C tech-corp
 
       - name: Test YAML to ZOD validation:job-analysis pipeline
-        run: bun run validate:validate:job-analysis -C tech-corp
+        run: bun run validate:job-analysis -C tech-corp
 
       - name: Test YAML to ZOD validation:resume pipeline
         run: bun run validate:resume -C tech-corp
