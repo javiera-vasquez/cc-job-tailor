@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2025-10-27 ([ad19ed1](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/ad19ed1))
+
+### Added
+
+- **Railway-Oriented Pipelines**: Functional composition architecture using `remeda` pipes and `ts-pattern` matching in all CLI scripts (`set-env`, `generate-pdf`, `tailor-server`, `validate-schema`) with automatic error propagation via Result types
+- **Reusable Validation Pipelines**: `tailor-check-pipeline` (validation-only) and `tailor-setup-pipeline` (complete setup) using functional composition for YAML-to-ZOD workflows
+- **Shared Result Handlers**: Centralized error and success handlers with consistent output formatting and specialized ZodError handling
+- **Comprehensive Test Suite**: New tests for CLI argument parsing, validation workflows, and document generation
+- **Schema Validation Command**: `validate-schema.ts` exposing validation pipeline with five modes (all, metadata, resume, job-analysis, cover-letter)
+
+### Changed
+
+- **CLI Architecture**: Consolidated `set-env`, `generate-pdf`, and `tailor-server` to use functional pipelines with consistent error handling patterns
+- **Validation Modules**: Refactored validation system with dedicated modules for path resolution, YAML validation, and type definitions
+- **Package Scripts**: Reorganized and enhanced CI workflows with expanded validation pipelines
+- **Documentation**: Removed deprecated flow-chart and tailor-help references; updated README with current command guidance
+
+### Improved
+
+- **Code Modularity**: Extracted reusable components (path helpers, CLI parser, result handlers, loggers) reducing duplication across scripts
+- **Type Safety**: Centralized validation types and streamlined Zod schemas for better maintainability
+- **Test Coverage**: Added integration tests validating complete workflows from company validation to PDF generation
+- **Developer Experience**: Structured logging with context-aware instances; JSDoc improvements for CLI utilities
+
+### Removed
+
+- **Legacy Code**: Removed obsolete company loader, generate-data script, deprecated `_display_cache` field, and unused Zod schemas
+- **Outdated Documentation**: Cleaned up flow-chart documentation and redundant validation script references
+
 ## [0.9.0] - 2025-10-15 ([5c2bd98](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/5c2bd98))
 
 ### Added
