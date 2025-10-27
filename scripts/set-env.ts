@@ -1,65 +1,120 @@
-#!/usr/bin/env bun
+import { pipe } from 'remeda';
+import { match } from 'ts-pattern';
 
-import { parseArgs } from 'util';
-import { setTailorContext } from './utils/tailor-context';
-import { loggers } from './shared/logger';
+import { validateAndSetTailorEnvPipeline } from '@shared/validation/tailor-setup-pipeline';
+import type { YamlFilesAndSchemasToWatch, SetContextSuccess } from '@shared/validation/types';
+import { parseCliArgs, validateRequiredArg } from '@shared/cli/cli-args';
+import { loggers } from '@shared/core/logger';
+import { TAILOR_YAML_FILES_AND_SCHEMAS } from '@shared/core/config';
+import { handlePipelineError, handlePipelineSuccess } from '@shared/handlers/result-handlers';
 
 /**
  * CLI script to set tailor environment context
  * Usage: bun run set-env -C company-name
  *
+ * This script validates company files, generates application data, and writes
+ * the tailor context configuration for PDF generation.
+ *
  * Exit codes:
- * 0 - Success (stdout contains JSON data)
- * 1 - Failure (stderr contains error message)
+ * - 0: Success (context set successfully)
+ * - 1: Failure (validation or processing error)
  */
 
-// Parse command-line arguments
-const { values } = parseArgs({
-  options: {
-    C: {
-      type: 'string',
-      short: 'C',
+const USAGE_MESSAGE = 'Usage: bun run set-env -C company-name';
+
+// Parse and validate command-line arguments
+const values = parseCliArgs(
+  {
+    options: {
+      C: {
+        type: 'string',
+        short: 'C',
+        required: true,
+      },
     },
   },
-});
+  loggers.setEnv,
+  USAGE_MESSAGE,
+);
 
-const companyName = values.C;
+const companyName = validateRequiredArg(values.C, 'Company name', loggers.setEnv, USAGE_MESSAGE);
 
-// Validate company name argument
-if (!companyName) {
-  loggers.setEnv.error('Company name required');
-  loggers.setEnv.info('Usage: bun run set-env -C company-name');
-  process.exit(1);
-}
-
-// Execute context setup
-const result = setTailorContext(companyName);
-
-if (result.success) {
-  // Format output similar to tailor-server style
-  const data = result.data;
-  const fileCount = data.availableFiles?.length || 0;
-  const filesList = data.availableFiles?.join(', ') || 'none';
-
-  // Success header with emoji and key info
-  loggers.setEnv.success(`Context set • ${data.company} • ${fileCount} file(s)`);
-
-  // Display key details in a compact, scannable format
-  loggers.setEnv.info(`   -Path: ${data.path}`);
-  loggers.setEnv.info(`   -Position: ${data.position || 'Not specified'}`);
-  loggers.setEnv.info(`   -Focus: ${data.primaryFocus || 'Not specified'}`);
-  loggers.setEnv.info(`   -Files: ${filesList}`);
-
-  // Display next action
-  loggers.setEnv.info('🚀 All good, please start the tailor-server');
-
-  process.exit(0);
-} else {
-  // Failure: log error with details
-  loggers.setEnv.error(
-    result.error,
-    null,
-    result.details ? { details: result.details } : undefined,
+/**
+ * Executes the complete tailor context setup pipeline using functional composition.
+ *
+ * Pipeline flow:
+ * 1. Validates company directory exists
+ * 2. Validates all required files exist
+ * 3. Loads YAML files with wrapper extraction
+ * 4. Validates YAML data against Zod schemas
+ * 5. Generates TypeScript application data module
+ * 6. Extracts metadata from validated files
+ * 7. Generates and writes tailor-context.yaml
+ *
+ * @returns {void} Exits process with code 0 on success, 1 on failure
+ */
+const initTailorContext = (
+  environmentName: string,
+  yamlDocumentsToValidate: YamlFilesAndSchemasToWatch[],
+): void => {
+  return pipe(validateAndSetTailorEnvPipeline(environmentName, yamlDocumentsToValidate), (r) =>
+    match(r)
+      .with({ success: true }, ({ data }) => onSuccess(data))
+      .with({ success: false }, ({ error, details, originalError, filePath }) =>
+        onError(error, details, originalError, filePath),
+      )
+      .exhaustive(),
   );
-  process.exit(1);
-}
+};
+
+/**
+ * Handles successful context setup by delegating to shared success handler.
+ *
+ * Uses shared success handler for consistent formatting with detailed
+ * context information. Process exits with code 0 after logging.
+ *
+ * @param {Object} data - Success data from context generation
+ * @param {string} data.company - Company name
+ * @param {string} data.path - Company folder path
+ * @param {string[]} data.availableFiles - List of available files
+ * @param {string} data.position - Job position
+ * @param {string} data.primaryFocus - Primary focus area
+ * @param {string} data.timestamp - ISO timestamp of context creation
+ * @returns {void} Exits process with code 0
+ */
+const onSuccess = (data: SetContextSuccess['data']): void => {
+  handlePipelineSuccess(data, {
+    logger: loggers.setEnv,
+    shouldExit: true,
+  });
+};
+
+/**
+ * Handles pipeline errors by delegating to shared error handler.
+ *
+ * Uses shared error handler for consistent formatting with specialized
+ * ZodError handling. Process exits with code 1 after logging.
+ *
+ * @param {string} error - Primary error message
+ * @param {string} [details] - Additional error details
+ * @param {unknown} [originalError] - Original error object (checked for ZodError)
+ * @param {string} [filePath] - Path to file where error occurred
+ * @returns {void} Exits process with code 1
+ */
+const onError = (
+  error: string,
+  details?: string,
+  originalError?: unknown,
+  filePath?: string,
+): void => {
+  handlePipelineError(
+    { success: false, error, details, originalError, filePath },
+    {
+      logger: loggers.setEnv,
+      shouldExit: true,
+    },
+  );
+};
+
+// Run pipeline
+initTailorContext(companyName, TAILOR_YAML_FILES_AND_SCHEMAS);

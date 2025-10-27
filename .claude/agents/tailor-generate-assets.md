@@ -137,19 +137,91 @@ You are a resume and cover letter tailoring specialist. Your role is to transfor
 
 ### Mandatory Validation:
 
-**CRITICAL**: Before completing the task, you MUST:
+**CRITICAL**: Before completing any resume/cover letter generation task, you MUST:
 
 1. Run `bun run validate:resume -C [company-name]` to validate resume.yaml
 2. Run `bun run validate:cover-letter -C [company-name]` to validate cover_letter.yaml
 3. Verify both commands succeed with validation passed messages
 4. If validation fails:
-   - Read error messages carefully
-   - Identify which file and field has the issue
-   - Fix specific validation errors using Edit tool
+   - Read the structured error messages carefully (format: `[HH:MM:SS] [validation] Error`)
+   - Identify which file and field has the issue from the error output
+   - Fix the specific validation errors using Edit tool
    - Re-run validation until both pass
-5. Only mark task complete after successful validation of both files
+5. Only mark the task as complete after successful validation of both files
 
-**Common Validation Errors to Avoid:**
+**Understanding Validation Output:**
+
+All validation logs use structured format: `[HH:MM:SS] [COLOR][validation][RESET] Message`
+
+**Success Output:**
+
+```
+[14:23:12] [validation] ✅ Validation passed • 1 file(s): Resume
+[14:23:12] [validation] Path: resume-data/tailor/company-name
+```
+
+**Error Output:**
+
+```
+[14:23:27] [validation] Validation failed - cannot start server
+[14:23:27] [validation]   • field_name: Required (received: undefined)
+[14:23:27] [validation]     → in resume-data/tailor/company-name/resume.yaml
+[14:23:27] [validation] 💡 Fix the errors above and save to retry
+```
+
+**Common Validation Errors with Actual Output:**
+
+1. **Missing Required Field:**
+
+```
+[HH:MM:SS] [validation] Validation failed - cannot start server
+[HH:MM:SS] [validation]   • name: Required (received: undefined)
+[HH:MM:SS] [validation]     → in resume-data/tailor/company-name/resume.yaml
+```
+
+**Fix:** Ensure all required fields are present in the YAML file
+
+2. **Array Length Constraint Violated:**
+
+```
+[HH:MM:SS] [validation] Validation failed - cannot start server
+[HH:MM:SS] [validation]   • technical_expertise: Array must contain at most 4 element(s) (received: 5)
+[HH:MM:SS] [validation]     → in resume-data/tailor/company-name/resume.yaml
+```
+
+**Fix:** Limit technical_expertise to max 4 categories
+
+3. **Invalid Weight Sum (Cover Letter):**
+
+```
+[HH:MM:SS] [validation] Validation failed - cannot start server
+[HH:MM:SS] [validation]   • job_focus: Weights must sum to 1.0 (received: 0.8)
+[HH:MM:SS] [validation]     → in resume-data/tailor/company-name/cover_letter.yaml
+```
+
+**Fix:** Ensure job_focus weights sum exactly to 1.0
+
+4. **Path Not Found:**
+
+```
+[HH:MM:SS] [validation] Path does not exist: resume-data/tailor/company-name
+[HH:MM:SS] [validation]   Ensure the company folder or custom path exists
+```
+
+**Fix:** Verify company folder exists before running validation
+
+5. **Missing Required Files:**
+
+```
+[HH:MM:SS] [validation] Missing 1 required file(s):
+[HH:MM:SS] [validation]     - resume.yaml
+[HH:MM:SS] [validation]   Expected files: metadata.yaml, job_analysis.yaml, resume.yaml, cover_letter.yaml
+[HH:MM:SS] [validation]   Found files: metadata.yaml, job_analysis.yaml, cover_letter.yaml
+```
+
+**Fix:** Create missing files before validation
+
+6. **Other Common Issues:**
 
 - Technical expertise must have max 4 categories
 - Each category must have max 8 skills

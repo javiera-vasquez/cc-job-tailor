@@ -22,6 +22,7 @@ export {
   isResumeSectionVisible,
   getVisibleCoverLetterSections,
   isCoverLetterSectionVisible,
+  getElementVisibility,
 } from '@template-core/section-utils';
 
 /**
@@ -45,6 +46,18 @@ export const RESUME_SECTIONS: ResumeSectionConfig[] = [
     id: 'header',
     component: Header,
     isVisible: () => true, // Always visible - contains required fields
+    elements: [
+      {
+        id: 'profile-picture',
+        isVisible: (data) => {
+          // Type guard: ensure we're working with ResumeSchema
+          if ('profile_picture' in data) {
+            return (data.profile_picture?.trim().length ?? 0) > 0;
+          }
+          return false;
+        },
+      },
+    ],
     order: 0,
     description: 'Name and contact information',
   },

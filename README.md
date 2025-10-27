@@ -5,7 +5,7 @@
 ![](https://img.shields.io/badge/Node.js-18%2B-brightgreen?style=flat-square)
 ![Tests](https://github.com/javiera-vasquez/claude-code-job-tailor/actions/workflows/ci.yml/badge.svg?branch=main)
 
-AI-powered resume optimization system that analyzes job postings, ranks requirements by importance, and generates tailored PDFs in under 60 seconds. Write your experience once in YAML, then let Claude's agents automatically select your most relevant achievements for each application.
+AI-powered resume optimization system that analyzes job postings, ranks requirements by importance, and generates tailored PDFs in under 60 seconds. Write your experience once in [YAML](/resume-data/sources/resume.example.yaml), then let Claude's agents automatically select your most relevant achievements for each application.
 
 ```
 ⚡ 60 Second job analysis • 🎯 Weighted skill matching • 🤖 3 specialized AI agents
@@ -13,7 +13,6 @@ AI-powered resume optimization system that analyzes job postings, ranks requirem
 ```
 
 **Tailor in action:**
-
 ![Tailor in action!](demo.gif)
 
 **Example Usage:**
@@ -26,65 +25,61 @@ AI-powered resume optimization system that analyzes job postings, ranks requirem
    [...paste job description | URL | PDF | Markdown file here...]
    ```
 
-2. **Iterate on existing company materials:**
+2. **Iterate on existing company materials and customize on the fly:**
+
    ```
-   /tailor "tech-corp" Which are the top 5 skills to emphasize for this role?
+   /tailor "tech-corp"
    ```
+
+   Once in tailor mode, you can ask Claude to make changes in real-time:
+
+   | Category                 | Examples                                                                                                                            |
+   | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
+   | **Content & Analysis**   | "Which are the top 5 skills to emphasize?" • "Analyze the job and tell me my focus areas" • "Add a new achievement about [project]" |
+   | **Template & Layout**    | "Switch to the classic template" • "Reorder sections" • "Hide my profile picture"                                                   |
+   | **Writing & Refinement** | "Make the summary more impactful" • "Rewrite the cover letter opening" • "Emphasize my React expertise"                             |
+
+   All changes preview instantly in your browser as you iterate.
 
 ## Built-in Commands & Agents
 
-**3 specialized AI agents** handle different stages of the workflow (analysis, tailoring, editing). **5 slash commands** give you direct control:
+**3 specialized AI agents** handle different stages of the workflow (analysis, tailoring, editing). **3 slash commands** give you direct control:
 
-| Command/Agent                                             | Type    | Purpose                                                                                                               |
-| --------------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------- |
-| `/tailor company-name`                                    | Command | Set active company context and start live preview server with automatic validation                                    |
-| `/generate-pdf company-name [resume\|cover-letter\|both]` | Command | Generate PDF documents for specific company                                                                           |
-| `/tailor-template-expert`                                 | Command | Template development workspace for creating and modifying React-PDF templates (experimental)                          |
-| `/tailor-help`                                            | Command | Show resume tailoring workflow and available commands                                                                 |
-| `@agent-job-analysis`                                     | Agent   | Analyze job postings and extract structured metadata and job analysis for tailored applications                       |
-| `@agent-job-tailor`                                       | Agent   | Complete workflow: analyze job postings and create customized job analysis and tailored resumes                       |
-| `@agent-tailor-resume-and-cover`                          | Agent   | Generate tailored resume and cover letter using existing job analysis data (requires metadata and job_analysis files) |
-| `bun run tailor-server`                                   | Script  | Start live preview development server with file watching                                                              |
-| `bun run save-to-pdf -C company-name`                     | Script  | Generate PDF to `tmp/` (automatically generates data first)                                                           |
-| `bun run generate-data -C company-name`                   | Script  | Convert YAML data to TypeScript module for specific company                                                           |
-
-## Why This Exists
-
-**The problem:** Manually customizing resumes is slow and subjective. Which achievements should you highlight? Which skills matter most? You're guessing based on gut feel.
-
-**The solution:** AI agents analyze job postings and extract weighted requirements (React: priority 10, Python: priority 7). Then they use specialty-based scoring to automatically select your most relevant content. The `/tailor` command lets you collaborate with Claude in real-time to refine the output while watching changes in your browser.
-
-**The result:** Data-driven optimization that takes 60 seconds instead of 2 hours, and actually matches what the job requires.
+| Command/Agent                                                          | Type    | Purpose                                                                                                                                                        |
+| ---------------------------------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/tailor company-name`                                                 | Command | Edit your resume with Claude in real-time through a live browser preview. Changes appear instantly as you refine content, switch templates, or adjust sections |
+| `/generate-pdf company-name [resume\|cover-letter\|both]`              | Command | Generate PDF documents for specific company                                                                                                                    |
+| `/tailor-template-expert`                                              | Command | Template development workspace for creating and modifying React-PDF templates (experimental)                                                                   |
+| `@agent-job-analysis`                                                  | Agent   | Analyze job postings and extract structured metadata and job analysis for tailored applications                                                                |
+| `@agent-job-tailor`                                                    | Agent   | Complete workflow: analyze job postings and create customized job analysis and tailored resumes                                                                |
+| `@agent-tailor-resume-and-cover`                                       | Agent   | Generate tailored resume and cover letter using existing job analysis data (requires metadata and job_analysis files)                                          |
+| `bun run generate-pdf -C company-name [-D resume\|cover-letter\|both]` | Script  | Generate PDF documents (resume, cover letter, or both) to `tmp/` with automatic validation and theme selection (default: both)                                 |
+| `bun run validate:[type] (-C company-name \| -P path)`                 | Script  | Validate YAML files against Zod schemas. Types: `all`, `metadata`, `resume`, `job-analysis`, `cover-letter`                                                    |
 
 ## PDF Output Examples
 
-You can review the PDF examples generated by the system in the [`public/pdf-examples/`](public/pdf-examples/) directory.
-
-Two professional templates included: **modern** (two-column with accent colors) and **classic** (single-column monochrome). Switch instantly with `/tailor company-name` then ask "Use the classic template".
+Two professional templates included: **modern** (two-column with accent colors) and **classic** (single-column monochrome).
 
 ![Available templates](/public/images/templates.png)
 
-| File                                                       | Description                                                     | Expected Data                                                                                                                                                                                |
-| ---------------------------------------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`resume.pdf`](public/pdf-examples/resume.pdf)             | Example tailored resume for a Senior Frontend Engineer position | [`ResumeSchema`](src/types.ts#L43): name, title, summary, contact details, technical expertise categories, skills array, languages, professional experience, independent projects, education |
-| [`cover-letter.pdf`](public/pdf-examples/cover-letter.pdf) | Example personalized cover letter                               | [`CoverLetterSchema`](src/types.ts#L59): company, position, job focus array, primary focus, date, personal info, content with opening/body/signature                                         |
+| File                                                                                                                        | Description                                                     | Expected Data                                                                                                                                                                                |
+| --------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`resume-modern.pdf`](public/pdf-examples/resume-modern.pdf) [`resume-classic.pdf`](public/pdf-examples/resume-classic.pdf) | Example tailored resume for a Senior Frontend Engineer position | [`ResumeSchema`](src/types.ts#L43): name, title, summary, contact details, technical expertise categories, skills array, languages, professional experience, independent projects, education |
+| [`cover-letter.pdf`](public/pdf-examples/cover-letter.pdf)                                                                  | Example personalized cover letter                               | [`CoverLetterSchema`](src/types.ts#L59): company, position, job focus array, primary focus, date, personal info, content with opening/body/signature                                         |
 
-These files demonstrate the default styling using the design tokens system in `src/templates/design-tokens.ts`. Use `/tailor-template-expert` to modify templates and styling.
+## Why This Exists
+
+**The problem:** Resume tailoring is expensive. Paid services promise AI-powered optimization, but most are template-filling bots that don't understand your experience or the actual job requirements. Manually customizing resumes for each application is slow, subjective, and draining—you're guessing which achievements matter and which skills to emphasize.
+
+**The solution:** AI agents analyze job postings and extract weighted requirements (React: priority 10, Python: priority 7). Then they use specialty-based scoring to automatically select your most relevant experience. The `/tailor` command lets you collaborate with Claude in real-time to refine the output while watching changes in your browser.
+
+**The result:** Data-driven optimization that takes 60 seconds instead of 2 hours, and actually matches what the job requires. **Best part: It's completely free and open-source.** No paywalls, no subscriptions, no proprietary algorithms locked behind corporate walls—just you, Claude, and a tool that actually works.
 
 ## How It Works
 
 ```
-📝 Your Experience (YAML) → 🤖 AI Agents (Analyze + Optimize) → 📄 React-PDF → ✅ Tailored Resume
+📝 Your Experience → 🤖 AI Optimize & Validate → 👩‍💻 Review & Refine → 📄 PDF Export → ✅ Ship Resume
 ```
-
-**Behind the scenes:**
-
-- **Job analysis agent** extracts requirements with priority weights (1-10 scale)
-- **Specialty matching** scores your achievements against job focus areas (React, TypeScript, AI, etc.)
-- **Content selection** automatically picks the highest-scoring items for each company
-- **Validation** ensures schema compliance before PDF generation
-
-**What you do:** Paste job posting → Start `/tailor` mode → Collaborate with Claude → Generate PDF
 
 ### What Gets Generated (Per Company)
 
@@ -124,8 +119,6 @@ You can see the resume generator in action without using any of your own data.
     cp .env.example .env
     ```
 
-    The defaults work fine for most users. Adjust if you need different logging or file watcher behavior.
-
 4.  **Start Claude Code session:**
 
     ```bash
@@ -133,14 +126,9 @@ You can see the resume generator in action without using any of your own data.
     ```
 
 5.  **Start tailoring your resume:**
-
-    In Claude Code, use the job-tailor agent to analyze job postings:
-
     ```
-    /tailor "tech-corp" Which are the top 5 skills to emphasize for this role?
+    /tailor "tech-corp"
     ```
-
-This will generate a tailor job and cover letter application for the position.
 
 ## Using Your Own Data
 
@@ -159,7 +147,7 @@ This will generate a tailor job and cover letter application for the position.
     with your personal information. The system will automatically detect and use your files instead of the examples.
 
 4.  **Validation rules and schema guidance:**
-    All data transformation and validation rules are in `resume-data/mapping-rules/`. Claude already knows how to use them.
+    All data [transformation](resume-data/mapping-rules/) and [validation](src/zod/schemas.ts) are configurable. Use `bun run validate:[resume|cover-letter]` to validate your YAML files and get actionable feedback on any schema issues.
 
 **Need help migrating your data?**
 Claude Code can read your existing resume and help you migrate it to the YAML format!
@@ -167,7 +155,7 @@ Claude Code can read your existing resume and help you migrate it to the YAML fo
 - Read your current resume (PDF, Word, or text format)
 - Extract your experience, skills, and education
 - Structure the data according to the validation rules in `resume-data/mapping-rules/`
-- Validate your YAML files and fix any schema issues using `bun run generate-data`
+- Validate your YAML files using `bun run validate:[resume|cover-letter]` and fix any schema issues
 - Guide you through the entire migration process
 
 **Example prompt:**
@@ -176,9 +164,42 @@ Claude Code can read your existing resume and help you migrate it to the YAML fo
 Claude, read my resume at ~/Documents/my-resume.pdf and create validated YAML files in resume-data/sources/
 ```
 
+## Template Development
+
+Go beyond the built-in templates—create entirely new variants, modify component structures, and implement custom designs:
+
+**What you can do:**
+
+- Create new template variants with custom layouts (single-column, sidebar, multi-section)
+- Modify component hierarchies and visual structures
+- Update design tokens: color palettes, typography system, spacing constants
+- Implement responsive design patterns and advanced layouts
+- Refactor component organization for reusability
+- Fix rendering issues and optimize for React-PDF constraints
+
+**Getting Started:**
+
+```
+/tailor-template-expert
+```
+
+Work with Claude to design a new layout, update colors, or modify typography. You'll get:
+
+- Live preview server at `http://localhost:3000` with hot-reload
+- Full access to design system and React-PDF documentation
+- Real-time compilation feedback for all template changes
+- Guided support for component modification and creation
+
+**Key Resources:**
+
+- Design tokens: `src/templates/shared/design-tokens.ts` (colors, typography, spacing)
+- Font registration: `src/templates/shared/fonts-register.ts` (Lato, Open Sans, Open Fonts)
+- React-PDF docs: `.claude/rpdf-context/` (components, styling, fonts, troubleshooting)
+- Existing templates: `src/templates/{modern,classic}/` (reference implementations)
+
 ## Troubleshooting
 
-If you encounter any issues or have questions, please report them on our [GitHub Issues page](https://github.com/javiera-vasquez/cc-job-tailor/issues).
+If you encounter any issues or have questions, please report them on our [GitHub Issues page](https://github.com/javiera-vasquez/claude-code-job-tailor/issues).
 
 ## License
 

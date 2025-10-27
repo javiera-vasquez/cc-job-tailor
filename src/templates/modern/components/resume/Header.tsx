@@ -1,7 +1,8 @@
 import React from 'react';
 import { Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 import { tokens } from '@template-core/design-tokens';
-import type { ResumeSchema } from '@types';
+import { getElementVisibility } from '@template-core/section-utils';
+import type { ResumeSchema, ResumeSectionConfig } from '@types';
 
 const { colors, spacing } = tokens.modern;
 
@@ -70,31 +71,37 @@ const styles = StyleSheet.create({
   },
 });
 
-const Header = ({ resume }: { resume: ResumeSchema }) => (
-  <View>
-    {/* Main header content */}
-    <View style={styles.headerContainer}>
-      {/* Content area with name, title, summary */}
-      <View style={styles.contentArea}>
-        <Text style={styles.name}>{resume.name}</Text>
-        <Text style={styles.position}>{resume.title}</Text>
+const Header = ({ resume, section }: { resume: ResumeSchema; section?: ResumeSectionConfig }) => {
+  // Check element-level visibility for profile picture
+  const showProfilePicture =
+    section && getElementVisibility(section, 'profile-picture', resume) && resume.profile_picture;
+
+  return (
+    <View>
+      {/* Main header content */}
+      <View style={styles.headerContainer}>
+        {/* Content area with name, title, summary */}
+        <View style={styles.contentArea}>
+          <Text style={styles.name}>{resume.name}</Text>
+          <Text style={styles.position}>{resume.title}</Text>
+        </View>
+
+        {/* Conditional profile picture rendering with element-level visibility */}
+        {showProfilePicture && (
+          <View style={styles.profileArea}>
+            <Image src={resume.profile_picture} style={styles.profileImage} />
+          </View>
+        )}
       </View>
 
-      {/* Conditional profile picture rendering */}
-      {resume.profile_picture && (
-        <View style={styles.profileArea}>
-          <Image src={resume.profile_picture} style={styles.profileImage} />
+      {/* Conditional summary rendering */}
+      {resume.summary && (
+        <View style={styles.summaryContainer}>
+          <Text style={styles.summary}>{resume.summary}</Text>
         </View>
       )}
     </View>
-
-    {/* Conditional summary rendering */}
-    {resume.summary && (
-      <View style={styles.summaryContainer}>
-        <Text style={styles.summary}>{resume.summary}</Text>
-      </View>
-    )}
-  </View>
-);
+  );
+};
 
 export default Header;

@@ -7,7 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.9.0] - 2025-10-15
+## [1.0.0] - 2025-10-27 ([ad19ed1](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/ad19ed1))
+
+### Added
+
+- **Railway-Oriented Pipelines**: Functional composition architecture using `remeda` pipes and `ts-pattern` matching in all CLI scripts (`set-env`, `generate-pdf`, `tailor-server`, `validate-schema`) with automatic error propagation via Result types
+- **Reusable Validation Pipelines**: `tailor-check-pipeline` (validation-only) and `tailor-setup-pipeline` (complete setup) using functional composition for YAML-to-ZOD workflows
+- **Shared Result Handlers**: Centralized error and success handlers with consistent output formatting and specialized ZodError handling
+- **Comprehensive Test Suite**: New tests for CLI argument parsing, validation workflows, and document generation
+- **Schema Validation Command**: `validate-schema.ts` exposing validation pipeline with five modes (all, metadata, resume, job-analysis, cover-letter)
+
+### Changed
+
+- **CLI Architecture**: Consolidated `set-env`, `generate-pdf`, and `tailor-server` to use functional pipelines with consistent error handling patterns
+- **Validation Modules**: Refactored validation system with dedicated modules for path resolution, YAML validation, and type definitions
+- **Package Scripts**: Reorganized and enhanced CI workflows with expanded validation pipelines
+- **Documentation**: Removed deprecated flow-chart and tailor-help references; updated README with current command guidance
+
+### Improved
+
+- **Code Modularity**: Extracted reusable components (path helpers, CLI parser, result handlers, loggers) reducing duplication across scripts
+- **Type Safety**: Centralized validation types and streamlined Zod schemas for better maintainability
+- **Test Coverage**: Added integration tests validating complete workflows from company validation to PDF generation
+- **Developer Experience**: Structured logging with context-aware instances; JSDoc improvements for CLI utilities
+
+### Removed
+
+- **Legacy Code**: Removed obsolete company loader, generate-data script, deprecated `_display_cache` field, and unused Zod schemas
+- **Outdated Documentation**: Cleaned up flow-chart documentation and redundant validation script references
+
+## [0.9.0] - 2025-10-15 ([5c2bd98](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/5c2bd98))
 
 ### Added
 
@@ -17,7 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **File Watcher Debouncing**: Configurable debounce delay to prevent excessive regeneration on rapid file changes
 - **Demo GIF**: Visual demonstration of the application workflow added to repository
 - **Environment Configuration**: Comprehensive `.env.example` file with all configuration options
-- **Section Registry Tests**: 804 new tests covering classic and modern theme section registries
+- **Section Registry Tests**: 62 new tests covering classic and modern theme section registries
 
 ### Changed
 
@@ -45,7 +74,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Component Props**: Standardized `ResumeComponentProps` and `CoverLetterComponentProps` interfaces
 - **Mapping Rules**: Updated transformation schemas to support new section structure
 
-## [0.8.4] - 2025-10-09
+## [0.8.4] - 2025-10-09 ([b297ae7](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/b297ae7))
 
 ### Added
 
@@ -83,7 +112,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Context Management**: Strict validation modes for different contexts (PDF generation vs. general use)
 - **Logging Architecture**: Structured logging with dual output formats for development and production
 
-## [0.8.3] - 2025-10-07
+## [0.8.3] - 2025-10-07 ([faa79f6](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/faa79f6))
 
 ### Added
 
@@ -113,7 +142,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Unused Logic**: Cleaned up contact formatting code from Header component
 - **UI Elements**: Removed manual theme selector in favor of metadata-driven theme selection
 
-## [0.8.2] - 2025-10-07
+## [0.8.2] - 2025-10-07 ([fb48427](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/fb48427))
 
 ### Added
 
@@ -140,7 +169,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Font Registration**: Updated fonts-register module location and imports
 - **Template Organization**: Improved template component structure and design token access
 
-## [0.8.1] - 2025-10-06
+## [0.8.1] - 2025-10-06 ([6cf6684](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/6cf6684))
 
 ### Added
 
@@ -175,7 +204,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Module Organization**: `/src/templates/[theme-name]/[document-type]/components/`
 - **Radix UI Integration**: Added `@radix-ui/react-select` for enhanced UI components
 
-## [0.8.0] - 2025-10-02
+## [0.8.0] - 2025-10-02 ([3bd06cc](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/3bd06cc))
 
 ### Added
 
@@ -190,7 +219,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Document Selection**: Easy toggle between Resume and Cover Letter views with icon indicators
 - **Component Architecture**: Modular design with reusable UI components (Header, Sidebar, Navigation)
 
-## [0.7.0] - 2025-10-01
+## [0.7.0] - 2025-10-01 ([6dbad84](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/6dbad84))
 
 ### Added
 
@@ -226,7 +255,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **CLAUDE.md**: Updated with pull request and commit message policies
 - **Transformation Rules**: Enhanced mapping rules with metadata generation specifications
 
-## [0.6.2] - 2025-09-26
+## [0.6.2] - 2025-09-26 ([1c4aa10](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/1c4aa10))
 
 ### Added
 
@@ -248,7 +277,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **CI Integration**: Automated quality checks before testing pipeline
 - **Ignore Patterns**: Comprehensive exclusion of generated files and build artifacts
 
-## [0.6.1] - 2025-09-25
+## [0.6.1] - 2025-09-25 ([9dd2322](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/9dd2322))
 
 ### Added
 
@@ -275,7 +304,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Test Structure**: Option 2 architecture with centralized test utilities and fixtures
 - **Coverage Tools**: Built-in Bun coverage reporting with detailed file-by-file analysis
 
-## [0.6.0] - 2025-09-24
+## [0.6.0] - 2025-09-24 ([3c8fc1d](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/3c8fc1d))
 
 ### Added
 
@@ -302,7 +331,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Outdated Assets**: Cleaned up old mockup images from template directories
 - **Redundant Code**: Simplified type definitions leveraging Zod inference
 
-## [0.5.0] - 2025-09-23
+## [0.5.0] - 2025-09-23 ([23e8053](https://github.com/javiera-vasquez/claude-code-job-tailor/commit/23e8053))
 
 ### Added
 

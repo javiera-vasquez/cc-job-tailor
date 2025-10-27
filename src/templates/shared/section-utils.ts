@@ -60,3 +60,32 @@ export function isCoverLetterSectionVisible(
   const section = sections.find((s) => s.id === sectionId);
   return section ? section.isVisible(data) : false;
 }
+
+/**
+ * Get visibility status for a specific element within a section
+ * Used for granular control over individual elements (e.g., profile picture, summary)
+ * without hiding the entire section
+ *
+ * @param section - The section configuration
+ * @param elementId - Unique identifier for the element
+ * @param data - The document data (resume or cover letter)
+ * @returns true if element should be visible, defaults to true if no element config exists
+ *
+ * @example
+ * ```typescript
+ * const showPicture = getElementVisibility(headerSection, 'profile-picture', resumeData);
+ * ```
+ */
+export function getElementVisibility(
+  section: ResumeSectionConfig | CoverLetterSectionConfig,
+  elementId: string,
+  data: ResumeSchema | CoverLetterSchema,
+): boolean {
+  // If section has elements config, check it
+  if (section.elements) {
+    const element = section.elements.find((e) => e.id === elementId);
+    return element ? element.isVisible(data) : true;
+  }
+  // Default to visible if no elements config
+  return true;
+}

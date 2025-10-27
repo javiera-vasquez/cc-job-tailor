@@ -98,8 +98,77 @@ export function createValidApplicationData(): ApplicationData {
         },
       ],
     },
-    job_analysis: null,
-    cover_letter: null,
+    job_analysis: {
+      company: 'Tech Corp',
+      position: 'Developer',
+      location: 'Remote',
+      experience_level: 'Mid-level',
+      employment_type: 'Full-time',
+      job_focus: [
+        {
+          primary_area: 'engineer',
+          specialties: ['react', 'typescript'],
+          weight: 1.0,
+        },
+      ],
+      requirements: {
+        must_have_skills: [{ skill: 'TypeScript', priority: 1 }],
+        nice_to_have_skills: [],
+        soft_skills: ['Communication'],
+        experience_years: 3,
+        education: 'Bachelor',
+      },
+      responsibilities: {
+        primary: ['Write code'],
+        secondary: [],
+      },
+      role_context: {
+        department: 'Engineering',
+        team_size: 'Small',
+        key_points: ['Build features'],
+      },
+      application_info: {
+        posting_url: 'https://example.com/job',
+        posting_date: '2024-01-01',
+        deadline: '2024-12-31',
+      },
+      candidate_alignment: {
+        strong_matches: ['TypeScript'],
+        gaps_to_address: [],
+        transferable_skills: [],
+        emphasis_strategy: 'Highlight skills',
+      },
+      section_priorities: {
+        technical_expertise: ['TypeScript'],
+        experience_focus: 'Recent work',
+        project_relevance: 'Web apps',
+      },
+      optimization_actions: {
+        LEAD_WITH: ['TypeScript'],
+        EMPHASIZE: [],
+        QUANTIFY: [],
+        DOWNPLAY: [],
+      },
+      ats_analysis: {
+        title_variations: ['Developer', 'Engineer'],
+        critical_phrases: ['TypeScript'],
+      },
+    },
+    cover_letter: {
+      company: 'Tech Corp',
+      name: 'John Doe',
+      date: '2024-01-01',
+      personal_info: {
+        phone: '+1-234-567-8900',
+        email: 'john@example.com',
+      },
+      content: {
+        letter_title: 'Application for Developer Position',
+        opening_line: 'Dear Hiring Manager',
+        body: ['I am interested in this position.'],
+        signature: 'Sincerely, John Doe',
+      },
+    },
   };
 }
 
@@ -130,10 +199,126 @@ export function createInvalidJobFocus() {
 
 export function createMinimalValidApplicationData(): ApplicationData {
   return {
-    metadata: null,
-    resume: null,
-    job_analysis: null,
-    cover_letter: null,
+    metadata: {
+      company: 'Test Company',
+      folder_path: 'test-path',
+      available_files: ['resume.yaml'],
+      position: 'Engineer',
+      primary_focus: 'engineer',
+      job_summary: 'Test job',
+      job_details: {
+        company: 'Test Company',
+        location: 'Remote',
+        experience_level: 'Mid',
+        employment_type: 'Full-time',
+        must_have_skills: ['TypeScript'],
+        nice_to_have_skills: [],
+        team_context: 'Small team',
+        user_scale: '1000 users',
+      },
+      active_template: 'modern' as const,
+      last_updated: new Date().toISOString(),
+    },
+    resume: {
+      name: 'John Doe',
+      title: 'Software Engineer',
+      contact: {
+        phone: '+1234567890',
+        email: 'john@example.com',
+      },
+      professional_experience: [
+        {
+          company: 'Test Corp',
+          position: 'Engineer',
+          location: 'Remote',
+          duration: '2020-2024',
+          achievements: [],
+        },
+      ],
+      education: [
+        {
+          institution: 'University',
+          program: 'Computer Science',
+          location: 'City',
+          duration: '2016-2020',
+        },
+      ],
+      skills: ['TypeScript'],
+      technical_expertise: [],
+      languages: [],
+      independent_projects: [],
+    },
+    job_analysis: {
+      company: 'Test Company',
+      position: 'Engineer',
+      location: 'Remote',
+      experience_level: 'Mid',
+      employment_type: 'Full-time',
+      job_focus: [
+        {
+          primary_area: 'engineer',
+          specialties: ['typescript'],
+          weight: 1.0,
+        },
+      ],
+      requirements: {
+        must_have_skills: [{ skill: 'TypeScript', priority: 1 }],
+        nice_to_have_skills: [],
+        soft_skills: ['Communication'],
+        experience_years: 3,
+        education: 'Bachelor',
+      },
+      responsibilities: {
+        primary: ['Write code'],
+        secondary: [],
+      },
+      role_context: {
+        department: 'Engineering',
+        team_size: 'Small',
+        key_points: ['Build features'],
+      },
+      application_info: {
+        posting_url: 'https://example.com/job',
+        posting_date: '2024-01-01',
+        deadline: '2024-12-31',
+      },
+      candidate_alignment: {
+        strong_matches: ['TypeScript'],
+        gaps_to_address: [],
+        transferable_skills: [],
+        emphasis_strategy: 'Highlight TS skills',
+      },
+      section_priorities: {
+        technical_expertise: ['TypeScript'],
+        experience_focus: 'Recent work',
+        project_relevance: 'Web apps',
+      },
+      optimization_actions: {
+        LEAD_WITH: ['TypeScript'],
+        EMPHASIZE: [],
+        QUANTIFY: [],
+        DOWNPLAY: [],
+      },
+      ats_analysis: {
+        title_variations: ['Engineer', 'Developer'],
+        critical_phrases: ['TypeScript'],
+      },
+    },
+    cover_letter: {
+      company: 'Test Company',
+      name: 'John Doe',
+      date: '2024-01-01',
+      personal_info: {
+        phone: '+1234567890',
+        email: 'john@example.com',
+      },
+      content: {
+        letter_title: 'Application',
+        opening_line: 'Dear Hiring Manager',
+        body: ['I am interested in this position.'],
+        signature: 'Sincerely, John Doe',
+      },
+    },
   };
 }
 
@@ -378,21 +563,6 @@ export function createValidTailorContext(overrides?: Partial<any>) {
       user_scale: '10,000 users',
     },
     last_updated: '2025-10-07T00:00:00Z',
-    _display_cache: {
-      position: 'Software Engineer',
-      primary_focus: 'engineer + [react, typescript]',
-      job_summary: 'Test company building modern applications',
-      job_details: {
-        company: 'Test Company',
-        location: 'Remote',
-        experience_level: 'Mid-level',
-        employment_type: 'Full-time',
-        must_have_skills: ['JavaScript', 'React', 'TypeScript'],
-        nice_to_have_skills: ['Node.js', 'GraphQL'],
-        team_context: 'Small agile team',
-        user_scale: '10,000 users',
-      },
-    },
     ...overrides,
   };
 }

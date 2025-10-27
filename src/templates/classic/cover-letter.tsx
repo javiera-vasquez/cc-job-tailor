@@ -43,8 +43,7 @@ export const CoverLetter = ({
       style={styles.letterPage}
     >
       {visibleSections.map((section) => {
-        const SectionComponent = section.component;
-        return <SectionComponent key={section.id} data={coverLetter} debug={debug} />;
+        return <section.component key={section.id} data={coverLetter} debug={debug} />;
       })}
     </Page>
   );

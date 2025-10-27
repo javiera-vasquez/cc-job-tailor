@@ -25,11 +25,11 @@ Enter template development mode with full context for creating and modifying Rea
 
 **Load Design System**:
 
-- Read `src/templates/design-tokens.ts` for:
+- Read `src/templates/shared/design-tokens.ts` for:
   - Color palette (primary, accent, darkGray, mediumGray, separatorGray)
   - Typography system (text, title, subtitle, small)
   - Spacing constants (columnWidth, documentPadding, pagePadding)
-- Read `src/templates/fonts-register.ts` for available font families (Lato, Open Sans)
+- Read `src/templates/shared/fonts-register.ts` for available font families (Lato, Open Sans)
 
 **Load React-PDF Documentation**:
 
@@ -84,8 +84,8 @@ Ask user what they want to do:
 
 ### ✅ Always Use:
 
-- **Design tokens**: Import from `@template-core/design-tokens.ts`
-- **Registered fonts**: Use Lato or Open Sans families from `@template-core/fonts-register.ts`
+- **Design tokens**: Import from `@template-core/design-tokens` (path: `src/templates/shared/design-tokens.ts`)
+- **Registered fonts**: Use Lato or Open Sans families from `@template-core/fonts-register` (path: `src/templates/shared/fonts-register.ts`)
 - **StyleSheet.create()**: For performance optimization
 - **Proper component hierarchy**: Document → Page → View/Text
 - **Project conventions**: Follow patterns in existing templates

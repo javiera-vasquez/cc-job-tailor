@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, spyOn } from 'bun:test';
-import { Logger, LoggerConfig, createLogger, loggers } from '../../scripts/shared/logger';
+import { Logger, LoggerConfig, createLogger, loggers } from '@shared/core/logger';
 
 describe('Logger', () => {
   let consoleLogSpy: ReturnType<typeof spyOn>;
@@ -391,13 +391,6 @@ describe('Logger', () => {
       loggers.server.info('test');
       const output = consoleLogSpy.mock.calls[0][0];
       expect(output).toContain('[tailor-server]');
-    });
-
-    it('should provide generate logger', () => {
-      expect(loggers.generate).toBeDefined();
-      loggers.generate.info('test');
-      const output = consoleLogSpy.mock.calls[0][0];
-      expect(output).toContain('[generate-data]');
     });
 
     it('should provide setEnv logger', () => {

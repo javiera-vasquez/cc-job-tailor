@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'bun:test';
-import { COMPACT_MODE, PATHS, TIMEOUTS, LIMITS, PATTERNS } from '../../scripts/shared/config';
+import { COMPACT_MODE, PATHS, TIMEOUTS, LIMITS, PATTERNS } from '@shared/core/config';
 
 /**
  * Note: These tests verify the COMPACT_MODE configuration behavior.

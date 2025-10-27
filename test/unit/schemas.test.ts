@@ -32,7 +32,7 @@ describe('Zod Schema Validation', () => {
       expect(result.success).toBe(true);
     });
 
-    test('accepts null values for all optional sections', () => {
+    test('rejects null values for all sections', () => {
       const dataWithNulls = {
         metadata: null,
         resume: null,
@@ -41,7 +41,7 @@ describe('Zod Schema Validation', () => {
       };
 
       const result = ApplicationDataSchema.safeParse(dataWithNulls);
-      expect(result.success).toBe(true);
+      expect(result.success).toBe(false);
     });
 
     test('rejects when missing required top-level properties', () => {
@@ -131,16 +131,16 @@ describe('Zod Schema Validation', () => {
     });
 
     test('validates individual job focus item properties', () => {
-      const invalidJobFocusItem = [
+      const validJobFocusItem = [
         {
-          primary_area: 'invalid_area', // Not in enum
-          specialties: ['react'],
+          primary_area: 'custom_role', // Any string is now valid
+          specialties: ['react', 'custom_specialty'],
           weight: 1.0,
         },
       ];
 
-      const result = JobFocusSchema.safeParse(invalidJobFocusItem);
-      expect(result.success).toBe(false);
+      const result = JobFocusSchema.safeParse(validJobFocusItem);
+      expect(result.success).toBe(true);
     });
   });
 

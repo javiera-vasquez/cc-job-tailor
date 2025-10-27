@@ -2,59 +2,25 @@ import type { PageSize, Orientation, Bookmark } from '@react-pdf/types';
 import { z } from 'zod';
 
 import {
-  ExpertiseSchema,
-  LanguageSchema,
-  EducationSchema,
-  ContactDetailsSchema,
   ProfessionalExperienceSchema,
   IndependentProjectSchema,
   ResumeSchema as ResumeSchemaZod,
   PrimaryAreaSchema,
-  SpecialtySchema,
-  JobFocusItemSchema,
-  JobFocusSchema,
-  SkillWithPrioritySchema,
-  JobAnalysisRequirementsSchema,
-  JobAnalysisResponsibilitiesSchema,
-  JobAnalysisRoleContextSchema,
-  JobAnalysisCandidateAlignmentSchema,
-  JobAnalysisSectionPrioritiesSchema,
-  JobAnalysisOptimizationActionsSchema,
-  JobAnalysisApplicationInfoSchema,
-  ATSAnalysisSchema,
   JobAnalysisSchema as JobAnalysisSchemaZod,
-  CoverLetterContentSchema,
   CoverLetterSchema as CoverLetterSchemaZod,
   JobDetailsSchema,
   MetadataSchema as MetadataSchemaZod,
   ApplicationDataSchema,
-  TemplateThemeEnum,
 } from './zod/schemas';
+import { TemplateThemeEnum } from './zod/tailor-context-schema';
 import type { TailorContext as TailorContextType } from './zod/tailor-context-schema';
 
 // Inferred types from Zod schemas
-export type Expertise = z.infer<typeof ExpertiseSchema>;
-export type Language = z.infer<typeof LanguageSchema>;
-export type Education = z.infer<typeof EducationSchema>;
-export type ContactDetails = z.infer<typeof ContactDetailsSchema>;
+export type JobAnalysisSchema = z.infer<typeof JobAnalysisSchemaZod>;
 export type ProfessionalExperience = z.infer<typeof ProfessionalExperienceSchema>;
 export type IndependentProject = z.infer<typeof IndependentProjectSchema>;
 export type ResumeSchema = z.infer<typeof ResumeSchemaZod>;
 export type PrimaryArea = z.infer<typeof PrimaryAreaSchema>;
-export type Specialty = z.infer<typeof SpecialtySchema>;
-export type JobFocusItem = z.infer<typeof JobFocusItemSchema>;
-export type JobFocus = z.infer<typeof JobFocusSchema>;
-export type SkillWithPriority = z.infer<typeof SkillWithPrioritySchema>;
-export type JobAnalysisRequirements = z.infer<typeof JobAnalysisRequirementsSchema>;
-export type JobAnalysisResponsibilities = z.infer<typeof JobAnalysisResponsibilitiesSchema>;
-export type JobAnalysisRoleContext = z.infer<typeof JobAnalysisRoleContextSchema>;
-export type JobAnalysisCandidateAlignment = z.infer<typeof JobAnalysisCandidateAlignmentSchema>;
-export type JobAnalysisSectionPriorities = z.infer<typeof JobAnalysisSectionPrioritiesSchema>;
-export type JobAnalysisOptimizationActions = z.infer<typeof JobAnalysisOptimizationActionsSchema>;
-export type JobAnalysisApplicationInfo = z.infer<typeof JobAnalysisApplicationInfoSchema>;
-export type ATSAnalysis = z.infer<typeof ATSAnalysisSchema>;
-export type JobAnalysisSchema = z.infer<typeof JobAnalysisSchemaZod>;
-export type CoverLetterContent = z.infer<typeof CoverLetterContentSchema>;
 export type CoverLetterSchema = z.infer<typeof CoverLetterSchemaZod>;
 export type JobDetails = z.infer<typeof JobDetailsSchema>;
 export type MetadataSchema = z.infer<typeof MetadataSchemaZod>;
@@ -62,14 +28,14 @@ export type ApplicationData = z.infer<typeof ApplicationDataSchema>;
 export type TemplateTheme = z.infer<typeof TemplateThemeEnum>;
 export type TailorContext = TailorContextType;
 
-// TODO: Investigate why these types are not covered by Zod schemas - root cause
-// Additional types not covered by Zod schemas
+/** @todo Investigate why these types are not covered by Zod schemas */
+/** Skill identifier */
 export type Skills = string;
-// Union type for Experience component that can handle both types
+
+/** Union of professional and independent project experience */
 export type ExperienceItem = ProfessionalExperience | IndependentProject;
 
-// ========== DOCUMENT TYPE ==========
-// TYPES FOR A REACT-PDF PAGE - HOC
+/** React-PDF document configuration */
 export type ReactPDFProps = {
   size?: PageSize;
   orientation?: Orientation;
@@ -80,26 +46,26 @@ export type ReactPDFProps = {
   data: ResumeSchema | CoverLetterSchema;
 };
 
-// Component prop types for theme components
+/** Resume component props */
 export type ResumeComponentProps = {
   data?: ResumeSchema;
 };
 
+/** Cover letter component props */
 export type CoverLetterComponentProps = {
   data?: CoverLetterSchema;
 };
 
-// Strict theme component types
+/** Theme component implementation */
 export type ThemeComponents = {
   resume: React.ComponentType<ResumeComponentProps>;
   coverLetter: React.ComponentType<CoverLetterComponentProps>;
 };
 
-/**
- * Document types supported by the application
- */
+/** Supported document types */
 export type DocumentType = 'resume' | 'cover-letter';
 
+/** Theme configuration props */
 export type TailorThemeProps = {
   id: string;
   name: string;
@@ -109,6 +75,7 @@ export type TailorThemeProps = {
   initialize?: () => void | Promise<void>;
 };
 
+/** Schema collection for all document types */
 export type Schemas = {
   metadata: MetadataSchema;
   resume: ResumeSchema;
@@ -116,73 +83,47 @@ export type Schemas = {
   cover_letter: CoverLetterSchema;
 };
 
-// ========== SECTION REGISTRY TYPES ==========
+/** Element-level visibility configuration for granular control within sections */
+export type SectionElementConfig = {
+  id: string;
+  isVisible: (data: ResumeSchema | CoverLetterSchema) => boolean;
+};
 
 /**
- * Generic base configuration for document sections
- *
- * @template TDocType - The document type discriminator (e.g., 'resume' | 'cover-letter')
- * @template TData - The data schema type for this document
- * @template TComponentProps - Additional props for the component (optional)
- *
- * @example
- * ```typescript
- * // Creating a new document section config
- * type InvoiceSectionConfig = SectionConfigBase<
- *   Extract<DocumentType, 'invoice'>,
- *   InvoiceSchema,
- *   { currency?: string }
- * >;
- * ```
+ * Generic section configuration
+ * @template TDocType - Document type discriminator
+ * @template TData - Data schema type
+ * @template TComponentProps - Component props (optional)
  */
 export type SectionConfigBase<
   TDocType extends DocumentType,
   TData,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TComponentProps extends Record<string, any> = Record<string, never>,
 > = {
-  /** Document type discriminator */
   documentType: TDocType;
-
-  /** Unique identifier for the section */
   id: string;
-
-  /** React component to render */
   component: React.ComponentType<{ debug?: boolean } & TComponentProps>;
-
-  /** Function to determine if section should be visible */
   isVisible: (data: TData) => boolean;
-
-  /** Render order (lower numbers render first) */
   order: number;
-
-  /** Optional description for debugging/documentation */
   description?: string;
+  elements?: SectionElementConfig[];
 };
 
-/**
- * Configuration for a resume section
- * Extends base with resume-specific properties
- */
+/** Resume section configuration with optional column placement */
 export type ResumeSectionConfig = SectionConfigBase<
   Extract<DocumentType, 'resume'>,
   ResumeSchema,
-  { resume: ResumeSchema }
+  { resume: ResumeSchema; section?: ResumeSectionConfig }
 > & {
-  /** Column placement in the resume layout (optional - only for templates that use columns) */
   column?: 'left' | 'right' | 'header';
 };
 
-/**
- * Configuration for a cover letter section
- */
+/** Cover letter section configuration */
 export type CoverLetterSectionConfig = SectionConfigBase<
   Extract<DocumentType, 'cover-letter'>,
   CoverLetterSchema,
   { data: CoverLetterSchema }
 >;
 
-/**
- * Union type for all section configurations
- */
+/** Union of all section configurations */
 export type SectionConfig = ResumeSectionConfig | CoverLetterSectionConfig;

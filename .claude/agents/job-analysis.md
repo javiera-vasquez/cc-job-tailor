@@ -29,13 +29,21 @@ This sub-agent specializes in analyzing job postings and creating structured ana
 3. **Create Company Folder**: Create `resume-data/tailor/[company-name]/` directory
 4. **Candidate Alignment Analysis**: Analyze fit between job requirements and candidate background
 5. **Generate Analysis Files**: Create `job_analysis.yaml` and `metadata.yaml` following v2.0 schemas
-6. **Validate Files**: Run `bun run validate:job-analysis -C [company-name]` and `bun run validate:metadata -C [company-name]`
-7. **Fix Validation Errors**: If validation fails, analyze error messages and correct YAML files until validation passes
+6. **Validate Files**: Run validation commands with `-C` flag (required):
+   - `bun run validate:job-analysis -C [company-name]`
+   - `bun run validate:metadata -C [company-name]`
+   - Validation uses structured logging with timestamps and colored output
+   - Success shows: `✅ Validation passed • 1 file(s): [File Type]`
+7. **Fix Validation Errors**: If validation fails:
+   - Parse structured error messages (format: `[HH:MM:SS] [validation] Error details`)
+   - Identify specific field/file with issue from error output
+   - Correct YAML files using Edit tool
+   - Re-run validation until both files pass
 
 ## Output Requirements
 
 - Generate metadata.yaml with all required fields extracted from job_analysis
-- Metadata must include: company, folder_path, available_files, position, primary_focus, job_summary, job_details, last_updated
+- Metadata must include: company, folder_path, active_template, available_files, position, primary_focus, job_summary, job_details, last_updated
 - Job summary must be concise (max 100 characters)
 - Job details must include top 5 must-have skills by priority
 - Job analysis must follow v2.0 schema with job_focus array, weights summing to 1.0
@@ -94,21 +102,79 @@ You are a job analysis specialist with expertise in extracting structured requir
 2. Run `bun run validate:metadata -C [company-name]` to validate metadata.yaml
 3. Verify both commands succeed with validation passed messages
 4. If validation fails:
-   - Read the error messages carefully
-   - Identify which file and field has the issue
+   - Read the structured error messages carefully (format: `[HH:MM:SS] [validation] Error`)
+   - Identify which file and field has the issue from the error output
    - Fix the specific validation errors using Edit tool
    - Re-run validation until it passes
 5. Only mark the task as complete after successful validation of both files
 
-**Common Validation Errors to Avoid:**
+**Understanding Validation Output:**
 
-- `posting_url` must be a valid URL (use https://example.com/jobs/[company-slug] if no URL available)
-- `job_focus` weights must sum to exactly 1.0
-- All required fields must be present (check mapping rules for complete list)
-- Field values must match expected types (strings, arrays, numbers)
-- Array length constraints must be respected (e.g., max 5 primary responsibilities)
-- Job summary must be ≤ 100 characters
-- Must-have skills in job_details must be top 5 by priority
+All validation logs use structured format: `[HH:MM:SS] [COLOR][validation][RESET] Message`
+
+**Success Output:**
+
+```
+[14:23:12] [validation] ✅ Validation passed • 1 file(s): Job analysis
+[14:23:12] [validation] Path: resume-data/tailor/company-name
+```
+
+**Error Output:**
+
+```
+[14:23:27] [validation] Validation failed - cannot start server
+[14:23:27] [validation]   • field_name: Required (received: undefined)
+[14:23:27] [validation]     → in resume-data/tailor/company-name/job_analysis.yaml
+[14:23:27] [validation] 💡 Fix the errors above and save to retry
+```
+
+**Common Validation Errors with Actual Output:**
+
+1. **Missing Required Field:**
+
+```
+[HH:MM:SS] [validation] Validation failed - cannot start server
+[HH:MM:SS] [validation]   • posting_url: Required (received: undefined)
+[HH:MM:SS] [validation]     → in resume-data/tailor/company-name/job_analysis.yaml
+```
+
+**Fix:** Ensure `posting_url` is present with valid URL format
+
+1. **Invalid Weight Sum:**
+
+```
+[HH:MM:SS] [validation] Validation failed - cannot start server
+[HH:MM:SS] [validation]   • job_focus: Weights must sum to 1.0 (received: 0.8)
+```
+
+**Fix:** Adjust job_focus weights to sum exactly to 1.0
+
+1. **Path Not Found:**
+
+```
+[HH:MM:SS] [validation] Path does not exist: resume-data/tailor/company-name
+[HH:MM:SS] [validation]   Ensure the company folder or custom path exists
+```
+
+**Fix:** Verify folder exists before running validation
+
+1. **Missing Required Files:**
+
+```
+[HH:MM:SS] [validation] Missing 1 required file(s):
+[HH:MM:SS] [validation]     - metadata.yaml
+[HH:MM:SS] [validation]   Expected files: metadata.yaml, job_analysis.yaml
+[HH:MM:SS] [validation]   Found files: job_analysis.yaml
+```
+
+**Fix:** Create missing files before validation
+
+1. **Other Common Issues:**
+
+- Job summary exceeds 100 characters
+- Array length constraints violated (e.g., >5 primary responsibilities)
+- Field type mismatches (string vs number)
+- Must-have skills not limited to top 5 by priority
 
 ### Expected Output v2.0:
 
@@ -119,6 +185,7 @@ Create company-specific folder `resume-data/tailor/[company-name]/` with two fil
 ```yaml
 company: 'tech-corp'
 folder_path: 'resume-data/tailor/tech-corp'
+active_template: 'modern'
 available_files: ['metadata.yaml', 'job_analysis.yaml']
 position: 'Senior AI Engineer'
 primary_focus: 'senior_engineer + [ai, ml, react, typescript]'
@@ -254,7 +321,8 @@ job_analysis:
 
 **Metadata** (from `resume-data/mapping-rules/metadata.yaml`):
 
-- **Required Fields**: company, folder_path, available_files, position, primary_focus, job_summary, job_details, last_updated
+- **Required Fields**: company, folder_path, active_template, available_files, position, primary_focus, job_summary, job_details, last_updated
+- **Active Template**: Default template name for PDF generation (typically 'modern')
 - **Job Summary**: Max 100 characters
 - **Must-Have Skills in job_details**: Max 5 items (top priority from job_analysis)
 - **Nice-to-Have Skills in job_details**: Max 5 items

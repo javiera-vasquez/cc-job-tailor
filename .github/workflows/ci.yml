@@ -39,8 +39,24 @@ jobs:
       - name: Run unit tests
         run: bun test
 
-      - name: Test generate-data command
-        run: bun run generate-data -C tech-corp
+      - name: Test Tailor Context and write pipeline
+        run: bun run set-env -C tech-corp
 
-      - name: Test generate-pdf command
+      - name: Test YAML to ZOD validation:all pipeline
+        run: bun run validate:all -C tech-corp
+
+      - name: Test YAML to ZOD validation:metadata pipeline
+        run: bun run validate:metadata -C tech-corp
+
+      - name: Test YAML to ZOD validation:job-analysis pipeline
+        run: bun run validate:job-analysis -C tech-corp
+
+      - name: Test YAML to ZOD validation:resume pipeline
+        run: bun run validate:resume -C tech-corp
+
+      - name: Test YAML to ZOD validation:cover-letter pipeline
+        run: bun run validate:cover-letter -C tech-corp
+
+      - name: Test PDF generation pipeline
         run: bun run generate-pdf -C tech-corp
+        # run: bun run generate-pdf -P resume-data/tailor/tech-corp

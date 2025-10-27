@@ -1,13 +1,8 @@
-version: '2.0.0'
-metadata:
-  last_updated: '2025-10-01'
-  tailored_for: 'Tech-Corp - Senior Frontend Engineer - Web'
-
 resume:
-  name: 'John Doe'
+  name: "Hi Github, I'm tailor"
   profile_picture: 'https://i.guim.co.uk/img/media/a23aeb1f7ff20bb80f68852da17743b0e557f8ed/0_224_3504_2102/master/3504.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=9e9a99e479ee60270b69ede4d869b20f'
   title: 'Senior Frontend Engineer | UI/UX Advocate'
-  summary: 'Passionate Senior Frontend Engineer with a decade of experience building scalable applications serving millions of users daily. Expert in React, TypeScript, and modern frontend architecture, with proven impact delivering APIs handling 1M+ requests/day and leading platform migrations that improved performance by 30%. Dedicated to best practices, component-driven development, and exceptional user experience across cross-functional teams.'
+  summary: 'Senior React Engineer with 10+ years leading scalable frontend initiatives and transforming legacy systems. Expert in TypeScript, modern component architecture, and design systems. Proven track record architecting products for millions of users and fostering technical excellence across large cross-functional teams.'
 
   contact:
     phone: '+1 (555) 555-5555'
@@ -25,6 +20,8 @@ resume:
         - 'JavaScript (ES6+)'
         - 'HTML5 & CSS3'
         - 'Tailwind CSS'
+        - 'Vite'
+        - 'React-PDF'
     - resume_title: 'Backend Development'
       skills:
         - 'Node.js'
@@ -32,27 +29,37 @@ resume:
         - 'Python'
         - 'FastAPI'
         - 'PostgreSQL'
+        - 'MongoDB'
+        - 'REST APIs'
+        - 'GraphQL'
+    - resume_title: 'Quality Assurance & Testing'
+      skills:
+        - 'Cypress'
+        - 'Jest'
+        - 'Playwright'
+        - 'E2E Testing'
+        - 'CI/CD'
+        - 'Test Automation'
+        - 'Zod Schema Validation'
+        - 'GitHub Actions'
     - resume_title: 'Systems & Architecture'
       skills:
         - 'Microservices Architecture'
-        - 'REST APIs'
         - 'Docker'
         - 'Kubernetes'
-    - resume_title: 'Version Control'
-      skills:
-        - 'Git'
-        - 'GitHub'
-        - 'GitLab'
+        - 'Railway-Oriented Pipelines'
+        - 'Functional Composition'
+        - 'Result Types & Error Propagation'
 
   skills:
     - 'Cross-functional Teamwork'
     - 'Agile/Scrum Methodologies'
     - 'Analytical Thinking'
+    - 'Pattern Recognition'
     - 'Strategic Planning'
     - 'Technical Documentation'
     - 'Stakeholder Communication'
     - 'Mentorship & Coaching'
-    - 'Pattern Recognition'
     - 'Clear Code Commenting'
 
   languages:
@@ -103,13 +110,13 @@ resume:
     - name: 'Claude Code Job Tailor'
       location: 'Open Source'
       duration: '2025'
-      description: 'An AI-powered job application assistant that treats your resume as code, automatically tailoring it for specific roles by analyzing job descriptions and selecting the most relevant skills and achievements.'
-      url: 'https://github.com/javiera-vasquez/cc-job-tailor'
+      description: 'Free, open-source resume optimization platform that analyzes job postings and generates tailored PDF resumes using AI-driven content selection and specialty-based scoring.'
+      url: 'https://github.com/javiera-vasquez/claude-code-job-tailor'
       achievements:
-        - 'Developed a data-driven system to manage resume content in structured YAML files.'
-        - 'Created a PDF generation service using @react-pdf/renderer to produce professional, ATS-friendly resumes.'
-        - 'Implemented a live preview server with hot reload using Bun.js to facilitate rapid template development.'
-      impact: 'Automates the time-consuming process of resume customization, enabling users to generate optimized applications in minutes instead of hours and improving job application effectiveness.'
+        - 'Single-source YAML data model: Automatically selects achievements via specialty-matched scoring; supports 4+ resume versions.'
+        - 'Live development workflow: Real-time preview, file watching, auto-validation, collaborative editing with instant feedback.'
+        - 'Weighted job analysis: Extracts and ranks requirements (1-10 priority) with AI candidate alignment scoring.'
+      impact: 'Generates ATS-optimized resumes in under 60 seconds with zero paywalls; eliminates manual tailoring through intelligent content selection, enabling developers to apply strategically with higher relevance.'
 
   education:
     - institution: 'California Institute of Technology'

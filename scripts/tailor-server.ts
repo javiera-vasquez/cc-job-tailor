@@ -1,134 +1,77 @@
 import { spawn, type ChildProcess } from 'child_process';
-import { watch, existsSync, type FSWatcher } from 'fs';
-import { load } from 'js-yaml';
-import { sep } from 'path';
-import { validateTailorContext, type TailorContext } from '../src/zod/tailor-context-schema';
-import { validateApplicationData } from '../src/zod/validation';
-import { getCompanyFolderPath, loadTailoredData } from './shared/company-loader';
-import { handleValidationError } from './shared/validation-error-handler';
-import { PATHS, PATTERNS, SCRIPTS, TIMEOUTS, COMPACT_MODE } from './shared/config';
-import { loggers } from './shared/logger';
+import { watch, type FSWatcher } from 'fs';
+import { basename } from 'path';
+import { pipe } from 'remeda';
+import { match } from 'ts-pattern';
+import { generateApplicationData } from '@shared/data/data-generation';
+import { chain, tryCatch } from '@shared/core/functional-utils';
+import { validateAndSetTailorEnvPipeline } from '@shared/validation/tailor-setup-pipeline';
+import { validateYamlFilesAgainstSchemasPipeline } from '@shared/validation/yaml-validation';
+import type { Result, SetContextSuccess } from '@shared/validation/types';
+import { parseCliArgs, validateRequiredArg } from '@shared/cli/cli-args';
+import {
+  PATTERNS,
+  SCRIPTS,
+  TIMEOUTS,
+  COMPACT_MODE,
+  TAILOR_YAML_FILES_AND_SCHEMAS,
+} from '@shared/core/config';
+import { PathHelpers } from '@shared/core/path-helpers';
+import { loggers } from '@shared/core/logger';
+import { handlePipelineError, handlePipelineSuccess } from '@shared/handlers/result-handlers';
+
+/**
+ * Enhanced dev server with tailor data watching
+ * Usage: bun run tailor-server -C company-name
+ *
+ * This script provides:
+ * - Type safety for file operations and process management
+ * - Intelligent company-aware file watching
+ * - Automatic data regeneration on YAML changes
+ * - Integration with Bun's native hot reload
+ */
+
+const USAGE_MESSAGE = 'Usage: bun run tailor-server -C company-name';
+
+// Parse and validate command-line arguments
+const values = parseCliArgs(
+  {
+    options: {
+      C: {
+        type: 'string',
+        short: 'C',
+        required: true,
+      },
+    },
+  },
+  loggers.server,
+  USAGE_MESSAGE,
+);
+
+const companyName = validateRequiredArg(values.C, 'Company name', loggers.server, USAGE_MESSAGE);
 
 interface WatcherState {
   devServer: ChildProcess;
   fileWatcher?: FSWatcher;
-  activeCompany: string | null;
+  activeCompany: string;
   debounceTimer?: NodeJS.Timeout;
   currentFilename?: string | null;
 }
 
 /**
  * Enhanced dev server with tailor data watching
- *
- * This TypeScript version provides:
- * - Type safety for file operations and process management
- * - Intelligent company-aware file watching
- * - Automatic data regeneration on YAML changes
- * - Integration with Bun's native hot reload
  */
 class EnhancedDevServer {
   private state: WatcherState;
-  private readonly tailorDir = PATHS.TAILOR_BASE;
-  private readonly contextPath = PATHS.CONTEXT_FILE;
   private readonly compactMode = COMPACT_MODE.ENABLED;
+  private readonly filesToWatch = TAILOR_YAML_FILES_AND_SCHEMAS;
+  private readonly debounceDelay = TIMEOUTS.FILE_WATCH_DEBOUNCE;
 
-  constructor() {
+  constructor(companyName: string) {
     this.state = {
       devServer: this.createDevServer(),
-      activeCompany: null,
+      activeCompany: companyName,
     };
-  }
-
-  /**
-   * Get the active company from tailor context file
-   */
-  private async getActiveCompany(): Promise<string | null> {
-    if (!existsSync(this.contextPath)) {
-      if (!this.compactMode) {
-        loggers.server.warn('No tailor context found - watching all companies');
-      }
-      return null;
-    }
-
-    try {
-      const contextFile = Bun.file(this.contextPath);
-      const contextText = await contextFile.text();
-      const context = load(contextText) as TailorContext;
-
-      // Validate tailor context
-      const validation = validateTailorContext(context);
-
-      if (!validation.success) {
-        loggers.server.error('Invalid tailor context', null, {
-          errors: validation.errors,
-        });
-        if (!this.compactMode) {
-          loggers.server.warn('Watching all companies due to validation errors');
-        }
-        return null;
-      }
-
-      // Show warnings if any (always show warnings, even in compact mode)
-      if (validation.warnings && validation.warnings.length > 0) {
-        loggers.server.warn('Tailor context warnings', {
-          warnings: validation.warnings,
-        });
-      }
-
-      if (!validation.data?.active_company) {
-        if (!this.compactMode) {
-          loggers.server.warn('No active company in tailor context');
-        }
-        return null;
-      }
-
-      return validation.data.active_company;
-    } catch (error) {
-      const err = error instanceof Error ? error : new Error(String(error));
-      if (!this.compactMode) {
-        loggers.server.warn('Could not read tailor context', {
-          error: err.message,
-          stack: err.stack,
-        });
-      }
-      return null;
-    }
-  }
-
-  /**
-   * Validate company data before starting the server
-   */
-  private async validateCompanyData(companyName: string): Promise<void> {
-    if (!this.compactMode) {
-      loggers.server.info(`Validating data for company: ${companyName}`);
-    }
-
-    try {
-      const companyPath = getCompanyFolderPath(companyName);
-
-      if (!companyPath) {
-        loggers.server.error(
-          `Company folder not found for: ${companyName}`,
-          new Error('Company folder not found'),
-        );
-        throw new Error(`Company folder not found: ${companyName}`);
-      }
-
-      // Load and validate the tailored data
-      const applicationData = await loadTailoredData(companyPath);
-      validateApplicationData(applicationData);
-
-      if (!this.compactMode) {
-        loggers.server.success('Application data validation passed');
-      }
-    } catch (error) {
-      handleValidationError(error, {
-        context: 'tailor-server',
-        companyName,
-        exitOnError: true,
-        showHelpHint: true,
-      });
-    }
   }
 
   /**
@@ -152,241 +95,37 @@ class EnhancedDevServer {
     return devServer;
   }
 
-  /**
-   * Extract company name from file path
-   */
-  private extractCompanyFromPath(filename: string): string | null {
-    const parts = filename.split(sep);
-    return parts.length >= 2 ? parts[0] || null : null;
-  }
+  public start(): void {
+    // Validate environment using functional pipeline
+    const result = validateAndSetTailorEnvPipeline(this.state.activeCompany, this.filesToWatch);
 
-  /**
-   * Check if file change should trigger regeneration
-   */
-  private shouldProcessChange(filename: string | null, companyFromPath: string | null): boolean {
-    if (!filename || !PATTERNS.YAML.test(filename)) {
-      return false;
-    }
-
-    if (!companyFromPath) {
-      return false;
-    }
-
-    // If we have an active company, only process changes for that company
-    if (this.state.activeCompany && companyFromPath !== this.state.activeCompany) {
-      return false;
-    }
-
-    return true;
-  }
-
-  /**
-   * Regenerate data (verbose mode - shows all subprocess output)
-   */
-  private async regenerateDataVerbose(companyName: string): Promise<void> {
-    loggers.server.loading(`Regenerating data for company: ${companyName}`);
-
-    return new Promise((resolve, reject) => {
-      try {
-        const generateData = spawn('bun', ['run', SCRIPTS.GENERATE_DATA, '-C', companyName], {
-          stdio: 'inherit', // Let subprocess errors flow through naturally
-          cwd: process.cwd(),
-        });
-
-        generateData.on('close', (code) => {
-          if (code === 0) {
-            loggers.server.success('Data regenerated successfully');
-            loggers.server.info('Hot reload will pick up changes automatically');
-            resolve();
-          } else {
-            // Subprocess already displayed the error - just show recovery hint
-            loggers.server.info(
-              '💡 Fix the data issues in the tailor files and save again to retry',
-            );
-            loggers.server.info(
-              'File watcher is still active - auto-regeneration will resume on next save',
-            );
-
-            // Don't reject - just continue watching
-            // This keeps the dev server running even with validation failures
-            resolve();
-          }
-        });
-
-        generateData.on('error', (error) => {
-          loggers.server.error('Error spawning regeneration process', error);
-          reject(error);
-        });
-      } catch (error) {
-        loggers.server.error('Error regenerating data', error);
-        reject(error);
-      }
-    });
-  }
-
-  /**
-   * Regenerate data (compact mode - minimal output with subprocess capture)
-   */
-  private async regenerateDataCompact(companyName: string, filename: string | null): Promise<void> {
-    const startTime = Date.now();
-    const displayFilename = filename ? filename.split(sep).pop() || filename : 'file';
-
-    return new Promise((resolve, reject) => {
-      try {
-        const generateData = spawn('bun', ['run', SCRIPTS.GENERATE_DATA, '-C', companyName], {
-          stdio: ['ignore', 'pipe', 'pipe'], // Capture stdout and stderr
-          cwd: process.cwd(),
-          env: {
-            ...process.env,
-            LOG_LEVEL: 'error', // Suppress subprocess info logs
-          },
-        });
-
-        let errorOutput = '';
-        let stdoutOutput = '';
-
-        // Capture stderr for errors
-        generateData.stderr?.on('data', (data: Buffer) => {
-          errorOutput += data.toString();
-        });
-
-        // Capture stdout (in case there are errors logged to stdout)
-        generateData.stdout?.on('data', (data: Buffer) => {
-          stdoutOutput += data.toString();
-        });
-
-        generateData.on('close', (code) => {
-          const duration = ((Date.now() - startTime) / 1000).toFixed(1);
-
-          if (code === 0) {
-            loggers.server.info(`✅ ${displayFilename} → Regenerated (${duration}s)`);
-            resolve();
-          } else {
-            loggers.server.info(`❌ ${displayFilename} → Failed (${duration}s)`);
-
-            // Display captured error output
-            const combinedOutput = (errorOutput + stdoutOutput).trim();
-            if (combinedOutput) {
-              loggers.server.info(combinedOutput);
-            }
-
-            loggers.server.info('💡 Fix the errors above and save to retry\n');
-
-            // Don't reject - keep the watcher running
-            resolve();
-          }
-        });
-
-        generateData.on('error', (error) => {
-          const duration = ((Date.now() - startTime) / 1000).toFixed(1);
-          loggers.server.error(`❌ ${displayFilename} → Error (${duration}s)`, error);
-          reject(error);
-        });
-      } catch (error) {
-        const duration = ((Date.now() - startTime) / 1000).toFixed(1);
-        loggers.server.error(`❌ ${displayFilename} → Error (${duration}s)`, error);
-        reject(error);
-      }
-    });
-  }
-
-  /**
-   * Handle file system change events with debouncing
-   */
-  private handleFileChange(eventType: string, filename: string | null): void {
-    const companyFromPath = filename ? this.extractCompanyFromPath(filename) : null;
-
-    if (!this.shouldProcessChange(filename, companyFromPath)) {
+    // Early exit for validation errors
+    if (!result.success) {
+      this.onValidationError(result.error, result.details, result.originalError, result.filePath);
       return;
     }
 
-    // At this point, companyFromPath is guaranteed to be non-null because shouldProcessChange checks for it
-    if (!companyFromPath) {
-      return; // This should never happen due to shouldProcessChange logic, but satisfies TypeScript
-    }
-
-    // Store filename for compact mode logging
-    this.state.currentFilename = filename;
-
-    // Clear existing debounce timer
-    if (this.state.debounceTimer) {
-      clearTimeout(this.state.debounceTimer);
-    }
-
-    const debounceDelay = TIMEOUTS.FILE_WATCH_DEBOUNCE;
-
-    // If debouncing is disabled (0ms), process immediately
-    if (debounceDelay === 0) {
-      if (!this.compactMode) {
-        loggers.watcher.info(`Tailor data changed: ${filename} (no debounce)`);
-      }
-      this.processFileChange(companyFromPath, filename);
-      return;
-    }
-
-    // Otherwise, debounce the change
-    if (!this.compactMode) {
-      loggers.watcher.debug(
-        `File change detected: ${filename} (debouncing for ${debounceDelay}ms)`,
-      );
-    }
-
-    this.state.debounceTimer = setTimeout(() => {
-      if (!this.compactMode) {
-        loggers.watcher.info(`Tailor data changed: ${filename}`);
-      }
-      this.processFileChange(companyFromPath, filename);
-    }, debounceDelay);
+    // Initialize services with sequential side effects
+    this.createFileWatcher(PathHelpers.getCompanyPath(this.state.activeCompany));
+    this.setupShutdownHandlers();
+    this.onServerReady(result.data);
   }
 
-  /**
-   * Process file change and regenerate data
-   */
-  private async processFileChange(companyName: string, filename: string | null): Promise<void> {
-    try {
-      if (this.compactMode) {
-        await this.regenerateDataCompact(companyName, filename);
-      } else {
-        await this.regenerateDataVerbose(companyName);
-      }
-    } catch {
-      // Error already logged in regenerateData method
-      // File watcher continues running regardless of validation failures
-      if (!this.compactMode) {
-        loggers.watcher.info('File watcher remains active for continued development');
-      }
-    }
-  }
+  private createFileWatcher(directoryPath: string): void {
+    const result = tryCatch(() => {
+      const handler = this.createFileChangeHandler(this.state.activeCompany);
+      return watch(directoryPath, { recursive: true }, handler);
+    }, 'Could not set up file watcher');
 
-  /**
-   * Set up file system watcher for tailor directory
-   */
-  private setupFileWatcher(): void {
-    if (!existsSync(this.tailorDir)) {
-      if (!this.compactMode) {
-        loggers.watcher.warn('Tailor directory not found - only basic hot reload active');
-      }
-      return;
-    }
-
-    try {
-      this.state.fileWatcher = watch(
-        this.tailorDir,
-        { recursive: true },
-        this.handleFileChange.bind(this),
-      );
-
-      if (!this.compactMode) {
-        loggers.watcher.info('File watcher active for resume-data/tailor/');
-        loggers.watcher.info('Edit any YAML file in tailor folders to trigger auto-regeneration');
-      }
-    } catch (error) {
-      const err = error instanceof Error ? error : new Error(String(error));
-      loggers.watcher.warn('Could not set up file watcher', {
-        error: err.message,
-        stack: err.stack,
-      });
-    }
+    match(result)
+      .with({ success: true }, (r) => {
+        this.state.fileWatcher = r.data;
+        if (!this.compactMode) loggers.server.info('File watcher initialized successfully');
+      })
+      .with({ success: false }, (e) => {
+        loggers.server.error('Failed to create file watcher', e.error);
+      })
+      .exhaustive();
   }
 
   /**
@@ -417,61 +156,199 @@ class EnhancedDevServer {
   }
 
   /**
-   * Start the enhanced development server
+   * Creates file change handler with validation and debouncing.
+   *
+   * Returns event handler function that:
+   * 1. Validates file change event
+   * 2. Updates state with current filename
+   * 3. Clears existing debounce timer
+   * 4. Triggers immediate or debounced regeneration
+   *
+   * @param {string} companyName - Company name for regeneration context
+   * @returns {(eventType: string, filename: string | null) => void} Handler function
    */
-  public async start(): Promise<void> {
-    if (!this.compactMode) {
-      loggers.server.info('Starting enhanced dev server with tailor data watching');
-    }
-
-    // Get active company context
-    this.state.activeCompany = await this.getActiveCompany();
-
-    if (this.state.activeCompany) {
-      if (!this.compactMode) {
-        loggers.server.info(`Watching tailor data for active company: ${this.state.activeCompany}`);
+  private createFileChangeHandler(companyName: string) {
+    return (eventType: string, filename: string | null) => {
+      // Validate early and return if invalid
+      const validation = this.validateFileChangeEvent(eventType, filename);
+      if (!validation.success) {
+        return;
       }
 
-      // Validate company data before starting the server
-      await this.validateCompanyData(this.state.activeCompany);
-    } else {
-      if (!this.compactMode) {
-        loggers.server.info('Watching all tailor data changes');
-        loggers.server.warn('Skipping initial validation - no active company specified');
+      const validFilename = validation.data;
+
+      // Store for logging
+      this.state.currentFilename = validFilename;
+
+      // Clear existing debounce timer
+      if (this.state.debounceTimer) {
+        clearTimeout(this.state.debounceTimer);
       }
+
+      // Execute based on debounce configuration
+      if (this.debounceDelay === 0) {
+        this.regenerateDataWithPipeline(companyName, validFilename);
+      } else {
+        this.state.debounceTimer = setTimeout(() => {
+          this.regenerateDataWithPipeline(companyName, validFilename);
+        }, this.debounceDelay);
+      }
+    };
+  }
+
+  /**
+   * Validates file change event to ensure it's a YAML file worth processing.
+   *
+   * Pure function that checks if filename exists and matches YAML pattern.
+   * Returns Result type for functional composition.
+   *
+   * @param {string} eventType - File system event type (change, rename, etc.)
+   * @param {string | null} filename - Name of changed file
+   * @returns {Result<string>} Success with filename if valid YAML, error otherwise
+   */
+  private validateFileChangeEvent(eventType: string, filename: string | null): Result<string> {
+    if (!filename || !PATTERNS.YAML.test(filename)) {
+      return { success: false, error: 'Ignored: not a YAML file' };
     }
+    return { success: true, data: filename };
+  }
 
-    // Set up file watcher
-    this.setupFileWatcher();
+  /**
+   * Regenerate data using functional validation and generation pipelines.
+   *
+   * Uses railway-oriented programming to compose validation and generation operations.
+   * Pipeline flow:
+   * 1. Validates all required company files exist
+   * 2. Loads and validates YAML files against schemas
+   * 3. Generates application data TypeScript module
+   * 4. Handles success/error outcomes via pattern matching
+   *
+   * @param {string} companyName - Name of the company for context
+   * @param {string | null} filename - Changed filename for logging
+   * @returns {void}
+   */
+  private regenerateDataWithPipeline(companyName: string, filename: string | null): void {
+    const startTime = Date.now();
+    const displayFilename = filename ? basename(filename) : 'file';
 
-    // Set up shutdown handlers
-    this.setupShutdownHandlers();
+    return pipe(
+      validateYamlFilesAgainstSchemasPipeline(companyName, this.filesToWatch),
+      (validationResult) =>
+        chain(validationResult, (validatedFiles) =>
+          generateApplicationData(companyName, validatedFiles),
+        ),
+      (r) => {
+        const duration = ((Date.now() - startTime) / 1000).toFixed(1);
+        return match(r)
+          .with({ success: true }, () => this.onRegenerationSuccess(displayFilename, duration))
+          .with({ success: false }, (error) =>
+            this.onRegenerationError(error, displayFilename, duration),
+          )
+          .exhaustive();
+      },
+    );
+  }
 
-    // Display appropriate startup message
-    if (this.compactMode) {
-      const company = this.state.activeCompany || 'all companies';
-      const debounce = TIMEOUTS.FILE_WATCH_DEBOUNCE;
-      loggers.server.info(
-        `🚀 Tailor server ready • Watching: ${company} • Debounce: ${debounce}ms`,
-      );
-    } else {
-      loggers.server.success('Enhanced dev server is running', {
-        features: {
-          bunHotReload: true,
-          tailorDataWatching: true,
-          autoDataRegeneration: true,
-        },
-      });
-    }
+  /**
+   * Handles successful regeneration by logging appropriate success message.
+   *
+   * Displays compact (emoji + filename) or verbose (detailed success) output
+   * based on compact mode setting.
+   *
+   * @param {string} displayFilename - Filename for display in compact mode
+   * @param {string} duration - Operation duration for display
+   * @returns {void}
+   */
+  private onRegenerationSuccess(displayFilename: string, duration: string): void {
+    match(this.compactMode)
+      .with(true, () => {
+        loggers.server.info(`✅ ${displayFilename} → Regenerated (${duration}s)`);
+      })
+      .with(false, () => {
+        loggers.server.success('Data regenerated successfully');
+        loggers.server.info(`✅ ${displayFilename} → Regenerated (${duration}s)`);
+      })
+      .exhaustive();
+  }
+
+  /**
+   * Handles regeneration errors by determining error stage and logging appropriately.
+   *
+   * Uses shared error handler with compact mode for hot reload scenarios.
+   * Determines pipeline stage based on error context (validation vs generation).
+   * Server continues running after logging error.
+   *
+   * @param {Extract<Result<unknown>, { success: false }>} error - Failed result from validation or generation
+   * @param {string} displayFilename - Filename for display in compact mode
+   * @param {string} duration - Operation duration for display
+   * @returns {void}
+   */
+  private onRegenerationError(
+    error: Extract<Result<unknown>, { success: false }>,
+    displayFilename: string,
+    duration: string,
+  ): void {
+    // Determine stage based on error context
+    // Validation errors typically have filePath, generation errors don't
+    const stage: 'Validation' | 'Generation' = 'filePath' in error ? 'Validation' : 'Generation';
+
+    handlePipelineError(error, {
+      logger: loggers.server,
+      shouldExit: false,
+      compactMode: this.compactMode,
+      displayFilename,
+      duration,
+      stage,
+    });
+  }
+
+  /**
+   * Handles validation errors by logging details and exiting the process.
+   *
+   * Uses shared error handler for consistent formatting with specialized
+   * ZodError handling. Process exits with code 1 after logging.
+   *
+   * @param {string} error - Primary error message
+   * @param {string} [details] - Additional error details
+   * @param {unknown} [originalError] - Original error object (checked for ZodError)
+   * @param {string} [filePath] - Path to file where error occurred
+   * @returns {void} Exits process with code 1
+   */
+  private onValidationError(
+    error: string,
+    details?: string,
+    originalError?: unknown,
+    filePath?: string,
+  ): void {
+    handlePipelineError(
+      { success: false, error, details, originalError, filePath },
+      {
+        logger: loggers.server,
+        shouldExit: true,
+      },
+    );
+  }
+
+  /**
+   * Logs server ready message with context information.
+   *
+   * Uses shared success handler to display startup information including
+   * company, files, position, and focus area. Supports both compact and
+   * verbose modes.
+   *
+   * @param {SetContextSuccess['data']} data - Context setup success data
+   * @returns {void}
+   */
+  private onServerReady(data: SetContextSuccess['data']): void {
+    handlePipelineSuccess(data, {
+      logger: loggers.server,
+      shouldExit: false,
+      withContextMode: true,
+      additionalInfo: `Debounce: ${this.debounceDelay}ms`,
+    });
   }
 }
 
-// Start the enhanced dev server
-const devServer = new EnhancedDevServer();
-
-try {
-  await devServer.start();
-} catch (error) {
-  loggers.server.error('Failed to start enhanced dev server', error);
-  process.exit(1);
-}
+// Start the enhanced dev server with the specified company
+const devServer = new EnhancedDevServer(companyName);
+devServer.start();
