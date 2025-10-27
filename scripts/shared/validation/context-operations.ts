@@ -129,6 +129,7 @@ export const generateAndWriteTailorContext = (
           position: metadata.position,
           primaryFocus: metadata.primary_focus,
           timestamp: ts,
+          activeTemplate: metaWithTemplate.active_template,
         },
       }
     : write;

@@ -1,5 +1,6 @@
 import type { z } from 'zod';
 import type { CompanyFileValue } from '@shared/core/config';
+import type { TemplateTheme } from '@types';
 
 // ============================================================================
 // Core Result Types
@@ -77,6 +78,7 @@ export type SetContextSuccess = SuccessResult<{
   position: string;
   primaryFocus: string;
   timestamp: string;
+  activeTemplate: TemplateTheme;
 }>;
 
 /**

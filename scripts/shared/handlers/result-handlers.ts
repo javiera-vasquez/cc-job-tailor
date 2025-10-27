@@ -208,6 +208,7 @@ const provideTailorEnvLogs = (data: SetContextSuccess['data'], logger: Logger): 
 
   logger.info(`Tailor context created • ${data.company}`);
   logger.info(`   -Path: ${data.path}`);
+  logger.info(`   -Active template: ${data.activeTemplate}`);
   logger.info(`   -Position: ${data.position || 'Not specified'}`);
   logger.info(`   -Focus: ${data.primaryFocus || 'Not specified'}`);
   logger.info(`   -Files: ${filesList}`);

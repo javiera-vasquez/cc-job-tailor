@@ -2,7 +2,7 @@ import { pipe } from 'remeda';
 import { match } from 'ts-pattern';
 
 import { validateAndSetTailorEnvPipeline } from '@shared/validation/tailor-setup-pipeline';
-import type { YamlFilesAndSchemasToWatch } from '@shared/validation/types';
+import type { YamlFilesAndSchemasToWatch, SetContextSuccess } from '@shared/validation/types';
 import { parseCliArgs, validateRequiredArg } from '@shared/cli/cli-args';
 import { loggers } from '@shared/core/logger';
 import { TAILOR_YAML_FILES_AND_SCHEMAS } from '@shared/core/config';
@@ -82,14 +82,7 @@ const initTailorContext = (
  * @param {string} data.timestamp - ISO timestamp of context creation
  * @returns {void} Exits process with code 0
  */
-const onSuccess = (data: {
-  company: string;
-  path: string;
-  availableFiles: string[];
-  position: string;
-  primaryFocus: string;
-  timestamp: string;
-}): void => {
+const onSuccess = (data: SetContextSuccess['data']): void => {
   handlePipelineSuccess(data, {
     logger: loggers.setEnv,
     shouldExit: true,
