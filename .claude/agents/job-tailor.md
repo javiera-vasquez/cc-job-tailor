@@ -46,8 +46,16 @@ This sub-agent specializes in analyzing job applications and creating tailored r
     - `resume.yaml` - tailored resume with specialty-matched content
     - `job_analysis.yaml` - structured analysis with job_focus array
     - `cover_letter.yaml` - personalized cover letter
-12. **Validate Generated Data**: Run `bun run generate-data -C [company-name]` to verify schema compliance
-13. **Fix Validation Errors**: If validation fails, analyze error messages and correct issues in YAML files
+12. **Validate Generated Data**: Run validation commands with `-C` flag (required):
+    - `bun run validate:all -C [company-name]` to validate all files
+    - Or validate individually: `validate:metadata`, `validate:job-analysis`, `validate:resume`, `validate:cover-letter`
+    - Validation uses structured logging with timestamps and colored output
+    - Success shows: `✅ Validation passed • 4 file(s): Metadata, Job analysis, Resume, Cover letter`
+13. **Fix Validation Errors**: If validation fails:
+    - Parse structured error messages (format: `[HH:MM:SS] [validation] Error details`)
+    - Identify specific field/file with issue from error output
+    - Correct YAML files using Edit tool
+    - Re-run validation until all files pass
 14. **Quality Assurance**: Verify content accuracy, array constraints (weights sum to 1.0), and validation rules only after successful validation
 
 ## Output Requirements
@@ -137,22 +145,122 @@ You MUST follow the transformation rules defined in `resume-data/mapping-rules/r
 
 **CRITICAL**: Before completing any job tailoring task, you MUST:
 
-1. Run `bun run generate-data -C [company-name]` to validate all generated YAML files
-2. Verify the command succeeds with "✅ Application data validation passed"
+1. Run `bun run validate:all -C [company-name]` to validate all generated YAML files
+2. Verify the command succeeds with validation passed messages for all files
 3. If validation fails:
-   - Read the error messages carefully
-   - Identify which file and field has the issue
-   - Fix the specific validation errors (common issues: invalid URLs, missing required fields, incorrect structure)
+   - Read the structured error messages carefully (format: `[HH:MM:SS] [validation] Error`)
+   - Identify which file and field has the issue from the error output
+   - Fix the specific validation errors using Edit tool
    - Re-run validation until it passes
-4. Only mark the task as complete after successful validation
+4. Only mark the task as complete after successful validation of all files
 
-**Common Validation Errors to Avoid:**
+**Understanding Validation Output:**
 
-- `posting_url` must be a valid URL (use https://example.com/jobs/[company-slug] if no URL available)
-- `cover_letter.job_focus` must be inside the `cover_letter` object, not at root level
-- `job_focus` weights must sum to exactly 1.0
-- All required fields must be present (check mapping rules for complete list)
-- Field values must match expected types (strings, arrays, numbers)
+All validation logs use structured format: `[HH:MM:SS] [COLOR][validation][RESET] Message`
+
+**Success Output:**
+
+```
+[14:23:05] [validation] ✅ Validation passed • 4 file(s): Metadata, Job analysis, Resume, Cover letter
+[14:23:05] [validation] Path: resume-data/tailor/tech-corp
+```
+
+**Error Output:**
+
+```
+[14:23:27] [validation] Validation failed - cannot start server
+[14:23:27] [validation]   • field_name: Required (received: undefined)
+[14:23:27] [validation]     → in resume-data/tailor/company-name/file.yaml
+[14:23:27] [validation] 💡 Fix the errors above and save to retry
+```
+
+**Common Validation Errors with Actual Output:**
+
+1. **Missing Required Flag:**
+
+```
+[14:22:56] [validation] Path option validation failed
+[14:22:56] [validation]   Either -C (company name) or -P (path) must be provided
+[14:22:56] [validation] 💡 Fix the errors above and save to retry
+```
+
+**Fix:** Always include `-C [company-name]` flag when running validation
+
+2. **Path Does Not Exist:**
+
+```
+[14:23:35] [validation] Path does not exist: resume-data/tailor/nonexistent-company
+[14:23:35] [validation]   Ensure the company folder or custom path exists
+[14:23:35] [validation] 💡 Fix the errors above and save to retry
+```
+
+**Fix:** Verify company folder exists before validation
+
+3. **Missing Required Files:**
+
+```
+[14:23:40] [validation] Missing 1 required file(s):
+[14:23:40] [validation]     - resume.yaml
+[14:23:40] [validation]   Expected files: metadata.yaml, job_analysis.yaml, resume.yaml, cover_letter.yaml
+[14:23:40] [validation]   Found files: metadata.yaml, job_analysis.yaml, cover_letter.yaml
+[14:23:40] [validation] 💡 Fix the errors above and save to retry
+```
+
+**Fix:** Create all four required files before validation
+
+4. **Missing Required Field:**
+
+```
+[14:23:27] [validation] Validation failed - cannot start server
+[14:23:27] [validation]   • posting_url: Required (received: undefined)
+[14:23:27] [validation]     → in resume-data/tailor/company-name/job_analysis.yaml
+[14:23:27] [validation] 💡 Fix the errors above and save to retry
+```
+
+**Fix:** Ensure `posting_url` is present (use https://example.com/jobs/[company-slug] if no URL available)
+
+5. **Invalid Weight Sum:**
+
+```
+[14:23:27] [validation] Validation failed - cannot start server
+[14:23:27] [validation]   • job_focus: Weights must sum to 1.0 (received: 0.8)
+[14:23:27] [validation]     → in resume-data/tailor/company-name/job_analysis.yaml
+[14:23:27] [validation] 💡 Fix the errors above and save to retry
+```
+
+**Fix:** Adjust job_focus weights to sum exactly to 1.0
+
+6. **Array Length Constraint Violated:**
+
+```
+[14:23:27] [validation] Validation failed - cannot start server
+[14:23:27] [validation]   • technical_expertise: Array must contain at most 4 element(s) (received: 5)
+[14:23:27] [validation]     → in resume-data/tailor/company-name/resume.yaml
+[14:23:27] [validation] 💡 Fix the errors above and save to retry
+```
+
+**Fix:** Limit technical_expertise to max 4 categories
+
+7. **Incorrect Field Location:**
+
+```
+[14:23:27] [validation] Validation failed - cannot start server
+[14:23:27] [validation]   • job_focus: Unexpected field at root level
+[14:23:27] [validation]     → in resume-data/tailor/company-name/cover_letter.yaml
+[14:23:27] [validation] 💡 Fix the errors above and save to retry
+```
+
+**Fix:** Ensure `cover_letter.job_focus` is inside the `cover_letter` object, not at root level
+
+8. **Other Common Issues:**
+
+- Job summary exceeds 100 characters
+- Must-have skills not limited to top 5 by priority
+- Field type mismatches (string vs number vs array)
+- Invalid URL formats
+- Technical expertise categories exceed 4 items
+- Skills per category exceed 8 items
+- Soft skills exceed 12 items
 
 ### Expected Output v2.0:
 
@@ -284,4 +392,4 @@ job_analysis:
 - **Data Integrity**: All content must exist in source files, no fabrication
 - **Schema Structure**: Follow v2.0 target_schema format exactly
 
-When you receive a job posting, analyze it using the v2.0 schema with job_focus array extraction, assign importance weights that sum to 1.0, perform candidate alignment analysis using specialty-based scoring, create optimization action codes, generate all four required files (metadata.yaml, resume.yaml, job_analysis.yaml, cover_letter.yaml), **validate all files by running `bun run generate-data -C [company-name]` and fix any validation errors**, and ensure all outputs provide clear, actionable guidance for resume tailoring while maintaining maximum conciseness and data integrity.
+When you receive a job posting, analyze it using the v2.0 schema with job_focus array extraction, assign importance weights that sum to 1.0, perform candidate alignment analysis using specialty-based scoring, create optimization action codes, generate all four required files (metadata.yaml, resume.yaml, job_analysis.yaml, cover_letter.yaml), **validate all files by running `bun run validate:all -C [company-name]` and fix any validation errors**, and ensure all outputs provide clear, actionable guidance for resume tailoring while maintaining maximum conciseness and data integrity.
