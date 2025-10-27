@@ -277,7 +277,7 @@ export const handlePipelineError = (
   if (shouldExit) {
     process.exit(1);
   } else {
-    logger.info(''); // Add blank line for readability in watch mode
+    logger.info('----------------------------------------'); // Add divisor for readability in watch mode
   }
 };
 

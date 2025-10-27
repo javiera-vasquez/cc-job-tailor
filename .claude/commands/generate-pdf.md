@@ -1,6 +1,6 @@
 ---
-allowed-tools: Bash(bun run generate-pdf.ts:*)
-description:  Create PDF document for specific company | argument-hint: company-name [resume|cover-letter|both]
+allowed-tools: Bash(bun run generate-pdf:*)
+description: Generate PDF documents (resume, cover letter, or both) with automatic validation and theme selection | argument-hint: company-name [resume|cover-letter|both]
 ---
 
 Generate PDF documents for company: $1
@@ -23,8 +23,8 @@ echo "Generating PDF documents for company: $COMPANY_NAME"
 echo "Document type: $DOCUMENT_TYPE"
 
 if [ "$DOCUMENT_TYPE" = "both" ]; then
-  bun run generate-pdf.ts -C "$COMPANY_NAME"
+  bun run generate-pdf -C "$COMPANY_NAME"
 else
-  bun run generate-pdf.ts -C "$COMPANY_NAME" -D "$DOCUMENT_TYPE"
+  bun run generate-pdf -C "$COMPANY_NAME" -D "$DOCUMENT_TYPE"
 fi
 ```
