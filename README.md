@@ -45,16 +45,16 @@ AI-powered resume optimization system that analyzes job postings, ranks requirem
 
 **3 specialized AI agents** handle different stages of the workflow (analysis, tailoring, editing). **3 slash commands** give you direct control:
 
-| Command/Agent                                                          | Type    | Purpose                                                                                                                        |
-| ---------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Command/Agent                                                          | Type    | Purpose                                                                                                                                                        |
+| ---------------------------------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `/tailor company-name`                                                 | Command | Edit your resume with Claude in real-time through a live browser preview. Changes appear instantly as you refine content, switch templates, or adjust sections |
-| `/generate-pdf company-name [resume\|cover-letter\|both]`              | Command | Generate PDF documents for specific company                                                                                    |
-| `/tailor-template-expert`                                              | Command | Template development workspace for creating and modifying React-PDF templates (experimental)                                   |
-| `@agent-job-analysis`                                                  | Agent   | Analyze job postings and extract structured metadata and job analysis for tailored applications                                |
-| `@agent-job-tailor`                                                    | Agent   | Complete workflow: analyze job postings and create customized job analysis and tailored resumes                                |
-| `@agent-tailor-resume-and-cover`                                       | Agent   | Generate tailored resume and cover letter using existing job analysis data (requires metadata and job_analysis files)          |
-| `bun run generate-pdf -C company-name [-D resume\|cover-letter\|both]` | Script  | Generate PDF documents (resume, cover letter, or both) to `tmp/` with automatic validation and theme selection (default: both) |
-| `bun run validate:[type] (-C company-name \| -P path)`                 | Script  | Validate YAML files against Zod schemas. Types: `all`, `metadata`, `resume`, `job-analysis`, `cover-letter`                    |
+| `/generate-pdf company-name [resume\|cover-letter\|both]`              | Command | Generate PDF documents for specific company                                                                                                                    |
+| `/tailor-template-expert`                                              | Command | Template development workspace for creating and modifying React-PDF templates (experimental)                                                                   |
+| `@agent-job-analysis`                                                  | Agent   | Analyze job postings and extract structured metadata and job analysis for tailored applications                                                                |
+| `@agent-job-tailor`                                                    | Agent   | Complete workflow: analyze job postings and create customized job analysis and tailored resumes                                                                |
+| `@agent-tailor-resume-and-cover`                                       | Agent   | Generate tailored resume and cover letter using existing job analysis data (requires metadata and job_analysis files)                                          |
+| `bun run generate-pdf -C company-name [-D resume\|cover-letter\|both]` | Script  | Generate PDF documents (resume, cover letter, or both) to `tmp/` with automatic validation and theme selection (default: both)                                 |
+| `bun run validate:[type] (-C company-name \| -P path)`                 | Script  | Validate YAML files against Zod schemas. Types: `all`, `metadata`, `resume`, `job-analysis`, `cover-letter`                                                    |
 
 ## PDF Output Examples
 
