@@ -1,23 +1,22 @@
 version: '2.0.0'
 analysis_date: '2025-10-01'
 
+job_focus:
+  - primary_area: 'senior_engineer'
+    specialties: ['react', 'typescript', 'frontend']
+    weight: 0.8
+  - primary_area: 'senior_engineer'
+    specialties: ['mobile', 'react']
+    weight: 0.2
+
 cover_letter:
-  company: 'Tech-Corp'
   name: 'John Doe'
+  company: 'Tech-Corp'
   position: 'Senior Frontend Engineer - Web'
   primary_focus: 'senior_engineer'
-  date: '2025-10-01'
-
-  job_focus:
-    - primary_area: 'senior_engineer'
-      specialties: ['react', 'typescript', 'frontend']
-      weight: 0.8
-    - primary_area: 'senior_engineer'
-      specialties: ['mobile', 'react']
-      weight: 0.2
+  date: '2025-10-27'
 
   personal_info:
-    name: 'John Doe'
     address: '456 Innovation Drive, San Francisco, CA 94105'
     email: 'john.doe@example.com'
     phone: '+1 (555) 555-5555'
@@ -25,17 +24,14 @@ cover_letter:
     github: 'https://github.com/johndoe-example'
 
   content:
-    letter_title: 'Cover Letter Frontend Engineer'
-
+    letter_title: 'Cover Letter Senior Frontend Engineer'
     opening_line: 'Dear Tech-Corp Hiring Team,'
-
     body:
-      - 'I am writing to express my keen interest in the Senior Frontend Engineer - Web role at Tech-Corp. With a decade of experience focused on creating high-quality, user-centric frontend applications using React and TypeScript, I am thrilled by the prospect of joining your team and contributing to products that serve over 20 million users globally.'
-      - 'My expertise in React, TypeScript, and modern UI/UX principles aligns perfectly with the skills you are looking for. At NextGen Solutions, I led a successful migration of a legacy jQuery frontend to a modern React and TypeScript stack, resulting in a 30% performance boost and a more maintainable codebase. I also built a reusable component library that was adopted by three different product teams, demonstrating my ability to create scalable, well-structured applications.'
-      - 'What particularly excites me about Tech-Corp is your commitment to building best-in-the-world engineering teams and operating at massive scale across 500 cities in 30 countries. Your modern TypeScript and React core stack, combined with the opportunity to work on diverse products beyond the traditional delivery business, presents exactly the kind of challenging and dynamic environment where I thrive. I am especially drawn to your values of taking ownership beyond the obvious and doing common things uncommonly well.'
-      - 'Beyond technical expertise, I am a dedicated team player with a pragmatic and positive attitude. Throughout my career, I have demonstrated the ability to collaborate effectively with cross-functional teams, mentor junior developers, and continuously push myself outside my comfort zone. My full-stack background with Node.js and experience with microservices architecture means I can contribute beyond frontend development if needed, and I am eager to learn and potentially explore backend technologies like Python or Scala.'
-      - 'I am fluent in English, Spanish, and German (professional working proficiency), which I believe would be valuable for collaborating with your distributed teams across Stockholm, Berlin, Tallinn, and Helsinki. Thank you for considering my application. I am confident that my passion for building beautiful and accessible interfaces, combined with my experience delivering scalable solutions, would make me a valuable asset to Tech-Corp.'
-
+      - 'I am writing to express my keen interest in the Senior Frontend Engineer - Web role at Tech-Corp. With a decade of experience focused on creating high-quality, user-centric frontend applications using React and TypeScript, I am thrilled by the prospect of joining your team.'
+      - 'My expertise in React, TypeScript, and modern UI/UX principles aligns perfectly with your requirements for building scalable web services. At NextGen Solutions, I led a successful migration to a modern React and TypeScript stack, resulting in a 30% performance boost and a more maintainable codebase that now serves thousands of enterprise users. I also built a reusable component library that was adopted by three different product teams, demonstrating my ability to create well-structured frontend applications.'
+      - 'What particularly excites me about this role is the opportunity to work on modern React-based products at scale—serving over 20 million users globally across 500 cities in 30 countries. At Innovate AI, I championed the adoption of a design system ensuring UI consistency across all products, and created complex data visualization dashboards with React and D3.js—experience that translates directly to building scalable, user-facing applications in a cross-functional team environment.'
+      - 'Beyond technical expertise, I thrive in collaborative environments, having worked with cross-functional teams throughout my career. My international experience and fluency in Spanish, English, and German has strengthened my ability to work with diverse teams. I am pragmatic, curious, and maintain a positive attitude while taking ownership of projects from conception to deployment.'
+      - 'Thank you for considering my application. I am eager to bring my React and TypeScript expertise to Tech-Corp and contribute to building exceptional web experiences for your global user base.'
     signature: |
       Sincerely,
       John Doe

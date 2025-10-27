@@ -11,10 +11,10 @@ personal_info:
     frontend_ui_focused: 'Senior Frontend Engineer | UI/UX Advocate'
     qa_testing_focused: 'Software Engineer in Test | QA Automation Lead'
   summaries:
-    fullstack_focused: 'Versatile Senior Full-Stack Engineer with 10+ years of experience designing, building, and deploying scalable web applications. Expertise in the MERN stack, microservices architecture, and cloud-native development. Proven ability to deliver end-to-end solutions that meet business needs.'
-    ai_ml_focused: 'Innovative AI/ML Engineer with a strong focus on Natural Language Processing, semantic search, and Retrieval-Augmented Generation (RAG) systems. Experienced in leveraging large language models (LLMs) and vector databases to build intelligent, data-driven applications.'
-    frontend_ui_focused: 'Passionate Senior Frontend Engineer with a decade of experience creating beautiful, responsive, and accessible user interfaces. Expert in React, TypeScript, and modern CSS frameworks. Dedicated to best practices, component-driven development, and exceptional user experience.'
-    qa_testing_focused: 'Detail-oriented Software Engineer in Test with a proven track record of designing and implementing robust automated testing frameworks. Expertise in E2E, integration, and unit testing using tools like Cypress, Jest, and Playwright. Committed to ensuring software quality and reliability through continuous integration.'
+    fullstack_focused: 'Senior Full-Stack Engineer with 10+ years building scalable systems using MERN stack, microservices, and cloud infrastructure. Architect end-to-end applications with Railway-Oriented pipelines and functional composition patterns.'
+    ai_ml_focused: 'AI/ML Engineer specializing in NLP, semantic search, and RAG systems. Design weighted scoring algorithms and candidate alignment analysis using LLMs and vector databases.'
+    frontend_ui_focused: 'Senior Frontend Engineer with 10+ years shipping responsive interfaces using React, TypeScript, and component-driven design. Expert in design systems and React-PDF document generation.'
+    qa_testing_focused: 'Software Engineer in Test with expertise in E2E and integration testing (Cypress, Jest, Playwright). Build validation pipelines with Zod schemas and CI/CD automation.'
 
 contact:
   phone: '+1 (555) 555-5555'
@@ -26,18 +26,22 @@ contact:
 technical_expertise:
   frontend:
     - 'React'
+    - 'React-PDF'
     - 'TypeScript'
     - 'Next.js'
     - 'JavaScript (ES6+)'
     - 'HTML5 & CSS3'
     - 'Tailwind CSS'
+    - 'Vite'
   backend:
     - 'Node.js'
+    - 'Bun Runtime'
     - 'Express.js'
     - 'Python'
     - 'FastAPI'
     - 'PostgreSQL'
     - 'MongoDB'
+    - 'YAML Processing'
   qa_testing:
     - 'Cypress'
     - 'Jest'
@@ -45,19 +49,27 @@ technical_expertise:
     - 'E2E Testing'
     - 'CI/CD'
     - 'Test Automation'
+    - 'Zod Schema Validation'
+    - 'GitHub Actions'
   ai_machine_learning:
+    - 'Claude Code API'
+    - 'AI Agents & Sub-agents'
     - 'LangChain'
     - 'LangGraph'
     - 'Vector Databases (Pinecone, Chroma)'
     - 'Semantic Search'
     - 'RAG'
     - 'OpenAI API'
+    - 'Weighted Scoring Algorithms'
   systems_design:
     - 'Microservices Architecture'
     - 'REST APIs'
     - 'GraphQL'
     - 'Docker'
     - 'Kubernetes'
+    - 'Railway-Oriented Pipelines'
+    - 'Functional Composition'
+    - 'Result Types & Error Propagation'
   version_control:
     - 'Git'
     - 'GitHub'
@@ -81,14 +93,14 @@ independent_projects:
   - name: 'Claude Code Job Tailor'
     location: 'Open Source'
     duration: '2025'
-    description: 'An AI-powered job application assistant that treats your resume as code, automatically tailoring it for specific roles by analyzing job descriptions and selecting the most relevant skills and achievements.'
-    url: 'https://github.com/javiera-vasquez/cc-job-tailor'
+    description: 'Free, open-source resume optimization platform that analyzes job postings and generates tailored PDF resumes using AI-driven content selection and specialty-based scoring.'
+    url: 'https://github.com/javiera-vasquez/claude-code-job-tailor'
     achievements:
-      - 'Developed a data-driven system to manage resume content in structured YAML files.'
-      - 'Built an AI agent with Claude Code to analyze job postings and automatically select relevant achievements and skills.'
-      - 'Created a PDF generation service using @react-pdf/renderer to produce professional, ATS-friendly resumes.'
-      - 'Implemented a live preview server with hot reload using Bun.js to facilitate rapid template development.'
-    impact: 'Automates the time-consuming process of resume customization, enabling users to generate optimized applications in minutes instead of hours and improving job application effectiveness.'
+      - 'Weighted job analysis: Extracts and ranks requirements (1-10 priority) with AI candidate alignment scoring.'
+      - 'Single-source YAML data model: Automatically selects achievements via specialty-matched scoring; supports 4+ resume versions.'
+      - 'Railway-Oriented pipelines: Deterministic error handling using remeda, ts-pattern across validation and PDF generation.'
+      - 'Live development workflow: Real-time preview, file watching, auto-validation, collaborative editing with instant feedback.'
+    impact: 'Generates ATS-optimized resumes in under 60 seconds with zero paywalls; eliminates manual tailoring through intelligent content selection, enabling developers to apply strategically with higher relevance.'
 
 languages:
   - language: 'Spanish'
