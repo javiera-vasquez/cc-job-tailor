@@ -1,6 +1,6 @@
 ---
-allowed-tools: Bash(bun run set-env), BashOutput
-description: Set CC in /tailor mode, Ask claude for changes and improvements to the application assets  | argument-hint company-name
+allowed-tools: Bash(bun run tailor-server:*), BashOutput
+description: Set CC in /tailor mode, Ask claude for changes and improvements to the application assets | argument-hint company-name
 ---
 
 # Tailor Mode - Collaborative Resume & Cover Letter Editing
@@ -31,43 +31,32 @@ The technical infrastructure (server, file watching, validation) runs in the bac
 /tailor company-name
 ```
 
-### 2. Claude Sets Context
+### 2. Claude Starts Development Server
 
-Runs `bun run set-env -C company-name`:
+Runs `bun run tailor-server -C company-name`:
 
-- Validates company folder exists at `resume-data/tailor/company-name/`
-- Validates required files (`metadata.yaml`, `job_analysis.yaml`)
-- Updates `.claude/tailor-context.yaml` automatically
-- Returns formatted output with company context details
-
-**Exit codes:**
-
-- `0` = Success → Continue to step 3
-- `1` = Failure → Display error and stop
-
-**Example output:**
-
-```
-[10:00:00] [set-env] ✅ Context set • Tech-Corp • 4 file(s)
-[10:00:00] [set-env]    -Path: resume-data/tailor/tech-corp
-[10:00:00] [set-env]    -Position: Senior Frontend Engineer - Web
-[10:00:00] [set-env]    -Focus: senior_engineer + [react, typescript, frontend]
-[10:00:00] [set-env]    -Files: metadata.yaml, job_analysis.yaml, resume.yaml, cover_letter.yaml
-[10:00:00] [set-env] 🚀 All good, please start the tailor-server
-```
-
-### 3. Claude Starts Development Server
-
-Runs `bun run tailor-server`:
-
-- Starts file watcher monitoring `resume-data/tailor/`
+- Validates company folder exists and all required files are present
+- Validates YAML files against Zod schemas (automatic validation)
+- Starts file watcher monitoring `resume-data/tailor/company-name/`
 - Enables automatic data regeneration on file changes
 - Launches browser preview with hot reload
 - Provides real-time validation feedback
 
-**Note:** After starting the server, only check one the `🚀 Tailor server ready` log to confirm startup. Vite and Bun handle the HTTP server automatically in the background no need to wait for additional Vite startup logs.
+**Note:** After starting the server, only check for the `✅ Tailor server ready` log to confirm startup. Vite and Bun handle the HTTP server automatically in the background - no need to wait for additional Vite startup logs.
 
-### 4. Claude Confirms Server is Running
+**Expected log output:**
+
+```
+[13:54:31] [validation] ✅ Application data written to src/data/application.ts
+[13:54:31] [tailor-server] Tailor context created • Tech-Corp
+[13:54:31] [tailor-server]    -Path: resume-data/tailor/tech-corp
+[13:54:31] [tailor-server]    -Position: Senior Frontend Engineer - Web
+[13:54:31] [tailor-server]    -Focus: senior_engineer + [react, typescript, frontend]
+[13:54:31] [tailor-server]    -Files: metadata.yaml, job_analysis.yaml, resume.yaml, cover_letter.yaml
+[13:54:31] [tailor-server] ✅ Tailor server ready • Tech-Corp • 4 file(s) • Debounce: 300ms
+```
+
+### 3. Claude Confirms Server is Running
 
 After seeing the "Tailor server ready" log, Claude should confirm the setup:
 
@@ -75,6 +64,7 @@ After seeing the "Tailor server ready" log, Claude should confirm the setup:
 ✅ Tailor mode active for [company-name]
 🌐 Dev server running at http://localhost:3000
 📁 Watching: resume-data/tailor/[company-name]
+📊 Validated 4 files with schema checks
 
 What would you like to work on? I can help you with:
 • Refine resume summary or professional experience
@@ -85,6 +75,41 @@ What would you like to work on? I can help you with:
 • Review and optimize for ATS keywords
 • Generate PDF for final review
 ```
+
+## Startup Error Handling
+
+If the server fails to start, you'll see one of these errors:
+
+**Missing required files:**
+
+```
+[13:59:39] [tailor-server] Missing 1 required file(s):
+[13:59:39] [tailor-server]     - resume.yaml
+[13:59:39] [tailor-server]   Expected files: metadata.yaml, job_analysis.yaml, resume.yaml, cover_letter.yaml
+[13:59:39] [tailor-server]   Found files: metadata.yaml, job_analysis.yaml, cover_letter.yaml
+```
+
+→ **Action:** Create the missing YAML file(s) in the company folder
+
+**Validation errors:**
+
+```
+[13:52:19] [tailor-server] Validation failed - cannot start server
+[13:52:19] [tailor-server]   • name: Required (received: undefined)
+[13:52:19] [tailor-server]     → in resume-data/tailor/tech-corp/resume.yaml
+```
+
+→ **Action:** Fix the validation errors in the YAML files (add required fields, fix syntax)
+
+**Missing company folder:**
+
+```
+[tailor-server] Error: Company folder not found: resume-data/tailor/company-name
+```
+
+→ **Action:** Ensure the company folder exists in `resume-data/tailor/`
+
+See `TAILOR_SERVER_LOGS.md` for complete error reference and all test cases.
 
 ## Iterative Development Loop
 
@@ -256,7 +281,6 @@ When user requests to hide/show the profile picture, modify the `profile-picture
 
 **Files you cannot modify:**
 
-- ❌ `.claude/tailor-context.yaml` (auto-generated, edit metadata.yaml instead)
 - ❌ Template components, shared utilities, source YAML, schemas
 
 ## Why Validation Matters

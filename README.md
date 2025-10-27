@@ -43,11 +43,11 @@ AI-powered resume optimization system that analyzes job postings, ranks requirem
 
 ## Built-in Commands & Agents
 
-**3 specialized AI agents** handle different stages of the workflow (analysis, tailoring, editing). **4 slash commands** give you direct control:
+**3 specialized AI agents** handle different stages of the workflow (analysis, tailoring, editing). **3 slash commands** give you direct control:
 
 | Command/Agent                                                          | Type    | Purpose                                                                                                                        |
 | ---------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `/tailor company-name`                                                 | Command | Set active company context and start live preview server with automatic validation                                             |
+| `/tailor company-name`                                                 | Command | Edit your resume with Claude in real-time through a live browser preview. Changes appear instantly as you refine content, switch templates, or adjust sections |
 | `/generate-pdf company-name [resume\|cover-letter\|both]`              | Command | Generate PDF documents for specific company                                                                                    |
 | `/tailor-template-expert`                                              | Command | Template development workspace for creating and modifying React-PDF templates (experimental)                                   |
 | `@agent-job-analysis`                                                  | Agent   | Analyze job postings and extract structured metadata and job analysis for tailored applications                                |
